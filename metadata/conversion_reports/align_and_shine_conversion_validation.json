@@ -1,0 +1,44 @@
+{
+  "source": "Align-and-Shine",
+  "source_revision": "2026-02-28_fullCorpus_v1",
+  "raw_path": "raw/align_and_shine/2026-02-28_fullCorpus_v1/data/filtered_sentence_pairs_2026-02-28_fullCorpus_v1.csv",
+  "raw_sha256": "2d91a3cc8619db53b77c332c269f85b5c2d63a50fd5e2bd245cc863a5ee3fc62",
+  "normalized_pairs": 114068,
+  "outputs": [
+    {
+      "language": "ca",
+      "output_path": "phase1_normalization/data/ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 420,
+      "bytes": 261932,
+      "sha256": "4248d3bfd046c481df6eac34d7e17d33c13b54af943654b8a6b7e9b28383301c"
+    },
+    {
+      "language": "en",
+      "output_path": "phase1_normalization/data/en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 4059,
+      "bytes": 2474061,
+      "sha256": "5b1a78b88997e6d0cb81e3c58496f516730b9969cbc2b07128f0b2029a2ba810"
+    },
+    {
+      "language": "es",
+      "output_path": "phase1_normalization/data/es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 6347,
+      "bytes": 4243943,
+      "sha256": "07156c29db7924c48bd167cd5975f3b69a3dea90820b245b83d36458facd5bb2"
+    },
+    {
+      "language": "fr",
+      "output_path": "phase1_normalization/data/fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 94478,
+      "bytes": 59071508,
+      "sha256": "bd335dd1d401724abb98687ec43414db720b5a7eb397df706026d98986534143"
+    },
+    {
+      "language": "it",
+      "output_path": "phase1_normalization/data/it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 8764,
+      "bytes": 5631563,
+      "sha256": "9caa01191d90962d1b9e3fe95307b7b09e082ea881cf84916c31aa65d87efd44"
+    }
+  ]
+}

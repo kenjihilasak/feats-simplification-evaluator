@@ -1,0 +1,10 @@
+{
+  "source": "SimplifyUR",
+  "source_revision": "cdb3203d39abfcc365232c8aae1b35afa5d43bd8",
+  "groups": 501,
+  "normalized_pairs": 736,
+  "output_path": "phase1_normalization/data/ur/simplifyur__SimplifyUR.jsonl",
+  "pairs": 736,
+  "bytes": 358075,
+  "sha256": "dcfe3f4adff16424c4c7e331d0768cf8aed240d87235fc5ed74b63f0218b7b9b"
+}

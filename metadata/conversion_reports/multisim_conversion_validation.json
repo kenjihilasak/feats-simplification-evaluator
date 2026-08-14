@@ -1,0 +1,163 @@
+{
+  "source": "MultiSim",
+  "source_revision": "3213620ecd82d5f579b18c58532973442ec3a1b1",
+  "raw_root": "raw/multisim",
+  "configurations": 19,
+  "raw_split_files": 57,
+  "raw_rows": 1328524,
+  "normalized_pairs": 1337793,
+  "outputs": [
+    {
+      "language": "en",
+      "corpus": "ASSET",
+      "output_path": "phase1_normalization/data/en/multisim__ASSET.jsonl",
+      "pairs": 23590,
+      "bytes": 13019917,
+      "sha256": "a699b3af0f01d754cb94f0d9de9d920bf040f2a77a905cc8ca7caed5667f5508"
+    },
+    {
+      "language": "it",
+      "corpus": "AdminIt",
+      "output_path": "phase1_normalization/data/it/multisim__AdminIt.jsonl",
+      "pairs": 736,
+      "bytes": 603426,
+      "sha256": "a29a73d6a7267224bf8cdec00a5c6171a817f8f935c9d0e813c683ca89a37df2"
+    },
+    {
+      "language": "fr",
+      "corpus": "CLEAR",
+      "output_path": "phase1_normalization/data/fr/multisim__CLEAR.jsonl",
+      "pairs": 4596,
+      "bytes": 2954337,
+      "sha256": "8d745b1a268f873e6625172fd4e0eb41b51a318d67ebad99d4ab38a2cf9f213d"
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapanese",
+      "output_path": "phase1_normalization/data/ja/multisim__EasyJapanese.jsonl",
+      "pairs": 50000,
+      "bytes": 22424489,
+      "sha256": "527c2628a51aab0a9e430f818cc2dd6d27be2e1e58e1f9a1d3363480fdaeb1b9"
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapaneseExtended",
+      "output_path": "phase1_normalization/data/ja/multisim__EasyJapaneseExtended.jsonl",
+      "pairs": 35000,
+      "bytes": 17632648,
+      "sha256": "409a5a3d2aad83d9996df705c60aa1cb326be374903f2046b6c67cbaeef2fbd5"
+    },
+    {
+      "language": "de",
+      "corpus": "GEOLinoTest",
+      "output_path": "phase1_normalization/data/de/multisim__GEOLinoTest.jsonl",
+      "pairs": 1198,
+      "bytes": 639286,
+      "sha256": "ef3930697cf6f4dcd3441a814594730a4481ee63b34933f4c6a065af82137722"
+    },
+    {
+      "language": "it",
+      "corpus": "PaCCSS-IT",
+      "output_path": "phase1_normalization/data/it/multisim__PaCCSS-IT.jsonl",
+      "pairs": 63006,
+      "bytes": 27211266,
+      "sha256": "ba6f6b1952846bf64b00be0d9c2a17a2690c444616b6d562986712712904ca53"
+    },
+    {
+      "language": "pt-BR",
+      "corpus": "PorSimples",
+      "output_path": "phase1_normalization/data/pt-BR/multisim__PorSimples.jsonl",
+      "pairs": 7864,
+      "bytes": 4261910,
+      "sha256": "f046a31b69d606edf3aaab9dccf481c8e96f6661f16cefa2758d876831e4bd27"
+    },
+    {
+      "language": "ru",
+      "corpus": "RSSE",
+      "output_path": "phase1_normalization/data/ru/multisim__RSSE.jsonl",
+      "pairs": 6804,
+      "bytes": 5133497,
+      "sha256": "f5ac64f7c53e83fb0644e7e4aa264d597e8213dc67684ee1a9a504267370e12c"
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptEncy",
+      "output_path": "phase1_normalization/data/ru/multisim__RuAdaptEncy.jsonl",
+      "pairs": 9729,
+      "bytes": 6397700,
+      "sha256": "51ec49b061a4e0efe14f481f7d0ae28b22a6648d82cfd24788aa86f4c53166f7"
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptFairytales",
+      "output_path": "phase1_normalization/data/ru/multisim__RuAdaptFairytales.jsonl",
+      "pairs": 310,
+      "bytes": 197648,
+      "sha256": "0616e6ab43c11745b99f96a52be50abac9448dce21198b86cc10f692ba96c18c"
+    },
+    {
+      "language": "ru",
+      "corpus": "RuWikiLarge",
+      "output_path": "phase1_normalization/data/ru/multisim__RuWikiLarge.jsonl",
+      "pairs": 248111,
+      "bytes": 196164472,
+      "sha256": "556d51815da2c96e6aa398102c024391a8873f42c66851bfa02418cbe0a9e4ba"
+    },
+    {
+      "language": "it",
+      "corpus": "SimpitikiWiki",
+      "output_path": "phase1_normalization/data/it/multisim__SimpitikiWiki.jsonl",
+      "pairs": 575,
+      "bytes": 678404,
+      "sha256": "40946610251a5ad74a0deefc87183d80bfa514d64a8053883529f99586584586"
+    },
+    {
+      "language": "sl",
+      "corpus": "TSSlovene",
+      "output_path": "phase1_normalization/data/sl/multisim__TSSlovene.jsonl",
+      "pairs": 939,
+      "bytes": 481748,
+      "sha256": "02014eb356d1eb185938b94992abefa830bbc5fff191bfcca80bfab61aa6500e"
+    },
+    {
+      "language": "it",
+      "corpus": "Teacher",
+      "output_path": "phase1_normalization/data/it/multisim__Teacher.jsonl",
+      "pairs": 170,
+      "bytes": 93543,
+      "sha256": "32be032249200c7b1e5346deb581a684eb619b5c1e66b714f9a3c2309da64ff4"
+    },
+    {
+      "language": "it",
+      "corpus": "Terence",
+      "output_path": "phase1_normalization/data/it/multisim__Terence.jsonl",
+      "pairs": 1012,
+      "bytes": 543374,
+      "sha256": "339ea1af26751a818e31a8eaff2f5aa8407c3e18e24b98d1dc34fd7556a5b9e6"
+    },
+    {
+      "language": "de",
+      "corpus": "TextComplexityDE",
+      "output_path": "phase1_normalization/data/de/multisim__TextComplexityDE.jsonl",
+      "pairs": 250,
+      "bytes": 191457,
+      "sha256": "f82fd8b74557e9d17fe1cfc061ac96834d96200abf0e8de357d265f4928e510e"
+    },
+    {
+      "language": "en",
+      "corpus": "WikiAutoEN",
+      "output_path": "phase1_normalization/data/en/multisim__WikiAutoEN.jsonl",
+      "pairs": 586150,
+      "bytes": 345786178,
+      "sha256": "1f8d826baad4d2f7ded3b6bd8a49035a84659684cfd0c85765fca6360c59936f"
+    },
+    {
+      "language": "fr",
+      "corpus": "WikiLargeFR",
+      "output_path": "phase1_normalization/data/fr/multisim__WikiLargeFR.jsonl",
+      "pairs": 297753,
+      "bytes": 183652049,
+      "sha256": "7f4273a92004331ff53d8f22eafcc001914492ef4ef3bf9f0823e83e4b7dc362"
+    }
+  ]
+}

@@ -1,0 +1,574 @@
+{
+  "files": [
+    {
+      "language": "en",
+      "corpus": "ASSET",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/English/ASSET_train.csv",
+      "raw_bytes": 4148974,
+      "raw_sha256": "a31a2f3c6b304efc8d9850fd92b5b1b234e3690fde53bb4d1877f118bb9fd466",
+      "rows": 19000,
+      "pairs": 19000
+    },
+    {
+      "language": "en",
+      "corpus": "ASSET",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/English/ASSET_val.csv",
+      "raw_bytes": 121044,
+      "raw_sha256": "a9dfb2d7f402d3e1d53b8b9170c714245a92b7fed493e64ed300c2573c72e82a",
+      "rows": 100,
+      "pairs": 1000
+    },
+    {
+      "language": "en",
+      "corpus": "ASSET",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/English/ASSET_test.csv",
+      "raw_bytes": 401712,
+      "raw_sha256": "23990d9b27ca2c4a04e5e8906b9cf6717c5a36a536f44dab271168d29a3f59c7",
+      "rows": 359,
+      "pairs": 3590
+    },
+    {
+      "language": "it",
+      "corpus": "AdminIt",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Italian/AdminIT_train.csv",
+      "raw_bytes": 283290,
+      "raw_sha256": "fb3192b28ce622aa19c731ad7343b828a222d92fc55d161f10e85e263976d89d",
+      "rows": 588,
+      "pairs": 588
+    },
+    {
+      "language": "it",
+      "corpus": "AdminIt",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Italian/AdminIT_val.csv",
+      "raw_bytes": 31788,
+      "raw_sha256": "a40999ed1ef6bb02201b7b6f87cedecb541eb44ca7da6bcba3a2bdf78c630339",
+      "rows": 48,
+      "pairs": 75
+    },
+    {
+      "language": "it",
+      "corpus": "AdminIt",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Italian/AdminIT_test.csv",
+      "raw_bytes": 30996,
+      "raw_sha256": "e40b51191feb6b3fb890f5151c78755ed1e2b876bd935ce08553f3253b4f9002",
+      "rows": 49,
+      "pairs": 73
+    },
+    {
+      "language": "fr",
+      "corpus": "CLEAR",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/French/CLEAR Corpus_train.csv",
+      "raw_bytes": 1300538,
+      "raw_sha256": "fe432e609c3a31c194deb70b087ce8fd21a786cdc74c360d8a4aeabfe191b6a7",
+      "rows": 4196,
+      "pairs": 4196
+    },
+    {
+      "language": "fr",
+      "corpus": "CLEAR",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/French/CLEAR Corpus_val.csv",
+      "raw_bytes": 92976,
+      "raw_sha256": "689bb40907ae60a4f3d67713afc888f8091f8523b8315ac263f33285f3e4604c",
+      "rows": 294,
+      "pairs": 300
+    },
+    {
+      "language": "fr",
+      "corpus": "CLEAR",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/French/CLEAR Corpus_test.csv",
+      "raw_bytes": 30814,
+      "raw_sha256": "c27a3e64309a5434835eec47c54d592688b0b1cb41cd66f9a8f9c862a7cb39fd",
+      "rows": 100,
+      "pairs": 100
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapanese",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Corpus_train.csv",
+      "raw_bytes": 4444271,
+      "raw_sha256": "dca9913a6effa5973fd51c06843dd234c880f3b34d3b7e817fcd3c8ca2371f7e",
+      "rows": 48000,
+      "pairs": 48000
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapanese",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Corpus_val.csv",
+      "raw_bytes": 92166,
+      "raw_sha256": "193d4b61772dd69dfb83084a34a527d9dd0be7aa6c07402e348b9669533158b4",
+      "rows": 1000,
+      "pairs": 1000
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapanese",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Corpus_test.csv",
+      "raw_bytes": 92393,
+      "raw_sha256": "1469d6ee1e614fa457614ce09951bda4947afcbdd76f6480b77c36b77a71fcd6",
+      "rows": 999,
+      "pairs": 1000
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapaneseExtended",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Extended_train.csv",
+      "raw_bytes": 4125675,
+      "raw_sha256": "ce5a0a12921bad342391cfd3f271b19b9b37a742d288e6af8cd32252a96c76fe",
+      "rows": 33269,
+      "pairs": 33269
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapaneseExtended",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Extended_val.csv",
+      "raw_bytes": 129461,
+      "raw_sha256": "4855752e330bf0b71e3a386d544023b32cdc2afa7596be8b109c3655a83e3a51",
+      "rows": 1000,
+      "pairs": 1000
+    },
+    {
+      "language": "ja",
+      "corpus": "EasyJapaneseExtended",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Japanese/Easy Japanese Extended_test.csv",
+      "raw_bytes": 48441,
+      "raw_sha256": "29e5ea461496f6482a4f7213222f8d31700e68a2f26fd11166ab09c5657de5b2",
+      "rows": 100,
+      "pairs": 731
+    },
+    {
+      "language": "de",
+      "corpus": "GEOLinoTest",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/German/GEOLino Corpus_train.csv",
+      "raw_bytes": 175968,
+      "raw_sha256": "20e0f6243c7754dff3a4b3f8004ca5e5b964cf4c753faa5a2165b6dcc8afc3d8",
+      "rows": 958,
+      "pairs": 958
+    },
+    {
+      "language": "de",
+      "corpus": "GEOLinoTest",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/German/GEOLino Corpus_val.csv",
+      "raw_bytes": 17497,
+      "raw_sha256": "154422812cf9581d69e6f4c1301f0e1f34b6af7522f3a6cb4037d005c774d18e",
+      "rows": 82,
+      "pairs": 118
+    },
+    {
+      "language": "de",
+      "corpus": "GEOLinoTest",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/German/GEOLino Corpus_test.csv",
+      "raw_bytes": 19651,
+      "raw_sha256": "e8456b50dcabd0aab19d89d9e0e69bf1eb7045beefcc0a0703925a85d42a4822",
+      "rows": 81,
+      "pairs": 122
+    },
+    {
+      "language": "it",
+      "corpus": "PaCCSS-IT",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Italian/PaCCSS-IT Corpus_train.csv",
+      "raw_bytes": 5304970,
+      "raw_sha256": "52e0b429b9976aa017ca992bdaf4199734450d5dfef218cdea1976b959070c81",
+      "rows": 60485,
+      "pairs": 60485
+    },
+    {
+      "language": "it",
+      "corpus": "PaCCSS-IT",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Italian/PaCCSS-IT Corpus_val.csv",
+      "raw_bytes": 108995,
+      "raw_sha256": "d638bcd6c1b2252fc956388fa795fed6c9b107ec5bf7695362ac95b977d7b078",
+      "rows": 1061,
+      "pairs": 1254
+    },
+    {
+      "language": "it",
+      "corpus": "PaCCSS-IT",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Italian/PaCCSS-IT Corpus_test.csv",
+      "raw_bytes": 109397,
+      "raw_sha256": "9a97058a2b97e5840b2d4e7c602c058a3d21ef6d01f1b6ba115abda8ba440719",
+      "rows": 1061,
+      "pairs": 1267
+    },
+    {
+      "language": "pt-BR",
+      "corpus": "PorSimples",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Brazilian Portuguese/PorSimples_train.csv",
+      "raw_bytes": 1203949,
+      "raw_sha256": "e5066de7a53c1eb3e8cc4b4bd8f4fff8495deef796bd6a66aee07661900d362c",
+      "rows": 6290,
+      "pairs": 6290
+    },
+    {
+      "language": "pt-BR",
+      "corpus": "PorSimples",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Brazilian Portuguese/PorSimples_val.csv",
+      "raw_bytes": 115903,
+      "raw_sha256": "acefbc23e1a4d0d286ab81cf97eec89afffee6b4c0083bcff795b23a8341f3ef",
+      "rows": 420,
+      "pairs": 784
+    },
+    {
+      "language": "pt-BR",
+      "corpus": "PorSimples",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Brazilian Portuguese/PorSimples_test.csv",
+      "raw_bytes": 115555,
+      "raw_sha256": "2eb5c6300756e36a68fd1af42a0f87b44aec0d79697574950dd94998cd8e9f22",
+      "rows": 420,
+      "pairs": 790
+    },
+    {
+      "language": "ru",
+      "corpus": "RSSE",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Russian/RSSE Corpus_train.csv",
+      "raw_bytes": 1324561,
+      "raw_sha256": "48be2898a1742364aa0dde8d211585080006370327822fa54da6fdc2a1c4c8ae",
+      "rows": 3065,
+      "pairs": 3065
+    },
+    {
+      "language": "ru",
+      "corpus": "RSSE",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Russian/RSSE Corpus_val.csv",
+      "raw_bytes": 79981,
+      "raw_sha256": "ea2011fd4d84985cb5148393aa0d621f4575d549d2b764ee4ef4094b0de4d720",
+      "rows": 85,
+      "pairs": 341
+    },
+    {
+      "language": "ru",
+      "corpus": "RSSE",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Russian/RSSE Corpus_test.csv",
+      "raw_bytes": 840308,
+      "raw_sha256": "91493e4b0c176a6c7d545cf697dd251c9705b4a3f11a7cff0e4a072455b9335c",
+      "rows": 1000,
+      "pairs": 3398
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptEncy",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Russian/RuAdapt Ency_train.csv",
+      "raw_bytes": 2360716,
+      "raw_sha256": "058377cdb6fa09b92e2079fe15e7264f3b91e92664e9f17b779b39256387fafb",
+      "rows": 7782,
+      "pairs": 7782
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptEncy",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Russian/RuAdapt Ency_val.csv",
+      "raw_bytes": 294671,
+      "raw_sha256": "841a1af065cf95d2d043195273887d976a31785c4c1172bf6284f3776d4b7569",
+      "rows": 840,
+      "pairs": 965
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptEncy",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Russian/RuAdapt Ency_test.csv",
+      "raw_bytes": 291527,
+      "raw_sha256": "b8acc6eb68a433edc8afec1fff2783316a251fcfb5070b877f867127eb0cc17d",
+      "rows": 839,
+      "pairs": 982
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptFairytales",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Russian/RuAdapt Fairytales_train.csv",
+      "raw_bytes": 69229,
+      "raw_sha256": "6ea8555237d98cd220ea7193ce50969c0c388bf408345785c3d01ee4ebc43347",
+      "rows": 248,
+      "pairs": 248
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptFairytales",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Russian/RuAdapt Fairytales_val.csv",
+      "raw_bytes": 7509,
+      "raw_sha256": "d4b9e16faeed75565912eaea1d59808309d87cd78d97b1c7c93bc2dc401ad422",
+      "rows": 31,
+      "pairs": 31
+    },
+    {
+      "language": "ru",
+      "corpus": "RuAdaptFairytales",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Russian/RuAdapt Fairytales_test.csv",
+      "raw_bytes": 7188,
+      "raw_sha256": "4b4a9d98520b1a65a2e3a7ea98cf76317c25e2f35717df9ed19a16d86f796a02",
+      "rows": 31,
+      "pairs": 31
+    },
+    {
+      "language": "ru",
+      "corpus": "RuWikiLarge",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Russian/RuWikiLarge_train.csv",
+      "raw_bytes": 108555603,
+      "raw_sha256": "e27705c963ee03d0f6b906ed77e627108c89671ab3eda2f0754a9cb655b56923",
+      "rows": 246978,
+      "pairs": 246978
+    },
+    {
+      "language": "ru",
+      "corpus": "RuWikiLarge",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Russian/RuWikiLarge_val.csv",
+      "raw_bytes": 320861,
+      "raw_sha256": "5ca2dfa178913d70e59940c7c5afde7c0aa4641bf93503c51ddfb9ba606296cd",
+      "rows": 678,
+      "pairs": 768
+    },
+    {
+      "language": "ru",
+      "corpus": "RuWikiLarge",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Russian/RuWikiLarge_test.csv",
+      "raw_bytes": 150119,
+      "raw_sha256": "48bdabd4a56933053b2197df497de430faed607e011c33653d1ca18bc7d6f119",
+      "rows": 312,
+      "pairs": 365
+    },
+    {
+      "language": "it",
+      "corpus": "SimpitikiWiki",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Italian/Simpitiki Italian Wikipedia_train.csv",
+      "raw_bytes": 379641,
+      "raw_sha256": "bf66244953ef7417f8d5956105a3f67aa122bdcde753916cd048430db8c7fbbb",
+      "rows": 460,
+      "pairs": 460
+    },
+    {
+      "language": "it",
+      "corpus": "SimpitikiWiki",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Italian/Simpitiki Italian Wikipedia_val.csv",
+      "raw_bytes": 42338,
+      "raw_sha256": "c4bc0a5f1b09982beecec788085875acd2ff9adf8ee273e6f48d2e729bd86606",
+      "rows": 52,
+      "pairs": 59
+    },
+    {
+      "language": "it",
+      "corpus": "SimpitikiWiki",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Italian/Simpitiki Italian Wikipedia_test.csv",
+      "raw_bytes": 46990,
+      "raw_sha256": "fd5f6bab738de46b62d212be408ce964643cfbace5a2026815eec0522787d6d8",
+      "rows": 51,
+      "pairs": 56
+    },
+    {
+      "language": "sl",
+      "corpus": "TSSlovene",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Slovene/Text Simplification Slovene_train.csv",
+      "raw_bytes": 128231,
+      "raw_sha256": "02afea5f21237498ab9fd83984d2531c9c1431b54ba398468830a0d64e13e6a9",
+      "rows": 749,
+      "pairs": 749
+    },
+    {
+      "language": "sl",
+      "corpus": "TSSlovene",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Slovene/Text Simplification Slovene_val.csv",
+      "raw_bytes": 15754,
+      "raw_sha256": "29188942a26e8a68dcfd622c0d89e8267159ed7646f93350309d46f4f9f5efdf",
+      "rows": 94,
+      "pairs": 94
+    },
+    {
+      "language": "sl",
+      "corpus": "TSSlovene",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Slovene/Text Simplification Slovene_test.csv",
+      "raw_bytes": 15188,
+      "raw_sha256": "fd045463f2fc0911768eb6189bafdac4dd44ed5ea1df3460c96bdbe9516215b2",
+      "rows": 96,
+      "pairs": 96
+    },
+    {
+      "language": "it",
+      "corpus": "Teacher",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Italian/Teacher_train.csv",
+      "raw_bytes": 28793,
+      "raw_sha256": "3dd3b36b391a9e1ceda548aacaeef6dec3700666ee2aa689cfd358781bf8dcf1",
+      "rows": 136,
+      "pairs": 136
+    },
+    {
+      "language": "it",
+      "corpus": "Teacher",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Italian/Teacher_val.csv",
+      "raw_bytes": 3721,
+      "raw_sha256": "ed6e846593103abeb5a527732f44974bad34839ea359a60e2b68020e19953523",
+      "rows": 17,
+      "pairs": 17
+    },
+    {
+      "language": "it",
+      "corpus": "Teacher",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Italian/Teacher_test.csv",
+      "raw_bytes": 3882,
+      "raw_sha256": "6561cd1897f3632a172b2f713bc94dd06305e9e1d147bc54107dae2bde9c138e",
+      "rows": 17,
+      "pairs": 17
+    },
+    {
+      "language": "it",
+      "corpus": "Terence",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/Italian/Terence_train.csv",
+      "raw_bytes": 162407,
+      "raw_sha256": "a07242ca08ba81c6cc8e4a697f675319353c9e27aee178cd77fc903d862d69c6",
+      "rows": 809,
+      "pairs": 809
+    },
+    {
+      "language": "it",
+      "corpus": "Terence",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/Italian/Terence_val.csv",
+      "raw_bytes": 20162,
+      "raw_sha256": "77f79c53c7a4ac7a7d38ef8b0c3d81228187583691342e1fd7ec24d0e029e665",
+      "rows": 102,
+      "pairs": 102
+    },
+    {
+      "language": "it",
+      "corpus": "Terence",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/Italian/Terence_test.csv",
+      "raw_bytes": 19128,
+      "raw_sha256": "f904e295cf697491f64c3d8bc8a25e009a139fe7f5d984eb42c977c62fa2d63e",
+      "rows": 101,
+      "pairs": 101
+    },
+    {
+      "language": "de",
+      "corpus": "TextComplexityDE",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/German/TextComplexityDE Parallel Corpus_train.csv",
+      "raw_bytes": 80558,
+      "raw_sha256": "331786e6ceda42b68e0f896f2da3a835f5f89272e57392131f1f7658ae99e7c2",
+      "rows": 200,
+      "pairs": 200
+    },
+    {
+      "language": "de",
+      "corpus": "TextComplexityDE",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/German/TextComplexityDE Parallel Corpus_val.csv",
+      "raw_bytes": 11377,
+      "raw_sha256": "c7c54a88b44031b4be121f6ecf9a5138b7c0cd39f14e939cb741d1a20dc93dee",
+      "rows": 25,
+      "pairs": 25
+    },
+    {
+      "language": "de",
+      "corpus": "TextComplexityDE",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/German/TextComplexityDE Parallel Corpus_test.csv",
+      "raw_bytes": 8614,
+      "raw_sha256": "73980450c1c6f536fbf982888fe85d58711567f62a337faf1b423926c26840dd",
+      "rows": 25,
+      "pairs": 25
+    },
+    {
+      "language": "en",
+      "corpus": "WikiAutoEN",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/English/WikiAuto_train.csv",
+      "raw_bytes": 139222053,
+      "raw_sha256": "84330f2ee5c6f5b96d37f44079d7111e9f90a3f2757ff22e41c936b8c9fb0d81",
+      "rows": 576126,
+      "pairs": 576126
+    },
+    {
+      "language": "en",
+      "corpus": "WikiAutoEN",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/English/WikiAuto_val.csv",
+      "raw_bytes": 1239149,
+      "raw_sha256": "2190464cc8a6ef96ed97afb168d60054455112a31f60127df167705f646deedd",
+      "rows": 4988,
+      "pairs": 5012
+    },
+    {
+      "language": "en",
+      "corpus": "WikiAutoEN",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/English/WikiAuto_test.csv",
+      "raw_bytes": 1216791,
+      "raw_sha256": "d0cde4b9f9acb58412969884630964fa206fe540f7442b554dfa722733d3eb98",
+      "rows": 5002,
+      "pairs": 5012
+    },
+    {
+      "language": "fr",
+      "corpus": "WikiLargeFR",
+      "upstream_split": "train",
+      "raw_path": "raw/multisim/French/WikiLargeFR Corpus_train.csv",
+      "raw_bytes": 78695109,
+      "raw_sha256": "9a87228f2096693c6dedf50fb448a9305377e79fe7d8a31ecfe3206093d7c4d2",
+      "rows": 296402,
+      "pairs": 296402
+    },
+    {
+      "language": "fr",
+      "corpus": "WikiLargeFR",
+      "upstream_split": "validation",
+      "raw_path": "raw/multisim/French/WikiLargeFR Corpus_val.csv",
+      "raw_bytes": 251309,
+      "raw_sha256": "9f4df6d64f1e6db230d6c379405ec09dce649dfcd102918b19e6dbbe920160d4",
+      "rows": 878,
+      "pairs": 992
+    },
+    {
+      "language": "fr",
+      "corpus": "WikiLargeFR",
+      "upstream_split": "test",
+      "raw_path": "raw/multisim/French/WikiLargeFR Corpus_test.csv",
+      "raw_bytes": 98109,
+      "raw_sha256": "7befd980d42250ab59b115e5b2264b2f8cd9f7fcc7dcaf9db7324340e422eaec",
+      "rows": 345,
+      "pairs": 359
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "valid": true,
+  "jsonl_files": 25,
+  "normalized_pairs": 1452597,
+  "normalized_bytes": 900108431,
+  "unique_ids": 1452597,
+  "duplicate_ids": 0,
+  "missing_field_records": 0,
+  "empty_text_records": 0,
+  "invalid_upstream_split_records": 0,
+  "invalid_layout_records": 0,
+  "records_by_source": {
+    "Align-and-Shine": 114068,
+    "MultiSim": 1337793,
+    "SimplifyUR": 736
+  },
+  "records_by_language": {
+    "ca": 420,
+    "de": 1448,
+    "en": 613799,
+    "es": 6347,
+    "fr": 396827,
+    "it": 74263,
+    "ja": 85000,
+    "pt-BR": 7864,
+    "ru": 264954,
+    "sl": 939,
+    "ur": 736
+  },
+  "records_by_upstream_split": {
+    "null": 114804,
+    "test": 18115,
+    "train": 1305741,
+    "validation": 13937
+  }
+}

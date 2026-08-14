@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Reproducible data and model caches are kept outside Git history.
+raw/
+cache/
+phase1_normalization/data/
+phase2_cleaning/logs/*.out
+phase2_cleaning/logs/*.err
+phase2_cleaning/runs/*/scores/
+phase2_cleaning/runs/*/decisions/
+phase2_cleaning/runs/*/cleaned/
+
