@@ -8,7 +8,8 @@ cache/
 phase1_normalization/data/
 phase2_cleaning/logs/*.out
 phase2_cleaning/logs/*.err
+# Pilot runs are local smoke tests, never publication artifacts.
+phase2_cleaning/runs/*_pilot_*/
 phase2_cleaning/runs/*/scores/
 phase2_cleaning/runs/*/decisions/
 phase2_cleaning/runs/*/cleaned/
-
