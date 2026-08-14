@@ -8,7 +8,7 @@ model that evaluates text simplifications.
 The current preview contains the normalized Phase 1 corpus before cleaning:
 
 - [Release notes and all assets (v0.1.0-rc1)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc1)
-- [Download Phase 1 normalized data](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.tar.zst)
+- [Download Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip)
 - [Download file manifest](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/MANIFEST.csv)
 
 This preview contains 1,452,597 pairs from MultiSim, Align-and-Shine, and

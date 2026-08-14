@@ -1,6 +1,6 @@
 # Phase 1: normalization
 
-Preview download: [Phase 1 normalized corpus v0.1.0-rc1](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.tar.zst).
+Preview download: [Phase 1 normalized corpus v0.1.0-rc1 (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip).
 This preview predates the integration of iDEM and Saaq al-Bambuu.
 
 Converts the pinned MultiSim CSV files, SimplifyUR, and the selected
