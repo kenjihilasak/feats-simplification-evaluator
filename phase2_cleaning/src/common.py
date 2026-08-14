@@ -36,7 +36,14 @@ def project_path(value: str | Path) -> Path:
 
 def input_files(config: dict) -> list[CorpusFile]:
     root = project_path(config["input_root"])
-    files = [CorpusFile(path.parent.name, path) for path in root.glob("*/*.jsonl")]
+    patterns = config.get("include_files", ["*/*.jsonl"])
+    paths: set[Path] = set()
+    for pattern in patterns:
+        matches = set(root.glob(pattern))
+        if not matches:
+            raise FileNotFoundError(f"Input pattern matched no JSONL files: {root / pattern}")
+        paths.update(matches)
+    files = [CorpusFile(path.parent.name, path) for path in paths]
     files.sort(key=lambda item: (item.language, item.filename))
     if not files:
         raise FileNotFoundError(f"No JSONL files under {root}/<language>/")
@@ -114,4 +121,3 @@ def sha256(path: Path) -> str:
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
