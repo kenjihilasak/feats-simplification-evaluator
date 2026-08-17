@@ -49,9 +49,8 @@ def test_package_is_deterministic_and_auditable(tmp_path):
     assert first["pairs"] == 1
 
     with zipfile.ZipFile(first["zip"]) as archive:
-        assert archive.namelist() == ["cleaned/en/test__Tiny.jsonl", "DATA_SOURCES.md"]
+        assert archive.namelist() == ["cleaned/en/test__Tiny.jsonl"]
         assert archive.getinfo(archive.namelist()[0]).date_time == (2026, 8, 14, 0, 0, 0)
-        assert archive.getinfo("DATA_SOURCES.md").date_time == (2026, 8, 14, 0, 0, 0)
     with Path(first["manifest"]).open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     assert rows[0]["pairs"] == "1"

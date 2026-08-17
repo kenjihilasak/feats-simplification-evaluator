@@ -11,7 +11,7 @@ import zipfile
 from datetime import date
 from pathlib import Path
 
-from common import PROJECT_ROOT, sha256
+from common import sha256
 
 
 MANIFEST_FIELDS = (
@@ -101,7 +101,6 @@ def write_zip(
     run_root: Path,
     rows: list[dict],
     timestamp: tuple[int, ...],
-    data_sources: Path,
 ) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     with zipfile.ZipFile(temporary, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9, allowZip64=True) as archive:
@@ -113,20 +112,12 @@ def write_zip(
             info.external_attr = 0o100644 << 16
             with source.open("rb") as input_handle, archive.open(info, "w", force_zip64=True) as output_handle:
                 shutil.copyfileobj(input_handle, output_handle, length=1024 * 1024)
-        notice = zipfile.ZipInfo("DATA_SOURCES.md", date_time=timestamp)
-        notice.compress_type = zipfile.ZIP_DEFLATED
-        notice.create_system = 3
-        notice.external_attr = 0o100644 << 16
-        archive.writestr(notice, data_sources.read_bytes())
     temporary.replace(path)
 
 
 def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -> dict:
     validation, validated = validated_files(run_root)
     rows = manifest_rows(run_root, validated)
-    data_sources = PROJECT_ROOT / "DATA_SOURCES.md"
-    if not data_sources.is_file():
-        raise FileNotFoundError(f"Missing data-source notice: {data_sources}")
     output_dir.mkdir(parents=True, exist_ok=True)
     zip_path = output_dir / f"feats-phase2-cleaned-{version}.zip"
     manifest_path = output_dir / "CLEANED_MANIFEST.csv"
@@ -137,7 +128,7 @@ def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -
         temporary_zip = temporary / zip_path.name
         temporary_manifest = temporary / manifest_path.name
         write_manifest(temporary_manifest, rows)
-        write_zip(temporary_zip, run_root, rows, parse_date(archive_date), data_sources)
+        write_zip(temporary_zip, run_root, rows, parse_date(archive_date))
         temporary_zip.replace(zip_path)
         temporary_manifest.replace(manifest_path)
 
