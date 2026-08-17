@@ -132,7 +132,7 @@ def write_reports(config: dict, rows: list[dict]) -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
     csv_path = report_dir / "cleaning_summary.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=SUMMARY_FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=SUMMARY_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
