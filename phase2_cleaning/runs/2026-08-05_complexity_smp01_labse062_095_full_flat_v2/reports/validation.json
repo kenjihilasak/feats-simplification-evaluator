@@ -1,19 +1,37 @@
 {
   "valid": true,
-  "validated_at_utc": "2026-08-17T13:18:54.262094+00:00",
+  "validated_at_utc": "2026-08-18T08:52:34.933485+00:00",
   "run_id": "2026-08-05_complexity_smp01_labse062_095_full_flat_v2",
-  "files_expected": 25,
-  "files_validated": 25,
+  "files_expected": 29,
+  "files_validated": 29,
   "totals": {
-    "total_pairs": 1452597,
-    "kept_pairs": 858388,
-    "removed_pairs": 594209,
-    "complexity_inversion": 14039,
-    "labse_below_min": 218463,
-    "labse_above_max": 367264
+    "total_pairs": 1454003,
+    "kept_pairs": 859550,
+    "removed_pairs": 594453,
+    "complexity_inversion": 14044,
+    "labse_below_min": 218570,
+    "labse_above_max": 367399
   },
   "errors": [],
   "files": [
+    {
+      "language": "ar",
+      "source": "Saaq al-Bambuu",
+      "corpus": "Saaq al-Bambuu",
+      "file": "saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "total_pairs": 348,
+      "kept_pairs": 231,
+      "removed_pairs": 117,
+      "complexity_inversion": 0,
+      "labse_below_min": 32,
+      "labse_above_max": 85,
+      "removed_pct": 33.62068965517241,
+      "complexity_inversion_pct": 0.0,
+      "labse_below_min_pct": 9.195402298850574,
+      "labse_above_max_pct": 24.42528735632184,
+      "cleaned_sha256": "e9d793a07c70a38ed557f756fe1f8cc183e63074d56c24c1cd9001451612f6d4",
+      "complete": true
+    },
     {
       "language": "ca",
       "source": "Align-and-Shine",
@@ -30,6 +48,24 @@
       "labse_below_min_pct": 5.714285714285714,
       "labse_above_max_pct": 0.0,
       "cleaned_sha256": "317b2d7e9b77b95464c3ca8fc023eb2f621627dabf3288d4038272c6c89b363b",
+      "complete": true
+    },
+    {
+      "language": "ca",
+      "source": "iDEM",
+      "corpus": "iDEM",
+      "file": "idem__iDEM.jsonl",
+      "total_pairs": 364,
+      "kept_pairs": 337,
+      "removed_pairs": 27,
+      "complexity_inversion": 2,
+      "labse_below_min": 19,
+      "labse_above_max": 6,
+      "removed_pct": 7.417582417582418,
+      "complexity_inversion_pct": 0.5494505494505495,
+      "labse_below_min_pct": 5.21978021978022,
+      "labse_above_max_pct": 1.6483516483516485,
+      "cleaned_sha256": "4ccd47119ce5fdd95cd2058bce92cd78d5be10e0ecd790adfeb432d78ed8e5e4",
       "complete": true
     },
     {
@@ -141,6 +177,24 @@
       "complete": true
     },
     {
+      "language": "es",
+      "source": "iDEM",
+      "corpus": "iDEM",
+      "file": "idem__iDEM.jsonl",
+      "total_pairs": 355,
+      "kept_pairs": 285,
+      "removed_pairs": 70,
+      "complexity_inversion": 3,
+      "labse_below_min": 31,
+      "labse_above_max": 39,
+      "removed_pct": 19.718309859154928,
+      "complexity_inversion_pct": 0.8450704225352111,
+      "labse_below_min_pct": 8.732394366197182,
+      "labse_above_max_pct": 10.985915492957748,
+      "cleaned_sha256": "00b10adee45f8cdde156e850796ffb667b4af3f5b0863daab61db7f52a2262ea",
+      "complete": true
+    },
+    {
       "language": "fr",
       "source": "Align-and-Shine",
       "corpus": "Wikipedia-Vikidia",
@@ -210,6 +264,24 @@
       "labse_below_min_pct": 0.0,
       "labse_above_max_pct": 0.0,
       "cleaned_sha256": "f3004bb87145635d42731d8f7b9d8191241650a7104e55389e99ff20ad2484fd",
+      "complete": true
+    },
+    {
+      "language": "it",
+      "source": "iDEM",
+      "corpus": "iDEM",
+      "file": "idem__iDEM.jsonl",
+      "total_pairs": 339,
+      "kept_pairs": 309,
+      "removed_pairs": 30,
+      "complexity_inversion": 0,
+      "labse_below_min": 25,
+      "labse_above_max": 5,
+      "removed_pct": 8.849557522123893,
+      "complexity_inversion_pct": 0.0,
+      "labse_below_min_pct": 7.374631268436578,
+      "labse_above_max_pct": 1.4749262536873156,
+      "cleaned_sha256": "18904be09d23d26b359c96306ac79c7cdca4e530f0e1bda3c5f3a285fa2dceef",
       "complete": true
     },
     {

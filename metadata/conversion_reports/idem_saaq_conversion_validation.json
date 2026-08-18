@@ -1,0 +1,48 @@
+{
+  "raw_package": "raw/idem_&_saaq_al_bambuu",
+  "dataset_sha256": "bea993bc19afac3593077a40d7c7564e1822964644d2aaaa6a4ee1a7df4eb027",
+  "splits_sha256": "995b5503398e14fb3d7ea806f06bc3e9c0ee0625b2f83d3b3acde732d22a3664",
+  "raw_pairs": 1776,
+  "normalized_pairs": 1406,
+  "included_sources": {
+    "Saaq al-Bambuu": 348,
+    "iDEM": 1058
+  },
+  "excluded_sources": {
+    "RBTL": 370
+  },
+  "outputs": [
+    {
+      "language": "ar",
+      "source": "Saaq al-Bambuu",
+      "output_path": "phase1_normalization/data/ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "pairs": 348,
+      "bytes": 461864,
+      "sha256": "39557fd3324a4935411554fb16d40514122a11e2b8f5e9e3306ac1ef7117ef9b"
+    },
+    {
+      "language": "ca",
+      "source": "iDEM",
+      "output_path": "phase1_normalization/data/ca/idem__iDEM.jsonl",
+      "pairs": 364,
+      "bytes": 483342,
+      "sha256": "6a9354b9a243e0a5c887a9bea255c41776ded47431f08a3365478a73c19cc00b"
+    },
+    {
+      "language": "es",
+      "source": "iDEM",
+      "output_path": "phase1_normalization/data/es/idem__iDEM.jsonl",
+      "pairs": 355,
+      "bytes": 474917,
+      "sha256": "6f7deb5d1879d04e632f5407b3983fd999926151eb5373c263894032d3a175a4"
+    },
+    {
+      "language": "it",
+      "source": "iDEM",
+      "output_path": "phase1_normalization/data/it/idem__iDEM.jsonl",
+      "pairs": 339,
+      "bytes": 465511,
+      "sha256": "c675e44e6fed6ab5c84bc7a03a8140214b413ebefb67e17290e390d1682f718a"
+    }
+  ]
+}

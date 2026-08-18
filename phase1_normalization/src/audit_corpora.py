@@ -15,8 +15,8 @@ REQUIRED_FIELDS = {
     "source_revision", "source_row",
 }
 VALID_SPLITS = {"train", "validation", "test", None}
-EXPECTED_FILES = 25
-EXPECTED_PAIRS = 1_452_597
+EXPECTED_FILES = 29
+EXPECTED_PAIRS = 1_454_003
 
 
 def audit() -> dict[str, object]:
@@ -73,4 +73,3 @@ def audit() -> dict[str, object]:
 
 if __name__ == "__main__":
     print(json.dumps(audit(), ensure_ascii=False))
-

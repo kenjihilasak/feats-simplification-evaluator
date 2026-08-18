@@ -1,9 +1,9 @@
 {
   "valid": true,
-  "jsonl_files": 25,
-  "normalized_pairs": 1452597,
-  "normalized_bytes": 900108431,
-  "unique_ids": 1452597,
+  "jsonl_files": 29,
+  "normalized_pairs": 1454003,
+  "normalized_bytes": 901994065,
+  "unique_ids": 1454003,
   "duplicate_ids": 0,
   "missing_field_records": 0,
   "empty_text_records": 0,
@@ -12,15 +12,18 @@
   "records_by_source": {
     "Align-and-Shine": 114068,
     "MultiSim": 1337793,
-    "SimplifyUR": 736
+    "Saaq al-Bambuu": 348,
+    "SimplifyUR": 736,
+    "iDEM": 1058
   },
   "records_by_language": {
-    "ca": 420,
+    "ar": 348,
+    "ca": 784,
     "de": 1448,
     "en": 613799,
-    "es": 6347,
+    "es": 6702,
     "fr": 396827,
-    "it": 74263,
+    "it": 74602,
     "ja": 85000,
     "pt-BR": 7864,
     "ru": 264954,
@@ -29,8 +32,8 @@
   },
   "records_by_upstream_split": {
     "null": 114804,
-    "test": 18115,
-    "train": 1305741,
-    "validation": 13937
+    "test": 18362,
+    "train": 1306675,
+    "validation": 14162
   }
 }
