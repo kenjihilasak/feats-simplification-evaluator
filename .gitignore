@@ -19,3 +19,4 @@ phase3_strategy_detection/logs/*.err
 phase3_strategy_detection/runs/*_smoke_*/
 phase3_strategy_detection/runs/*/predictions/
 phase3_strategy_detection/runs/*/shards/
+phase3_strategy_detection/samples/

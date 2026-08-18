@@ -1,0 +1,215 @@
+{
+  "run_id": "2026-08-18_qwen2p5_pairwise_stratified_pilot_v1",
+  "processed_pairs": 855,
+  "binary_decisions": 5130,
+  "elapsed_seconds": 871.7806918285787,
+  "prepare_seconds": 74.68355605006218,
+  "model_load_seconds": 328.4975119512528,
+  "inference_seconds": 467.18177123740315,
+  "inference_seconds_per_pair": 0.54641142834784,
+  "outputs": [
+    {
+      "input_file": "ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "output_file": "predictions/ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "pairs": 29,
+      "seconds": 19.365041069686413,
+      "output_sha256": "7773552dfb7fe10d3fd7ff610a5a88084ba16748a9e587aeb1c5a956d197b4a9"
+    },
+    {
+      "input_file": "ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 30,
+      "seconds": 16.153521178290248,
+      "output_sha256": "bcdb97b73425afe9d25c843694e1b6e2bafca99ede5aeceb1e5fceec17c7f6a4"
+    },
+    {
+      "input_file": "ca/idem__iDEM.jsonl",
+      "output_file": "predictions/ca/idem__iDEM.jsonl",
+      "pairs": 29,
+      "seconds": 16.372764620929956,
+      "output_sha256": "cb034d0c62f4fa63a32f299796f59da0a4b5a047908665935b5e441fc7a03745"
+    },
+    {
+      "input_file": "de/multisim__GEOLinoTest.jsonl",
+      "output_file": "predictions/de/multisim__GEOLinoTest.jsonl",
+      "pairs": 30,
+      "seconds": 15.570135291665792,
+      "output_sha256": "b72733f6a37b925c9d90ac573e102c093da39586e988983506ee290e41c70cca"
+    },
+    {
+      "input_file": "de/multisim__TextComplexityDE.jsonl",
+      "output_file": "predictions/de/multisim__TextComplexityDE.jsonl",
+      "pairs": 29,
+      "seconds": 17.11272540129721,
+      "output_sha256": "951711b625499ecb4ff77acece7412ba13f581745ce75b6b03ae074a1d2f9bb4"
+    },
+    {
+      "input_file": "en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 30,
+      "seconds": 15.726933198049664,
+      "output_sha256": "e87bc5b9f6fca48fa7306df60e55ca6453f082f746ccf127dad3bb6a35ca9dfa"
+    },
+    {
+      "input_file": "en/multisim__ASSET.jsonl",
+      "output_file": "predictions/en/multisim__ASSET.jsonl",
+      "pairs": 30,
+      "seconds": 15.178370179608464,
+      "output_sha256": "5e963fd68c120420be81d1c83ad7d6b59297bf8c6cfda829c3c5d6e9744683c8"
+    },
+    {
+      "input_file": "en/multisim__WikiAutoEN.jsonl",
+      "output_file": "predictions/en/multisim__WikiAutoEN.jsonl",
+      "pairs": 30,
+      "seconds": 17.997196989133954,
+      "output_sha256": "926e0201d4e6e395d3e75b9fd4ca854a47b19f544dc878e1e6144c058525059d"
+    },
+    {
+      "input_file": "es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 30,
+      "seconds": 17.48404297232628,
+      "output_sha256": "d7e193960101308cc01fd7d7f4a6bb498c958b6880eef50f6712f78733fa1cc7"
+    },
+    {
+      "input_file": "es/idem__iDEM.jsonl",
+      "output_file": "predictions/es/idem__iDEM.jsonl",
+      "pairs": 30,
+      "seconds": 17.18469261750579,
+      "output_sha256": "fa9ff4da83cb411871deea9bffb74b8829f327baeb3e59d22ce47816acc8a498"
+    },
+    {
+      "input_file": "fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 30,
+      "seconds": 16.80708334594965,
+      "output_sha256": "e5e444eddabf841f4caba090e067bbb0dc6a8853d9f3d07a53c5a74278459762"
+    },
+    {
+      "input_file": "fr/multisim__CLEAR.jsonl",
+      "output_file": "predictions/fr/multisim__CLEAR.jsonl",
+      "pairs": 30,
+      "seconds": 15.966606950387359,
+      "output_sha256": "01577d15d71358673618e5c70891b8f4af854ecca4f0bc10f101eb767e9b2789"
+    },
+    {
+      "input_file": "fr/multisim__WikiLargeFR.jsonl",
+      "output_file": "predictions/fr/multisim__WikiLargeFR.jsonl",
+      "pairs": 30,
+      "seconds": 16.194325804710388,
+      "output_sha256": "b2043a46bbf78dcf5a43b97fba18aedd2ef64c7f2a7e207b3333edb750d7c2e5"
+    },
+    {
+      "input_file": "it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "pairs": 30,
+      "seconds": 18.005134182050824,
+      "output_sha256": "f14e0f8b3b0a62befa02e284ff0d17e38da06964ea868bb41e230d8b20d2ae0a"
+    },
+    {
+      "input_file": "it/idem__iDEM.jsonl",
+      "output_file": "predictions/it/idem__iDEM.jsonl",
+      "pairs": 29,
+      "seconds": 16.807617016136646,
+      "output_sha256": "abd18f223fa7cbfbd33aff00d4bede5ca832468195c3357754bb73a17fbd69cd"
+    },
+    {
+      "input_file": "it/multisim__AdminIt.jsonl",
+      "output_file": "predictions/it/multisim__AdminIt.jsonl",
+      "pairs": 29,
+      "seconds": 18.15128005668521,
+      "output_sha256": "2817d32d011fe9d8e2bc5700d1b4b2b9c0225e894d8028ff4dab1b1cc4f94509"
+    },
+    {
+      "input_file": "it/multisim__PaCCSS-IT.jsonl",
+      "output_file": "predictions/it/multisim__PaCCSS-IT.jsonl",
+      "pairs": 30,
+      "seconds": 14.554275061935186,
+      "output_sha256": "8a2ee03c04a8ec451208951972f9373bb9c4c02eafb310cc7c2d6e8448975599"
+    },
+    {
+      "input_file": "it/multisim__SimpitikiWiki.jsonl",
+      "output_file": "predictions/it/multisim__SimpitikiWiki.jsonl",
+      "pairs": 25,
+      "seconds": 12.740147486329079,
+      "output_sha256": "4c0623bdfd11eeb0916a0d0ed65ab9833f397705988a47433cbab0ac9a676787"
+    },
+    {
+      "input_file": "it/multisim__Teacher.jsonl",
+      "output_file": "predictions/it/multisim__Teacher.jsonl",
+      "pairs": 30,
+      "seconds": 15.23655417561531,
+      "output_sha256": "8a9a8331c01260b399059b57926f40264b3cc4286ef903dd5a07d91a95bf1e50"
+    },
+    {
+      "input_file": "it/multisim__Terence.jsonl",
+      "output_file": "predictions/it/multisim__Terence.jsonl",
+      "pairs": 30,
+      "seconds": 15.53487523086369,
+      "output_sha256": "75ffa20486e9d6360be7f070dcd088e6696c5887e4478a0e48bf738edb6acced"
+    },
+    {
+      "input_file": "ja/multisim__EasyJapanese.jsonl",
+      "output_file": "predictions/ja/multisim__EasyJapanese.jsonl",
+      "pairs": 30,
+      "seconds": 14.401573995128274,
+      "output_sha256": "7e82850f9717324884a5c77bdbbc0e28906ed18a190e7fe5dce681a1556b2632"
+    },
+    {
+      "input_file": "ja/multisim__EasyJapaneseExtended.jsonl",
+      "output_file": "predictions/ja/multisim__EasyJapaneseExtended.jsonl",
+      "pairs": 30,
+      "seconds": 14.501917030662298,
+      "output_sha256": "91215720278df84231c1fd5a7ac70f396ee7daba0cb309eba6a2183532fd3b86"
+    },
+    {
+      "input_file": "pt-BR/multisim__PorSimples.jsonl",
+      "output_file": "predictions/pt-BR/multisim__PorSimples.jsonl",
+      "pairs": 28,
+      "seconds": 14.684069748967886,
+      "output_sha256": "1be9c49e10c220013d72a9810b6a012a6015d0a247efb84854a095041bf23850"
+    },
+    {
+      "input_file": "ru/multisim__RSSE.jsonl",
+      "output_file": "predictions/ru/multisim__RSSE.jsonl",
+      "pairs": 30,
+      "seconds": 15.936925381422043,
+      "output_sha256": "1119aff9d08eff4f06d2b7ebb43746a10da1eb35c7739497585c15faa65e1970"
+    },
+    {
+      "input_file": "ru/multisim__RuAdaptEncy.jsonl",
+      "output_file": "predictions/ru/multisim__RuAdaptEncy.jsonl",
+      "pairs": 29,
+      "seconds": 15.515130911022425,
+      "output_sha256": "a19af2f9bb6b0a927bedf0f4f9734f071311b2cc3298b4d1d5d6fb490048a50d"
+    },
+    {
+      "input_file": "ru/multisim__RuAdaptFairytales.jsonl",
+      "output_file": "predictions/ru/multisim__RuAdaptFairytales.jsonl",
+      "pairs": 28,
+      "seconds": 14.398758923634887,
+      "output_sha256": "0f81909d41ab0b296650218f84d12aac26b64b5f27d36caba2f49f4bcfef38ae"
+    },
+    {
+      "input_file": "ru/multisim__RuWikiLarge.jsonl",
+      "output_file": "predictions/ru/multisim__RuWikiLarge.jsonl",
+      "pairs": 30,
+      "seconds": 17.22889339365065,
+      "output_sha256": "c303e5560a43ae95e5a994bb3b0096164b27c305995b2d1b6773c51ab861ef1b"
+    },
+    {
+      "input_file": "sl/multisim__TSSlovene.jsonl",
+      "output_file": "predictions/sl/multisim__TSSlovene.jsonl",
+      "pairs": 30,
+      "seconds": 15.43802985548973,
+      "output_sha256": "0f92a8fd4cc50256de465feebe237e4cbad45884909641edc31f31cb7c5de1df"
+    },
+    {
+      "input_file": "ur/simplifyur__SimplifyUR.jsonl",
+      "output_file": "predictions/ur/simplifyur__SimplifyUR.jsonl",
+      "pairs": 30,
+      "seconds": 15.04843702353537,
+      "output_sha256": "1913f1ba9a9888bbd8ba915225017658b45858966ac94c50eaf4e630ece607e6"
+    }
+  ]
+}

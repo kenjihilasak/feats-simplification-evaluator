@@ -9,11 +9,11 @@ Current local status:
 
 - Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
 - Phase 2: 859,550 retained pairs; 594,453 removed (40.88%).
-- Phase 3: model-agnostic strategy detection scaffold and validated Qwen smoke test.
+- Phase 3: model-agnostic strategy detection and completed Qwen stratified pilot.
 
-The current public prerelease is `v0.1.0-rc2`. It contains the 25
-redistributable corpus files: 1,452,597 normalized pairs and 858,388 cleaned
-pairs.
+The current private prerelease is `v0.1.0-rc2`. Its two access-controlled
+assets contain all 29 corpus files: 1,454,003 normalized pairs and 859,550
+cleaned pairs across 12 languages.
 
 - [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc2)
 - [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip)
@@ -21,8 +21,9 @@ pairs.
 
 Each ZIP embeds its corresponding manifest at the archive root.
 
-iDEM and Saaq are processed locally but excluded from public assets because
-redistribution permission is not confirmed.
+iDEM and Saaq al-Bambuu are included because this repository and its Releases
+are private and access-controlled. Their upstream copyright and reuse
+restrictions still apply; do not redistribute the assets outside the project.
 
 ## Repository structure
 
@@ -61,20 +62,20 @@ feats-simplification-evaluator/
 ```
 
 Raw data, normalized JSONL, model caches, scores, decisions, cleaned JSONL, and
-Slurm logs are excluded from Git. Versioned distributable data are attached to
+Slurm logs are excluded from Git. Versioned data packages are attached to
 GitHub Releases as ZIP files. Each newly built phase ZIP embeds its manifest at
 the archive root so its contents remain auditable after download.
 
 ## Canonical Phase 1 corpus
 
-| Source | Languages | Local pairs | Included in public rc2 |
+| Source | Languages | Pairs | Included in private rc2 |
 |---|---|---:|---|
 | MultiSim | de, en, fr, it, ja, pt-BR, ru, sl | 1,337,793 | Yes |
 | Align-and-Shine | ca, en, es, fr, it | 114,068 | Yes |
 | SimplifyUR | ur | 736 | Yes |
-| iDEM | ca, es, it | 1,058 | No |
-| Saaq al-Bambuu | ar | 348 | No |
-| **Total** | **12 languages** | **1,454,003** | **1,452,597 pairs** |
+| iDEM | ca, es, it | 1,058 | Yes |
+| Saaq al-Bambuu | ar | 348 | Yes |
+| **Total** | **12 languages** | **1,454,003** | **1,454,003 pairs** |
 
 Each JSONL line represents one original–simplification pair and preserves its
 source, corpus, language, upstream split, original text, simplified text, and
@@ -96,9 +97,12 @@ final training selection. Quantitative and qualitative reports are under
 Phase 3 adds multilabel strategy probabilities to the retained pairs without
 changing or filtering Phase 2 data. The common runner supports interchangeable
 model backends and writes sidecar JSONL predictions keyed by pair ID. The first
-backend reproduces the released Qwen2.5-7B pairwise QLoRA classifier. Its
-two-pair English/Spanish smoke test completed and passed the Phase 3 validator.
-See `phase3_strategy_detection/README.md` for the contract and commands.
+backend reproduces the released Qwen2.5-7B pairwise QLoRA classifier.
+
+The smoke test and a stratified pilot of 855 pairs from all 29 files and 12
+languages completed and passed validation. The report includes strategy
+profiles, human-label agreement, examples, diagnostics, and a cost projection.
+See `phase3_strategy_detection/README.md` for commands and results.
 
 ## Data sources and reuse
 
@@ -107,8 +111,8 @@ See `phase3_strategy_detection/README.md` for the contract and commands.
 | MultiSim | [Repository and data card](https://github.com/XenonMolecule/MultiSim) | MIT repository licence; also cite and follow the terms of each constituent corpus. |
 | Align-and-Shine | [Repository](https://github.com/kenjihilasak/Align-and-Shine) | Aligned corpus released under CC BY-SA 4.0; Wikipedia/Vikidia attribution and share-alike terms also apply. |
 | SimplifyUR | [Repository](https://github.com/harisbinzia/SimplifyUR) | The README states CC BY 4.0, while `Data/LICENSE` states NonCommercial and ShareAlike; follow the more restrictive notice until clarified. |
-| iDEM | [Corpus paper](https://arxiv.org/abs/2603.05345) | The received research snapshot contains no licence. Do not redistribute it from this repository without written confirmation from the corpus owners. |
-| Saaq al-Bambuu | [Corpus paper](https://arxiv.org/abs/2204.09292) | The aligned novel corpus is described as non-public because of copyright restrictions; it is excluded from Release assets. |
+| iDEM | [Corpus paper](https://arxiv.org/abs/2603.05345) | The received research snapshot contains no licence. It is included only in the private collaborator Release; do not redistribute it outside the project without written permission. |
+| Saaq al-Bambuu | [Corpus paper](https://arxiv.org/abs/2204.09292) | The aligned novel corpus has copyright restrictions. It is included only in the access-controlled private Release and must not be redistributed publicly. |
 
 FEATS changes representation and applies automatic filters; ownership and the
 original terms of the upstream sentences remain unchanged.

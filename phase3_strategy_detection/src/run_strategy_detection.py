@@ -90,6 +90,28 @@ def environment_versions() -> dict[str, Any]:
     }
 
 
+def hardware_info() -> dict[str, Any]:
+    info: dict[str, Any] = {
+        "cpu": platform.processor() or "unknown",
+        "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+    }
+    try:
+        import torch
+    except ImportError:
+        info["cuda_available"] = False
+        return info
+
+    info["cuda_available"] = bool(torch.cuda.is_available())
+    if torch.cuda.is_available():
+        info.update(
+            {
+                "cuda_device_count": torch.cuda.device_count(),
+                "cuda_device_name": torch.cuda.get_device_name(0),
+            }
+        )
+    return info
+
+
 def build_manifest(
     input_root: Path,
     relative_files: list[str],
@@ -120,7 +142,9 @@ def build_manifest(
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = manifest_path.with_suffix(".csv.tmp")
     with temporary.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(
+            handle, fieldnames=list(rows[0]), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
     os.replace(temporary, manifest_path)
@@ -163,6 +187,7 @@ def run(config_path: Path) -> Path:
         "input_manifest_sha256": sha256(run_root / "input_manifest.csv"),
         "model": dict(backend.provenance()),
         "environment": environment_versions(),
+        "hardware": hardware_info(),
     }
     atomic_json(run_root / "run_config.json", resolved_config)
 
@@ -253,6 +278,7 @@ def run(config_path: Path) -> Path:
             "prepare_seconds": prepare_seconds,
             "model_load_seconds": model_load_seconds,
             "inference_seconds": inference_seconds,
+            "hardware": resolved_config["hardware"],
             "inference_seconds_per_pair": (
                 inference_seconds / processed if processed else None
             ),
