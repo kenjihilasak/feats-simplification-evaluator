@@ -1,0 +1,28 @@
+{
+  "run_id": "2026-08-18_qwen2p5_pairwise_smoke_v1",
+  "input_run_id": "2026-08-05_complexity_smp01_labse062_095_full_flat_v2",
+  "input_root": "phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/cleaned",
+  "runs_root": "phase3_strategy_detection/runs",
+  "cache_root": "cache/huggingface",
+  "model": {
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "selection": {
+    "files": [
+      "en/multisim__ASSET.jsonl",
+      "es/idem__iDEM.jsonl"
+    ],
+    "limit_per_file": 1
+  }
+}

@@ -16,6 +16,18 @@ Each line is one original–simplification pair. Required fields are `id`,
 `simple`, and `reference_index`. `upstream_split` preserves upstream metadata;
 it does not determine the FEATS training/evaluation split.
 
+| Field | Description |
+|---|---|
+| `id` | Unique identifier for one original–simplification pair. |
+| `original_id` | Identifier shared by all simplifications derived from the same original sentence. |
+| `language` | Normalized language code, such as `en` or `pt-BR`. |
+| `source` | Parent dataset collection or provider. |
+| `corpus` | Specific corpus name within the parent source. |
+| `upstream_split` | Original `train`, `validation`, or `test` split, or `null` when unavailable. |
+| `original` | Original text, treated as the more complex side of the pair. |
+| `simple` | Simplified text or reference corresponding to `original`. |
+| `reference_index` | Zero-based position of the simplification among references for the same original. |
+
 ## Implementation
 
 Each raw source has its own converter, while shared paths, validation, and

@@ -5,10 +5,11 @@ model that evaluates text simplifications.
 
 ## Data status
 
-The canonical local corpus is fully processed:
+Current local status:
 
 - Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
 - Phase 2: 859,550 retained pairs; 594,453 removed (40.88%).
+- Phase 3: model-agnostic strategy detection scaffold and validated Qwen smoke test.
 
 The current public prerelease is `v0.1.0-rc2`. It contains the 25
 redistributable corpus files: 1,452,597 normalized pairs and 858,388 cleaned
@@ -46,6 +47,13 @@ feats-simplification-evaluator/
 │   ├── tests/                        Phase 2 tests
 │   ├── logs/                         Local Slurm logs
 │   └── runs/<run_id>/                Scores, decisions, data, and reports
+├── phase3_strategy_detection/
+│   ├── README.md                     Model interface and output contract
+│   ├── src/                          Shared runner, backends, and validation
+│   ├── configs/                      Pinned model/run configurations
+│   ├── jobs/                         Environment and Slurm scripts
+│   ├── tests/                        Model-independent contract tests
+│   └── runs/<run_id>/                Predictions, provenance, and reports
 ├── metadata/
 │   ├── inventories/                  Source and conversion inventories
 │   └── conversion_reports/           Phase 1 validation reports
@@ -82,6 +90,15 @@ of the corpus. Because the 40.88% removal rate is much higher than the initial
 expectation, this remains an experimental cleaning candidate rather than a
 final training selection. Quantitative and qualitative reports are under
 `phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
+
+## Phase 3 strategy detection
+
+Phase 3 adds multilabel strategy probabilities to the retained pairs without
+changing or filtering Phase 2 data. The common runner supports interchangeable
+model backends and writes sidecar JSONL predictions keyed by pair ID. The first
+backend reproduces the released Qwen2.5-7B pairwise QLoRA classifier. Its
+two-pair English/Spanish smoke test completed and passed the Phase 3 validator.
+See `phase3_strategy_detection/README.md` for the contract and commands.
 
 ## Data sources and reuse
 
