@@ -97,3 +97,33 @@ def test_manifest_hash_matches_source(tmp_path):
         manifest_text = archive.read("NORMALIZED_MANIFEST.csv").decode("utf-8")
     row = next(csv.DictReader(io.StringIO(manifest_text)))
     assert row["sha256"] == digest(source)
+
+
+def test_package_can_exclude_non_redistributable_source(tmp_path):
+    data_root, report, _ = fixture(tmp_path)
+    result = package(
+        data_root,
+        report,
+        tmp_path / "output",
+        "v0.1.0-rc2",
+        "2026-08-18",
+        {"Test"},
+    )
+    assert result["files"] == 0
+    assert result["pairs"] == 0
+    assert result["excluded_sources"] == ["Test"]
+    with zipfile.ZipFile(result["zip"]) as archive:
+        assert archive.namelist() == ["NORMALIZED_MANIFEST.csv"]
+
+
+def test_package_rejects_unknown_excluded_source(tmp_path):
+    data_root, report, _ = fixture(tmp_path)
+    with pytest.raises(RuntimeError, match="unknown source"):
+        package(
+            data_root,
+            report,
+            tmp_path / "output",
+            "v0.1.0-rc2",
+            "2026-08-18",
+            {"Missing"},
+        )

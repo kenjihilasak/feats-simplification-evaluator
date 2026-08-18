@@ -66,3 +66,31 @@ def test_package_rejects_data_changed_after_validation(tmp_path):
     cleaned.write_text("changed\n", encoding="utf-8")
     with pytest.raises(RuntimeError, match="changed after validation"):
         package(run, tmp_path / "output", "v0.1.0-rc1", "2026-08-14")
+
+
+def test_package_can_exclude_non_redistributable_source(tmp_path):
+    run, _ = validated_run(tmp_path)
+    result = package(
+        run,
+        tmp_path / "output",
+        "v0.1.0-rc2",
+        "2026-08-18",
+        {"Test"},
+    )
+    assert result["files"] == 0
+    assert result["pairs"] == 0
+    assert result["excluded_sources"] == ["Test"]
+    with zipfile.ZipFile(result["zip"]) as archive:
+        assert archive.namelist() == ["CLEANED_MANIFEST.csv"]
+
+
+def test_package_rejects_unknown_excluded_source(tmp_path):
+    run, _ = validated_run(tmp_path)
+    with pytest.raises(RuntimeError, match="unknown source"):
+        package(
+            run,
+            tmp_path / "output",
+            "v0.1.0-rc2",
+            "2026-08-18",
+            {"Missing"},
+        )

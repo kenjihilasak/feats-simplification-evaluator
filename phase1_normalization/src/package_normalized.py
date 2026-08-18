@@ -76,14 +76,23 @@ def manifest_row(path: Path, data_root: Path) -> dict:
     }
 
 
-def manifest_rows(data_root: Path, report: dict) -> list[dict]:
+def manifest_rows(
+    data_root: Path,
+    report: dict,
+    excluded_sources: set[str] | None = None,
+) -> list[dict]:
     paths = sorted(data_root.glob("*/*.jsonl"))
-    rows = [manifest_row(path, data_root) for path in paths]
-    if len(rows) != int(report["jsonl_files"]):
+    all_rows = [manifest_row(path, data_root) for path in paths]
+    if len(all_rows) != int(report["jsonl_files"]):
         raise RuntimeError("Normalized file count changed after validation")
-    if sum(int(row["pairs"]) for row in rows) != int(report["normalized_pairs"]):
+    if sum(int(row["pairs"]) for row in all_rows) != int(report["normalized_pairs"]):
         raise RuntimeError("Normalized pair count changed after validation")
-    return rows
+    excluded = excluded_sources or set()
+    observed_sources = {str(row["source"]) for row in all_rows}
+    unknown = excluded - observed_sources
+    if unknown:
+        raise RuntimeError(f"Cannot exclude unknown source(s): {sorted(unknown)}")
+    return [row for row in all_rows if row["source"] not in excluded]
 
 
 def write_manifest(path: Path, rows: list[dict]) -> None:
@@ -142,9 +151,11 @@ def package(
     output_dir: Path,
     version: str,
     archive_date: str,
+    excluded_sources: set[str] | None = None,
 ) -> dict:
     report = validated_report(report_path)
-    rows = manifest_rows(data_root, report)
+    excluded = excluded_sources or set()
+    rows = manifest_rows(data_root, report, excluded)
     output_dir.mkdir(parents=True, exist_ok=True)
     zip_path = output_dir / f"feats-phase1-normalized-{version}.zip"
     manifest_name = "NORMALIZED_MANIFEST.csv"
@@ -167,6 +178,7 @@ def package(
         "zip_bytes": zip_path.stat().st_size,
         "zip_sha256": sha256(zip_path),
         "embedded_manifest": manifest_name,
+        "excluded_sources": sorted(excluded),
     }
 
 
@@ -185,6 +197,12 @@ def main() -> None:
         required=True,
         help="Fixed YYYY-MM-DD timestamp for reproducible ZIP members",
     )
+    parser.add_argument(
+        "--exclude-source",
+        action="append",
+        default=[],
+        help="Exact source name to omit from the public package; repeat as needed",
+    )
     args = parser.parse_args()
     result = package(
         args.data_root.resolve(),
@@ -192,6 +210,7 @@ def main() -> None:
         args.output_dir.resolve(),
         args.version,
         args.archive_date,
+        set(args.exclude_source),
     )
     print(json.dumps(result, indent=2))
 

@@ -51,5 +51,15 @@ machine processing.
 
 `src/package_cleaned.py` only packages a run with a successful validation
 report and unchanged cleaned-file hashes. It embeds `CLEANED_MANIFEST.csv` at
-the ZIP root. Public distribution remains subject to the source-specific
-restrictions documented in the root README.
+the ZIP root. Public packages exclude sources without confirmed redistribution
+permission explicitly:
+
+```bash
+python phase2_cleaning/src/package_cleaned.py \
+  --run-root phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2 \
+  --output-dir /path/to/release-assets \
+  --version v0.1.0-rc2 \
+  --archive-date 2026-08-18 \
+  --exclude-source iDEM \
+  --exclude-source "Saaq al-Bambuu"
+```
