@@ -33,6 +33,17 @@ def percent(count: int, total: int) -> float:
     return count / total * 100.0 if total else 0.0
 
 
+def display_group_labels(row: dict, previous: dict | None) -> tuple[str, str, str]:
+    language_changed = previous is None or row["language"] != previous["language"]
+    source_changed = language_changed or row["source"] != previous["source"]
+    corpus_changed = source_changed or row["corpus"] != previous["corpus"]
+    return (
+        row["language"] if language_changed else "",
+        row["source"] if source_changed else "",
+        row["corpus"] if corpus_changed else "",
+    )
+
+
 def decide_file(corpus_file, config: dict) -> dict:
     settings = config["filters"]
     smp_threshold = float(settings["smp_threshold"])
@@ -155,12 +166,15 @@ def write_reports(config: dict, rows: list[dict]) -> None:
         "| Language | Source | Corpus | Input | Kept | Removed | Removed % | Complexity inversion % | LaBSE low % | LaBSE high % |",
         "|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
+    previous = None
     for row in rows:
+        language, source, corpus = display_group_labels(row, previous)
         lines.append(
-            f"| {row['language']} | {row['source']} | {row['corpus']} | {row['total_pairs']:,} | "
+            f"| {language} | {source} | {corpus} | {row['total_pairs']:,} | "
             f"{row['kept_pairs']:,} | {row['removed_pairs']:,} | {row['removed_pct']:.2f} | "
             f"{row['complexity_inversion_pct']:.2f} | {row['labse_below_min_pct']:.2f} | {row['labse_above_max_pct']:.2f} |"
         )
+        previous = row
     qualitative_reports = [
         ("qualitative_examples_en_es.md", "English and Spanish examples"),
         ("qualitative_examples_idem_saaq.md", "iDEM and Saaq al-Bambuu examples"),

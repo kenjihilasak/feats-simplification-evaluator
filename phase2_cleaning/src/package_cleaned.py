@@ -100,10 +100,19 @@ def write_zip(
     path: Path,
     run_root: Path,
     rows: list[dict],
+    manifest_path: Path,
     timestamp: tuple[int, ...],
 ) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     with zipfile.ZipFile(temporary, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9, allowZip64=True) as archive:
+        manifest_info = zipfile.ZipInfo("CLEANED_MANIFEST.csv", date_time=timestamp)
+        manifest_info.compress_type = zipfile.ZIP_DEFLATED
+        manifest_info.create_system = 3
+        manifest_info.external_attr = 0o100644 << 16
+        with manifest_path.open("rb") as input_handle, archive.open(
+            manifest_info, "w"
+        ) as output_handle:
+            shutil.copyfileobj(input_handle, output_handle, length=1024 * 1024)
         for row in rows:
             source = run_root / row["archive_path"]
             info = zipfile.ZipInfo(row["archive_path"], date_time=timestamp)
@@ -120,23 +129,16 @@ def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -
     rows = manifest_rows(run_root, validated)
     output_dir.mkdir(parents=True, exist_ok=True)
     zip_path = output_dir / f"feats-phase2-cleaned-{version}.zip"
-    manifest_path = output_dir / "CLEANED_MANIFEST.csv"
-    checksum_path = output_dir / "CLEANED_SHA256SUMS"
+    manifest_name = "CLEANED_MANIFEST.csv"
 
     with tempfile.TemporaryDirectory(prefix="feats-phase2-package-", dir=output_dir) as temp_dir:
         temporary = Path(temp_dir)
         temporary_zip = temporary / zip_path.name
-        temporary_manifest = temporary / manifest_path.name
+        temporary_manifest = temporary / manifest_name
         write_manifest(temporary_manifest, rows)
-        write_zip(temporary_zip, run_root, rows, parse_date(archive_date))
+        write_zip(temporary_zip, run_root, rows, temporary_manifest, parse_date(archive_date))
         temporary_zip.replace(zip_path)
-        temporary_manifest.replace(manifest_path)
 
-    checksum_path.write_text(
-        f"{sha256(zip_path)}  {zip_path.name}\n"
-        f"{sha256(manifest_path)}  {manifest_path.name}\n",
-        encoding="utf-8",
-    )
     return {
         "run_id": validation["run_id"],
         "files": len(rows),
@@ -144,8 +146,7 @@ def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -
         "zip": str(zip_path),
         "zip_bytes": zip_path.stat().st_size,
         "zip_sha256": sha256(zip_path),
-        "manifest": str(manifest_path),
-        "checksums": str(checksum_path),
+        "embedded_manifest": manifest_name,
     }
 
 

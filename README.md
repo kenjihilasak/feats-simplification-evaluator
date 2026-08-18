@@ -22,6 +22,10 @@ pairs and 858,388 cleaned pairs.
 - [Phase 2 cleaned data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase2-cleaned-v0.1.0-rc1.zip)
 - [Cleaned manifest](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/CLEANED_MANIFEST.csv)
 
+The two standalone manifest links above remain because `rc1` was built with the
+older layout. New packages embed the manifest in each ZIP, so the next Release
+will need only the Phase 1 and Phase 2 ZIP assets.
+
 iDEM and Saaq are complete locally, but are not included in public Release
 assets. The received iDEM package has no redistribution licence, while the
 published description of Saaq states that the corpus is unavailable publicly
@@ -59,7 +63,8 @@ feats-simplification-evaluator/
 
 Raw data, normalized JSONL, model caches, scores, decisions, cleaned JSONL, and
 Slurm logs are excluded from Git. Versioned distributable data are attached to
-GitHub Releases as ZIP files; manifests make every included file auditable.
+GitHub Releases as ZIP files. Each newly built phase ZIP embeds its manifest at
+the archive root so its contents remain auditable after download.
 
 ## Canonical Phase 1 corpus
 
