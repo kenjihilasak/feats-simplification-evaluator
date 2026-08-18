@@ -13,3 +13,9 @@ phase2_cleaning/runs/*_pilot_*/
 phase2_cleaning/runs/*/scores/
 phase2_cleaning/runs/*/decisions/
 phase2_cleaning/runs/*/cleaned/
+.venv-phase3/
+phase3_strategy_detection/logs/*.out
+phase3_strategy_detection/logs/*.err
+phase3_strategy_detection/runs/*_smoke_*/
+phase3_strategy_detection/runs/*/predictions/
+phase3_strategy_detection/runs/*/shards/
