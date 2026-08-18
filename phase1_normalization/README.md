@@ -51,3 +51,6 @@ intentionally outside this two-source conversion.
 The global audit currently verifies 29 files, 1,454,003 unique pair IDs, no
 duplicate IDs, valid JSON, the flat `<language>/<source>__<corpus>.jsonl`
 layout, and required identity/text fields.
+
+`src/package_normalized.py` places `NORMALIZED_MANIFEST.csv` at the ZIP root
+alongside the `data/` directory.

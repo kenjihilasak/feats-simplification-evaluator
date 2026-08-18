@@ -45,6 +45,11 @@ expectation, so this is an experimental candidate rather than the final FEATS
 training selection. The quantitative summary and qualitative checks are in
 `runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
 
+The Markdown summary suppresses repeated consecutive language, source, and
+corpus labels for readability. The CSV keeps every value on every row for
+machine processing.
+
 `src/package_cleaned.py` only packages a run with a successful validation
-report and unchanged cleaned-file hashes. Public distribution remains subject
-to the source-specific restrictions documented in the root README.
+report and unchanged cleaned-file hashes. It embeds `CLEANED_MANIFEST.csv` at
+the ZIP root. Public distribution remains subject to the source-specific
+restrictions documented in the root README.

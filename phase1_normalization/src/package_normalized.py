@@ -101,6 +101,7 @@ def write_zip(
     path: Path,
     data_root: Path,
     rows: list[dict],
+    manifest_path: Path,
     timestamp: tuple[int, ...],
 ) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -111,6 +112,14 @@ def write_zip(
         compresslevel=9,
         allowZip64=True,
     ) as archive:
+        manifest_info = zipfile.ZipInfo("NORMALIZED_MANIFEST.csv", date_time=timestamp)
+        manifest_info.compress_type = zipfile.ZIP_DEFLATED
+        manifest_info.create_system = 3
+        manifest_info.external_attr = 0o100644 << 16
+        with manifest_path.open("rb") as input_handle, archive.open(
+            manifest_info, "w"
+        ) as output_handle:
+            shutil.copyfileobj(input_handle, output_handle, length=1024 * 1024)
         for row in rows:
             source = data_root / row["path"]
             archive_path = f"data/{row['path']}"
@@ -138,8 +147,7 @@ def package(
     rows = manifest_rows(data_root, report)
     output_dir.mkdir(parents=True, exist_ok=True)
     zip_path = output_dir / f"feats-phase1-normalized-{version}.zip"
-    manifest_path = output_dir / "NORMALIZED_MANIFEST.csv"
-    checksum_path = output_dir / "NORMALIZED_SHA256SUMS"
+    manifest_name = "NORMALIZED_MANIFEST.csv"
 
     with tempfile.TemporaryDirectory(
         prefix="feats-phase1-package-",
@@ -147,25 +155,18 @@ def package(
     ) as temp_dir:
         temporary = Path(temp_dir)
         temporary_zip = temporary / zip_path.name
-        temporary_manifest = temporary / manifest_path.name
+        temporary_manifest = temporary / manifest_name
         write_manifest(temporary_manifest, rows)
-        write_zip(temporary_zip, data_root, rows, parse_date(archive_date))
+        write_zip(temporary_zip, data_root, rows, temporary_manifest, parse_date(archive_date))
         temporary_zip.replace(zip_path)
-        temporary_manifest.replace(manifest_path)
 
-    checksum_path.write_text(
-        f"{sha256(zip_path)}  {zip_path.name}\n"
-        f"{sha256(manifest_path)}  {manifest_path.name}\n",
-        encoding="utf-8",
-    )
     return {
         "files": len(rows),
         "pairs": sum(int(row["pairs"]) for row in rows),
         "zip": str(zip_path),
         "zip_bytes": zip_path.stat().st_size,
         "zip_sha256": sha256(zip_path),
-        "manifest": str(manifest_path),
-        "checksums": str(checksum_path),
+        "embedded_manifest": manifest_name,
     }
 
 

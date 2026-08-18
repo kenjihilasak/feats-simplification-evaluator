@@ -1,5 +1,6 @@
 import csv
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -60,9 +61,13 @@ def test_package_is_deterministic_and_matches_manifest(tmp_path):
     assert first["zip_sha256"] == second["zip_sha256"]
     assert first["files"] == 1
     assert first["pairs"] == 2
+    assert [path.name for path in (tmp_path / "first").iterdir()] == [Path(first["zip"]).name]
 
     with zipfile.ZipFile(first["zip"]) as archive:
-        assert archive.namelist() == ["data/en/test__Tiny.jsonl"]
+        assert archive.namelist() == [
+            "NORMALIZED_MANIFEST.csv",
+            "data/en/test__Tiny.jsonl",
+        ]
         assert archive.getinfo(archive.namelist()[0]).date_time == (
             2026,
             8,
@@ -71,8 +76,8 @@ def test_package_is_deterministic_and_matches_manifest(tmp_path):
             0,
             0,
         )
-    with Path(first["manifest"]).open(newline="", encoding="utf-8") as handle:
-        rows = list(csv.DictReader(handle))
+        manifest_text = archive.read("NORMALIZED_MANIFEST.csv").decode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(manifest_text)))
     assert rows[0]["pairs"] == "2"
     assert rows[0]["train_pairs"] == "1"
     assert rows[0]["no_upstream_split_pairs"] == "1"
@@ -88,6 +93,7 @@ def test_package_rejects_data_changed_after_validation(tmp_path):
 def test_manifest_hash_matches_source(tmp_path):
     data_root, report, source = fixture(tmp_path)
     result = package(data_root, report, tmp_path / "output", "v0.1.0-rc2", "2026-08-17")
-    with Path(result["manifest"]).open(newline="", encoding="utf-8") as handle:
-        row = next(csv.DictReader(handle))
+    with zipfile.ZipFile(result["zip"]) as archive:
+        manifest_text = archive.read("NORMALIZED_MANIFEST.csv").decode("utf-8")
+    row = next(csv.DictReader(io.StringIO(manifest_text)))
     assert row["sha256"] == digest(source)

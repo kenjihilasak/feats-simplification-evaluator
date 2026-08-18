@@ -1,5 +1,6 @@
 import csv
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -47,12 +48,16 @@ def test_package_is_deterministic_and_auditable(tmp_path):
     second = package(run, tmp_path / "second", "v0.1.0-rc1", "2026-08-14")
     assert first["zip_sha256"] == second["zip_sha256"]
     assert first["pairs"] == 1
+    assert [path.name for path in (tmp_path / "first").iterdir()] == [Path(first["zip"]).name]
 
     with zipfile.ZipFile(first["zip"]) as archive:
-        assert archive.namelist() == ["cleaned/en/test__Tiny.jsonl"]
+        assert archive.namelist() == [
+            "CLEANED_MANIFEST.csv",
+            "cleaned/en/test__Tiny.jsonl",
+        ]
         assert archive.getinfo(archive.namelist()[0]).date_time == (2026, 8, 14, 0, 0, 0)
-    with Path(first["manifest"]).open(newline="", encoding="utf-8") as handle:
-        rows = list(csv.DictReader(handle))
+        manifest_text = archive.read("CLEANED_MANIFEST.csv").decode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(manifest_text)))
     assert rows[0]["pairs"] == "1"
 
 
