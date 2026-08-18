@@ -9,28 +9,19 @@ The canonical local corpus is fully processed:
 
 - Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
 - Phase 2: 859,550 retained pairs; 594,453 removed (40.88%).
-- iDEM: 1,058 pairs normalized and cleaned in Catalan, Spanish, and Italian.
-- Saaq al-Bambuu: 348 Arabic pairs normalized and cleaned.
 
-The current public prerelease remains `v0.1.0-rc1`. It contains the 25 corpus
-files whose processing preceded iDEM and Saaq al-Bambuu: 1,452,597 normalized
-pairs and 858,388 cleaned pairs.
+The current public prerelease is `v0.1.0-rc2`. It contains the 25
+redistributable corpus files: 1,452,597 normalized pairs and 858,388 cleaned
+pairs.
 
-- [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc1)
-- [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip)
-- [Normalized manifest](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/NORMALIZED_MANIFEST.csv)
-- [Phase 2 cleaned data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase2-cleaned-v0.1.0-rc1.zip)
-- [Cleaned manifest](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/CLEANED_MANIFEST.csv)
+- [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc2)
+- [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip)
+- [Phase 2 cleaned data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2-cleaned-v0.1.0-rc2.zip)
 
-The two standalone manifest links above remain because `rc1` was built with the
-older layout. New packages embed the manifest in each ZIP, so the next Release
-will need only the Phase 1 and Phase 2 ZIP assets.
+Each ZIP embeds its corresponding manifest at the archive root.
 
-iDEM and Saaq are complete locally, but are not included in public Release
-assets. The received iDEM package has no redistribution licence, while the
-published description of Saaq states that the corpus is unavailable publicly
-because of copyright restrictions. This is a distribution restriction, not
-unfinished normalization or cleaning.
+iDEM and Saaq are processed locally but excluded from public assets because
+redistribution permission is not confirmed.
 
 ## Repository structure
 
@@ -68,7 +59,7 @@ the archive root so its contents remain auditable after download.
 
 ## Canonical Phase 1 corpus
 
-| Source | Languages | Local pairs | Included in public rc1 |
+| Source | Languages | Local pairs | Included in public rc2 |
 |---|---|---:|---|
 | MultiSim | de, en, fr, it, ja, pt-BR, ru, sl | 1,337,793 | Yes |
 | Align-and-Shine | ca, en, es, fr, it | 114,068 | Yes |

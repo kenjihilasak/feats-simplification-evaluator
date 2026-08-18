@@ -5,7 +5,7 @@ language and source corpus. The canonical local output contains 29 files and
 1,454,003 pairs across 12 languages, including the completed iDEM and Saaq
 al-Bambuu conversions.
 
-The latest public data package is the earlier [v0.1.0-rc1 normalized ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip).
+The latest public data package is the [v0.1.0-rc2 normalized ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip).
 See the root README for the difference between complete local processing and
 the sources that may be redistributed publicly.
 
@@ -53,4 +53,14 @@ duplicate IDs, valid JSON, the flat `<language>/<source>__<corpus>.jsonl`
 layout, and required identity/text fields.
 
 `src/package_normalized.py` places `NORMALIZED_MANIFEST.csv` at the ZIP root
-alongside the `data/` directory.
+alongside the `data/` directory. Public packages exclude sources without
+confirmed redistribution permission explicitly:
+
+```bash
+python phase1_normalization/src/package_normalized.py \
+  --output-dir /path/to/release-assets \
+  --version v0.1.0-rc2 \
+  --archive-date 2026-08-18 \
+  --exclude-source iDEM \
+  --exclude-source "Saaq al-Bambuu"
+```

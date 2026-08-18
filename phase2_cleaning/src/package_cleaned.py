@@ -49,9 +49,18 @@ def validated_files(run_root: Path) -> tuple[dict, list[dict]]:
     return validation, rows
 
 
-def manifest_rows(run_root: Path, validated: list[dict]) -> list[dict]:
+def manifest_rows(
+    run_root: Path,
+    validated: list[dict],
+    excluded_sources: set[str] | None = None,
+) -> list[dict]:
     rows = []
     expected_paths = set()
+    excluded = excluded_sources or set()
+    observed_sources = {str(item["source"]) for item in validated}
+    unknown = excluded - observed_sources
+    if unknown:
+        raise RuntimeError(f"Cannot exclude unknown source(s): {sorted(unknown)}")
     for item in validated:
         relative = Path(item["language"]) / item["file"]
         path = run_root / "cleaned" / relative
@@ -61,6 +70,8 @@ def manifest_rows(run_root: Path, validated: list[dict]) -> list[dict]:
         digest = sha256(path)
         if digest != item["cleaned_sha256"]:
             raise RuntimeError(f"Cleaned file changed after validation: {relative}")
+        if item["source"] in excluded:
+            continue
         rows.append(
             {
                 "phase": "phase2_cleaning",
@@ -124,9 +135,16 @@ def write_zip(
     temporary.replace(path)
 
 
-def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -> dict:
+def package(
+    run_root: Path,
+    output_dir: Path,
+    version: str,
+    archive_date: str,
+    excluded_sources: set[str] | None = None,
+) -> dict:
     validation, validated = validated_files(run_root)
-    rows = manifest_rows(run_root, validated)
+    excluded = excluded_sources or set()
+    rows = manifest_rows(run_root, validated, excluded)
     output_dir.mkdir(parents=True, exist_ok=True)
     zip_path = output_dir / f"feats-phase2-cleaned-{version}.zip"
     manifest_name = "CLEANED_MANIFEST.csv"
@@ -147,6 +165,7 @@ def package(run_root: Path, output_dir: Path, version: str, archive_date: str) -
         "zip_bytes": zip_path.stat().st_size,
         "zip_sha256": sha256(zip_path),
         "embedded_manifest": manifest_name,
+        "excluded_sources": sorted(excluded),
     }
 
 
@@ -156,8 +175,20 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--version", required=True)
     parser.add_argument("--archive-date", required=True, help="Fixed YYYY-MM-DD timestamp for reproducible ZIP members")
+    parser.add_argument(
+        "--exclude-source",
+        action="append",
+        default=[],
+        help="Exact source name to omit from the public package; repeat as needed",
+    )
     args = parser.parse_args()
-    result = package(args.run_root.resolve(), args.output_dir.resolve(), args.version, args.archive_date)
+    result = package(
+        args.run_root.resolve(),
+        args.output_dir.resolve(),
+        args.version,
+        args.archive_date,
+        set(args.exclude_source),
+    )
     print(json.dumps(result, indent=2))
 
 
