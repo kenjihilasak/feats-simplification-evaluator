@@ -148,7 +148,10 @@ def run(config_path: Path) -> Path:
 
     manifest = build_manifest(input_root, relative_files, limit, run_root)
     backend = create_backend(config["model"], cache_root=cache_root)
+    wall_start = time.monotonic()
+    prepare_start = time.monotonic()
     backend.prepare()
+    prepare_seconds = time.monotonic() - prepare_start
 
     started = datetime.now(timezone.utc)
     resolved_config = {
@@ -165,9 +168,13 @@ def run(config_path: Path) -> Path:
 
     processed = 0
     output_rows: list[dict[str, Any]] = []
-    wall_start = time.monotonic()
+    model_load_seconds = 0.0
+    inference_seconds = 0.0
     try:
+        load_start = time.monotonic()
         backend.load()
+        model_load_seconds = time.monotonic() - load_start
+        inference_start = time.monotonic()
         for manifest_row in manifest:
             input_path = input_root / manifest_row["input_file"]
             output_path = run_root / manifest_row["output_file"]
@@ -215,6 +222,7 @@ def run(config_path: Path) -> Path:
                     "output_sha256": sha256(output_path),
                 }
             )
+        inference_seconds = time.monotonic() - inference_start
     finally:
         backend.close()
 
@@ -226,18 +234,28 @@ def run(config_path: Path) -> Path:
             "completed_at": completed.isoformat(),
             "elapsed_seconds": elapsed,
             "processed_pairs": processed,
+            "timings": {
+                "prepare_seconds": prepare_seconds,
+                "model_load_seconds": model_load_seconds,
+                "inference_seconds": inference_seconds,
+            },
             "outputs": output_rows,
         }
     )
     atomic_json(run_root / "run_config.json", resolved_config)
     atomic_json(
-        reports_root / "smoke_summary.json",
+        reports_root / "run_summary.json",
         {
             "run_id": config["run_id"],
             "processed_pairs": processed,
             "binary_decisions": processed * 6,
             "elapsed_seconds": elapsed,
-            "seconds_per_pair": elapsed / processed if processed else None,
+            "prepare_seconds": prepare_seconds,
+            "model_load_seconds": model_load_seconds,
+            "inference_seconds": inference_seconds,
+            "inference_seconds_per_pair": (
+                inference_seconds / processed if processed else None
+            ),
             "outputs": output_rows,
         },
     )
