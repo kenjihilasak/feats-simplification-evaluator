@@ -7,35 +7,44 @@ The pipeline removes a pair if at least one condition is true:
 - LaBSE cosine similarity is below `0.62`;
 - LaBSE cosine similarity is above `0.95`.
 
-The model checkpoints and thresholds are pinned in `configs/`. Run a pilot or
-the full configuration with:
+Model checkpoints, revisions, thresholds, and per-file random seeds are pinned
+in `configs/`. The explicit seed map keeps existing complexity scores
+reproducible when new corpus files are added.
+
+## Run and validate
 
 ```bash
 sbatch phase2_cleaning/jobs/submit_cleaning_gpu.sh \
-  phase2_cleaning/configs/complexity_smp01_labse062_095_pilot_flat_v2.json
-```
+  phase2_cleaning/configs/complexity_smp01_labse062_095_full_flat_v2.json
 
-Each run contains flat language-level `cleaned/`, `decisions/`, `scores/`, and
-`reports/` directories. Existing complete score files are reused, allowing a
-stopped job to resume.
-
-Validate a completed run before packaging it:
-
-```bash
 python phase2_cleaning/src/validate_run.py \
   --config phase2_cleaning/configs/complexity_smp01_labse062_095_full_flat_v2.json
 ```
 
-The validator checks every input, score, decision, cleaned record, and summary
-row. It writes `reports/validation.json` and returns a non-zero status if the
-run is incomplete or inconsistent. `src/package_cleaned.py` refuses to package
-a run without a successful validation report or when a cleaned file has changed
-after validation.
+Each run uses flat language-level `cleaned/`, `decisions/`, and
+`scores/{complexity,labse}/` directories. Complete score files are reused, so a
+stopped job can resume without recomputing them. The validator checks every
+input, score, decision, cleaned record, hash, and summary row and writes
+`reports/validation.json`.
 
-The first full run retained 858,388 of 1,452,597 pairs (59.09%). It removed
-594,209 pairs (40.91%): 14,039 complexity inversions, 218,463 pairs below the
-LaBSE minimum, and 367,264 above the LaBSE maximum. Filter counts overlap, so
-their sum can differ from the union removed. This removal rate is substantially
-above the initial expectation and must be treated as an experimental cleaning
-candidate. See the versioned summary in
+## Current full run
+
+The validated run covers all 29 Phase 1 files:
+
+| Measure | Pairs | Percent of input |
+|---|---:|---:|
+| Input | 1,454,003 | 100.00% |
+| Retained | 859,550 | 59.12% |
+| Removed by filter union | 594,453 | 40.88% |
+| Complexity inversion | 14,044 | 0.97% |
+| LaBSE below 0.62 | 218,570 | 15.03% |
+| LaBSE above 0.95 | 367,399 | 25.27% |
+
+Filter counts overlap. The removal rate is substantially above the initial
+expectation, so this is an experimental candidate rather than the final FEATS
+training selection. The quantitative summary and qualitative checks are in
 `runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
+
+`src/package_cleaned.py` only packages a run with a successful validation
+report and unchanged cleaned-file hashes. Public distribution remains subject
+to the source-specific restrictions documented in the root README.

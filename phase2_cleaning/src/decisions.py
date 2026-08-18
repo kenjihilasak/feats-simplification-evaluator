@@ -161,6 +161,19 @@ def write_reports(config: dict, rows: list[dict]) -> None:
             f"{row['kept_pairs']:,} | {row['removed_pairs']:,} | {row['removed_pct']:.2f} | "
             f"{row['complexity_inversion_pct']:.2f} | {row['labse_below_min_pct']:.2f} | {row['labse_above_max_pct']:.2f} |"
         )
+    qualitative_reports = [
+        ("qualitative_examples_en_es.md", "English and Spanish examples"),
+        ("qualitative_examples_idem_saaq.md", "iDEM and Saaq al-Bambuu examples"),
+    ]
+    available_reports = [item for item in qualitative_reports if (report_dir / item[0]).is_file()]
+    if available_reports:
+        lines.extend([
+            "",
+            "## Qualitative spot check",
+            "",
+        ])
+        for filename, label in available_reports:
+            lines.append(f"- See [the {label}]({filename}).")
     (report_dir / "cleaning_summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

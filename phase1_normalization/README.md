@@ -1,18 +1,25 @@
 # Phase 1: normalization
 
-Preview download: [Phase 1 normalized corpus v0.1.0-rc1 (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip).
-This preview predates the integration of iDEM and Saaq al-Bambuu.
+Phase 1 converts every supported raw format into one flat JSONL file per
+language and source corpus. The canonical local output contains 29 files and
+1,454,003 pairs across 12 languages, including the completed iDEM and Saaq
+al-Bambuu conversions.
 
-Converts the pinned MultiSim CSV files, SimplifyUR, and the selected
-Align-and-Shine output into one flat JSONL file per language and corpus.
+The latest public data package is the earlier [v0.1.0-rc1 normalized ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc1/feats-phase1-normalized-v0.1.0-rc1.zip).
+See the root README for the difference between complete local processing and
+the sources that may be redistributed publicly.
+
+## Canonical record
 
 Each line is one original–simplification pair. Required fields are `id`,
 `original_id`, `language`, `source`, `corpus`, `upstream_split`, `original`,
 `simple`, and `reference_index`. `upstream_split` preserves upstream metadata;
 it does not determine the FEATS training/evaluation split.
 
-The implementation is separated by source because each raw format requires a
-different parser. All scripts remain together in `src/`:
+## Implementation
+
+Each raw source has its own converter, while shared paths, validation, and
+writing utilities remain centralized:
 
 ```text
 src/
@@ -20,12 +27,13 @@ src/
 ├── convert_multisim.py          MultiSim CSV converter
 ├── convert_align_and_shine.py   Align-and-Shine CSV converter
 ├── convert_simplifyur.py        SimplifyUR grouped-text converter
-├── convert_idem_saaq.py         Received iDEM/Saaq CSV package
-├── audit_corpora.py             Global schema/count/ID audit
-└── prepare_feats_corpora.py     Small coordinator for all sources
+├── convert_idem_saaq.py         Received iDEM/Saaq CSV converter
+├── audit_corpora.py             Global schema, count, and ID audit
+├── package_normalized.py        Deterministic ZIP and manifest builder
+└── prepare_feats_corpora.py     Coordinator for all sources
 ```
 
-Run an individual converter or the complete preparation:
+Run one converter or the complete preparation:
 
 ```bash
 python phase1_normalization/src/convert_multisim.py
@@ -36,7 +44,10 @@ python phase1_normalization/src/prepare_feats_corpora.py all
 python phase1_normalization/src/audit_corpora.py
 ```
 
-The iDEM/Saaq converter writes directly into canonical `data/`. Do not run it
-until the active base cleaning job finishes, because a multi-stage job discovers
-inputs again between stages. The package's RBTL rows remain preserved in raw but
-are intentionally excluded from this two-source conversion.
+The iDEM/Saaq converter writes directly to canonical `data/`. The received
+package also contains 370 RBTL rows; they remain in raw storage and are
+intentionally outside this two-source conversion.
+
+The global audit currently verifies 29 files, 1,454,003 unique pair IDs, no
+duplicate IDs, valid JSON, the flat `<language>/<source>__<corpus>.jsonl`
+layout, and required identity/text fields.

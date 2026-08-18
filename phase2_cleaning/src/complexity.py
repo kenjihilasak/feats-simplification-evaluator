@@ -131,6 +131,16 @@ def scored_records(records, tokenizer, model, device, settings, file_seed: int) 
 file_count_hint = 0
 
 
+def corpus_seed(settings: dict, corpus_file, file_index: int) -> int:
+    configured = settings.get("file_seeds")
+    if configured is None:
+        return int(settings["seed"]) + file_index * 1_000_000
+    key = f"{corpus_file.language}/{corpus_file.filename}"
+    if key not in configured:
+        raise KeyError(f"Missing complexity.file_seeds entry for {key}")
+    return int(configured[key])
+
+
 def run(config: dict) -> None:
     settings = config["complexity"]
     cache = project_path(config["cache_root"])
@@ -155,7 +165,7 @@ def run(config: dict) -> None:
         records = iter_jsonl(corpus_file.path, input_limit(config))
         count = atomic_jsonl(
             target,
-            scored_records(records, tokenizer, model, device, settings, int(settings["seed"]) + file_index * 1_000_000),
+            scored_records(records, tokenizer, model, device, settings, corpus_seed(settings, corpus_file, file_index)),
         )
         if count != expected:
             raise RuntimeError(f"Wrote {count} complexity scores; expected {expected}: {target}")
