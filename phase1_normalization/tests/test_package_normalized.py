@@ -99,7 +99,7 @@ def test_manifest_hash_matches_source(tmp_path):
     assert row["sha256"] == digest(source)
 
 
-def test_package_can_exclude_non_redistributable_source(tmp_path):
+def test_package_can_exclude_source(tmp_path):
     data_root, report, _ = fixture(tmp_path)
     result = package(
         data_root,

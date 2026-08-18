@@ -201,7 +201,7 @@ def main() -> None:
         "--exclude-source",
         action="append",
         default=[],
-        help="Exact source name to omit from the public package; repeat as needed",
+        help="Exact source name to omit from the release package; repeat as needed",
     )
     args = parser.parse_args()
     result = package(

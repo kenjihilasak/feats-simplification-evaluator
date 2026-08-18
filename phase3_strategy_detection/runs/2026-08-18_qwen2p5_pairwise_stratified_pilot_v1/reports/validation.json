@@ -1,0 +1,184 @@
+{
+  "schema": "feats-phase3-validation-v1",
+  "run_id": "2026-08-18_qwen2p5_pairwise_stratified_pilot_v1",
+  "valid": true,
+  "expected_pairs": 855,
+  "observed_pairs": 855,
+  "files": [
+    {
+      "input_file": "ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "output_file": "predictions/ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ca/idem__iDEM.jsonl",
+      "output_file": "predictions/ca/idem__iDEM.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "de/multisim__GEOLinoTest.jsonl",
+      "output_file": "predictions/de/multisim__GEOLinoTest.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "de/multisim__TextComplexityDE.jsonl",
+      "output_file": "predictions/de/multisim__TextComplexityDE.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "en/multisim__ASSET.jsonl",
+      "output_file": "predictions/en/multisim__ASSET.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "en/multisim__WikiAutoEN.jsonl",
+      "output_file": "predictions/en/multisim__WikiAutoEN.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "es/idem__iDEM.jsonl",
+      "output_file": "predictions/es/idem__iDEM.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "fr/multisim__CLEAR.jsonl",
+      "output_file": "predictions/fr/multisim__CLEAR.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "fr/multisim__WikiLargeFR.jsonl",
+      "output_file": "predictions/fr/multisim__WikiLargeFR.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "output_file": "predictions/it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "it/idem__iDEM.jsonl",
+      "output_file": "predictions/it/idem__iDEM.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "it/multisim__AdminIt.jsonl",
+      "output_file": "predictions/it/multisim__AdminIt.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "it/multisim__PaCCSS-IT.jsonl",
+      "output_file": "predictions/it/multisim__PaCCSS-IT.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "it/multisim__SimpitikiWiki.jsonl",
+      "output_file": "predictions/it/multisim__SimpitikiWiki.jsonl",
+      "expected_pairs": 25,
+      "observed_pairs": 25
+    },
+    {
+      "input_file": "it/multisim__Teacher.jsonl",
+      "output_file": "predictions/it/multisim__Teacher.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "it/multisim__Terence.jsonl",
+      "output_file": "predictions/it/multisim__Terence.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ja/multisim__EasyJapanese.jsonl",
+      "output_file": "predictions/ja/multisim__EasyJapanese.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ja/multisim__EasyJapaneseExtended.jsonl",
+      "output_file": "predictions/ja/multisim__EasyJapaneseExtended.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "pt-BR/multisim__PorSimples.jsonl",
+      "output_file": "predictions/pt-BR/multisim__PorSimples.jsonl",
+      "expected_pairs": 28,
+      "observed_pairs": 28
+    },
+    {
+      "input_file": "ru/multisim__RSSE.jsonl",
+      "output_file": "predictions/ru/multisim__RSSE.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ru/multisim__RuAdaptEncy.jsonl",
+      "output_file": "predictions/ru/multisim__RuAdaptEncy.jsonl",
+      "expected_pairs": 29,
+      "observed_pairs": 29
+    },
+    {
+      "input_file": "ru/multisim__RuAdaptFairytales.jsonl",
+      "output_file": "predictions/ru/multisim__RuAdaptFairytales.jsonl",
+      "expected_pairs": 28,
+      "observed_pairs": 28
+    },
+    {
+      "input_file": "ru/multisim__RuWikiLarge.jsonl",
+      "output_file": "predictions/ru/multisim__RuWikiLarge.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "sl/multisim__TSSlovene.jsonl",
+      "output_file": "predictions/sl/multisim__TSSlovene.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ur/simplifyur__SimplifyUR.jsonl",
+      "output_file": "predictions/ur/simplifyur__SimplifyUR.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    }
+  ],
+  "errors": []
+}

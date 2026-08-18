@@ -68,7 +68,7 @@ def test_package_rejects_data_changed_after_validation(tmp_path):
         package(run, tmp_path / "output", "v0.1.0-rc1", "2026-08-14")
 
 
-def test_package_can_exclude_non_redistributable_source(tmp_path):
+def test_package_can_exclude_source(tmp_path):
     run, _ = validated_run(tmp_path)
     result = package(
         run,
