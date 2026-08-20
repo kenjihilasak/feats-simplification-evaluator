@@ -17,6 +17,18 @@ The flat output is one file per language:
 data/<language>/feats_consolidated.jsonl
 ```
 
+The derived cross-corpus review registry is:
+
+```text
+groups/cross_corpus_multi_simplifications.jsonl
+groups/cross_corpus_multi_simplifications_summary.md
+```
+
+It contains post-cleaning originals with at least two distinct surviving
+simplifications and provenance from at least two distinct `(source, corpus)`
+combinations. Each row groups the original, its canonical pair IDs, the
+simplification texts, and their complete surviving provenance.
+
 Run with the environment that provides PyArrow:
 
 ```bash
@@ -25,6 +37,9 @@ Run with the environment that provides PyArrow:
 
 /scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
   phase2b_consolidation/src/validate_consolidation.py
+
+/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
+  phase2b_consolidation/src/build_cross_corpus_groups.py
 
 /scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
   phase2b_consolidation/src/package_consolidated.py \
