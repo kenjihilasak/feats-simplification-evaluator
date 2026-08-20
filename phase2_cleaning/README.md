@@ -1,35 +1,77 @@
 # Phase 2: cleaning
 
-The pipeline removes a pair if at least one condition is true:
+Phase 2 scores every Phase 1 pair and removes it when any configured filter
+rejects it. Models, revisions, thresholds, and per-file seeds are pinned in
+`configs/`.
 
-- the original is confidently classified as simple and its simplification as
-  complex (`SMP < 0.1` on both sides);
-- LaBSE cosine similarity is below `0.62`;
-- LaBSE cosine similarity is above `0.95`.
+## Filters
 
-Model checkpoints, revisions, thresholds, and per-file random seeds are pinned
-in `configs/`. The explicit seed map keeps existing complexity scores
-reproducible when new corpus files are added.
+| Rejection reason | Condition |
+|---|---|
+| `complexity_inversion` | Original predicted simple and simplification predicted complex, with SMP `< 0.1` on both sides. |
+| `labse_below_min` | LaBSE similarity `< 0.62`. |
+| `labse_above_max` | LaBSE similarity `> 0.95`. |
+
+A pair is retained only when `rejection_reasons` is empty. Filter counts can
+overlap.
+
+## Outputs
+
+| Path inside `runs/<run_id>/` | Content |
+|---|---|
+| `cleaned/<language>/*.jsonl` | Retained Phase 1 records. |
+| `decisions/<language>/*.jsonl` | Final decision and rejection reasons for every pair. |
+| `scores/complexity/<language>/*.jsonl` | Complexity predictions and SMP uncertainty. |
+| `scores/labse/<language>/*.jsonl` | LaBSE similarity for every pair. |
+| `reports/` | Quantitative, qualitative, and validation reports. |
+
+## Cleaned JSONL fields
+
+Cleaned records preserve the Phase 1 data unchanged.
+
+| Field | Description |
+|---|---|
+| `id` | Unique source-pair occurrence ID. |
+| `original_id` | Source-specific ID shared by references of one original. |
+| `language` | Language code. |
+| `source` | Dataset collection, such as MultiSim. |
+| `corpus` | Corpus within the source. |
+| `original` | Original sentence. |
+| `simple` | Simplified sentence. |
+| `reference_index` | Simplification index for the original. |
+| `upstream_split` | Original split label, retained only as provenance. |
+| `source_dataset` | Upstream dataset identifier. |
+| `source_revision` | Upstream version or checksum. |
+| `source_row` | Row number in the upstream snapshot. |
+
+Optional source-specific metadata is also preserved unchanged.
+
+## Audit JSONL fields
+
+| File | Fields |
+|---|---|
+| `decisions` | `id`, `keep`, `rejection_reasons`, `labse_similarity`, and the complete `complexity` record. |
+| `scores/labse` | `id` and `labse_similarity`. |
+| `scores/complexity` | `id`, plus `original` and `simple` classifier results. |
+
+Each complexity result stores the predicted label and ID, base probabilities,
+Monte Carlo mean predictions and probabilities, and
+`smp_max_mean_uncertainty`. SMP is `1 - max(mean probability)`; lower values
+indicate higher confidence.
 
 ## Run and validate
 
 ```bash
-sbatch phase2_cleaning/jobs/submit_cleaning_gpu.sh \
-  phase2_cleaning/configs/complexity_smp01_labse062_095_full_flat_v2.json
+CONFIG=phase2_cleaning/configs/complexity_smp01_labse062_095_full_flat_v2.json
 
-python phase2_cleaning/src/validate_run.py \
-  --config phase2_cleaning/configs/complexity_smp01_labse062_095_full_flat_v2.json
+sbatch phase2_cleaning/jobs/submit_cleaning_gpu.sh $CONFIG
+python phase2_cleaning/src/validate_run.py --config $CONFIG
 ```
 
-Each run uses flat language-level `cleaned/`, `decisions/`, and
-`scores/{complexity,labse}/` directories. Complete score files are reused, so a
-stopped job can resume without recomputing them. The validator checks every
-input, score, decision, cleaned record, hash, and summary row and writes
-`reports/validation.json`.
+Complete score files are reused after interruption. Validation checks all
+inputs, scores, decisions, cleaned records, hashes, and summary rows.
 
 ## Current full run
-
-The validated run covers all 29 Phase 1 files:
 
 | Measure | Pairs | Percent of input |
 |---|---:|---:|
@@ -40,27 +82,9 @@ The validated run covers all 29 Phase 1 files:
 | LaBSE below 0.62 | 218,570 | 15.03% |
 | LaBSE above 0.95 | 367,399 | 25.27% |
 
-Filter counts overlap. The removal rate is substantially above the initial
-expectation, so this is an experimental candidate rather than the final FEATS
-training selection. The quantitative summary and qualitative checks are in
+The 40.88% removal rate is above the initial expectation, so this remains an
+experimental cleaning candidate. Detailed results are under
 `runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
 
-The Markdown summary suppresses repeated consecutive language, source, and
-corpus labels for readability. The CSV keeps every value on every row for
-machine processing.
-
-`src/package_cleaned.py` only packages a run with a successful validation
-report and unchanged cleaned-file hashes. It embeds `CLEANED_MANIFEST.csv` at
-the ZIP root. Private collaborator releases include all validated sources by
-default:
-
-```bash
-python phase2_cleaning/src/package_cleaned.py \
-  --run-root phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2 \
-  --output-dir /path/to/release-assets \
-  --version v0.1.0-rc2 \
-  --archive-date 2026-08-18
-```
-
-`--exclude-source` remains available for intentionally restricted or tailored
-exports, but it is not used for the current private release.
+`src/package_cleaned.py` packages only successfully validated runs with
+unchanged cleaned-file hashes.
