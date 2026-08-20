@@ -1,55 +1,69 @@
 # Phase 2b: consolidation
 
-Phase 2b converts the cleaned Phase 2 observations into one exact canonical
-original–simplification pair per row. It does not apply another quality filter.
+Phase 2b consolidates exact duplicate pairs from Phase 2; it does not apply a
+new quality filter. Each canonical pair is stored once, while all surviving
+source occurrences remain in `provenance`. Different simplifications of the
+same original share `canonical_original_id`.
 
-- Exact duplicate pairs are represented once and retain every surviving source
-  occurrence in `provenance`.
-- Different simplifications of the same original remain separate and share a
-  `canonical_original_id`.
-- A pair is included when at least one occurrence survived Phase 2. The
-  `partially_retained` field records inconsistent outcomes among duplicates.
-- Upstream train/validation/test labels remain provenance only.
+## Outputs
 
-The flat output is one file per language:
+| Path | One JSONL row represents |
+|---|---|
+| `data/<language>/feats_consolidated.jsonl` | One canonical original–simplification pair. |
+| `groups/cross_corpus_multi_simplifications.jsonl` | One original with multiple surviving simplifications across corpora. |
+| `groups/cross_corpus_multi_simplifications_summary.md` | Counts for the grouped registry. |
+| `reports/` | Consolidation counts and validation results. |
 
-```text
-data/<language>/feats_consolidated.jsonl
-```
+## Consolidated pair fields
 
-The derived cross-corpus review registry is:
+| Field | Description |
+|---|---|
+| `id` | Alias of `canonical_pair_id`. |
+| `original_id` | Alias of `canonical_original_id`. |
+| `canonical_original_id` | Stable ID derived from language and normalized original text. |
+| `canonical_pair_id` | Stable ID derived from language, original, and simplification. |
+| `language` | Language code. |
+| `original` | Original sentence. |
+| `simple` | Simplified sentence. |
+| `phase1_occurrence_count` | Number of identical pair occurrences before cleaning. |
+| `phase2_retained_occurrence_count` | Number of those occurrences retained by Phase 2. |
+| `partially_retained` | `true` when only some identical occurrences survived. |
+| `sources` | Distinct surviving data sources. |
+| `corpora` | Distinct surviving `(source, corpus)` combinations. |
+| `upstream_splits` | Original split labels, kept only as provenance. |
+| `provenance` | Original source records and their metadata. |
 
-```text
-groups/cross_corpus_multi_simplifications.jsonl
-groups/cross_corpus_multi_simplifications_summary.md
-```
+## Cross-corpus group fields
 
-It contains post-cleaning originals with at least two distinct surviving
-simplifications and provenance from at least two distinct `(source, corpus)`
-combinations. Each row groups the original, its canonical pair IDs, the
-simplification texts, and their complete surviving provenance.
+The grouped file contains only originals with at least two distinct retained
+pairs and at least two distinct `(source, corpus)` combinations.
 
-Run with the environment that provides PyArrow:
+| Field | Description |
+|---|---|
+| `group_id` | Alias of `canonical_original_id`. |
+| `canonical_original_id` | Shared ID of the original sentence. |
+| `language` | Language code. |
+| `original` | Canonicalized original sentence. |
+| `distinct_simplification_count` | Number of retained simplifications in the group. |
+| `source_count` | Number of distinct sources represented. |
+| `corpus_count` | Number of distinct `(source, corpus)` combinations. |
+| `sources` | Sources represented in the group. |
+| `corpora` | Corpus combinations represented in the group. |
+| `simplifications` | Simplified texts, pair IDs, retention counts, and provenance. |
+
+Each `simplifications[]` item reuses `canonical_pair_id`, `simple`, the two
+occurrence counts, `partially_retained`, `sources`, `corpora`,
+`upstream_splits`, and `provenance` with the meanings above.
+
+## Run
 
 ```bash
-/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
-  phase2b_consolidation/src/consolidate_cleaned.py
+PY=/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python
 
-/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
-  phase2b_consolidation/src/validate_consolidation.py
-
-/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
-  phase2b_consolidation/src/build_cross_corpus_groups.py
-
-/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
-  phase2b_consolidation/src/package_consolidated.py \
-  --output-dir /path/to/release-assets \
-  --version v0.1.0-rc2 \
-  --archive-date 2026-08-20
+$PY phase2b_consolidation/src/consolidate_cleaned.py
+$PY phase2b_consolidation/src/validate_consolidation.py
+$PY phase2b_consolidation/src/build_cross_corpus_groups.py
 ```
 
-The default input is the validated full Phase 2 run. Reports are written to
-`reports/`, including `consolidation_summary.{csv,md}` and `validation.json`.
-The release ZIP embeds `CONSOLIDATED_MANIFEST.csv`. Phase 3 should infer once per
-`canonical_pair_id`; source-level statistics can then be expanded through the
-`provenance` array.
+Phase 3 should infer once per `canonical_pair_id`; statistics by source can be
+expanded later through `provenance`.
