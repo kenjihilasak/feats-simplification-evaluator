@@ -15,3 +15,23 @@ combinations after Phase 2 cleaning.
 | en | 449 | 1,898 |
 | fr | 2 | 6 |
 | ja | 2,635 | 5,311 |
+
+## Fields
+
+| Field | Description |
+|---|---|
+| `group_id` | Alias of `canonical_original_id`. |
+| `canonical_original_id` | Shared ID of the original sentence. |
+| `language` | Language code. |
+| `original` | Canonicalized original sentence. |
+| `distinct_simplification_count` | Number of retained simplifications in the group. |
+| `source_count` | Number of distinct sources represented. |
+| `corpus_count` | Number of distinct `(source, corpus)` combinations. |
+| `sources` | Sources represented in the group. |
+| `corpora` | Corpus combinations represented in the group. |
+| `simplifications` | Simplified texts, pair IDs, retention counts, and provenance. |
+
+Each `simplifications[]` item contains `canonical_pair_id`, `simple`, the two
+occurrence counts, `partially_retained`, `sources`, `corpora`,
+`upstream_splits`, and `provenance` with the meanings documented in
+`phase2b_consolidation/README.md`.

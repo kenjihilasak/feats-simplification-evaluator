@@ -218,7 +218,29 @@ def write_summary(
             f"| {language} | {language_groups[language]:,} | "
             f"{language_pairs[language]:,} |"
         )
-    lines.append("")
+    lines += [
+        "",
+        "## Fields",
+        "",
+        "| Field | Description |",
+        "|---|---|",
+        "| `group_id` | Alias of `canonical_original_id`. |",
+        "| `canonical_original_id` | Shared ID of the original sentence. |",
+        "| `language` | Language code. |",
+        "| `original` | Canonicalized original sentence. |",
+        "| `distinct_simplification_count` | Number of retained simplifications in the group. |",
+        "| `source_count` | Number of distinct sources represented. |",
+        "| `corpus_count` | Number of distinct `(source, corpus)` combinations. |",
+        "| `sources` | Sources represented in the group. |",
+        "| `corpora` | Corpus combinations represented in the group. |",
+        "| `simplifications` | Simplified texts, pair IDs, retention counts, and provenance. |",
+        "",
+        "Each `simplifications[]` item contains `canonical_pair_id`, `simple`, the two",
+        "occurrence counts, `partially_retained`, `sources`, `corpora`,",
+        "`upstream_splits`, and `provenance` with the meanings documented in",
+        "`phase2b_consolidation/README.md`.",
+        "",
+    ]
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text("\n".join(lines), encoding="utf-8")

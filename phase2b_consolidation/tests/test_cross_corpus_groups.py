@@ -83,4 +83,6 @@ def test_builds_only_post_clean_cross_corpus_multi_simplification_groups(tmp_pat
         "Short one.",
         "Short two.",
     ]
-    assert "post-cleaning Phase 2b data" in summary.read_text(encoding="utf-8")
+    summary_text = summary.read_text(encoding="utf-8")
+    assert "post-cleaning Phase 2b data" in summary_text
+    assert "| `group_id` | Alias of `canonical_original_id`. |" in summary_text

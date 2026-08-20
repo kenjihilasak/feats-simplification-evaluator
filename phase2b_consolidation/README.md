@@ -33,28 +33,6 @@ same original share `canonical_original_id`.
 | `upstream_splits` | Original split labels, kept only as provenance. |
 | `provenance` | Original source records and their metadata. |
 
-## Cross-corpus group fields
-
-The grouped file contains only originals with at least two distinct retained
-pairs and at least two distinct `(source, corpus)` combinations.
-
-| Field | Description |
-|---|---|
-| `group_id` | Alias of `canonical_original_id`. |
-| `canonical_original_id` | Shared ID of the original sentence. |
-| `language` | Language code. |
-| `original` | Canonicalized original sentence. |
-| `distinct_simplification_count` | Number of retained simplifications in the group. |
-| `source_count` | Number of distinct sources represented. |
-| `corpus_count` | Number of distinct `(source, corpus)` combinations. |
-| `sources` | Sources represented in the group. |
-| `corpora` | Corpus combinations represented in the group. |
-| `simplifications` | Simplified texts, pair IDs, retention counts, and provenance. |
-
-Each `simplifications[]` item reuses `canonical_pair_id`, `simple`, the two
-occurrence counts, `partially_retained`, `sources`, `corpora`,
-`upstream_splits`, and `provenance` with the meanings above.
-
 ## Run
 
 ```bash
