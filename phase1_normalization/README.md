@@ -41,6 +41,7 @@ src/
 ├── convert_simplifyur.py        SimplifyUR grouped-text converter
 ├── convert_idem_saaq.py         Received iDEM/Saaq CSV converter
 ├── audit_corpora.py             Global schema, count, and ID audit
+├── build_deduplication_registry.py  Cross-corpus exact-text identities
 ├── package_normalized.py        Deterministic ZIP and manifest builder
 └── prepare_feats_corpora.py     Coordinator for all sources
 ```
@@ -63,6 +64,26 @@ intentionally outside this two-source conversion.
 The global audit currently verifies 29 files, 1,454,003 unique pair IDs, no
 duplicate IDs, valid JSON, the flat `<language>/<source>__<corpus>.jsonl`
 layout, and required identity/text fields.
+
+## Canonical identity and deduplication
+
+Source-specific `id` and `original_id` values remain unchanged. The exact-text
+registry adds cross-corpus identities using Unicode NFC, collapsed whitespace,
+and trimming; it does not lowercase or remove punctuation:
+
+- `canonical_original_id = original:<language>:<sha256>`
+- `canonical_pair_id = pair:<language>:<sha256>`
+
+```bash
+/scratch/pjbd103/miniconda3/envs/uncertainty-benchmark/bin/python \
+  phase1_normalization/src/build_deduplication_registry.py
+```
+
+Outputs are kept next to Phase 1 in `deduplication/`: the observation-level
+`pair_identity.parquet`, human-readable `duplicate_groups.jsonl`, and compact
+`deduplication_summary.{csv,md}` reports. Exact pair duplicates and originals
+with several distinct simplifications are recorded separately rather than
+silently deleting source observations.
 
 `src/package_normalized.py` places `NORMALIZED_MANIFEST.csv` at the ZIP root
 alongside the `data/` directory. Private collaborator releases include all

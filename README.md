@@ -9,15 +9,18 @@ Current local status:
 
 - Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
 - Phase 2: 859,550 retained pairs; 594,453 removed (40.88%).
+- Phase 2b: 854,486 canonical pairs; 5,064 exact duplicate observations
+  consolidated from the Phase 2 output.
 - Phase 3: model-agnostic strategy detection and completed Qwen stratified pilot.
 
-The current private prerelease is `v0.1.0-rc2`. Its two access-controlled
-assets contain all 29 corpus files: 1,454,003 normalized pairs and 859,550
-cleaned pairs across 12 languages.
+The current private prerelease is `v0.1.0-rc2`. Its three access-controlled
+assets contain the normalized observations, experimental cleaned observations,
+and 854,486 consolidated canonical pairs across 12 languages.
 
 - [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc2)
 - [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip)
 - [Phase 2 cleaned data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2-cleaned-v0.1.0-rc2.zip)
+- [Phase 2b consolidated data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2b-consolidated-v0.1.0-rc2.zip)
 
 Each ZIP embeds its corresponding manifest at the archive root.
 
@@ -39,7 +42,8 @@ feats-simplification-evaluator/
 │   ├── README.md                     Canonical JSONL schema and commands
 │   ├── src/                          Source-specific converters and audit code
 │   ├── tests/                        Phase 1 tests
-│   └── data/<language>/*.jsonl       One flat file per source corpus
+│   ├── data/<language>/*.jsonl       One flat file per source corpus
+│   └── deduplication/                Canonical identity registry and reports
 ├── phase2_cleaning/
 │   ├── README.md                     Filter definitions and commands
 │   ├── src/                          Complexity, LaBSE, decisions, validation
@@ -48,6 +52,11 @@ feats-simplification-evaluator/
 │   ├── tests/                        Phase 2 tests
 │   ├── logs/                         Local Slurm logs
 │   └── runs/<run_id>/                Scores, decisions, data, and reports
+├── phase2b_consolidation/
+│   ├── src/                          Exact-pair consolidation
+│   ├── tests/                        Consolidation tests
+│   ├── data/<language>/              One consolidated JSONL per language
+│   └── reports/                      Pair counts and retention diagnostics
 ├── phase3_strategy_detection/
 │   ├── README.md                     Model interface and output contract
 │   ├── src/                          Shared runner, backends, and validation
@@ -91,6 +100,16 @@ of the corpus. Because the 40.88% removal rate is much higher than the initial
 expectation, this remains an experimental cleaning candidate rather than a
 final training selection. Quantitative and qualitative reports are under
 `phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
+
+## Phase 2b consolidation
+
+Phase 2b maps the 859,550 cleaned observations to 854,486 exact canonical
+pairs. It consolidates 5,064 redundant observations while preserving every
+surviving source occurrence in `provenance`. Different simplifications of the
+same original remain separate and share `canonical_original_id`.
+
+The validated output contains one JSONL per language. The release ZIP embeds
+`CONSOLIDATED_MANIFEST.csv` with counts, sizes, and SHA-256 hashes.
 
 ## Phase 3 strategy detection
 
