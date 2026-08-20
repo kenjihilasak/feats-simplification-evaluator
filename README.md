@@ -56,6 +56,7 @@ feats-simplification-evaluator/
 │   ├── src/                          Exact-pair consolidation
 │   ├── tests/                        Consolidation tests
 │   ├── data/<language>/              One consolidated JSONL per language
+│   ├── groups/                       Cross-corpus multi-simplification registry
 │   └── reports/                      Pair counts and retention diagnostics
 ├── phase3_strategy_detection/
 │   ├── README.md                     Model interface and output contract
@@ -110,6 +111,12 @@ same original remain separate and share `canonical_original_id`.
 
 The validated output contains one JSONL per language. The release ZIP embeds
 `CONSOLIDATED_MANIFEST.csv` with counts, sizes, and SHA-256 hashes.
+
+The derived
+[`groups/cross_corpus_multi_simplifications.jsonl`](phase2b_consolidation/groups/cross_corpus_multi_simplifications.jsonl)
+registry contains 3,086 post-cleaning canonical originals and their 7,215
+distinct simplifications when at least two simplifications and two distinct
+`(source, corpus)` combinations survive Phase 2.
 
 ## Phase 3 strategy detection
 
