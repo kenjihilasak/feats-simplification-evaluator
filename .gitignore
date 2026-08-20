@@ -6,6 +6,8 @@ __pycache__/
 raw/
 cache/
 phase1_normalization/data/
+phase1_normalization/deduplication/*.parquet
+phase1_normalization/deduplication/*.jsonl
 phase2_cleaning/logs/*.out
 phase2_cleaning/logs/*.err
 # Pilot runs are local smoke tests, never publication artifacts.
@@ -13,6 +15,7 @@ phase2_cleaning/runs/*_pilot_*/
 phase2_cleaning/runs/*/scores/
 phase2_cleaning/runs/*/decisions/
 phase2_cleaning/runs/*/cleaned/
+phase2b_consolidation/data/
 .venv-phase3/
 phase3_strategy_detection/logs/*.out
 phase3_strategy_detection/logs/*.err
