@@ -1,0 +1,81 @@
+{
+  "schema": "feats-phase3b-word-alignment-config-v2",
+  "run_id": "2026-08-23_simalign_xlmr_large_itermax_full_v2",
+  "input_schema": "feats-phase2b-consolidated",
+  "output_schema": "feats-phase3b-word-alignment-v2",
+  "input_root": "phase2b_consolidation/data",
+  "output_root": "phase3b_word_alignment/runs/2026-08-23_simalign_xlmr_large_itermax_full_v2",
+  "selection": {
+    "files": [
+      "ar/feats_consolidated.jsonl",
+      "ca/feats_consolidated.jsonl",
+      "de/feats_consolidated.jsonl",
+      "en/feats_consolidated.jsonl",
+      "es/feats_consolidated.jsonl",
+      "fr/feats_consolidated.jsonl",
+      "it/feats_consolidated.jsonl",
+      "ja/feats_consolidated.jsonl",
+      "pt-BR/feats_consolidated.jsonl",
+      "ru/feats_consolidated.jsonl",
+      "sl/feats_consolidated.jsonl",
+      "ur/feats_consolidated.jsonl"
+    ],
+    "limit_per_file": null
+  },
+  "expected_counts": {
+    "ar": 231,
+    "ca": 727,
+    "de": 529,
+    "en": 348520,
+    "es": 6489,
+    "fr": 245746,
+    "it": 65332,
+    "ja": 35081,
+    "pt-BR": 1113,
+    "ru": 150056,
+    "sl": 407,
+    "ur": 255
+  },
+  "tokenization": {
+    "default": {
+      "backend": "spacy_blank"
+    },
+    "spacy_language_map": {
+      "pt-BR": "pt"
+    },
+    "languages": {
+      "ar": {
+        "backend": "camel_atb_surface",
+        "model": "calima-msa-r13",
+        "scheme": "atbtok",
+        "data_dir": "phase3b_word_alignment/cache/camel_tools"
+      },
+      "ja": {
+        "backend": "spacy_sudachi",
+        "split_mode": "A"
+      },
+      "sl": {
+        "backend": "stanza",
+        "package": "ssj",
+        "model_dir": "phase3b_word_alignment/cache/stanza"
+      },
+      "ur": {
+        "backend": "stanza",
+        "package": "udtb",
+        "model_dir": "phase3b_word_alignment/cache/stanza"
+      }
+    }
+  },
+  "aligner": {
+    "name": "simalign",
+    "version": "0.4",
+    "model": "xlm-roberta-large",
+    "layer": 8,
+    "token_type": "bpe",
+    "matching_methods": "i",
+    "heuristic": "itermax",
+    "device": "cuda",
+    "max_subwords_per_side": 510
+  },
+  "checkpoint_every": 100
+}

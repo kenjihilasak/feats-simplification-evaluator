@@ -65,6 +65,12 @@ feats-simplification-evaluator/
 │   ├── jobs/                         Environment and Slurm scripts
 │   ├── tests/                        Model-independent contract tests
 │   └── runs/<run_id>/                Predictions, provenance, and reports
+├── phase3b_word_alignment/
+│   ├── README.md                     Tokenization and sidecar contract
+│   ├── src/                          SimAlign runner and lossless validation
+│   ├── configs/                      Pinned smoke/full v2 configurations
+│   ├── jobs/                         Environment and Slurm array scripts
+│   └── tests/                        Model-independent contract tests
 ├── metadata/
 │   ├── inventories/                  Source and conversion inventories
 │   └── conversion_reports/           Phase 1 validation reports
@@ -129,6 +135,17 @@ The smoke test and a stratified pilot of 855 pairs from all 29 files and 12
 languages completed and passed validation. The report includes strategy
 profiles, human-label agreement, examples, diagnostics, and a cost projection.
 See `phase3_strategy_detection/README.md` for commands and results.
+
+## Phase 3b word alignment
+
+Phase 3b independently derives word-alignment sidecars from the same 854,486
+canonical Phase 2b pairs used by Phase 3a. The validated v2 run combines
+SimAlign with CAMeL ATB surface-preserving Arabic tokenization, Sudachi A for
+Japanese, Stanza UDTB for Urdu, Stanza SSJ for Slovenian, and language-specific
+spaCy tokenizers for the remaining languages. The sidecars preserve exact
+character offsets and orthographic-parent mappings so they can feed FEATS
+feature construction or edit-operation models. See
+`phase3b_word_alignment/README.md` for the output contract and run results.
 
 ## Data sources and reuse
 
