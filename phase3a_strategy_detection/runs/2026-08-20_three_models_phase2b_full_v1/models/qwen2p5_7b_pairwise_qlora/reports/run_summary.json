@@ -1,0 +1,152 @@
+{
+  "schema": "feats-phase3-shard-consolidation-v1",
+  "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+  "model_alias": "qwen2p5_7b_pairwise_qlora",
+  "num_shards": 64,
+  "processed_pairs": 854486,
+  "binary_decisions": 5126916,
+  "completed_at": "2026-08-22T23:08:25.283763+00:00",
+  "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674",
+  "shard_pairs": [
+    13357,
+    13357,
+    13357,
+    13357,
+    13357,
+    13357,
+    13357,
+    13357,
+    13357,
+    13356,
+    13356,
+    13356,
+    13356,
+    13356,
+    13356,
+    13356,
+    13356,
+    13355,
+    13355,
+    13355,
+    13355,
+    13355,
+    13355,
+    13353,
+    13353,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13351,
+    13350,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13348,
+    13347,
+    13347,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13346,
+    13345
+  ],
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 231,
+      "output_sha256": "9a2f813d2c80101729a30ac603dfffdab9e52c741008531d30b6fb20804c1fd5"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 727,
+      "output_sha256": "b645ef4c913b4bcd53cccc59e162655aaa1cea32c9d36778a04aaa0ad9be85dd"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 529,
+      "output_sha256": "a4f6f129fa9bf5d786954de42cb8c40977532bab011e18c525aa0dae34b44b0e"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 348520,
+      "output_sha256": "d79dff05bdcc74b2e1862dd3d0dccd061afa981e30dd77d39e8ed75d91a2f827"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 6489,
+      "output_sha256": "c0ac07b119a78ae33293a4b7081edee0c75234027ebb3f4b7de6edab7e5e8b09"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 245746,
+      "output_sha256": "b958dbd57820c8e3e0b6ea7bcfb624cf4325ad11672c78be483baf04c00f954e"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 65332,
+      "output_sha256": "319ebba337a3a317935222923583eee3f00ca5c585f401e95ae188afd7226c53"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 35081,
+      "output_sha256": "fe637ca5246cecfc3ebed9a3086e7f625b323945b8ff6813732f94ca0a441e84"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 1113,
+      "output_sha256": "fffab8f7572b54eb898f5700266aa9e2dd231650a2a6b21cf44b70f4fd200151"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 150056,
+      "output_sha256": "ffe757c4bfbabe129543d783d7361179fe06778c5841d4af64ed3933d0495fc6"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 407,
+      "output_sha256": "f56ed4ea52f2abc20fd24ce5dccc362f56e0912ad05a51fab1b5223fbeb98b12"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 255,
+      "output_sha256": "7df8ccf12765bcbec2f5fedf9efb2d524b459c44a0e903902feaba5091367d04"
+    }
+  ],
+  "inference_seconds": 431201.3165928228,
+  "inference_seconds_per_pair": 0.5046323949050339
+}

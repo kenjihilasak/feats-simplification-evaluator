@@ -1,0 +1,84 @@
+{
+  "schema": "feats-phase3-validation-v1",
+  "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+  "legacy_run_id": null,
+  "model_alias": "multilingual_e5_large_bce",
+  "valid": true,
+  "expected_pairs": 859,
+  "observed_pairs": 859,
+  "files": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "expected_pairs": 58,
+      "observed_pairs": 58
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "expected_pairs": 60,
+      "observed_pairs": 60
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "expected_pairs": 90,
+      "observed_pairs": 90
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "expected_pairs": 60,
+      "observed_pairs": 60
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "expected_pairs": 90,
+      "observed_pairs": 90
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "expected_pairs": 202,
+      "observed_pairs": 202
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "expected_pairs": 60,
+      "observed_pairs": 60
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "expected_pairs": 119,
+      "observed_pairs": 119
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "expected_pairs": 30,
+      "observed_pairs": 30
+    }
+  ],
+  "errors": []
+}

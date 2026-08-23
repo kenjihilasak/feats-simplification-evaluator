@@ -1,0 +1,57 @@
+{
+  "run_id": "2026-08-18_qwen2p5_pairwise_stratified_pilot_v1",
+  "input_run_id": "2026-08-05_complexity_smp01_labse062_095_full_flat_v2",
+  "sample_id": "2026-08-18_stratified_25_random_5_longest_v1",
+  "input_root": "phase3a_strategy_detection/samples/2026-08-18_stratified_25_random_5_longest_v1",
+  "runs_root": "phase3a_strategy_detection/runs",
+  "cache_root": "cache/huggingface",
+  "full_corpus_pairs": 854486,
+  "model": {
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "selection": {
+    "files": [
+      "ar/saaq_al_bambuu__Saaq-al-Bambuu.jsonl",
+      "ca/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "ca/idem__iDEM.jsonl",
+      "de/multisim__GEOLinoTest.jsonl",
+      "de/multisim__TextComplexityDE.jsonl",
+      "en/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "en/multisim__ASSET.jsonl",
+      "en/multisim__WikiAutoEN.jsonl",
+      "es/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "es/idem__iDEM.jsonl",
+      "fr/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "fr/multisim__CLEAR.jsonl",
+      "fr/multisim__WikiLargeFR.jsonl",
+      "it/align_and_shine__Wikipedia-Vikidia.jsonl",
+      "it/idem__iDEM.jsonl",
+      "it/multisim__AdminIt.jsonl",
+      "it/multisim__PaCCSS-IT.jsonl",
+      "it/multisim__SimpitikiWiki.jsonl",
+      "it/multisim__Teacher.jsonl",
+      "it/multisim__Terence.jsonl",
+      "ja/multisim__EasyJapanese.jsonl",
+      "ja/multisim__EasyJapaneseExtended.jsonl",
+      "pt-BR/multisim__PorSimples.jsonl",
+      "ru/multisim__RSSE.jsonl",
+      "ru/multisim__RuAdaptEncy.jsonl",
+      "ru/multisim__RuAdaptFairytales.jsonl",
+      "ru/multisim__RuWikiLarge.jsonl",
+      "sl/multisim__TSSlovene.jsonl",
+      "ur/simplifyur__SimplifyUR.jsonl"
+    ],
+    "limit_per_file": null
+  }
+}

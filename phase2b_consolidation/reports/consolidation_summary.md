@@ -1,6 +1,6 @@
 # Phase 2b consolidation summary
 
-Input: `/mnt/scratch/pjbd103/feats-simplification-evaluator/phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/cleaned`.
+Input: `/mnt/scratch/pjbd103/feats-simplification-evaluator/phase2a_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/cleaned`.
 
 | Language | Cleaned observations | Unique pairs | Exact duplicates removed | Partially retained pairs |
 |---|---:|---:|---:|---:|
@@ -20,4 +20,4 @@ Input: `/mnt/scratch/pjbd103/feats-simplification-evaluator/phase2_cleaning/runs
 
 Each output row is one canonical original–simplification pair. Different simplifications
 of the same original remain separate and share `canonical_original_id`. A partially retained
-pair survived Phase 2 in at least one, but not all, of its Phase 1 source occurrences.
+pair survived Phase 2a in at least one, but not all, of its Phase 1 source occurrences.

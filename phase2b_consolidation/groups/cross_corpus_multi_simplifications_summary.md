@@ -4,7 +4,7 @@ Input: `phase2b_consolidation/data` (post-cleaning Phase 2b data).
 
 A group is included when the same `canonical_original_id` retains at least two distinct
 `canonical_pair_id` values and provenance from at least two distinct `(source, corpus)`
-combinations after Phase 2 cleaning.
+combinations after Phase 2a cleaning.
 
 - Phase 2b pairs scanned: **854,486**
 - Qualifying canonical originals: **3,086**

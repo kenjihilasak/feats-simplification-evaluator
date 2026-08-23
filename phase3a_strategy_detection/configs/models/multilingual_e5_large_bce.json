@@ -1,0 +1,22 @@
+{
+  "schema": "feats-phase3-model-v1",
+  "backend": "encoder_multilabel",
+  "alias": "multilingual_e5_large_bce",
+  "model_id": "hannah-khallaf/e2r-strategy-multilingual-e5-large-bce",
+  "revision": "7b6efa2a1a23e33335bc523ff582042b850490b3",
+  "architecture": "multilingual_e5_large_pair_classifier",
+  "training_loss": "bce",
+  "max_length": 512,
+  "batch_size": 16,
+  "progress_every_pairs": 10000,
+  "standard_prefix": "query: ",
+  "rewrite_prefix": "query: ",
+  "thresholds": {
+    "Synonymy": 0.23,
+    "Modulation": 0.23,
+    "Compression": 0.23,
+    "Explanation": 0.23,
+    "Syntactic Change": 0.23,
+    "Omission": 0.23
+  }
+}

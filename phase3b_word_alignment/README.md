@@ -107,3 +107,13 @@ The ignored local run occupies 2.5 GB. Its per-language `input_manifest.json`,
 `run_config.json`, `summary.json` and `validation.json` files contain hashes,
 package versions, tokenizer identity and counts needed to audit or consume the
 sidecars as FEATS model-training inputs.
+
+Build the deterministic release ZIP, including those audit files and
+`PHASE3B_MANIFEST.csv`, with:
+
+```bash
+python phase3b_word_alignment/src/package_full_release.py \
+  --output-dir /scratch/pjbd103/feats-release-assets/v0.2.0-rc1 \
+  --version v0.2.0-rc1 \
+  --archive-date 2026-08-23
+```

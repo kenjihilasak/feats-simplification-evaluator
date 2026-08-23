@@ -1,0 +1,4 @@
+model_alias,model,pairs,reference_provenance,conflicting_reference_pairs_excluded,exact_label_set_pct,hamming_disagreement_pct,mean_jaccard
+xlmr_large_focal,XLM-R Large focal,118,unverified upstream metadata,0,25.423728813559322,20.480225988700564,0.6483050847457624
+multilingual_e5_large_bce,Multilingual-E5 Large BCE,118,unverified upstream metadata,0,27.966101694915253,20.480225988700564,0.670197740112994
+qwen2p5_7b_pairwise_qlora,Qwen2.5-7B pairwise QLoRA,118,unverified upstream metadata,0,36.440677966101696,15.112994350282486,0.7392655367231636

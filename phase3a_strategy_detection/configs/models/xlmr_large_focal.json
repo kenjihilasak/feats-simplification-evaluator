@@ -1,0 +1,22 @@
+{
+  "schema": "feats-phase3-model-v1",
+  "backend": "encoder_multilabel",
+  "alias": "xlmr_large_focal",
+  "model_id": "hannah-khallaf/e2r-strategy-xlmr-large-focal",
+  "revision": "15711217cb45e6c23effcdd5e55cc5b42b11613a",
+  "architecture": "xlm_roberta_large_pair_classifier",
+  "training_loss": "focal",
+  "max_length": 512,
+  "batch_size": 16,
+  "progress_every_pairs": 10000,
+  "standard_prefix": "",
+  "rewrite_prefix": "",
+  "thresholds": {
+    "Synonymy": 0.46,
+    "Modulation": 0.46,
+    "Compression": 0.46,
+    "Explanation": 0.46,
+    "Syntactic Change": 0.46,
+    "Omission": 0.46
+  }
+}

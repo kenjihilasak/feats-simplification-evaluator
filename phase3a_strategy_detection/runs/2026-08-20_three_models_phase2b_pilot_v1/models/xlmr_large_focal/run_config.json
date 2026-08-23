@@ -1,0 +1,216 @@
+{
+  "schema": "feats-phase3-model-run-v2",
+  "status": "complete",
+  "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+  "model_alias": "xlmr_large_focal",
+  "input_schema": "feats-phase2b-consolidated",
+  "started_at": "2026-08-22T10:31:40.519204+00:00",
+  "requested_config": {
+    "schema": "feats-phase3-experiment-v2",
+    "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+    "input_schema": "feats-phase2b-consolidated",
+    "input_root": "phase3_strategy_detection/samples/2026-08-20_phase2b_stratified_25_random_5_longest_v1",
+    "runs_root": "phase3_strategy_detection/runs",
+    "cache_root": "cache/huggingface",
+    "models": {
+      "xlmr_large_focal": "phase3_strategy_detection/configs/models/xlmr_large_focal.json",
+      "multilingual_e5_large_bce": "phase3_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+      "qwen2p5_7b_pairwise_qlora": "phase3_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json"
+    },
+    "selection": {
+      "files": [
+        "ar/feats_consolidated.jsonl",
+        "ca/feats_consolidated.jsonl",
+        "de/feats_consolidated.jsonl",
+        "en/feats_consolidated.jsonl",
+        "es/feats_consolidated.jsonl",
+        "fr/feats_consolidated.jsonl",
+        "it/feats_consolidated.jsonl",
+        "ja/feats_consolidated.jsonl",
+        "pt-BR/feats_consolidated.jsonl",
+        "ru/feats_consolidated.jsonl",
+        "sl/feats_consolidated.jsonl",
+        "ur/feats_consolidated.jsonl"
+      ],
+      "limit_per_file": null
+    }
+  },
+  "requested_config_sha256": "d09eada8d454ccde44e2293cfdbb8c21a24cf4ea0726925d65b61304e3bc2271",
+  "model_config": {
+    "schema": "feats-phase3-model-v1",
+    "backend": "encoder_multilabel",
+    "alias": "xlmr_large_focal",
+    "model_id": "hannah-khallaf/e2r-strategy-xlmr-large-focal",
+    "revision": "15711217cb45e6c23effcdd5e55cc5b42b11613a",
+    "architecture": "xlm_roberta_large_pair_classifier",
+    "training_loss": "focal",
+    "max_length": 512,
+    "batch_size": 16,
+    "standard_prefix": "",
+    "rewrite_prefix": "",
+    "thresholds": {
+      "Synonymy": 0.46,
+      "Modulation": 0.46,
+      "Compression": 0.46,
+      "Explanation": 0.46,
+      "Syntactic Change": 0.46,
+      "Omission": 0.46
+    }
+  },
+  "model_config_sha256": "813147aeee93a7859655b58fb039e82e0a3daf1f2220e6c34f4523590f710220",
+  "input_manifest_sha256": "96946f46d901030b07c5aa1cebd93b87d9e2c2d5dddad92345f99ed1b3145511",
+  "model": {
+    "backend": "encoder_multilabel",
+    "alias": "xlmr_large_focal",
+    "model_id": "hannah-khallaf/e2r-strategy-xlmr-large-focal",
+    "revision": "15711217cb45e6c23effcdd5e55cc5b42b11613a",
+    "architecture": "xlm_roberta_large_pair_classifier",
+    "training_loss": "focal",
+    "input_mode": "pair",
+    "standard_prefix": "",
+    "rewrite_prefix": "",
+    "max_length": 512,
+    "batch_size": 16,
+    "label_order": [
+      "Synonymy",
+      "Modulation",
+      "Compression",
+      "Explanation",
+      "Syntactic Change",
+      "Omission"
+    ],
+    "thresholds": {
+      "Synonymy": 0.46,
+      "Modulation": 0.46,
+      "Compression": 0.46,
+      "Explanation": 0.46,
+      "Syntactic Change": 0.46,
+      "Omission": 0.46
+    },
+    "metadata_files": {
+      "README.md": "d5f4cb328ccf5f2634cd1984d4ab435d9aa2c622f364af92b92223a934d86ed3",
+      "config.json": "6d927a36acee064db6cc50b1ab327c0ba11d7c013d75cc6f3c8f48cecc3c2333",
+      "label_order.json": "53a9ac7105567d6db7e83892c8e1d5fd9e00b053fac50886386adea6c67ac69f",
+      "modeling_e2r_xlmr.py": "828af9275dc6dd896533cf273c308b5e1cb3a2a7de0b1935e7bd9a8de0e6be9b",
+      "thresholds.json": "b2b432b9c56854000958ee90597278c85345bf97bb48125a8da9c568a6ea8862",
+      "tokenizer.json": "acbd420e2269cdc1ef45332d3d5c418be4aef6b8cb5a0b7ccae0893485307153",
+      "tokenizer_config.json": "0f078f36a89267073a1e44353823c663117b1e6dfbbda07680cdca9bbe94ba61",
+      "training_resolved_config.yaml": "22ba45f8a7d5ce3b2e51d4788e2787f4353c5a858c3f74c9c7f067f01a073936"
+    }
+  },
+  "environment": {
+    "python": "3.10.20",
+    "platform": "Linux-5.14.0-427.33.1.el9_4.x86_64-x86_64-with-glibc2.34",
+    "packages": {
+      "torch": "2.7.1+cu126",
+      "transformers": "5.7.0",
+      "peft": "0.19.1",
+      "bitsandbytes": "0.50.0",
+      "accelerate": "1.13.0",
+      "huggingface-hub": "1.13.0",
+      "PyYAML": "6.0.3",
+      "safetensors": "0.7.0"
+    }
+  },
+  "hardware": {
+    "cpu": "x86_64",
+    "slurm_job_id": "7438981",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_device_name": "NVIDIA L40S"
+  },
+  "completed_at": "2026-08-22T10:33:30.162508+00:00",
+  "elapsed_seconds": 115.83336450718343,
+  "processed_pairs": 859,
+  "timings": {
+    "prepare_seconds": 6.190071513876319,
+    "model_load_seconds": 77.36336755752563,
+    "inference_seconds": 5.795996913686395
+  },
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 4.431293323636055,
+      "output_sha256": "bdc08daaf2504f82d41ce1eacb17bbae49d291500f4ebc983b366fd158e4cf50"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 58,
+      "seconds": 0.09631199017167091,
+      "output_sha256": "119406f433a098fbd6bf739e5ee73c4fe10a2f720264d5aa019a760ac4e168d1"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.06819802150130272,
+      "output_sha256": "c77333648b4ab5e15753af5ccc1b0ed8a34115a9f370d91d8d31fa44bc7270e4"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 0.19288198091089725,
+      "output_sha256": "ecafbc0659b4f6959cff0c295f15711b2dfaaadb458b3ae5ab77f29411fd8d76"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.13661070354282856,
+      "output_sha256": "1ee2da7a96f9584958e7c4a640a9599c1d5e5717a679e5c80fd4284544ec1476"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 0.18595439195632935,
+      "output_sha256": "9360bcb8ffaafd11dc15dc8180c699d6303c2330cc807063cae89e5dabc24c22"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 202,
+      "seconds": 0.3713220451027155,
+      "output_sha256": "83a185d33dda6a33fb97dcaa9c182cb1ae7e89d6db5e95e50d9a6d4cfa0706f9"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.03834490105509758,
+      "output_sha256": "f62add35cd990eb80ed9d918d3fe4f956eda4b9fa8f747f0e4124686af2db41f"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.03981921076774597,
+      "output_sha256": "ab600c466b8a2e9d8172366a309c5a28c66da5590298aadf4936a936bbaf8ddd"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 119,
+      "seconds": 0.1682006549090147,
+      "output_sha256": "9752c26f558ce75dcd2721da466c816536bdd9ada6ef51511db37bc72252d676"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.03703560680150986,
+      "output_sha256": "83e4f30c0bf6ec72c6e5e9fb9a3efc8da47d5936daee6a7e7378e715007db0ee"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.01898241974413395,
+      "output_sha256": "c9de8413a037aa9156e804ab91e6c1e01c16d4baf819770afa5e33a5ef431a43"
+    }
+  ]
+}

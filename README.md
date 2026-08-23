@@ -8,18 +8,25 @@ model that evaluates text simplifications.
 Current local status:
 
 - Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
-- Phase 2: 859,550 retained pairs; 594,453 removed (40.88%).
+- Phase 2a: 859,550 retained pairs; 594,453 removed (40.88%).
 - Phase 2b: 854,486 canonical pairs; 5,064 exact duplicate observations
-  consolidated from the Phase 2 output.
-- Phase 3: model-agnostic strategy detection and completed Qwen stratified pilot.
+  consolidated from the Phase 2a output.
+- Phase 3a: three complete, validated prediction sets of 854,486 pairs each.
+- Phase 3b: word alignment v2 for all 854,486 pairs; 854,484 aligned and
+  two explicitly skipped for encoder length.
 
-The current private prerelease is `v0.1.0-rc2`. Its three access-controlled
-assets contain the normalized observations, experimental cleaned observations,
-and 854,486 consolidated canonical pairs across 12 languages.
+The current private data prerelease is `v0.1.0-rc2`. Its three
+access-controlled assets contain the normalized observations, experimental
+cleaned observations, and 854,486 consolidated canonical pairs across 12
+languages. The derived Phase 3a and Phase 3b full outputs are published in
+`v0.2.0-rc1`.
 
+- [Phase 3a/3b release notes and assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.2.0-rc1)
+- [Phase 3a full strategy predictions (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3a-strategy-detection-v0.2.0-rc1.zip)
+- [Phase 3b full word alignment v2 (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3b-word-alignment-v0.2.0-rc1.zip)
 - [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc2)
 - [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip)
-- [Phase 2 cleaned data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2-cleaned-v0.1.0-rc2.zip)
+- [Phase 2a cleaned data (ZIP; historical asset name)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2-cleaned-v0.1.0-rc2.zip)
 - [Phase 2b consolidated data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2b-consolidated-v0.1.0-rc2.zip)
 
 Each ZIP embeds its corresponding manifest at the archive root.
@@ -44,12 +51,12 @@ feats-simplification-evaluator/
 │   ├── tests/                        Phase 1 tests
 │   ├── data/<language>/*.jsonl       One flat file per source corpus
 │   └── deduplication/                Canonical identity registry and reports
-├── phase2_cleaning/
+├── phase2a_cleaning/
 │   ├── README.md                     Filter definitions and commands
 │   ├── src/                          Complexity, LaBSE, decisions, validation
 │   ├── configs/                      Pinned experiment configurations
 │   ├── jobs/                         Slurm submission scripts
-│   ├── tests/                        Phase 2 tests
+│   ├── tests/                        Phase 2a tests
 │   ├── logs/                         Local Slurm logs
 │   └── runs/<run_id>/                Scores, decisions, data, and reports
 ├── phase2b_consolidation/
@@ -58,13 +65,13 @@ feats-simplification-evaluator/
 │   ├── data/<language>/              One consolidated JSONL per language
 │   ├── groups/                       Cross-corpus multi-simplification registry
 │   └── reports/                      Pair counts and retention diagnostics
-├── phase3_strategy_detection/
+├── phase3a_strategy_detection/
 │   ├── README.md                     Model interface and output contract
-│   ├── src/                          Shared runner, backends, and validation
-│   ├── configs/                      Pinned model/run configurations
+│   ├── src/                          Batched backends, runner, and validation
+│   ├── configs/                      Separate model and experiment configs
 │   ├── jobs/                         Environment and Slurm scripts
 │   ├── tests/                        Model-independent contract tests
-│   └── runs/<run_id>/                Predictions, provenance, and reports
+│   └── runs/<experiment_id>/         Per-model predictions and reports
 ├── phase3b_word_alignment/
 │   ├── README.md                     Tokenization and sidecar contract
 │   ├── src/                          SimAlign runner and lossless validation
@@ -98,7 +105,7 @@ source, corpus, language, upstream split, original text, simplified text, and
 source-specific metadata. Upstream splits are provenance fields; they do not
 define the eventual FEATS training/evaluation split.
 
-## Phase 2 cleaning
+## Phase 2a cleaning
 
 A pair is rejected if the complexity classifier confidently predicts an
 original-to-simplification inversion with SMP below `0.1`, or if LaBSE cosine
@@ -106,7 +113,7 @@ similarity is below `0.62` or above `0.95`. The full local run retained 59.12%
 of the corpus. Because the 40.88% removal rate is much higher than the initial
 expectation, this remains an experimental cleaning candidate rather than a
 final training selection. Quantitative and qualitative reports are under
-`phase2_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
+`phase2a_cleaning/runs/2026-08-05_complexity_smp01_labse062_095_full_flat_v2/reports/`.
 
 ## Phase 2b consolidation
 
@@ -122,19 +129,20 @@ The derived
 [`groups/cross_corpus_multi_simplifications.jsonl`](phase2b_consolidation/groups/cross_corpus_multi_simplifications.jsonl)
 registry contains 3,086 post-cleaning canonical originals and their 7,215
 distinct simplifications when at least two simplifications and two distinct
-`(source, corpus)` combinations survive Phase 2.
+`(source, corpus)` combinations survive Phase 2a.
 
-## Phase 3 strategy detection
+## Phase 3a strategy detection
 
-Phase 3 adds multilabel strategy probabilities to the retained pairs without
-changing or filtering Phase 2 data. The common runner supports interchangeable
-model backends and writes sidecar JSONL predictions keyed by pair ID. The first
-backend reproduces the released Qwen2.5-7B pairwise QLoRA classifier.
+Phase 3a reads the 854,486 canonical Phase 2b pairs and writes sidecar
+predictions keyed by `canonical_pair_id`. It supports the released XLM-R Large
+focal, multilingual-E5 Large BCE, and Qwen2.5-7B pairwise QLoRA classifiers
+through one output contract. The completed full run contains 854,486 validated
+predictions from each model (2,563,458 records in total).
 
-The smoke test and a stratified pilot of 855 pairs from all 29 files and 12
-languages completed and passed validation. The report includes strategy
-profiles, human-label agreement, examples, diagnostics, and a cost projection.
-See `phase3_strategy_detection/README.md` for commands and results.
+The new deterministic pilot contains 859 unique canonical pairs covering all
+29 `(language, source, corpus)` strata and 12 languages. The earlier 855-pair
+Qwen pilot remains as historical validation of the original Phase 2a pipeline.
+See `phase3a_strategy_detection/README.md` for the current layout and commands.
 
 ## Phase 3b word alignment
 

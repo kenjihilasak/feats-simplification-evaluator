@@ -1,6 +1,6 @@
 # Phase 2b: consolidation
 
-Phase 2b consolidates exact duplicate pairs from Phase 2; it does not apply a
+Phase 2b consolidates exact duplicate pairs from Phase 2a; it does not apply a
 new quality filter. Each canonical pair is stored once, while all surviving
 source occurrences remain in `provenance`. Different simplifications of the
 same original share `canonical_original_id`.
@@ -26,7 +26,7 @@ same original share `canonical_original_id`.
 | `original` | Original sentence. |
 | `simple` | Simplified sentence. |
 | `phase1_occurrence_count` | Number of identical pair occurrences before cleaning. |
-| `phase2_retained_occurrence_count` | Number of those occurrences retained by Phase 2. |
+| `phase2_retained_occurrence_count` | Number of those occurrences retained by Phase 2a. |
 | `partially_retained` | `true` when only some identical occurrences survived. |
 | `sources` | Distinct surviving data sources. |
 | `corpora` | Distinct surviving `(source, corpus)` combinations. |
@@ -43,5 +43,5 @@ $PY phase2b_consolidation/src/validate_consolidation.py
 $PY phase2b_consolidation/src/build_cross_corpus_groups.py
 ```
 
-Phase 3 should infer once per `canonical_pair_id`; statistics by source can be
+Phase 3a and Phase 3b should infer once per `canonical_pair_id`; statistics by source can be
 expanded later through `provenance`.

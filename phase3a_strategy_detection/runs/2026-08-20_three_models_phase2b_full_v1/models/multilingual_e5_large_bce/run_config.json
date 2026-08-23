@@ -1,0 +1,224 @@
+{
+  "schema": "feats-phase3-model-run-v2",
+  "status": "complete",
+  "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+  "model_alias": "multilingual_e5_large_bce",
+  "shard": null,
+  "resume": true,
+  "input_schema": "feats-phase2b-consolidated",
+  "started_at": "2026-08-22T12:18:01.008518+00:00",
+  "requested_config": {
+    "schema": "feats-phase3-experiment-v2",
+    "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+    "input_schema": "feats-phase2b-consolidated",
+    "input_root": "phase2b_consolidation/data",
+    "expected_pairs": 854486,
+    "runs_root": "phase3_strategy_detection/runs",
+    "cache_root": "cache/huggingface",
+    "models": {
+      "xlmr_large_focal": "phase3_strategy_detection/configs/models/xlmr_large_focal.json",
+      "multilingual_e5_large_bce": "phase3_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+      "qwen2p5_7b_pairwise_qlora": "phase3_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json"
+    },
+    "selection": {
+      "files": [
+        "ar/feats_consolidated.jsonl",
+        "ca/feats_consolidated.jsonl",
+        "de/feats_consolidated.jsonl",
+        "en/feats_consolidated.jsonl",
+        "es/feats_consolidated.jsonl",
+        "fr/feats_consolidated.jsonl",
+        "it/feats_consolidated.jsonl",
+        "ja/feats_consolidated.jsonl",
+        "pt-BR/feats_consolidated.jsonl",
+        "ru/feats_consolidated.jsonl",
+        "sl/feats_consolidated.jsonl",
+        "ur/feats_consolidated.jsonl"
+      ],
+      "limit_per_file": null
+    }
+  },
+  "requested_config_sha256": "385fbb48d82fba266a7decc7bed1a3e719d7f1406bbf14854d3db5b4f014ab97",
+  "model_config": {
+    "schema": "feats-phase3-model-v1",
+    "backend": "encoder_multilabel",
+    "alias": "multilingual_e5_large_bce",
+    "model_id": "hannah-khallaf/e2r-strategy-multilingual-e5-large-bce",
+    "revision": "7b6efa2a1a23e33335bc523ff582042b850490b3",
+    "architecture": "multilingual_e5_large_pair_classifier",
+    "training_loss": "bce",
+    "max_length": 512,
+    "batch_size": 16,
+    "progress_every_pairs": 10000,
+    "standard_prefix": "query: ",
+    "rewrite_prefix": "query: ",
+    "thresholds": {
+      "Synonymy": 0.23,
+      "Modulation": 0.23,
+      "Compression": 0.23,
+      "Explanation": 0.23,
+      "Syntactic Change": 0.23,
+      "Omission": 0.23
+    }
+  },
+  "model_config_sha256": "508b0b76847321a118cd36e051e188db37e955399a004e5d98626f2c9373c3a9",
+  "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674",
+  "model": {
+    "backend": "encoder_multilabel",
+    "alias": "multilingual_e5_large_bce",
+    "model_id": "hannah-khallaf/e2r-strategy-multilingual-e5-large-bce",
+    "revision": "7b6efa2a1a23e33335bc523ff582042b850490b3",
+    "architecture": "multilingual_e5_large_pair_classifier",
+    "training_loss": "bce",
+    "input_mode": "pair",
+    "standard_prefix": "query: ",
+    "rewrite_prefix": "query: ",
+    "max_length": 512,
+    "batch_size": 16,
+    "label_order": [
+      "Synonymy",
+      "Modulation",
+      "Compression",
+      "Explanation",
+      "Syntactic Change",
+      "Omission"
+    ],
+    "thresholds": {
+      "Synonymy": 0.23,
+      "Modulation": 0.23,
+      "Compression": 0.23,
+      "Explanation": 0.23,
+      "Syntactic Change": 0.23,
+      "Omission": 0.23
+    },
+    "metadata_files": {
+      "README.md": "31505d39b0d6221bdfa358128c9e6ac8163e231502e33588cbf873bc2b416f27",
+      "config.json": "bda151fdf64583b110228c969555027815a41c341905a4429ea254d4ff8d6efc",
+      "label_order.json": "53a9ac7105567d6db7e83892c8e1d5fd9e00b053fac50886386adea6c67ac69f",
+      "model-00001-of-00002.safetensors": "565f030d78b83dd0360afe65d068d68d5f9e8bb5ee5ac11a375f19c26a4dbea3",
+      "model-00002-of-00002.safetensors": "9320913369bce74905566da27e09f53eb984d71737bf415d55f95e35a18b2624",
+      "model.safetensors.index.json": "bf7a3f69820ab4afae61c5028436edb3d8648cfe63fa49741e539049a7809496",
+      "modeling_e2r_e5.py": "4ad7109c4dc202653f8cb2e9236a466b808a89821a81718eba799bbcc7730fe6",
+      "preprocessing.json": "b7e4282b6bf5f2991e4ff22253b64578fc0edd55c17b9c9cf8180b04dcbb6006",
+      "thresholds.json": "f185081e477212b5a9545e82b30f14c49a4ef2e6c4dec77c1f99d0dbc394491d",
+      "tokenizer.json": "3a56def25aa40facc030ea8b0b87f3688e4b3c39eb8b45d5702b3a1300fe2a20",
+      "tokenizer_config.json": "fd70cd964b762c08c02a6b8253549b94cb9974d843ab9b6c268e4e4182e73f23",
+      "training_resolved_config.yaml": "73ec8f43f298070251ec257d5cafd188371f9559a5ab84dfb3054f3345b1d2a9"
+    }
+  },
+  "environment": {
+    "python": "3.10.20",
+    "platform": "Linux-5.14.0-427.33.1.el9_4.x86_64-x86_64-with-glibc2.34",
+    "packages": {
+      "torch": "2.7.1+cu126",
+      "transformers": "5.7.0",
+      "peft": "0.19.1",
+      "bitsandbytes": "0.50.0",
+      "accelerate": "1.13.0",
+      "huggingface-hub": "1.13.0",
+      "PyYAML": "6.0.3",
+      "safetensors": "0.7.0"
+    }
+  },
+  "hardware": {
+    "cpu": "x86_64",
+    "slurm_job_id": "7439163",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_device_name": "NVIDIA L40S"
+  },
+  "completed_at": "2026-08-22T12:30:21.721298+00:00",
+  "elapsed_seconds": 741.4652915969491,
+  "processed_pairs": 854486,
+  "timings": {
+    "prepare_seconds": 0.7525129150599241,
+    "model_load_seconds": 6.01987705565989,
+    "inference_seconds": 729.9560763053596
+  },
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 231,
+      "seconds": 0.41940138302743435,
+      "output_sha256": "9f8ce97b8ee05b8b198a1221e7f6d08dfbe5c599e8e36a87ff5fc49e7b853f84"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 727,
+      "seconds": 0.7988475244492292,
+      "output_sha256": "c6acabe0f65a51d0e1e0d0723018330da9c2cc57f00d018539982f5db0d2de32"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 529,
+      "seconds": 0.5056892186403275,
+      "output_sha256": "3b984dfc6d633a035850182008320c5aa6bbe8612287bbd4089a34c681d8e320"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 348520,
+      "seconds": 284.55329765565693,
+      "output_sha256": "695810da0217c9edbcfa87f5d244c3830ad1f8a490a50dd691a28a9d7cf6eaf4"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 6489,
+      "seconds": 6.86065873131156,
+      "output_sha256": "53df2f38f01ce842724a867a82d472c0a3a92dcc898172e51ad63a3497a30374"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 245746,
+      "seconds": 239.2854854594916,
+      "output_sha256": "d777c1a725ca3742da09a05e90b0f753cfb51ca8a9f2aa652be3bfecc477d7ca"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 65332,
+      "seconds": 43.72831400856376,
+      "output_sha256": "4dadb790e358edf45b2117e94112e8a12766c5a6a9481d195bc20ed4aaa0ee95"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 35081,
+      "seconds": 17.263650111854076,
+      "output_sha256": "2892a3b57a9c2d400b8f91fe96832d10729e19d8a1fc625951898e5ba6b0245a"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 1113,
+      "seconds": 0.9242865312844515,
+      "output_sha256": "8c806e7fa645d906dc3cf1a42a8af7e5ce1f3d195b51d657dc0894467c10f422"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 150056,
+      "seconds": 134.88915732875466,
+      "output_sha256": "89082459cdbe4e68d362008b2e9bda765367182e855b4d7bcc45e5af69465226"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 407,
+      "seconds": 0.31157395616173744,
+      "output_sha256": "2a31fafe10c7d98b187958771a4dbd3f7064dbea9bd8ae5d3e60c1a740cc14e4"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 255,
+      "seconds": 0.1313323900103569,
+      "output_sha256": "c3a86105fd9ff1cb80b3dd63827dc8c6114649a262f3e66d08cc2bae54ff2c74"
+    }
+  ]
+}

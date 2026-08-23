@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Consolidate exact duplicate Phase 2 pairs while preserving provenance."""
+"""Consolidate exact duplicate Phase 2a pairs while preserving provenance."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ import pyarrow.parquet as pq
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CLEANED = (
-    PROJECT_ROOT / "phase2_cleaning" / "runs"
+    PROJECT_ROOT / "phase2a_cleaning" / "runs"
     / "2026-08-05_complexity_smp01_labse062_095_full_flat_v2" / "cleaned"
 )
 DEFAULT_IDENTITY = PROJECT_ROOT / "phase1_normalization" / "deduplication" / "pair_identity.parquet"
@@ -249,7 +249,7 @@ def write_reports(db: sqlite3.Connection, reports_root: Path, input_root: Path) 
         "Different simplifications",
         "of the same original remain separate and share `canonical_original_id`. "
         "A partially retained",
-        "pair survived Phase 2 in at least one, but not all, of its Phase 1 source occurrences.", "",
+        "pair survived Phase 2a in at least one, but not all, of its Phase 1 source occurrences.", "",
     ]
     md_path = reports_root / "consolidation_summary.md"
     md_tmp = md_path.with_suffix(".md.tmp")

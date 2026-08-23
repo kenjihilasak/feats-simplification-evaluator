@@ -1,0 +1,4 @@
+# Installed into .venv-phase3, which inherits the tested Phase 2a Python stack.
+# The adapter was released with PEFT 0.19.1.
+peft==0.19.1
+bitsandbytes==0.50.0

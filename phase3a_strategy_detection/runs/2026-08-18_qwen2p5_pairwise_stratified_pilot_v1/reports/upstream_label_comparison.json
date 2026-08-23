@@ -1,0 +1,11 @@
+{
+  "labelled_pairs": 117,
+  "exact_match": 0.3076923076923077,
+  "hamming_loss": 0.1752136752136752,
+  "micro_precision": 0.7398373983739838,
+  "micro_recall": 0.91,
+  "micro_f1": 0.8161434977578476,
+  "macro_f1": 0.7786880141796209,
+  "mean_reference_strategy_count": 2.5641025641025643,
+  "mean_predicted_strategy_count": 3.1538461538461537
+}

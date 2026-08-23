@@ -1,0 +1,105 @@
+{
+  "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+  "model_alias": "xlmr_large_focal",
+  "legacy_run_id": null,
+  "processed_pairs": 859,
+  "binary_decisions": 5154,
+  "elapsed_seconds": 115.83336450718343,
+  "prepare_seconds": 6.190071513876319,
+  "model_load_seconds": 77.36336755752563,
+  "inference_seconds": 5.795996913686395,
+  "hardware": {
+    "cpu": "x86_64",
+    "slurm_job_id": "7438981",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_device_name": "NVIDIA L40S"
+  },
+  "inference_seconds_per_pair": 0.006747377082289167,
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 4.431293323636055,
+      "output_sha256": "bdc08daaf2504f82d41ce1eacb17bbae49d291500f4ebc983b366fd158e4cf50"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 58,
+      "seconds": 0.09631199017167091,
+      "output_sha256": "119406f433a098fbd6bf739e5ee73c4fe10a2f720264d5aa019a760ac4e168d1"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.06819802150130272,
+      "output_sha256": "c77333648b4ab5e15753af5ccc1b0ed8a34115a9f370d91d8d31fa44bc7270e4"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 0.19288198091089725,
+      "output_sha256": "ecafbc0659b4f6959cff0c295f15711b2dfaaadb458b3ae5ab77f29411fd8d76"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.13661070354282856,
+      "output_sha256": "1ee2da7a96f9584958e7c4a640a9599c1d5e5717a679e5c80fd4284544ec1476"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 0.18595439195632935,
+      "output_sha256": "9360bcb8ffaafd11dc15dc8180c699d6303c2330cc807063cae89e5dabc24c22"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 202,
+      "seconds": 0.3713220451027155,
+      "output_sha256": "83a185d33dda6a33fb97dcaa9c182cb1ae7e89d6db5e95e50d9a6d4cfa0706f9"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 0.03834490105509758,
+      "output_sha256": "f62add35cd990eb80ed9d918d3fe4f956eda4b9fa8f747f0e4124686af2db41f"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.03981921076774597,
+      "output_sha256": "ab600c466b8a2e9d8172366a309c5a28c66da5590298aadf4936a936bbaf8ddd"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 119,
+      "seconds": 0.1682006549090147,
+      "output_sha256": "9752c26f558ce75dcd2721da466c816536bdd9ada6ef51511db37bc72252d676"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.03703560680150986,
+      "output_sha256": "83e4f30c0bf6ec72c6e5e9fb9a3efc8da47d5936daee6a7e7378e715007db0ee"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 0.01898241974413395,
+      "output_sha256": "c9de8413a037aa9156e804ab91e6c1e01c16d4baf819770afa5e33a5ef431a43"
+    }
+  ]
+}

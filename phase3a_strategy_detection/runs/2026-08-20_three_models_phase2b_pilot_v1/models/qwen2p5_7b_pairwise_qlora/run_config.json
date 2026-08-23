@@ -1,0 +1,229 @@
+{
+  "schema": "feats-phase3-model-run-v2",
+  "status": "complete",
+  "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+  "model_alias": "qwen2p5_7b_pairwise_qlora",
+  "input_schema": "feats-phase2b-consolidated",
+  "started_at": "2026-08-22T10:33:37.337979+00:00",
+  "requested_config": {
+    "schema": "feats-phase3-experiment-v2",
+    "experiment_id": "2026-08-20_three_models_phase2b_pilot_v1",
+    "input_schema": "feats-phase2b-consolidated",
+    "input_root": "phase3_strategy_detection/samples/2026-08-20_phase2b_stratified_25_random_5_longest_v1",
+    "runs_root": "phase3_strategy_detection/runs",
+    "cache_root": "cache/huggingface",
+    "models": {
+      "xlmr_large_focal": "phase3_strategy_detection/configs/models/xlmr_large_focal.json",
+      "multilingual_e5_large_bce": "phase3_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+      "qwen2p5_7b_pairwise_qlora": "phase3_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json"
+    },
+    "selection": {
+      "files": [
+        "ar/feats_consolidated.jsonl",
+        "ca/feats_consolidated.jsonl",
+        "de/feats_consolidated.jsonl",
+        "en/feats_consolidated.jsonl",
+        "es/feats_consolidated.jsonl",
+        "fr/feats_consolidated.jsonl",
+        "it/feats_consolidated.jsonl",
+        "ja/feats_consolidated.jsonl",
+        "pt-BR/feats_consolidated.jsonl",
+        "ru/feats_consolidated.jsonl",
+        "sl/feats_consolidated.jsonl",
+        "ur/feats_consolidated.jsonl"
+      ],
+      "limit_per_file": null
+    }
+  },
+  "requested_config_sha256": "d09eada8d454ccde44e2293cfdbb8c21a24cf4ea0726925d65b61304e3bc2271",
+  "model_config": {
+    "schema": "feats-phase3-model-v1",
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "batch_size": 1,
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "model_config_sha256": "893bd77ecf27a52ff1a7780bc676fb05b62059c55bceb27bd89655f657fa7a78",
+  "input_manifest_sha256": "96946f46d901030b07c5aa1cebd93b87d9e2c2d5dddad92345f99ed1b3145511",
+  "model": {
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "architecture": "pairwise_causal_lm",
+    "decision_method": "boolean_next_token_probability",
+    "input_mode": "pair",
+    "max_length": 2048,
+    "batch_size": 1,
+    "label_order": [
+      "Synonymy",
+      "Modulation",
+      "Compression",
+      "Explanation",
+      "Syntactic Change",
+      "Omission"
+    ],
+    "label_codes": {
+      "Synonymy": "SYN",
+      "Modulation": "MOD",
+      "Compression": "COMP",
+      "Explanation": "EXPL",
+      "Syntactic Change": "SYNT",
+      "Omission": "OMIT"
+    },
+    "thresholds": {
+      "Synonymy": 0.63,
+      "Modulation": 0.54,
+      "Compression": 0.09,
+      "Explanation": 0.4,
+      "Syntactic Change": 0.2,
+      "Omission": 0.32
+    },
+    "taxonomy_fingerprint": "1d501c0e1437f32d0b498d39a831c9ecda4afa5b3a0e28cab0431bb1cb48e05d",
+    "taxonomy_file_sha256": "a386a1d03fa70bf244473d84ecbd6e26d2aa2cd0f9a8536d71770164bed04e26",
+    "reference_files": {
+      "adapter_config.json": "e387e36400a83c432a05de58fbbfe413e73c600413e7c33ccd749ea34904aa28",
+      "inference_config.json": "192503029420876692aaaa9a00ed3d8e39199c46f5fcde7631e17aca719b36bf",
+      "thresholds.json": "8ae430db00ff17428f2ef859c7aba50ab7319b8c3c6649cd51fc5dedbcd92702",
+      "e2r_taxonomy.yaml": "a386a1d03fa70bf244473d84ecbd6e26d2aa2cd0f9a8536d71770164bed04e26",
+      "reference_implementation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reference_implementation/binary_relevance.py": "4b9ce7a58a7a223dc8a3707b2680147f409d17094d18554c13d1c23c1c0caf8c",
+      "reference_implementation/taxonomy.py": "729aa6e6503df064076f06c482a64690831ad33869e15c24a2597e2d16e07221",
+      "tokenizer_config.json": "04b1682c59acbd057f4c9072297faa73d56fc9de053094c659cdb4c464f58f86",
+      "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+      "chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "environment": {
+    "python": "3.10.20",
+    "platform": "Linux-5.14.0-427.33.1.el9_4.x86_64-x86_64-with-glibc2.34",
+    "packages": {
+      "torch": "2.7.1+cu126",
+      "transformers": "5.7.0",
+      "peft": "0.19.1",
+      "bitsandbytes": "0.50.0",
+      "accelerate": "1.13.0",
+      "huggingface-hub": "1.13.0",
+      "PyYAML": "6.0.3",
+      "safetensors": "0.7.0"
+    }
+  },
+  "hardware": {
+    "cpu": "x86_64",
+    "slurm_job_id": "7438959",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "cuda_device_name": "NVIDIA L40S"
+  },
+  "completed_at": "2026-08-22T10:41:52.727849+00:00",
+  "elapsed_seconds": 496.44369510933757,
+  "processed_pairs": 859,
+  "timings": {
+    "prepare_seconds": 1.0538292154669762,
+    "model_load_seconds": 28.7835715059191,
+    "inference_seconds": 464.5948640704155
+  },
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 18.614045875146985,
+      "output_sha256": "2991db2391e5d0ce83ff532b27bc14440b80e281dd86d6e9fe876bf0fa04bde9"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 58,
+      "seconds": 31.7320652641356,
+      "output_sha256": "e9ea89d93efae7249c23d3ac1c148f13c3a0667aa6fe51d30f407eb5dd537fe0"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 31.851637486368418,
+      "output_sha256": "1652c918637cf4850563fb8453d22c7f85abbd86ca427e9051a495b95c63e495"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 49.076019586995244,
+      "output_sha256": "fe659e4b719eac58119ac1edc243b99a6b86c93462e5eac9d397bbcebce65035"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 33.36732102558017,
+      "output_sha256": "0af82cf32d5cf26d9ad15bc6ad215c0e889950f6f3bde47f8045d5e7ec30a69b"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 90,
+      "seconds": 49.39430878870189,
+      "output_sha256": "aae053a57684ed5f27196bf96e68316e97355b8a6816212e6a6fef1ebf2c0bc8"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 202,
+      "seconds": 109.87239448167384,
+      "output_sha256": "007a963a1eeef4c9394dce4ca75954198616178155a5a64002544b07686cdccd"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 60,
+      "seconds": 29.142152715474367,
+      "output_sha256": "ba0303e4403df0428cc37a79c46d69b9afb3a10e8d00a0a8fd146f41033407f9"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 16.043143602088094,
+      "output_sha256": "01b243c1d384059a967ae92358fd0d8378924ba49cf6cbd8df338a173920afcc"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 119,
+      "seconds": 64.63835941068828,
+      "output_sha256": "20165852b0a7bc9c8e2fbfe1c429ebeaa9e9d0a6a4ba4dad73a729aab3eb2030"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 15.763868913054466,
+      "output_sha256": "28cf80bbcb5f08b41fd0f257bb02bc8a5b6f1493f3b8976676c903c03c288c86"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 30,
+      "seconds": 15.085385015234351,
+      "output_sha256": "489df07af0b3b3d94194930d7760d8de1a4d1f304f3ab10e33685efe1fc0897c"
+    }
+  ]
+}

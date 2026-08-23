@@ -1,0 +1,223 @@
+{
+  "schema": "feats-phase3-sharded-run-v1",
+  "status": "complete",
+  "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+  "model_alias": "qwen2p5_7b_pairwise_qlora",
+  "shard": null,
+  "resume": true,
+  "input_schema": "feats-phase2b-consolidated",
+  "started_at": "2026-08-22T12:30:35.300620+00:00",
+  "requested_config": {
+    "schema": "feats-phase3-experiment-v2",
+    "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+    "input_schema": "feats-phase2b-consolidated",
+    "input_root": "phase2b_consolidation/data",
+    "expected_pairs": 854486,
+    "runs_root": "phase3_strategy_detection/runs",
+    "cache_root": "cache/huggingface",
+    "models": {
+      "xlmr_large_focal": "phase3_strategy_detection/configs/models/xlmr_large_focal.json",
+      "multilingual_e5_large_bce": "phase3_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+      "qwen2p5_7b_pairwise_qlora": "phase3_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json"
+    },
+    "selection": {
+      "files": [
+        "ar/feats_consolidated.jsonl",
+        "ca/feats_consolidated.jsonl",
+        "de/feats_consolidated.jsonl",
+        "en/feats_consolidated.jsonl",
+        "es/feats_consolidated.jsonl",
+        "fr/feats_consolidated.jsonl",
+        "it/feats_consolidated.jsonl",
+        "ja/feats_consolidated.jsonl",
+        "pt-BR/feats_consolidated.jsonl",
+        "ru/feats_consolidated.jsonl",
+        "sl/feats_consolidated.jsonl",
+        "ur/feats_consolidated.jsonl"
+      ],
+      "limit_per_file": null
+    }
+  },
+  "requested_config_sha256": "385fbb48d82fba266a7decc7bed1a3e719d7f1406bbf14854d3db5b4f014ab97",
+  "model_config": {
+    "schema": "feats-phase3-model-v1",
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "batch_size": 1,
+    "progress_every_pairs": 100,
+    "verbose_predictions": false,
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "model_config_sha256": "c4f1f58d2e875551c46f75e18959e717729b1579f501246b286c04059b639e72",
+  "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674",
+  "model": {
+    "backend": "qwen_pairwise",
+    "alias": "qwen2p5_7b_pairwise_qlora",
+    "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+    "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+    "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "architecture": "pairwise_causal_lm",
+    "decision_method": "boolean_next_token_probability",
+    "input_mode": "pair",
+    "max_length": 2048,
+    "batch_size": 1,
+    "label_order": [
+      "Synonymy",
+      "Modulation",
+      "Compression",
+      "Explanation",
+      "Syntactic Change",
+      "Omission"
+    ],
+    "label_codes": {
+      "Synonymy": "SYN",
+      "Modulation": "MOD",
+      "Compression": "COMP",
+      "Explanation": "EXPL",
+      "Syntactic Change": "SYNT",
+      "Omission": "OMIT"
+    },
+    "thresholds": {
+      "Synonymy": 0.63,
+      "Modulation": 0.54,
+      "Compression": 0.09,
+      "Explanation": 0.4,
+      "Syntactic Change": 0.2,
+      "Omission": 0.32
+    },
+    "taxonomy_fingerprint": "1d501c0e1437f32d0b498d39a831c9ecda4afa5b3a0e28cab0431bb1cb48e05d",
+    "taxonomy_file_sha256": "a386a1d03fa70bf244473d84ecbd6e26d2aa2cd0f9a8536d71770164bed04e26",
+    "reference_files": {
+      "adapter_config.json": "e387e36400a83c432a05de58fbbfe413e73c600413e7c33ccd749ea34904aa28",
+      "inference_config.json": "192503029420876692aaaa9a00ed3d8e39199c46f5fcde7631e17aca719b36bf",
+      "thresholds.json": "8ae430db00ff17428f2ef859c7aba50ab7319b8c3c6649cd51fc5dedbcd92702",
+      "e2r_taxonomy.yaml": "a386a1d03fa70bf244473d84ecbd6e26d2aa2cd0f9a8536d71770164bed04e26",
+      "reference_implementation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reference_implementation/binary_relevance.py": "4b9ce7a58a7a223dc8a3707b2680147f409d17094d18554c13d1c23c1c0caf8c",
+      "reference_implementation/taxonomy.py": "729aa6e6503df064076f06c482a64690831ad33869e15c24a2597e2d16e07221",
+      "tokenizer_config.json": "04b1682c59acbd057f4c9072297faa73d56fc9de053094c659cdb4c464f58f86",
+      "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8",
+      "chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "compute_dtype": "bfloat16",
+      "double_quant": true
+    }
+  },
+  "environment": {
+    "python": "3.10.20",
+    "platform": "Linux-5.14.0-427.33.1.el9_4.x86_64-x86_64-with-glibc2.34",
+    "packages": {
+      "torch": "2.7.1+cu126",
+      "transformers": "5.7.0",
+      "peft": "0.19.1",
+      "bitsandbytes": "0.50.0",
+      "accelerate": "1.13.0",
+      "huggingface-hub": "1.13.0",
+      "PyYAML": "6.0.3",
+      "safetensors": "0.7.0"
+    }
+  },
+  "hardware": {
+    "mode": "slurm_array",
+    "shard_count": 64,
+    "devices": [
+      "NVIDIA L40S"
+    ]
+  },
+  "completed_at": "2026-08-22T23:08:25.283763+00:00",
+  "elapsed_seconds": 432904.527894374,
+  "processed_pairs": 854486,
+  "timings": {
+    "prepare_seconds": 146.46424314845353,
+    "model_load_seconds": 1277.1768715046346,
+    "inference_seconds": 431201.3165928228
+  },
+  "outputs": [
+    {
+      "input_file": "ar/feats_consolidated.jsonl",
+      "output_file": "predictions/ar/feats_consolidated.jsonl",
+      "pairs": 231,
+      "output_sha256": "9a2f813d2c80101729a30ac603dfffdab9e52c741008531d30b6fb20804c1fd5"
+    },
+    {
+      "input_file": "ca/feats_consolidated.jsonl",
+      "output_file": "predictions/ca/feats_consolidated.jsonl",
+      "pairs": 727,
+      "output_sha256": "b645ef4c913b4bcd53cccc59e162655aaa1cea32c9d36778a04aaa0ad9be85dd"
+    },
+    {
+      "input_file": "de/feats_consolidated.jsonl",
+      "output_file": "predictions/de/feats_consolidated.jsonl",
+      "pairs": 529,
+      "output_sha256": "a4f6f129fa9bf5d786954de42cb8c40977532bab011e18c525aa0dae34b44b0e"
+    },
+    {
+      "input_file": "en/feats_consolidated.jsonl",
+      "output_file": "predictions/en/feats_consolidated.jsonl",
+      "pairs": 348520,
+      "output_sha256": "d79dff05bdcc74b2e1862dd3d0dccd061afa981e30dd77d39e8ed75d91a2f827"
+    },
+    {
+      "input_file": "es/feats_consolidated.jsonl",
+      "output_file": "predictions/es/feats_consolidated.jsonl",
+      "pairs": 6489,
+      "output_sha256": "c0ac07b119a78ae33293a4b7081edee0c75234027ebb3f4b7de6edab7e5e8b09"
+    },
+    {
+      "input_file": "fr/feats_consolidated.jsonl",
+      "output_file": "predictions/fr/feats_consolidated.jsonl",
+      "pairs": 245746,
+      "output_sha256": "b958dbd57820c8e3e0b6ea7bcfb624cf4325ad11672c78be483baf04c00f954e"
+    },
+    {
+      "input_file": "it/feats_consolidated.jsonl",
+      "output_file": "predictions/it/feats_consolidated.jsonl",
+      "pairs": 65332,
+      "output_sha256": "319ebba337a3a317935222923583eee3f00ca5c585f401e95ae188afd7226c53"
+    },
+    {
+      "input_file": "ja/feats_consolidated.jsonl",
+      "output_file": "predictions/ja/feats_consolidated.jsonl",
+      "pairs": 35081,
+      "output_sha256": "fe637ca5246cecfc3ebed9a3086e7f625b323945b8ff6813732f94ca0a441e84"
+    },
+    {
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "output_file": "predictions/pt-BR/feats_consolidated.jsonl",
+      "pairs": 1113,
+      "output_sha256": "fffab8f7572b54eb898f5700266aa9e2dd231650a2a6b21cf44b70f4fd200151"
+    },
+    {
+      "input_file": "ru/feats_consolidated.jsonl",
+      "output_file": "predictions/ru/feats_consolidated.jsonl",
+      "pairs": 150056,
+      "output_sha256": "ffe757c4bfbabe129543d783d7361179fe06778c5841d4af64ed3933d0495fc6"
+    },
+    {
+      "input_file": "sl/feats_consolidated.jsonl",
+      "output_file": "predictions/sl/feats_consolidated.jsonl",
+      "pairs": 407,
+      "output_sha256": "f56ed4ea52f2abc20fd24ce5dccc362f56e0912ad05a51fab1b5223fbeb98b12"
+    },
+    {
+      "input_file": "ur/feats_consolidated.jsonl",
+      "output_file": "predictions/ur/feats_consolidated.jsonl",
+      "pairs": 255,
+      "output_sha256": "7df8ccf12765bcbec2f5fedf9efb2d524b459c44a0e903902feaba5091367d04"
+    }
+  ],
+  "shard_count": 64
+}

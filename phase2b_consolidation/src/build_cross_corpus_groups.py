@@ -204,7 +204,7 @@ def write_summary(
         "",
         "A group is included when the same `canonical_original_id` retains at least two distinct",
         "`canonical_pair_id` values and provenance from at least two distinct `(source, corpus)`",
-        "combinations after Phase 2 cleaning.",
+        "combinations after Phase 2a cleaning.",
         "",
         f"- Phase 2b pairs scanned: **{input_pair_count:,}**",
         f"- Qualifying canonical originals: **{len(groups):,}**",
