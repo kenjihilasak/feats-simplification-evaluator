@@ -1,0 +1,325 @@
+model_alias,language,source,pairs,strategy_code,strategy_label,predicted_pairs,predicted_pct,mean_score
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,SYN,Synonymy,181,78.35497835497836,0.3358933750169102
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,MOD,Modulation,5,2.1645021645021645,0.10650449810606061
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,COMP,Compression,231,100.0,0.7121349516369048
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,EXPL,Explanation,0,0.0,0.03476298939098011
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,SYNT,Syntactic Change,0,0.0,0.015240078880673363
+multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,OMIT,Omission,231,100.0,0.776441697950487
+multilingual_e5_large_bce,ca,Align-and-Shine,390,SYN,Synonymy,390,100.0,0.821903796073718
+multilingual_e5_large_bce,ca,Align-and-Shine,390,MOD,Modulation,71,18.205128205128204,0.15867544320913463
+multilingual_e5_large_bce,ca,Align-and-Shine,390,COMP,Compression,120,30.76923076923077,0.19224297939202725
+multilingual_e5_large_bce,ca,Align-and-Shine,390,EXPL,Explanation,36,9.23076923076923,0.12048324193709936
+multilingual_e5_large_bce,ca,Align-and-Shine,390,SYNT,Syntactic Change,47,12.051282051282051,0.1439703134390024
+multilingual_e5_large_bce,ca,Align-and-Shine,390,OMIT,Omission,3,0.7692307692307693,0.090956057035006
+multilingual_e5_large_bce,ca,iDEM,337,SYN,Synonymy,337,100.0,0.8990569072236647
+multilingual_e5_large_bce,ca,iDEM,337,MOD,Modulation,86,25.519287833827892,0.20978446530305314
+multilingual_e5_large_bce,ca,iDEM,337,COMP,Compression,70,20.771513353115726,0.17944770609235905
+multilingual_e5_large_bce,ca,iDEM,337,EXPL,Explanation,31,9.198813056379821,0.11067652490089484
+multilingual_e5_large_bce,ca,iDEM,337,SYNT,Syntactic Change,60,17.80415430267062,0.1634894577614985
+multilingual_e5_large_bce,ca,iDEM,337,OMIT,Omission,3,0.8902077151335311,0.06334072758252968
+multilingual_e5_large_bce,de,MultiSim,529,SYN,Synonymy,528,99.8109640831758,0.725696008462311
+multilingual_e5_large_bce,de,MultiSim,529,MOD,Modulation,436,82.41965973534971,0.524053043589024
+multilingual_e5_large_bce,de,MultiSim,529,COMP,Compression,327,61.81474480151229,0.3004515563157195
+multilingual_e5_large_bce,de,MultiSim,529,EXPL,Explanation,233,44.045368620037806,0.22896252868306208
+multilingual_e5_large_bce,de,MultiSim,529,SYNT,Syntactic Change,158,29.86767485822306,0.17673851546808542
+multilingual_e5_large_bce,de,MultiSim,529,OMIT,Omission,132,24.95274102079395,0.18697918205044897
+multilingual_e5_large_bce,en,Align-and-Shine,2432,SYN,Synonymy,1639,67.39309210526316,0.360105928621794
+multilingual_e5_large_bce,en,Align-and-Shine,2432,MOD,Modulation,1025,42.14638157894737,0.2465505976425974
+multilingual_e5_large_bce,en,Align-and-Shine,2432,COMP,Compression,1009,41.48848684210526,0.23154529772306742
+multilingual_e5_large_bce,en,Align-and-Shine,2432,EXPL,Explanation,1817,74.71217105263158,0.35242737594403717
+multilingual_e5_large_bce,en,Align-and-Shine,2432,SYNT,Syntactic Change,576,23.68421052631579,0.17528109801443
+multilingual_e5_large_bce,en,Align-and-Shine,2432,OMIT,Omission,636,26.151315789473685,0.18898537284449526
+multilingual_e5_large_bce,en,MultiSim,346194,SYN,Synonymy,240935,69.5953713813642,0.35719206206208226
+multilingual_e5_large_bce,en,MultiSim,346194,MOD,Modulation,145658,42.07409718250461,0.23725899697049802
+multilingual_e5_large_bce,en,MultiSim,346194,COMP,Compression,138168,39.910570373836634,0.2240319393139469
+multilingual_e5_large_bce,en,MultiSim,346194,EXPL,Explanation,224069,64.7235365142088,0.30863987776176915
+multilingual_e5_large_bce,en,MultiSim,346194,SYNT,Syntactic Change,78812,22.7652703397517,0.1756797310805973
+multilingual_e5_large_bce,en,MultiSim,346194,OMIT,Omission,91309,26.375096044414402,0.1878081631530851
+multilingual_e5_large_bce,es,Align-and-Shine,6204,SYN,Synonymy,6042,97.38878143133462,0.6489577843710963
+multilingual_e5_large_bce,es,Align-and-Shine,6204,MOD,Modulation,6029,97.1792392005158,0.846983786016645
+multilingual_e5_large_bce,es,Align-and-Shine,6204,COMP,Compression,3785,61.00902643455835,0.28861132781018295
+multilingual_e5_large_bce,es,Align-and-Shine,6204,EXPL,Explanation,3613,58.23662153449388,0.29093582871496715
+multilingual_e5_large_bce,es,Align-and-Shine,6204,SYNT,Syntactic Change,1186,19.116698903932946,0.15011072189557328
+multilingual_e5_large_bce,es,Align-and-Shine,6204,OMIT,Omission,134,2.1598968407479044,0.08548786254331883
+multilingual_e5_large_bce,es,iDEM,285,SYN,Synonymy,283,99.29824561403508,0.8119530393366228
+multilingual_e5_large_bce,es,iDEM,285,MOD,Modulation,283,99.29824561403508,0.9386170504385964
+multilingual_e5_large_bce,es,iDEM,285,COMP,Compression,120,42.10526315789474,0.24473775227864583
+multilingual_e5_large_bce,es,iDEM,285,EXPL,Explanation,109,38.24561403508772,0.22322707594486704
+multilingual_e5_large_bce,es,iDEM,285,SYNT,Syntactic Change,71,24.912280701754387,0.1588007742898506
+multilingual_e5_large_bce,es,iDEM,285,OMIT,Omission,1,0.3508771929824561,0.06818796793619791
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,SYN,Synonymy,86957,93.0130817529335,0.4917788417877245
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,MOD,Modulation,23533,25.171945362556023,0.19130452735102024
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,COMP,Compression,50738,54.27162553883345,0.26447499695924287
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,EXPL,Explanation,69410,74.24402870925991,0.3444370458737333
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,SYNT,Syntactic Change,13262,14.185626116441506,0.14778204761639738
+multilingual_e5_large_bce,fr,Align-and-Shine,93489,OMIT,Omission,24714,26.43519558450727,0.18279687843338668
+multilingual_e5_large_bce,fr,MultiSim,152257,SYN,Synonymy,142809,93.79470237821577,0.46820518495506364
+multilingual_e5_large_bce,fr,MultiSim,152257,MOD,Modulation,28367,18.630998903170298,0.1638619009459765
+multilingual_e5_large_bce,fr,MultiSim,152257,COMP,Compression,79353,52.11780082360745,0.2570438245582414
+multilingual_e5_large_bce,fr,MultiSim,152257,EXPL,Explanation,95760,62.89366006160636,0.29849275609421067
+multilingual_e5_large_bce,fr,MultiSim,152257,SYNT,Syntactic Change,20333,13.3543942150443,0.15292352625919653
+multilingual_e5_large_bce,fr,MultiSim,152257,OMIT,Omission,41062,26.968874994253138,0.18804969537805977
+multilingual_e5_large_bce,it,Align-and-Shine,8602,SYN,Synonymy,8558,99.48849104859335,0.8945178821513166
+multilingual_e5_large_bce,it,Align-and-Shine,8602,MOD,Modulation,5191,60.346431062543594,0.45288350332118665
+multilingual_e5_large_bce,it,Align-and-Shine,8602,COMP,Compression,6187,71.92513368983957,0.3849069027256561
+multilingual_e5_large_bce,it,Align-and-Shine,8602,EXPL,Explanation,1609,18.70495233666589,0.1303722951002549
+multilingual_e5_large_bce,it,Align-and-Shine,8602,SYNT,Syntactic Change,2740,31.853057428505,0.18472308309874794
+multilingual_e5_large_bce,it,Align-and-Shine,8602,OMIT,Omission,5893,68.50732387816787,0.3183095276120152
+multilingual_e5_large_bce,it,MultiSim,56421,SYN,Synonymy,56421,100.0,0.8020297505652262
+multilingual_e5_large_bce,it,MultiSim,56421,MOD,Modulation,15788,27.982488789635067,0.1939010808076607
+multilingual_e5_large_bce,it,MultiSim,56421,COMP,Compression,4357,7.722301979759309,0.13798001098146012
+multilingual_e5_large_bce,it,MultiSim,56421,EXPL,Explanation,368,0.6522394144024388,0.028379920178832563
+multilingual_e5_large_bce,it,MultiSim,56421,SYNT,Syntactic Change,113,0.20028003757466192,0.04957901138633173
+multilingual_e5_large_bce,it,MultiSim,56421,OMIT,Omission,21400,37.929139859272254,0.2173074617593938
+multilingual_e5_large_bce,it,iDEM,309,SYN,Synonymy,309,100.0,0.966332296723301
+multilingual_e5_large_bce,it,iDEM,309,MOD,Modulation,267,86.40776699029126,0.8367343149524676
+multilingual_e5_large_bce,it,iDEM,309,COMP,Compression,250,80.90614886731392,0.5650142928929005
+multilingual_e5_large_bce,it,iDEM,309,EXPL,Explanation,123,39.80582524271845,0.2273432413736979
+multilingual_e5_large_bce,it,iDEM,309,SYNT,Syntactic Change,188,60.84142394822006,0.26152823735209346
+multilingual_e5_large_bce,it,iDEM,309,OMIT,Omission,236,76.37540453074433,0.35156827759974213
+multilingual_e5_large_bce,ja,MultiSim,35081,SYN,Synonymy,33914,96.67341295858157,0.49209593073719127
+multilingual_e5_large_bce,ja,MultiSim,35081,MOD,Modulation,16940,48.28824719933867,0.25422679591976094
+multilingual_e5_large_bce,ja,MultiSim,35081,COMP,Compression,6249,17.813061201220034,0.16756781238823298
+multilingual_e5_large_bce,ja,MultiSim,35081,EXPL,Explanation,278,0.7924517545109888,0.06161618136900194
+multilingual_e5_large_bce,ja,MultiSim,35081,SYNT,Syntactic Change,12,0.03420655055443118,0.05031626133652214
+multilingual_e5_large_bce,ja,MultiSim,35081,OMIT,Omission,16852,48.03739916193951,0.24841096420855707
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,SYN,Synonymy,1111,99.82030548068283,0.6708008251207322
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,MOD,Modulation,848,76.19047619047619,0.40726470261785436
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,COMP,Compression,157,14.106019766397125,0.14225305658359305
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,EXPL,Explanation,302,27.133872416891286,0.18690215159619272
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,SYNT,Syntactic Change,123,11.05121293800539,0.1324431084344115
+multilingual_e5_large_bce,pt-BR,MultiSim,1113,OMIT,Omission,275,24.707996406109615,0.1585835802158791
+multilingual_e5_large_bce,ru,MultiSim,150056,SYN,Synonymy,143759,95.80356666844378,0.5226118117562932
+multilingual_e5_large_bce,ru,MultiSim,150056,MOD,Modulation,96298,64.17470810897265,0.34629946161245634
+multilingual_e5_large_bce,ru,MultiSim,150056,COMP,Compression,143546,95.66161966199286,0.46166866990099736
+multilingual_e5_large_bce,ru,MultiSim,150056,EXPL,Explanation,32268,21.503971850509142,0.16065648540527944
+multilingual_e5_large_bce,ru,MultiSim,150056,SYNT,Syntactic Change,1147,0.7643812976488777,0.07193943436938817
+multilingual_e5_large_bce,ru,MultiSim,150056,OMIT,Omission,143035,95.32108013008477,0.4625681373631579
+multilingual_e5_large_bce,sl,MultiSim,407,SYN,Synonymy,407,100.0,0.6975049667920762
+multilingual_e5_large_bce,sl,MultiSim,407,MOD,Modulation,193,47.42014742014742,0.3240497036120815
+multilingual_e5_large_bce,sl,MultiSim,407,COMP,Compression,311,76.41277641277641,0.32591423765740174
+multilingual_e5_large_bce,sl,MultiSim,407,EXPL,Explanation,90,22.11302211302211,0.14657109141056895
+multilingual_e5_large_bce,sl,MultiSim,407,SYNT,Syntactic Change,43,10.565110565110565,0.1175006238482801
+multilingual_e5_large_bce,sl,MultiSim,407,OMIT,Omission,296,72.72727272727273,0.3521092670262592
+multilingual_e5_large_bce,ur,SimplifyUR,255,SYN,Synonymy,255,100.0,0.6088599111519608
+multilingual_e5_large_bce,ur,SimplifyUR,255,MOD,Modulation,69,27.058823529411764,0.1843041513480392
+multilingual_e5_large_bce,ur,SimplifyUR,255,COMP,Compression,189,74.11764705882354,0.3068383310355392
+multilingual_e5_large_bce,ur,SimplifyUR,255,EXPL,Explanation,0,0.0,0.03534055223651961
+multilingual_e5_large_bce,ur,SimplifyUR,255,SYNT,Syntactic Change,0,0.0,0.019903654210707722
+multilingual_e5_large_bce,ur,SimplifyUR,255,OMIT,Omission,244,95.68627450980392,0.46891323912377453
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,SYN,Synonymy,94,40.692640692640694,0.41650439018240226
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,MOD,Modulation,16,6.926406926406926,0.0831885853083593
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,COMP,Compression,200,86.58008658008659,0.680877567471698
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,EXPL,Explanation,8,3.463203463203463,0.04355877512396397
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,SYNT,Syntactic Change,3,1.2987012987012987,0.02440584329161815
+qwen2p5_7b_pairwise_qlora,ar,Saaq al-Bambuu,231,OMIT,Omission,150,64.93506493506493,0.6064276559388497
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,SYN,Synonymy,234,60.0,0.6241598482646862
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,MOD,Modulation,7,1.794871794871795,0.06706291541951692
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,COMP,Compression,230,58.97435897435897,0.18539017074324557
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,EXPL,Explanation,48,12.307692307692308,0.1354901717569396
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,SYNT,Syntactic Change,184,47.17948717948718,0.19857288015124905
+qwen2p5_7b_pairwise_qlora,ca,Align-and-Shine,390,OMIT,Omission,127,32.56410256410256,0.2642015458372165
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,SYN,Synonymy,308,91.3946587537092,0.8941454793500313
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,MOD,Modulation,57,16.91394658753709,0.2096703348761768
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,COMP,Compression,121,35.90504451038576,0.11850879062343321
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,EXPL,Explanation,41,12.166172106824925,0.16111130221001846
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,SYNT,Syntactic Change,248,73.59050445103857,0.2796076407322217
+qwen2p5_7b_pairwise_qlora,ca,iDEM,337,OMIT,Omission,6,1.7804154302670623,0.03696930033373228
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,SYN,Synonymy,319,60.30245746691872,0.6137112390059678
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,MOD,Modulation,372,70.32136105860114,0.6969643342854929
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,COMP,Compression,331,62.57088846880907,0.2428778071604007
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,EXPL,Explanation,40,7.561436672967864,0.09956836807946153
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,SYNT,Syntactic Change,300,56.71077504725898,0.24081503542865482
+qwen2p5_7b_pairwise_qlora,de,MultiSim,529,OMIT,Omission,147,27.7882797731569,0.2279126579812106
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,SYN,Synonymy,908,37.33552631578947,0.43899073462160976
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,MOD,Modulation,216,8.881578947368421,0.14436285741569832
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,COMP,Compression,889,36.55427631578947,0.12280517030881295
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,EXPL,Explanation,523,21.504934210526315,0.22302602290698478
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,SYNT,Syntactic Change,1017,41.817434210526315,0.19848901591036144
+qwen2p5_7b_pairwise_qlora,en,Align-and-Shine,2432,OMIT,Omission,515,21.175986842105264,0.17903017756245213
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,SYN,Synonymy,118668,34.277890431376626,0.40407778538885575
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,MOD,Modulation,41670,12.03660375396454,0.16252318793331705
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,COMP,Compression,115911,33.48151614412728,0.11071335256165407
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,EXPL,Explanation,68283,19.72391202620496,0.201881761632499
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,SYNT,Syntactic Change,126929,36.664124739308015,0.1824199746429279
+qwen2p5_7b_pairwise_qlora,en,MultiSim,346194,OMIT,Omission,72952,21.072577803197053,0.18479334958719043
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,SYN,Synonymy,3515,56.65699548678272,0.5989167295776485
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,MOD,Modulation,4893,78.86847195357834,0.7541554165905286
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,COMP,Compression,3062,49.35525467440361,0.16633534651172033
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,EXPL,Explanation,1491,24.032882011605416,0.24776901272132024
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,SYNT,Syntactic Change,2369,38.185041908446166,0.17834923588637902
+qwen2p5_7b_pairwise_qlora,es,Align-and-Shine,6204,OMIT,Omission,911,14.68407479045777,0.13915565850814204
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,SYN,Synonymy,245,85.96491228070175,0.8473884457694819
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,MOD,Modulation,279,97.89473684210526,0.9554627720681491
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,COMP,Compression,88,30.87719298245614,0.13018892678391616
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,EXPL,Explanation,63,22.105263157894736,0.24203247925524465
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,SYNT,Syntactic Change,131,45.96491228070175,0.21198155418474665
+qwen2p5_7b_pairwise_qlora,es,iDEM,285,OMIT,Omission,10,3.508771929824561,0.04230857093428515
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,SYN,Synonymy,44872,47.99709056680465,0.5286927469599686
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,MOD,Modulation,10380,11.102910502839906,0.19092703917651233
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,COMP,Compression,44944,48.074104974916835,0.1675775266628843
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,EXPL,Explanation,25554,27.33369701248275,0.278050561741419
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,SYNT,Syntactic Change,43006,46.00113382323054,0.2022091192650974
+qwen2p5_7b_pairwise_qlora,fr,Align-and-Shine,93489,OMIT,Omission,20776,22.22293531859363,0.18782602946898586
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,SYN,Synonymy,78754,51.72438705609594,0.5604777994005193
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,MOD,Modulation,15442,10.142062433911084,0.17372246443152364
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,COMP,Compression,85404,56.09200233815194,0.19937859679228925
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,EXPL,Explanation,23144,15.200614750060753,0.16607673513558555
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,SYNT,Syntactic Change,59885,39.3315249873569,0.18784764177265875
+qwen2p5_7b_pairwise_qlora,fr,MultiSim,152257,OMIT,Omission,40148,26.368574187065292,0.2242425818160086
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,SYN,Synonymy,5441,63.25273192280865,0.6532898253191496
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,MOD,Modulation,1669,19.402464543129504,0.26216073094685405
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,COMP,Compression,5940,69.0537084398977,0.32020559167698337
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,EXPL,Explanation,1167,13.566612415717275,0.15161434189180314
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,SYNT,Syntactic Change,3511,40.81608928156243,0.18841193389324815
+qwen2p5_7b_pairwise_qlora,it,Align-and-Shine,8602,OMIT,Omission,4860,56.49848872355266,0.4435758147599552
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,SYN,Synonymy,31605,56.016376880948584,0.6032627082218684
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,MOD,Modulation,9858,17.47221779124794,0.251394574186046
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,COMP,Compression,24998,44.30619804682654,0.176995380504773
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,EXPL,Explanation,86,0.15242551532230908,0.011747262409207829
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,SYNT,Syntactic Change,7432,13.172400347388384,0.10021138742175746
+qwen2p5_7b_pairwise_qlora,it,MultiSim,56421,OMIT,Omission,9186,16.281171904078267,0.1525928935382946
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,SYN,Synonymy,302,97.73462783171522,0.9651080219274847
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,MOD,Modulation,259,83.81877022653721,0.8427655659432384
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,COMP,Compression,199,64.40129449838187,0.38582843165634084
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,EXPL,Explanation,74,23.948220064724918,0.26225877065389763
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,SYNT,Syntactic Change,236,76.37540453074433,0.3701104527737104
+qwen2p5_7b_pairwise_qlora,it,iDEM,309,OMIT,Omission,111,35.922330097087375,0.276331548575529
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,SYN,Synonymy,27122,77.31250534477353,0.7824321088676703
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,MOD,Modulation,1110,3.1641059262848836,0.09094366430669507
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,COMP,Compression,7059,20.122003363644136,0.0963852211256229
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,EXPL,Explanation,3105,8.850944955959067,0.1017226507753908
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,SYNT,Syntactic Change,2779,7.921666999230353,0.0622102421656257
+qwen2p5_7b_pairwise_qlora,ja,MultiSim,35081,OMIT,Omission,111,0.31641059262848836,0.007475898846584148
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,SYN,Synonymy,557,50.04492362982929,0.5514900706847746
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,MOD,Modulation,750,67.38544474393531,0.6765885690722969
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,COMP,Compression,328,29.469901168014374,0.09365907132750606
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,EXPL,Explanation,108,9.703504043126685,0.11605735373459215
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,SYNT,Syntactic Change,426,38.274932614555254,0.18028666031377266
+qwen2p5_7b_pairwise_qlora,pt-BR,MultiSim,1113,OMIT,Omission,131,11.769991015274034,0.12405542972858453
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,SYN,Synonymy,77588,51.70602974889375,0.5621798733384126
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,MOD,Modulation,29283,19.51471450658421,0.25624095197747454
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,COMP,Compression,105907,70.57831742816015,0.32878879608279143
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,EXPL,Explanation,23253,15.496214746494642,0.16775082279577017
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,SYNT,Syntactic Change,46778,31.173695153809245,0.15856095610955628
+qwen2p5_7b_pairwise_qlora,ru,MultiSim,150056,OMIT,Omission,55435,36.94287466012688,0.30513079264086607
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,SYN,Synonymy,203,49.877149877149876,0.5520923884024814
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,MOD,Modulation,135,33.16953316953317,0.39797874534170136
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,COMP,Compression,331,81.32678132678133,0.387449407176167
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,EXPL,Explanation,7,1.71990171990172,0.04953764495152416
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,SYNT,Syntactic Change,175,42.997542997543,0.19496173444574938
+qwen2p5_7b_pairwise_qlora,sl,MultiSim,407,OMIT,Omission,263,64.61916461916462,0.5229299777982467
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,SYN,Synonymy,246,96.47058823529412,0.9442594556434676
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,MOD,Modulation,0,0.0,0.019839496567033328
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,COMP,Compression,56,21.96078431372549,0.09081099355889194
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,EXPL,Explanation,0,0.0,0.013605858075574294
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,SYNT,Syntactic Change,0,0.0,0.013025523350886093
+qwen2p5_7b_pairwise_qlora,ur,SimplifyUR,255,OMIT,Omission,0,0.0,0.003395932687829142
+xlmr_large_focal,ar,Saaq al-Bambuu,231,SYN,Synonymy,111,48.05194805194805,0.45497560707521645
+xlmr_large_focal,ar,Saaq al-Bambuu,231,MOD,Modulation,0,0.0,0.3438208113501082
+xlmr_large_focal,ar,Saaq al-Bambuu,231,COMP,Compression,229,99.13419913419914,0.6248858563311688
+xlmr_large_focal,ar,Saaq al-Bambuu,231,EXPL,Explanation,0,0.0,0.2574779956371753
+xlmr_large_focal,ar,Saaq al-Bambuu,231,SYNT,Syntactic Change,0,0.0,0.23262321174918832
+xlmr_large_focal,ar,Saaq al-Bambuu,231,OMIT,Omission,231,100.0,0.6537525788014069
+xlmr_large_focal,ca,Align-and-Shine,390,SYN,Synonymy,381,97.6923076923077,0.6590882912660256
+xlmr_large_focal,ca,Align-and-Shine,390,MOD,Modulation,30,7.6923076923076925,0.33800643529647434
+xlmr_large_focal,ca,Align-and-Shine,390,COMP,Compression,59,15.128205128205128,0.38400503305288464
+xlmr_large_focal,ca,Align-and-Shine,390,EXPL,Explanation,5,1.2820512820512822,0.3599521734775641
+xlmr_large_focal,ca,Align-and-Shine,390,SYNT,Syntactic Change,321,82.3076923076923,0.5077999799679487
+xlmr_large_focal,ca,Align-and-Shine,390,OMIT,Omission,0,0.0,0.23281077849559295
+xlmr_large_focal,ca,iDEM,337,SYN,Synonymy,336,99.70326409495549,0.6948408811665431
+xlmr_large_focal,ca,iDEM,337,MOD,Modulation,74,21.958456973293767,0.38442513214020774
+xlmr_large_focal,ca,iDEM,337,COMP,Compression,67,19.881305637982194,0.3910792319640208
+xlmr_large_focal,ca,iDEM,337,EXPL,Explanation,15,4.451038575667655,0.34382787868601633
+xlmr_large_focal,ca,iDEM,337,SYNT,Syntactic Change,300,89.02077151335311,0.5338268789410238
+xlmr_large_focal,ca,iDEM,337,OMIT,Omission,2,0.5934718100890207,0.1798584708827893
+xlmr_large_focal,de,MultiSim,529,SYN,Synonymy,314,59.35727788279773,0.4687638454040643
+xlmr_large_focal,de,MultiSim,529,MOD,Modulation,346,65.40642722117202,0.5031470603438091
+xlmr_large_focal,de,MultiSim,529,COMP,Compression,135,25.519848771266542,0.4211125797495274
+xlmr_large_focal,de,MultiSim,529,EXPL,Explanation,170,32.136105860113425,0.4342204852906427
+xlmr_large_focal,de,MultiSim,529,SYNT,Syntactic Change,174,32.89224952741021,0.43538257620510395
+xlmr_large_focal,de,MultiSim,529,OMIT,Omission,91,17.20226843100189,0.3824003684723535
+xlmr_large_focal,en,Align-and-Shine,2432,SYN,Synonymy,62,2.549342105263158,0.3819520347996762
+xlmr_large_focal,en,Align-and-Shine,2432,MOD,Modulation,422,17.351973684210527,0.3985177090293483
+xlmr_large_focal,en,Align-and-Shine,2432,COMP,Compression,94,3.8651315789473686,0.34149932861328125
+xlmr_large_focal,en,Align-and-Shine,2432,EXPL,Explanation,2139,87.95230263157895,0.5205771797581723
+xlmr_large_focal,en,Align-and-Shine,2432,SYNT,Syntactic Change,1744,71.71052631578948,0.4833202362060547
+xlmr_large_focal,en,Align-and-Shine,2432,OMIT,Omission,191,7.853618421052632,0.3686635368748715
+xlmr_large_focal,en,MultiSim,346194,SYN,Synonymy,6839,1.9754819552043075,0.3847129430956929
+xlmr_large_focal,en,MultiSim,346194,MOD,Modulation,33498,9.6760775750013,0.3823033655917094
+xlmr_large_focal,en,MultiSim,346194,COMP,Compression,12189,3.520858247110002,0.3473620057306425
+xlmr_large_focal,en,MultiSim,346194,EXPL,Explanation,308100,88.99634309086812,0.5139560047471126
+xlmr_large_focal,en,MultiSim,346194,SYNT,Syntactic Change,213263,61.60216525994096,0.4727976611407955
+xlmr_large_focal,en,MultiSim,346194,OMIT,Omission,38757,11.195168027175514,0.38098701085613307
+xlmr_large_focal,es,Align-and-Shine,6204,SYN,Synonymy,5900,95.09993552546744,0.5744311334547267
+xlmr_large_focal,es,Align-and-Shine,6204,MOD,Modulation,6017,96.98581560283688,0.7792994328885599
+xlmr_large_focal,es,Align-and-Shine,6204,COMP,Compression,777,12.524177949709864,0.3794063565655726
+xlmr_large_focal,es,Align-and-Shine,6204,EXPL,Explanation,1594,25.693101225016118,0.41900707567068624
+xlmr_large_focal,es,Align-and-Shine,6204,SYNT,Syntactic Change,853,13.749194068343005,0.39190022550345543
+xlmr_large_focal,es,Align-and-Shine,6204,OMIT,Omission,7,0.11283043197936815,0.28956542024298837
+xlmr_large_focal,es,iDEM,285,SYN,Synonymy,281,98.59649122807018,0.6056006716008772
+xlmr_large_focal,es,iDEM,285,MOD,Modulation,282,98.94736842105263,0.8280838815789474
+xlmr_large_focal,es,iDEM,285,COMP,Compression,16,5.614035087719298,0.33710038034539475
+xlmr_large_focal,es,iDEM,285,EXPL,Explanation,49,17.19298245614035,0.3824047423245614
+xlmr_large_focal,es,iDEM,285,SYNT,Syntactic Change,51,17.894736842105264,0.3918898197642544
+xlmr_large_focal,es,iDEM,285,OMIT,Omission,1,0.3508771929824561,0.2408935546875
+xlmr_large_focal,fr,Align-and-Shine,93489,SYN,Synonymy,56726,60.67665714683011,0.46411376328991577
+xlmr_large_focal,fr,Align-and-Shine,93489,MOD,Modulation,13424,14.35890853469392,0.39558615299577354
+xlmr_large_focal,fr,Align-and-Shine,93489,COMP,Compression,11718,12.534094920257997,0.38046305288924365
+xlmr_large_focal,fr,Align-and-Shine,93489,EXPL,Explanation,86493,92.51676667843276,0.5517069155946822
+xlmr_large_focal,fr,Align-and-Shine,93489,SYNT,Syntactic Change,64598,69.09689910042893,0.48140242748311296
+xlmr_large_focal,fr,Align-and-Shine,93489,OMIT,Omission,1153,1.2333001743520629,0.3148803684823131
+xlmr_large_focal,fr,MultiSim,152257,SYN,Synonymy,95363,62.632916713188884,0.4671256086671097
+xlmr_large_focal,fr,MultiSim,152257,MOD,Modulation,21219,13.936305063149806,0.3916385258559541
+xlmr_large_focal,fr,MultiSim,152257,COMP,Compression,21537,14.145162455584964,0.3938621358092834
+xlmr_large_focal,fr,MultiSim,152257,EXPL,Explanation,143810,94.45214341540947,0.5434216152495247
+xlmr_large_focal,fr,MultiSim,152257,SYNT,Syntactic Change,105517,69.30190401754928,0.48143680525182136
+xlmr_large_focal,fr,MultiSim,152257,OMIT,Omission,2185,1.435073592675542,0.3230906957864622
+xlmr_large_focal,it,Align-and-Shine,8602,SYN,Synonymy,8249,95.89630318530574,0.7653796673375378
+xlmr_large_focal,it,Align-and-Shine,8602,MOD,Modulation,7563,87.92141362473843,0.6472985649685393
+xlmr_large_focal,it,Align-and-Shine,8602,COMP,Compression,6690,77.77261102069286,0.5498284998674
+xlmr_large_focal,it,Align-and-Shine,8602,EXPL,Explanation,1423,16.542664496628692,0.3792442635751497
+xlmr_large_focal,it,Align-and-Shine,8602,SYNT,Syntactic Change,4273,49.67449430365031,0.4527675448614784
+xlmr_large_focal,it,Align-and-Shine,8602,OMIT,Omission,6316,73.42478493373633,0.5152954158326188
+xlmr_large_focal,it,MultiSim,56421,SYN,Synonymy,55011,97.50093050459935,0.632377732284134
+xlmr_large_focal,it,MultiSim,56421,MOD,Modulation,10765,19.079775260984384,0.38630913152488655
+xlmr_large_focal,it,MultiSim,56421,COMP,Compression,3623,6.421367930380532,0.3401688218942886
+xlmr_large_focal,it,MultiSim,56421,EXPL,Explanation,138,0.24458978040091456,0.26155302117673385
+xlmr_large_focal,it,MultiSim,56421,SYNT,Syntactic Change,1123,1.9903936477552684,0.3737576612583856
+xlmr_large_focal,it,MultiSim,56421,OMIT,Omission,10231,18.13331915421563,0.37394472063607187
+xlmr_large_focal,it,iDEM,309,SYN,Synonymy,308,99.67637540453075,0.8299169447815534
+xlmr_large_focal,it,iDEM,309,MOD,Modulation,292,94.49838187702265,0.7506210179004854
+xlmr_large_focal,it,iDEM,309,COMP,Compression,247,79.93527508090615,0.5740868034486246
+xlmr_large_focal,it,iDEM,309,EXPL,Explanation,83,26.86084142394822,0.3785617667880259
+xlmr_large_focal,it,iDEM,309,SYNT,Syntactic Change,197,63.75404530744336,0.4775343219053398
+xlmr_large_focal,it,iDEM,309,OMIT,Omission,192,62.13592233009709,0.4833095513501214
+xlmr_large_focal,ja,MultiSim,35081,SYN,Synonymy,12228,34.85647501496537,0.44321829524885265
+xlmr_large_focal,ja,MultiSim,35081,MOD,Modulation,2569,7.323052364527807,0.3893480932409103
+xlmr_large_focal,ja,MultiSim,35081,COMP,Compression,553,1.57635187138337,0.33029286589094703
+xlmr_large_focal,ja,MultiSim,35081,EXPL,Explanation,3337,9.512271600011402,0.41017333518099186
+xlmr_large_focal,ja,MultiSim,35081,SYNT,Syntactic Change,95,0.27080185855591343,0.3804214376193666
+xlmr_large_focal,ja,MultiSim,35081,OMIT,Omission,642,1.8300504546620677,0.31759371183497653
+xlmr_large_focal,pt-BR,MultiSim,1113,SYN,Synonymy,1035,92.99191374663073,0.5189681691515049
+xlmr_large_focal,pt-BR,MultiSim,1113,MOD,Modulation,899,80.7726864330638,0.5344905116380279
+xlmr_large_focal,pt-BR,MultiSim,1113,COMP,Compression,291,26.1455525606469,0.4140402356033805
+xlmr_large_focal,pt-BR,MultiSim,1113,EXPL,Explanation,854,76.72955974842768,0.49117715703616355
+xlmr_large_focal,pt-BR,MultiSim,1113,SYNT,Syntactic Change,759,68.19407008086253,0.48029853155884994
+xlmr_large_focal,pt-BR,MultiSim,1113,OMIT,Omission,325,29.200359389038635,0.4132284077029987
+xlmr_large_focal,ru,MultiSim,150056,SYN,Synonymy,93063,62.01884629738231,0.4691807311207982
+xlmr_large_focal,ru,MultiSim,150056,MOD,Modulation,113234,75.46116116649785,0.5210181655879722
+xlmr_large_focal,ru,MultiSim,150056,COMP,Compression,6947,4.629604947486272,0.3567760728052152
+xlmr_large_focal,ru,MultiSim,150056,EXPL,Explanation,11839,7.889721170762916,0.3995244387733267
+xlmr_large_focal,ru,MultiSim,150056,SYNT,Syntactic Change,27446,18.29050487817881,0.42055534374588693
+xlmr_large_focal,ru,MultiSim,150056,OMIT,Omission,3876,2.5830356666844376,0.3362859262359761
+xlmr_large_focal,sl,MultiSim,407,SYN,Synonymy,401,98.52579852579852,0.5671116784398035
+xlmr_large_focal,sl,MultiSim,407,MOD,Modulation,211,51.842751842751845,0.47039180071406633
+xlmr_large_focal,sl,MultiSim,407,COMP,Compression,90,22.11302211302211,0.42319167978347666
+xlmr_large_focal,sl,MultiSim,407,EXPL,Explanation,61,14.987714987714988,0.41565991150952086
+xlmr_large_focal,sl,MultiSim,407,SYNT,Syntactic Change,8,1.9656019656019657,0.3642512141047297
+xlmr_large_focal,sl,MultiSim,407,OMIT,Omission,333,81.81818181818181,0.5024387069064803
+xlmr_large_focal,ur,SimplifyUR,255,SYN,Synonymy,106,41.568627450980394,0.44450635723039217
+xlmr_large_focal,ur,SimplifyUR,255,MOD,Modulation,6,2.3529411764705883,0.3696729473039216
+xlmr_large_focal,ur,SimplifyUR,255,COMP,Compression,80,31.372549019607842,0.42077349494485294
+xlmr_large_focal,ur,SimplifyUR,255,EXPL,Explanation,2,0.7843137254901961,0.35788143382352944
+xlmr_large_focal,ur,SimplifyUR,255,SYNT,Syntactic Change,0,0.0,0.36068187040441174
+xlmr_large_focal,ur,SimplifyUR,255,OMIT,Omission,63,24.705882352941178,0.4097742417279412

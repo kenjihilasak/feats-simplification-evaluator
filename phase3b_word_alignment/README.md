@@ -113,7 +113,7 @@ Build the deterministic release ZIP, including those audit files and
 
 ```bash
 python phase3b_word_alignment/src/package_full_release.py \
-  --output-dir /scratch/pjbd103/feats-release-assets/v0.2.0-rc1 \
-  --version v0.2.0-rc1 \
+  --output-dir /scratch/pjbd103/feats-release-assets/v0.2.0-rc2 \
+  --version v0.2.0-rc2 \
   --archive-date 2026-08-23
 ```

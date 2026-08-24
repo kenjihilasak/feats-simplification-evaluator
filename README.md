@@ -6,18 +6,18 @@ model that evaluates text simplifications.
 ## Current complete release
 
 The private prerelease
-[`v0.2.0-rc1`](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.2.0-rc1)
+[`v0.2.0-rc2`](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.2.0-rc2)
 contains the complete outputs of the FEATS data pipeline across 12 languages.
 Each phase is distributed as an independent ZIP with an embedded audit
 manifest.
 
 | Phase | Product | Records | Download |
 |---|---|---:|---|
-| Phase 1 | Normalized source observations | 1,454,003 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase1-normalized-v0.2.0-rc1.zip) |
-| Phase 2a | Experimentally cleaned observations | 859,550 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase2a-cleaned-v0.2.0-rc1.zip) |
-| Phase 2b | Consolidated canonical pairs | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase2b-consolidated-v0.2.0-rc1.zip) |
-| Phase 3a | Strategy predictions from three models | 2,563,458 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3a-strategy-detection-v0.2.0-rc1.zip) |
-| Phase 3b | Word-alignment v2 sidecars | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3b-word-alignment-v0.2.0-rc1.zip) |
+| [Phase 1](phase1_normalization/README.md) | Normalized source observations | 1,454,003 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase1-normalized-v0.2.0-rc2.zip) |
+| [Phase 2a](phase2a_cleaning/README.md) | Experimentally cleaned observations | 859,550 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase2a-cleaned-v0.2.0-rc2.zip) |
+| [Phase 2b](phase2b_consolidation/README.md) | Consolidated canonical pairs | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase2b-consolidated-v0.2.0-rc2.zip) |
+| [Phase 3a](phase3a_strategy_detection/README.md) | Strategy predictions and full analysis | 2,563,458 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase3a-strategy-detection-v0.2.0-rc2.zip) |
+| [Phase 3b](phase3b_word_alignment/README.md) | Word-alignment v2 sidecars | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase3b-word-alignment-v0.2.0-rc2.zip) |
 
 Repository access is required. Upstream reuse restrictions still apply,
 particularly to iDEM and Saaq al-Bambuu. Previous releases remain available in

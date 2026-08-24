@@ -137,6 +137,10 @@ def support_members(run_root: Path, model_aliases: list[str]) -> list[tuple[Path
         (run_root / "experiment_config.json", "experiment_config.json"),
         (run_root / "input_manifest.csv", "input_manifest.csv"),
     ]
+    reports_root = run_root / "reports"
+    if reports_root.is_dir():
+        for report in sorted(path for path in reports_root.iterdir() if path.is_file()):
+            members.append((report, f"reports/{report.name}"))
     for model_alias in model_aliases:
         model_root = run_root / "models" / model_alias
         members.append(

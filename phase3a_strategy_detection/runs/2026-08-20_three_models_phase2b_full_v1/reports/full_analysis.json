@@ -1,0 +1,316 @@
+{
+  "schema": "feats-phase3a-full-analysis-v1",
+  "experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+  "canonical_pairs": 854486,
+  "languages": {
+    "ar": 231,
+    "ca": 727,
+    "de": 529,
+    "en": 348520,
+    "es": 6489,
+    "fr": 245746,
+    "it": 65332,
+    "ja": 35081,
+    "pt-BR": 1113,
+    "ru": 150056,
+    "sl": 407,
+    "ur": 255
+  },
+  "models": [
+    "multilingual_e5_large_bce",
+    "qwen2p5_7b_pairwise_qlora",
+    "xlmr_large_focal"
+  ],
+  "source_counting": "Each canonical pair is counted once per distinct Phase 2b source.",
+  "overall_cardinality": [
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "mean_strategy_count": 2.804352558146067,
+      "median_strategy_count": 3.0,
+      "std_strategy_count": 1.2258303877395873,
+      "zero_strategy_pairs": 6837,
+      "zero_strategy_pct": 0.8001301367137671,
+      "single_strategy_pairs": 127650,
+      "single_strategy_pct": 14.938805316880558,
+      "multilabel_pairs": 719999,
+      "multilabel_pct": 84.26106454640568,
+      "strategy_count_0_pairs": 6837,
+      "strategy_count_0_pct": 0.8001301367137671,
+      "strategy_count_1_pairs": 127650,
+      "strategy_count_1_pct": 14.938805316880558,
+      "strategy_count_2_pairs": 228367,
+      "strategy_count_2_pct": 26.725657295731,
+      "strategy_count_3_pairs": 235814,
+      "strategy_count_3_pct": 27.59717537794651,
+      "strategy_count_4_pairs": 183059,
+      "strategy_count_4_pct": 21.423288386234532,
+      "strategy_count_5_pairs": 64336,
+      "strategy_count_5_pct": 7.529204691475343,
+      "strategy_count_6_pairs": 8423,
+      "strategy_count_6_pct": 0.9857387950182916
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "mean_strategy_count": 1.8156423861830386,
+      "median_strategy_count": 2.0,
+      "std_strategy_count": 1.0786969855386621,
+      "zero_strategy_pairs": 72600,
+      "zero_strategy_pct": 8.49633580889564,
+      "single_strategy_pairs": 292334,
+      "single_strategy_pct": 34.21167813164873,
+      "multilabel_pairs": 489552,
+      "multilabel_pct": 57.291986059455624,
+      "strategy_count_0_pairs": 72600,
+      "strategy_count_0_pct": 8.49633580889564,
+      "strategy_count_1_pairs": 292334,
+      "strategy_count_1_pct": 34.21167813164873,
+      "strategy_count_2_pairs": 279678,
+      "strategy_count_2_pct": 32.73055380661591,
+      "strategy_count_3_pairs": 149517,
+      "strategy_count_3_pct": 17.49788761898966,
+      "strategy_count_4_pairs": 50971,
+      "strategy_count_4_pct": 5.965106508474101,
+      "strategy_count_5_pairs": 9000,
+      "strategy_count_5_pct": 1.0532647696978066,
+      "strategy_count_6_pairs": 386,
+      "strategy_count_6_pct": 0.045173355678150375
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "mean_strategy_count": 1.9405256493377305,
+      "median_strategy_count": 2.0,
+      "std_strategy_count": 1.1022974700618526,
+      "zero_strategy_pairs": 72120,
+      "zero_strategy_pct": 8.440161687845091,
+      "single_strategy_pairs": 225913,
+      "single_strategy_pct": 26.438467101860066,
+      "multilabel_pairs": 556453,
+      "multilabel_pct": 65.12137121029484,
+      "strategy_count_0_pairs": 72120,
+      "strategy_count_0_pct": 8.440161687845091,
+      "strategy_count_1_pairs": 225913,
+      "strategy_count_1_pct": 26.438467101860066,
+      "strategy_count_2_pairs": 321978,
+      "strategy_count_2_pct": 37.6808982241956,
+      "strategy_count_3_pairs": 166652,
+      "strategy_count_3_pct": 19.50318671107543,
+      "strategy_count_4_pairs": 52669,
+      "strategy_count_4_pct": 6.16382246169042,
+      "strategy_count_5_pairs": 13273,
+      "strategy_count_5_pct": 1.5533314764665542,
+      "strategy_count_6_pairs": 1881,
+      "strategy_count_6_pct": 0.22013233686684158
+    }
+  ],
+  "overall_prevalence": [
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "SYN",
+      "strategy_label": "Synonymy",
+      "predicted_pairs": 724773,
+      "predicted_pct": 84.81976299202094,
+      "mean_score": 0.46486430434526554
+    },
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "MOD",
+      "strategy_label": "Modulation",
+      "predicted_pairs": 341062,
+      "predicted_pct": 39.91428765363037,
+      "mean_score": 0.24356093249879235
+    },
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "COMP",
+      "strategy_label": "Compression",
+      "predicted_pairs": 435127,
+      "predicted_pct": 50.92265993825528,
+      "mean_score": 0.2704255921457021
+    },
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "EXPL",
+      "strategy_label": "Explanation",
+      "predicted_pairs": 430045,
+      "predicted_pct": 50.32791643163258,
+      "mean_score": 0.25365314975208636
+    },
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "SYNT",
+      "strategy_label": "Syntactic Change",
+      "predicted_pairs": 118849,
+      "predicted_pct": 13.908829401534957,
+      "mean_score": 0.13661887840627981
+    },
+    {
+      "model_alias": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "strategy_code": "OMIT",
+      "strategy_label": "Omission",
+      "predicted_pairs": 346424,
+      "predicted_pct": 40.54179939753255,
+      "mean_score": 0.24077102543953394
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "SYN",
+      "strategy_label": "Synonymy",
+      "predicted_pairs": 390943,
+      "predicted_pct": 45.75183209555218,
+      "mean_score": 0.5072536870392811
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "MOD",
+      "strategy_label": "Modulation",
+      "predicted_pairs": 116391,
+      "predicted_pct": 13.621171089988602,
+      "mean_score": 0.19380162824127012
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "COMP",
+      "strategy_label": "Compression",
+      "predicted_pairs": 395955,
+      "predicted_pct": 46.338383542855006,
+      "mean_score": 0.17784386002074126
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "EXPL",
+      "strategy_label": "Explanation",
+      "predicted_pairs": 146978,
+      "predicted_pct": 17.200749924516025,
+      "mean_score": 0.18070856243234662
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "SYNT",
+      "strategy_label": "Syntactic Change",
+      "predicted_pairs": 295361,
+      "predicted_pct": 34.56592618252376,
+      "mean_score": 0.17113978349474704
+    },
+    {
+      "model_alias": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "OMIT",
+      "strategy_label": "Omission",
+      "predicted_pairs": 205813,
+      "predicted_pct": 24.0861757828683,
+      "mean_score": 0.20626535292489231
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "SYN",
+      "strategy_label": "Synonymy",
+      "predicted_pairs": 336713,
+      "predicted_pct": 39.40532671102862,
+      "mean_score": 0.4477091677831852
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "MOD",
+      "strategy_label": "Modulation",
+      "predicted_pairs": 210839,
+      "predicted_pct": 24.674365642035095,
+      "mean_score": 0.4164931170290166
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "COMP",
+      "strategy_label": "Compression",
+      "predicted_pairs": 65341,
+      "predicted_pct": 7.646819257424932,
+      "mean_score": 0.36238078440817145
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "EXPL",
+      "strategy_label": "Explanation",
+      "predicted_pairs": 560021,
+      "predicted_pct": 65.5389321767706,
+      "mean_score": 0.47981688742262707
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "SYNT",
+      "strategy_label": "Syntactic Change",
+      "predicted_pairs": 420650,
+      "predicted_pct": 49.22842504148693,
+      "mean_score": 0.45486358216075035
+    },
+    {
+      "model_alias": "xlmr_large_focal",
+      "pairs": 854486,
+      "strategy_code": "OMIT",
+      "strategy_label": "Omission",
+      "predicted_pairs": 64588,
+      "predicted_pct": 7.558696105026882,
+      "mean_score": 0.3532018677280388
+    }
+  ],
+  "overall_model_agreement": [
+    {
+      "model_a": "multilingual_e5_large_bce",
+      "model_b": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "exact_set_match_pct": 5.075331836917164,
+      "mean_jaccard": 0.3211667599003855,
+      "label_agreement_pct": 59.648275883591616,
+      "mean_abs_strategy_count_difference": 1.299821179047989,
+      "mean_score_mae": 0.2255089291935474
+    },
+    {
+      "model_a": "multilingual_e5_large_bce",
+      "model_b": "xlmr_large_focal",
+      "pairs": 854486,
+      "exact_set_match_pct": 8.961527748845505,
+      "mean_jaccard": 0.36435691554172284,
+      "label_agreement_pct": 60.55960347312107,
+      "mean_abs_strategy_count_difference": 1.2066528884030867,
+      "mean_score_mae": 0.2039223207660661
+    },
+    {
+      "model_a": "qwen2p5_7b_pairwise_qlora",
+      "model_b": "xlmr_large_focal",
+      "pairs": 854486,
+      "exact_set_match_pct": 6.882617152299745,
+      "mean_jaccard": 0.25338310594537167,
+      "label_agreement_pct": 61.36736002696358,
+      "mean_abs_strategy_count_difference": 0.9425467474013618,
+      "mean_score_mae": 0.32487819191268696
+    }
+  ],
+  "tables": [
+    "model_agreement_by_language.csv",
+    "model_agreement_by_language_source.csv",
+    "model_agreement_overall.csv",
+    "strategy_cardinality_by_language.csv",
+    "strategy_cardinality_by_language_source.csv",
+    "strategy_cardinality_by_language_source_corpus.csv",
+    "strategy_cardinality_overall.csv",
+    "strategy_prevalence_by_language.csv",
+    "strategy_prevalence_by_language_source.csv",
+    "strategy_prevalence_overall.csv"
+  ]
+}

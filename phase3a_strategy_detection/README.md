@@ -71,13 +71,31 @@ every released prediction file.
 
 ```bash
 python phase3a_strategy_detection/src/package_full_release.py \
-  --output-dir /scratch/pjbd103/feats-release-assets/v0.2.0-rc1 \
-  --version v0.2.0-rc1 \
-  --archive-date 2026-08-23
+  --output-dir /scratch/pjbd103/feats-release-assets/v0.2.0-rc2 \
+  --version v0.2.0-rc2 \
+  --archive-date 2026-08-24
 ```
 
 The stable v1 sidecar schema identifiers retain their existing `feats-phase3-*`
 names for compatibility; the repository stage and folder are Phase 3a.
+
+## Full-run analysis
+
+The full analysis joins each model's sidecars to Phase 2b provenance and
+reports strategy cardinality separately by language and by source within each
+language. A canonical pair is counted once per distinct source. It also reports
+the complete 0–6 cardinality distribution, per-strategy prevalence and mean
+scores, language/source/corpus breakdowns, and pairwise model agreement.
+
+```bash
+python phase3a_strategy_detection/src/analyze_full_run.py
+```
+
+The principal answer is rendered in
+[full_analysis.md](runs/2026-08-20_three_models_phase2b_full_v1/reports/full_analysis.md);
+the underlying CSV tables are stored alongside it. These are descriptive output
+statistics rather than accuracy estimates because the full corpus has no
+verified gold strategy labels.
 
 ## Prediction fields
 

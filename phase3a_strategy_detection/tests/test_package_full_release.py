@@ -36,6 +36,9 @@ def validated_run(tmp_path: Path) -> tuple[Path, Path]:
         json.dumps(experiment), encoding="utf-8"
     )
     (run_root / "input_manifest.csv").write_text("input_file\n", encoding="utf-8")
+    reports_root = run_root / "reports"
+    reports_root.mkdir()
+    (reports_root / "full_analysis.md").write_text("# Analysis\n", encoding="utf-8")
     (model / "run_config.json").write_text(
         json.dumps({"status": "complete", "processed_pairs": 1}), encoding="utf-8"
     )
@@ -72,6 +75,7 @@ def test_package_is_deterministic_and_auditable(tmp_path: Path) -> None:
             "PHASE3A_MANIFEST.csv",
             "experiment_config.json",
             "input_manifest.csv",
+            "reports/full_analysis.md",
             "models/model_a/run_config.json",
             "models/model_a/reports/run_summary.json",
             "models/model_a/reports/validation.json",
