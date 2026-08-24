@@ -3,37 +3,25 @@
 Data preparation and cleaning pipeline for training a fine-tuned multilingual
 model that evaluates text simplifications.
 
-## Data status
+## Current complete release
 
-Current local status:
+The private prerelease
+[`v0.2.0-rc1`](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.2.0-rc1)
+contains the complete outputs of the FEATS data pipeline across 12 languages.
+Each phase is distributed as an independent ZIP with an embedded audit
+manifest.
 
-- Phase 1: 29 JSONL files, 1,454,003 pairs, 12 languages.
-- Phase 2a: 859,550 retained pairs; 594,453 removed (40.88%).
-- Phase 2b: 854,486 canonical pairs; 5,064 exact duplicate observations
-  consolidated from the Phase 2a output.
-- Phase 3a: three complete, validated prediction sets of 854,486 pairs each.
-- Phase 3b: word alignment v2 for all 854,486 pairs; 854,484 aligned and
-  two explicitly skipped for encoder length.
+| Phase | Product | Records | Download |
+|---|---|---:|---|
+| Phase 1 | Normalized source observations | 1,454,003 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase1-normalized-v0.2.0-rc1.zip) |
+| Phase 2a | Experimentally cleaned observations | 859,550 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase2a-cleaned-v0.2.0-rc1.zip) |
+| Phase 2b | Consolidated canonical pairs | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase2b-consolidated-v0.2.0-rc1.zip) |
+| Phase 3a | Strategy predictions from three models | 2,563,458 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3a-strategy-detection-v0.2.0-rc1.zip) |
+| Phase 3b | Word-alignment v2 sidecars | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3b-word-alignment-v0.2.0-rc1.zip) |
 
-The current private data prerelease is `v0.1.0-rc2`. Its three
-access-controlled assets contain the normalized observations, experimental
-cleaned observations, and 854,486 consolidated canonical pairs across 12
-languages. The derived Phase 3a and Phase 3b full outputs are published in
-`v0.2.0-rc1`.
-
-- [Phase 3a/3b release notes and assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.2.0-rc1)
-- [Phase 3a full strategy predictions (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3a-strategy-detection-v0.2.0-rc1.zip)
-- [Phase 3b full word alignment v2 (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc1/feats-phase3b-word-alignment-v0.2.0-rc1.zip)
-- [Release notes and all assets](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/tag/v0.1.0-rc2)
-- [Phase 1 normalized data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase1-normalized-v0.1.0-rc2.zip)
-- [Phase 2a cleaned data (ZIP; historical asset name)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2-cleaned-v0.1.0-rc2.zip)
-- [Phase 2b consolidated data (ZIP)](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.1.0-rc2/feats-phase2b-consolidated-v0.1.0-rc2.zip)
-
-Each ZIP embeds its corresponding manifest at the archive root.
-
-iDEM and Saaq al-Bambuu are included because this repository and its Releases
-are private and access-controlled. Their upstream copyright and reuse
-restrictions still apply; do not redistribute the assets outside the project.
+Repository access is required. Upstream reuse restrictions still apply,
+particularly to iDEM and Saaq al-Bambuu. Previous releases remain available in
+the [release history](https://github.com/kenjihilasak/feats-simplification-evaluator/releases).
 
 ## Repository structure
 
