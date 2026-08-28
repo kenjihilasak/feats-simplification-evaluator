@@ -97,6 +97,33 @@ the underlying CSV tables are stored alongside it. These are descriptive output
 statistics rather than accuracy estimates because the full corpus has no
 verified gold strategy labels.
 
+## Single-strategy gold candidates
+
+The gold_candidates group derives reviewable candidates from the completed
+three-model run. Majority voting is applied independently to each strategy:
+Qwen, E5 and XLM-R each cast a binary vote using their pinned thresholds. A
+pair is retained only when exactly one strategy receives at least two votes.
+
+Run:
+
+    python phase3a_strategy_detection/src/build_single_strategy_gold_candidates.py
+
+Validate the generated records, counts and hashes independently:
+
+    python phase3a_strategy_detection/src/validate_single_strategy_gold_candidates.py
+
+The output includes the Phase 2b texts and provenance, the selected strategy,
+vote count, supporting models, all individual model decisions/scores and a
+quality tier. Reports break candidates down by language, strategy and source.
+Generated data remain outside Git history. Model consensus makes these records
+gold **candidates**; human annotation and adjudication are required before they
+become a gold test dataset.
+
+For review prioritization, the output distinguishes exact-singleton agreement
+(at least two models predict only the winning strategy) from the broader
+label-majority-only cases, where the winning label has a majority but
+individual models may predict additional strategies.
+
 ## Prediction fields
 
 | Field | Description |
