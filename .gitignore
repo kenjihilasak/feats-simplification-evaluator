@@ -36,3 +36,7 @@ phase4a_gold_standard/runtime/
 phase4a_gold_standard/logs/*.out
 phase4a_gold_standard/logs/*.err
 phase4a_gold_standard/configs/local/
+.env
+phase4a_gold_standard/.env
+phase4a_gold_standard/backups/
+phase4a_gold_standard/railway-backups/

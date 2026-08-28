@@ -143,3 +143,22 @@ def test_cli_import_batches_large_jsonl_stream() -> None:
     )
     assert service.batch_sizes == [1000, 1000, 5]
     assert result == {"inserted": 2005, "unchanged": 0}
+
+
+def test_database_backup_is_consistent(tmp_path: Path) -> None:
+    service = AnnotationService(
+        ServiceSettings(
+            database_path=tmp_path / "annotations.sqlite3",
+            session_secret="test-secret",
+        )
+    )
+    assert service.import_tasks([task_record()]) == {"inserted": 1, "unchanged": 0}
+
+    output = tmp_path / "backups" / "annotations.sqlite3"
+    result = service.database.backup(output)
+    restored = AnnotationService(
+        ServiceSettings(database_path=output, session_secret="restored-secret")
+    )
+
+    assert result["bytes"] == output.stat().st_size
+    assert restored.database.progress()["totals"]["total"] == 1

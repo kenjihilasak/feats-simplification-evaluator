@@ -239,6 +239,26 @@ class AnnotationDatabase:
                     f"database campaign {campaign!r} does not match configured {self.campaign_id!r}"
                 )
 
+    def backup(self, output: str | Path) -> dict[str, Any]:
+        """Create a transactionally consistent SQLite backup."""
+        destination_path = Path(output)
+        if destination_path.resolve() == self.path.resolve():
+            raise ValidationError(
+                "backup output must differ from the live database"
+            )
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        with self.connect() as source:
+            destination = sqlite3.connect(destination_path)
+            try:
+                source.backup(destination)
+            finally:
+                destination.close()
+        return {
+            "database": str(self.path),
+            "output": str(destination_path),
+            "bytes": destination_path.stat().st_size,
+        }
+
     @staticmethod
     def _decode_languages(value: str | None) -> tuple[str, ...] | None:
         if value is None:

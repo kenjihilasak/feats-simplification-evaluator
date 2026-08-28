@@ -96,6 +96,11 @@ def build_parser() -> argparse.ArgumentParser:
     report = subparsers.add_parser("report", help="write the deterministic quality report")
     report.add_argument("--output", type=Path)
 
+    backup = subparsers.add_parser(
+        "backup", help="create a transactionally consistent SQLite backup"
+    )
+    backup.add_argument("--output", type=Path, required=True)
+
     subparsers.add_parser("progress", help="print administrative progress JSON")
 
     serve = subparsers.add_parser("serve", help="run the private FastAPI server")
@@ -141,6 +146,8 @@ def main(argv: list[str] | None = None) -> int:
                 build_report(rows, progress=service.database.progress())
             ) + "\n"
             _write(value, args.output)
+        elif args.command == "backup":
+            print(canonical_json(service.database.backup(args.output)))
         elif args.command == "progress":
             print(canonical_json(service.database.progress()))
         elif args.command == "serve":

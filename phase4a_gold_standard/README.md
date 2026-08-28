@@ -131,6 +131,11 @@ claim, save, submission, skip, login, and administrative action.
 
 ## Server operation
 
+For the shared external-review campaign, deploy one Railway service with one
+persistent volume. The complete setup, language import, account isolation,
+backup procedure, and Windows fallback are documented in the
+[Railway deployment runbook](deploy/railway/README.md).
+
 Use a long random session secret and HTTPS in the private deployment:
 
 ```bash
