@@ -6,6 +6,24 @@ All statistics are reported separately by model because their thresholds
 differ. A canonical pair is counted once per language and once per distinct
 Phase 2b source; a pair shared by two sources contributes once to each source.
 
+## Pairs with exactly one detected strategy, by language
+
+| Language | Pairs | multilingual_e5_large_bce | qwen2p5_7b_pairwise_qlora | xlmr_large_focal |
+|---|---:|---:|---:|---:|
+| ar | 231 | 0 | 43 | 2 |
+| ca | 727 | 368 | 161 | 94 |
+| de | 529 | 37 | 68 | 124 |
+| en | 348,520 | 63,888 | 138,322 | 96,095 |
+| es | 6,489 | 161 | 1,059 | 245 |
+| fr | 245,746 | 28,981 | 71,074 | 28,761 |
+| it | 65,332 | 26,586 | 26,335 | 37,951 |
+| ja | 35,081 | 6,979 | 22,795 | 11,797 |
+| pt-BR | 1,113 | 143 | 364 | 93 |
+| ru | 150,056 | 480 | 31,859 | 50,663 |
+| sl | 407 | 20 | 58 | 29 |
+| ur | 255 | 7 | 196 | 59 |
+| **Total** | **854,486** | **127,650** | **292,334** | **225,913** |
+
 ## Mean strategies detected per pair, by language
 
 | Language | Pairs | multilingual_e5_large_bce | qwen2p5_7b_pairwise_qlora | xlmr_large_focal |

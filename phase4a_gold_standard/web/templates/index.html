@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>FEATS Linguistic Review</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main id="login-view" class="login-view" aria-labelledby="login-heading">
+      <section class="login-card">
+        <div class="login-brand" aria-hidden="true">F</div>
+        <p class="eyebrow">FEATS · Phase 4a</p>
+        <h1 id="login-heading">Linguistic review sign in</h1>
+        <p class="login-intro">Use the reviewer account assigned to your language.</p>
+        <form id="login-form">
+          <label for="login-username">Username</label>
+          <input
+            id="login-username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            autocapitalize="none"
+            required
+          >
+          <label for="login-password">Password</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+          <p id="login-error" class="form-error" role="alert" hidden></p>
+          <button id="login-button" class="button button-primary" type="submit">Sign in</button>
+        </form>
+      </section>
+    </main>
+
+    <a class="skip-link" href="#annotation-workspace">Skip to annotation</a>
+
+    <header class="app-header" hidden>
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <div>
+          <p class="eyebrow">FEATS · Phase 4a</p>
+          <h1>Gold-standard linguistic review</h1>
+        </div>
+      </div>
+      <div class="header-status" aria-label="Session status">
+        <span id="language-badge" class="language-badge">—</span>
+        <span id="save-status" class="save-status" role="status" aria-live="polite">Ready</span>
+        <button id="shortcuts-button" class="button button-quiet" type="button" aria-haspopup="dialog">
+          Shortcuts <kbd>?</kbd>
+        </button>
+        <button id="logout-button" class="button button-quiet" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <div id="global-alert" class="global-alert" role="alert" hidden></div>
+
+    <main id="annotation-workspace" class="workspace" tabindex="-1" hidden>
+      <aside class="review-panel" aria-labelledby="review-heading">
+        <div class="progress-block">
+          <div class="progress-heading">
+            <span id="reviewer-name">Reviewer</span>
+            <span id="progress-count">0 / 0</span>
+          </div>
+          <div
+            id="progress-track"
+            class="progress-track"
+            role="progressbar"
+            aria-label="Review progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <span id="progress-fill"></span>
+          </div>
+        </div>
+
+        <section class="strategy-card" aria-labelledby="review-heading">
+          <p class="section-kicker">Candidate strategy</p>
+          <div class="strategy-title-row">
+            <span id="strategy-code" class="strategy-code">—</span>
+            <h2 id="review-heading">Loading task…</h2>
+          </div>
+          <p id="strategy-definition" class="strategy-definition"></p>
+          <details class="strategy-guide" open>
+            <summary>What to mark</summary>
+            <p id="strategy-instructions"></p>
+            <div id="strategy-example" class="strategy-example" hidden></div>
+          </details>
+        </section>
+
+        <section aria-labelledby="verdict-heading">
+          <p id="verdict-heading" class="section-kicker">Is this strategy present?</p>
+          <div id="verdict-control" class="segmented-control" role="radiogroup" aria-labelledby="verdict-heading">
+            <button type="button" role="radio" aria-checked="false" data-verdict="correct">
+              <span class="verdict-dot verdict-correct"></span>Correct <kbd>C</kbd>
+            </button>
+            <button type="button" role="radio" aria-checked="false" data-verdict="incorrect">
+              <span class="verdict-dot verdict-incorrect"></span>Incorrect <kbd>X</kbd>
+            </button>
+            <button type="button" role="radio" aria-checked="false" data-verdict="uncertain">
+              <span class="verdict-dot verdict-uncertain"></span>Uncertain <kbd>U</kbd>
+            </button>
+          </div>
+
+          <div id="correction-panel" class="correction-panel" hidden>
+            <label for="corrected-strategy">If another strategy is present</label>
+            <select id="corrected-strategy">
+              <option value="">Select a correction…</option>
+              <option value="SYN">SYN · Synonymy</option>
+              <option value="MOD">MOD · Modulation</option>
+              <option value="COMP">COMP · Compression</option>
+              <option value="EXPL">EXPL · Explanation</option>
+              <option value="SYNT">SYNT · Syntactic change</option>
+              <option value="OMIT">OMIT · Omission</option>
+              <option value="NONE">NONE · No strategy is present</option>
+              <option value="MULTIPLE">MULTIPLE · More than one strategy</option>
+              <option value="OTHER">OTHER · Different strategy</option>
+            </select>
+          </div>
+        </section>
+
+        <section aria-labelledby="evidence-heading">
+          <div class="section-heading-row">
+            <p id="evidence-heading" class="section-kicker">Evidence roles</p>
+            <button id="clear-evidence" class="text-button" type="button">Clear</button>
+          </div>
+          <div id="role-selector" class="role-selector" role="radiogroup" aria-labelledby="evidence-heading"></div>
+          <p id="role-help" class="help-text">Choose a role, then select one or more tokens.</p>
+        </section>
+
+        <section class="notes-section">
+          <label for="annotation-notes" class="section-kicker">Notes <span>(optional)</span></label>
+          <textarea id="annotation-notes" rows="3" maxlength="4000" placeholder="Record ambiguity or a linguistic observation…"></textarea>
+          <div class="character-count"><span id="notes-count">0</span>/4000</div>
+        </section>
+      </aside>
+
+      <section class="canvas-panel" aria-label="Sentence and alignment annotation">
+        <div class="task-toolbar">
+          <div class="mode-switcher" role="group" aria-label="Annotation mode">
+            <button id="evidence-mode" class="mode-button is-active" type="button" aria-pressed="true">
+              Evidence <kbd>E</kbd>
+            </button>
+            <button id="alignment-mode" class="mode-button" type="button" aria-pressed="false">
+              Edit alignments <kbd>A</kbd>
+            </button>
+          </div>
+          <p id="mode-instructions" class="mode-instructions" role="status">
+            Select tokens that provide evidence for the strategy.
+          </p>
+          <div class="zoom-controls" role="group" aria-label="Canvas zoom">
+            <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out">−</button>
+            <output id="zoom-value" for="zoom-out zoom-in">100%</output>
+            <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+
+        <div id="parse-alerts" class="parse-alerts" aria-live="polite"></div>
+
+        <div id="loading-state" class="loading-state" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Loading the next pair…</p>
+        </div>
+
+        <div id="empty-state" class="empty-state" hidden>
+          <div class="empty-icon" aria-hidden="true">✓</div>
+          <h2>Review queue complete</h2>
+          <p>There are no more assigned pairs in this queue.</p>
+          <button id="refresh-queue" class="button button-primary" type="button">Check again</button>
+        </div>
+
+        <div id="alignment-viewport" class="alignment-viewport" hidden tabindex="0" aria-label="Scrollable annotation canvas">
+          <div id="annotation-canvas" class="annotation-canvas">
+            <section class="sentence-region source-region" aria-labelledby="original-heading">
+              <div class="sentence-meta">
+                <div>
+                  <span class="sentence-label">Original</span>
+                  <h3 id="original-heading" class="visually-hidden">Original sentence</h3>
+                </div>
+                <span id="original-parse-status" class="parse-status"></span>
+              </div>
+              <svg id="original-tree" class="dependency-tree source-tree" role="img" aria-label="Original sentence dependency tree"></svg>
+              <div id="original-tokens" class="token-row source-tokens" role="group" aria-label="Original sentence tokens"></div>
+            </section>
+
+            <section id="link-region" class="link-region" aria-label="Word alignments">
+              <svg id="alignment-links" class="alignment-links" role="group" aria-label="Editable SimAlign word links"></svg>
+              <div id="alignment-empty-hint" class="alignment-empty-hint" hidden>No proposed alignments</div>
+              <p id="link-status" class="visually-hidden" aria-live="polite"></p>
+              <div class="link-legend" aria-label="Alignment link states">
+                <span><i class="legend-line unreviewed"></i>Unreviewed</span>
+                <span><i class="legend-line valid"></i>Valid</span>
+                <span><i class="legend-line invalid"></i>Invalid</span>
+                <span><i class="legend-line added"></i>Human-added</span>
+              </div>
+            </section>
+
+            <section class="sentence-region target-region" aria-labelledby="simplified-heading">
+              <div id="simplified-tokens" class="token-row target-tokens" role="group" aria-label="Simplified sentence tokens"></div>
+              <svg id="simplified-tree" class="dependency-tree target-tree" role="img" aria-label="Simplified sentence dependency tree"></svg>
+              <div class="sentence-meta sentence-meta-bottom">
+                <div>
+                  <span class="sentence-label">Simplified</span>
+                  <h3 id="simplified-heading" class="visually-hidden">Simplified sentence</h3>
+                </div>
+                <span id="simplified-parse-status" class="parse-status"></span>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <footer class="action-bar">
+          <div class="task-identity">
+            <span>Pair</span>
+            <code id="task-identity">—</code>
+          </div>
+          <div class="action-buttons">
+            <button id="skip-button" class="button button-quiet" type="button">Skip <kbd>K</kbd></button>
+            <button id="save-button" class="button button-secondary" type="button">Save draft <kbd>S</kbd></button>
+            <button id="submit-button" class="button button-primary" type="button">
+              Submit &amp; next <kbd>Ctrl ↵</kbd>
+            </button>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <dialog id="shortcuts-dialog" class="app-dialog">
+      <form method="dialog">
+        <header>
+          <h2>Keyboard shortcuts</h2>
+          <button class="dialog-close" value="close" aria-label="Close">×</button>
+        </header>
+        <dl class="shortcut-list">
+          <div><dt><kbd>C</kbd> / <kbd>X</kbd> / <kbd>U</kbd></dt><dd>Correct, incorrect, or uncertain</dd></div>
+          <div><dt><kbd>E</kbd> / <kbd>A</kbd></dt><dd>Evidence or alignment mode</dd></div>
+          <div><dt><kbd>1</kbd>–<kbd>4</kbd></dt><dd>Select an evidence role</dd></div>
+          <div><dt><kbd>S</kbd></dt><dd>Save draft</dd></div>
+          <div><dt><kbd>K</kbd></dt><dd>Skip pair</dd></div>
+          <div><dt><kbd>Ctrl</kbd> + <kbd>Enter</kbd></dt><dd>Submit and open next pair</dd></div>
+          <div><dt><kbd>Esc</kbd></dt><dd>Clear pending alignment endpoints</dd></div>
+        </dl>
+        <button class="button button-primary" value="close">Done</button>
+      </form>
+    </dialog>
+
+    <dialog id="skip-dialog" class="app-dialog">
+      <form id="skip-form" method="dialog">
+        <header>
+          <h2>Skip this pair</h2>
+          <button class="dialog-close" value="cancel" aria-label="Close">×</button>
+        </header>
+        <label for="skip-reason">Reason</label>
+        <select id="skip-reason" required>
+          <option value="">Select a reason…</option>
+          <option value="language_expertise">Outside my language expertise</option>
+          <option value="corrupt_text">Corrupt or incomplete text</option>
+          <option value="tokenization_error">Tokenization prevents review</option>
+          <option value="parse_error">Parse prevents review</option>
+          <option value="too_ambiguous">Too ambiguous to decide</option>
+          <option value="other">Other</option>
+        </select>
+        <label for="skip-notes">Details <span>(optional)</span></label>
+        <textarea id="skip-notes" rows="3" maxlength="1000"></textarea>
+        <div class="dialog-actions">
+          <button class="button button-quiet" value="cancel">Cancel</button>
+          <button id="confirm-skip" class="button button-primary" value="confirm">Skip &amp; next</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

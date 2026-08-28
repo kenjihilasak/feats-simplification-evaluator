@@ -1,0 +1,125 @@
+{
+  "schema": "feats-phase3a-single-strategy-validation-v1",
+  "candidate_id": "2026-08-26_single_strategy_majority_vote_v1",
+  "valid": true,
+  "candidate_pairs": 271395,
+  "unique_canonical_pair_ids": 271395,
+  "languages": {
+    "ar": 1,
+    "ca": 244,
+    "de": 94,
+    "en": 128114,
+    "es": 267,
+    "fr": 49490,
+    "it": 40801,
+    "ja": 26569,
+    "pt-BR": 176,
+    "ru": 25462,
+    "sl": 32,
+    "ur": 145
+  },
+  "strategies": {
+    "SYN": 121044,
+    "MOD": 6584,
+    "COMP": 10988,
+    "EXPL": 111114,
+    "SYNT": 12557,
+    "OMIT": 9108
+  },
+  "vote_strength": {
+    "2": 190309,
+    "3": 81086
+  },
+  "quality_tiers": {
+    "unanimous_exact_singleton": 10305,
+    "majority_exact_singleton": 71547,
+    "label_majority_only": 189543
+  },
+  "files": [
+    {
+      "language": "ar",
+      "file": "data/ar/single_strategy_candidates.jsonl",
+      "pairs": 1,
+      "bytes": 2880,
+      "sha256": "004e1a64c0446d59ad17d1d5d8ae54e7810f181396bc6edf61f5e0443487d18f"
+    },
+    {
+      "language": "ca",
+      "file": "data/ca/single_strategy_candidates.jsonl",
+      "pairs": 244,
+      "bytes": 640128,
+      "sha256": "14456758adcf7d702c2a5ef2deb6d529158ee17425efd903f66daefc6ceed023"
+    },
+    {
+      "language": "de",
+      "file": "data/de/single_strategy_candidates.jsonl",
+      "pairs": 94,
+      "bytes": 226862,
+      "sha256": "181f60ec22c53ffa5a92d965470fb99dbadee83e184e574c42c5e98a4b1f58d5"
+    },
+    {
+      "language": "en",
+      "file": "data/en/single_strategy_candidates.jsonl",
+      "pairs": 128114,
+      "bytes": 307093765,
+      "sha256": "d052af4b0b2a6d86d7d35fdffa68c4802c8c6dfb0f3ad18da940d4f0e1301c44"
+    },
+    {
+      "language": "es",
+      "file": "data/es/single_strategy_candidates.jsonl",
+      "pairs": 267,
+      "bytes": 614940,
+      "sha256": "2796826946096ce2c133ee8ef9c57a1adf5b5733eb0f9a7586a238cfe31e91e8"
+    },
+    {
+      "language": "fr",
+      "file": "data/fr/single_strategy_candidates.jsonl",
+      "pairs": 49490,
+      "bytes": 118321295,
+      "sha256": "9705dad535093d5ee17b2f82b5070cfed894a94e7ec756a3ce2effc5b2ef824d"
+    },
+    {
+      "language": "it",
+      "file": "data/it/single_strategy_candidates.jsonl",
+      "pairs": 40801,
+      "bytes": 93153929,
+      "sha256": "1a83edd33f92936f084cba49fbfff8a9edec7fc8ea2b00a66a572cead47e784b"
+    },
+    {
+      "language": "ja",
+      "file": "data/ja/single_strategy_candidates.jsonl",
+      "pairs": 26569,
+      "bytes": 62195760,
+      "sha256": "9d1b88d64496d9073f0f168ca33e4970f7b866a142d347c1ca4cdb5a0f332920"
+    },
+    {
+      "language": "pt-BR",
+      "file": "data/pt-BR/single_strategy_candidates.jsonl",
+      "pairs": 176,
+      "bytes": 447935,
+      "sha256": "c3688e78c27101ecbfcdb1a7c0a637f9c015ff8969aeb5c567b18a65b7aa2b94"
+    },
+    {
+      "language": "ru",
+      "file": "data/ru/single_strategy_candidates.jsonl",
+      "pairs": 25462,
+      "bytes": 63462110,
+      "sha256": "eed2d7b3e07f817e361585705f4d28182cd5b5c7f498d1a94b82af3adca966e1"
+    },
+    {
+      "language": "sl",
+      "file": "data/sl/single_strategy_candidates.jsonl",
+      "pairs": 32,
+      "bytes": 72790,
+      "sha256": "c13b932eb0db6aa442cbd0305896601f92c7fa46f19af083d88f33f08fce966b"
+    },
+    {
+      "language": "ur",
+      "file": "data/ur/single_strategy_candidates.jsonl",
+      "pairs": 145,
+      "bytes": 334477,
+      "sha256": "918bea1f0299134c7664d5ec3c5fa3bdee250a89977e6a75343a04211c9a96b2"
+    }
+  ],
+  "errors": []
+}

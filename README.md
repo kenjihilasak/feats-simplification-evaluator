@@ -19,6 +19,10 @@ manifest.
 | [Phase 3a](phase3a_strategy_detection/README.md) | Strategy predictions and full analysis | 2,563,458 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase3a-strategy-detection-v0.2.0-rc2.zip) |
 | [Phase 3b](phase3b_word_alignment/README.md) | Word-alignment v2 sidecars | 854,486 | [ZIP](https://github.com/kenjihilasak/feats-simplification-evaluator/releases/download/v0.2.0-rc2/feats-phase3b-word-alignment-v0.2.0-rc2.zip) |
 
+Phase 4a is active work and is not part of this release: its validated
+271,395-pair pool is a candidate for human review, not yet a gold-standard
+product.
+
 Repository access is required. Upstream reuse restrictions still apply,
 particularly to iDEM and Saaq al-Bambuu. Previous releases remain available in
 the [release history](https://github.com/kenjihilasak/feats-simplification-evaluator/releases).
@@ -66,6 +70,15 @@ feats-simplification-evaluator/
 │   ├── configs/                      Pinned smoke/full v2 configurations
 │   ├── jobs/                         Environment and Slurm array scripts
 │   └── tests/                        Model-independent contract tests
+├── phase4a_gold_standard/
+│   ├── README.md                     Pool, syntax, server, and runbook
+│   ├── ANNOTATION_GUIDE.md            Human linguistic protocol
+│   ├── src/                          Pool and Stanza UD preparation
+│   ├── backend/                      Private API, SQLite audit, exports/reports
+│   ├── web/                          Standalone interactive review UI
+│   ├── configs/                      Full-pool and 12-language UD pins
+│   ├── jobs/                         Environment/download/GPU syntax jobs
+│   └── tests/                        Data, syntax, and service contract tests
 ├── metadata/
 │   ├── inventories/                  Source and conversion inventories
 │   └── conversion_reports/           Phase 1 validation reports
@@ -142,6 +155,27 @@ spaCy tokenizers for the remaining languages. The sidecars preserve exact
 character offsets and orthographic-parent mappings so they can feed FEATS
 feature construction or edit-operation models. See
 `phase3b_word_alignment/README.md` for the output contract and run results.
+
+## Phase 4a gold-standard human validation
+
+Phase 4a joins the Phase 3a single-strategy majority-vote candidates with the
+Phase 3b v2 word alignments. The built and validated primary pool has 271,395
+tasks across all 12 languages, including 128,114 English, 40,801 Italian,
+25,462 Russian, 267 Spanish, and one Arabic primary candidate. Canonical and
+spreadsheet-safe CSVs are split by language.
+
+The standalone private UI presents dependency trees, source/target tokens, and
+SimAlign links. Reviewers judge the strategy, select evidence words, validate
+or add word links, and produce auditable reports with word/POS/dependency and
+alignment metrics. Stanza UD runs in strict pretokenized mode with dedicated
+PADT, GSD, SSJ, and UDTB models for Arabic, Japanese, Slovenian, and Urdu; it
+never falls back to an English parser.
+
+Four named reviewers will each be assigned a different language from the
+priority set `en, es, it, ru, ar`. The exact four assignments remain private
+deployment configuration. See [the Phase 4a runbook](phase4a_gold_standard/README.md)
+and [annotation guide](phase4a_gold_standard/ANNOTATION_GUIDE.md).
+
 
 ## Data sources and reuse
 

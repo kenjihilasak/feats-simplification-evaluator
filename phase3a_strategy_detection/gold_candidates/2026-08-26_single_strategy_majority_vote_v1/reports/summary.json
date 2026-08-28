@@ -1,0 +1,418 @@
+{
+  "schema": "feats-phase3a-single-strategy-summary-v1",
+  "candidate_id": "2026-08-26_single_strategy_majority_vote_v1",
+  "candidate_status": "unreviewed_model_consensus",
+  "source_experiment_id": "2026-08-20_three_models_phase2b_full_v1",
+  "source_experiment_config": "phase3a_strategy_detection/configs/experiments/three_models_phase2b_full_v1.json",
+  "required_models": [
+    "multilingual_e5_large_bce",
+    "qwen2p5_7b_pairwise_qlora",
+    "xlmr_large_focal"
+  ],
+  "model_provenance": {
+    "multilingual_e5_large_bce": {
+      "model_id": "hannah-khallaf/e2r-strategy-multilingual-e5-large-bce",
+      "revision": "7b6efa2a1a23e33335bc523ff582042b850490b3",
+      "thresholds": {
+        "Synonymy": 0.23,
+        "Modulation": 0.23,
+        "Compression": 0.23,
+        "Explanation": 0.23,
+        "Syntactic Change": 0.23,
+        "Omission": 0.23
+      },
+      "model_config_sha256": "508b0b76847321a118cd36e051e188db37e955399a004e5d98626f2c9373c3a9",
+      "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674"
+    },
+    "qwen2p5_7b_pairwise_qlora": {
+      "model_id": "hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora",
+      "revision": "4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d",
+      "base_model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "base_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "thresholds": {
+        "Synonymy": 0.63,
+        "Modulation": 0.54,
+        "Compression": 0.09,
+        "Explanation": 0.4,
+        "Syntactic Change": 0.2,
+        "Omission": 0.32
+      },
+      "taxonomy_fingerprint": "1d501c0e1437f32d0b498d39a831c9ecda4afa5b3a0e28cab0431bb1cb48e05d",
+      "model_config_sha256": "c4f1f58d2e875551c46f75e18959e717729b1579f501246b286c04059b639e72",
+      "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674"
+    },
+    "xlmr_large_focal": {
+      "model_id": "hannah-khallaf/e2r-strategy-xlmr-large-focal",
+      "revision": "15711217cb45e6c23effcdd5e55cc5b42b11613a",
+      "thresholds": {
+        "Synonymy": 0.46,
+        "Modulation": 0.46,
+        "Compression": 0.46,
+        "Explanation": 0.46,
+        "Syntactic Change": 0.46,
+        "Omission": 0.46
+      },
+      "model_config_sha256": "f15ce93d26b0645ebc929a059c2b3907b23106f85c4e47dfd589879d09179391",
+      "input_manifest_sha256": "d4747b992ff6bb3c9a257b1da0581013fe0144b07738edd997010315f86bf674"
+    }
+  },
+  "voting": {
+    "unit": "strategy_label",
+    "minimum_votes": 2,
+    "required_consensus_cardinality": 1
+  },
+  "selection_rule": "label_majority_2_of_3_and_consensus_cardinality_1",
+  "input_pairs": 854486,
+  "candidate_pairs": 271395,
+  "candidate_pct": 31.761199130237358,
+  "excluded": {
+    "no_majority_pairs": 63386,
+    "multiple_majority_pairs": 519705
+  },
+  "vote_strength": {
+    "majority_2_votes_pairs": 190309,
+    "unanimous_3_votes_pairs": 81086
+  },
+  "quality_tiers": {
+    "unanimous_exact_singleton": 10305,
+    "majority_exact_singleton": 71547,
+    "label_majority_only": 189543
+  },
+  "languages": [
+    {
+      "language": "ar",
+      "input_pairs": 231,
+      "candidate_pairs": 1,
+      "candidate_pct": 0.4329004329004329,
+      "no_majority_pairs": 0,
+      "multiple_majority_pairs": 230,
+      "majority_2_votes_pairs": 1,
+      "unanimous_3_votes_pairs": 0,
+      "unanimous_exact_singleton_pairs": 0,
+      "majority_exact_singleton_pairs": 0,
+      "label_majority_only_pairs": 1
+    },
+    {
+      "language": "ca",
+      "input_pairs": 727,
+      "candidate_pairs": 244,
+      "candidate_pct": 33.56258596973865,
+      "no_majority_pairs": 6,
+      "multiple_majority_pairs": 477,
+      "majority_2_votes_pairs": 83,
+      "unanimous_3_votes_pairs": 161,
+      "unanimous_exact_singleton_pairs": 22,
+      "majority_exact_singleton_pairs": 107,
+      "label_majority_only_pairs": 115
+    },
+    {
+      "language": "de",
+      "input_pairs": 529,
+      "candidate_pairs": 94,
+      "candidate_pct": 17.76937618147448,
+      "no_majority_pairs": 22,
+      "multiple_majority_pairs": 413,
+      "majority_2_votes_pairs": 61,
+      "unanimous_3_votes_pairs": 33,
+      "unanimous_exact_singleton_pairs": 0,
+      "majority_exact_singleton_pairs": 19,
+      "label_majority_only_pairs": 75
+    },
+    {
+      "language": "en",
+      "input_pairs": 348520,
+      "candidate_pairs": 128114,
+      "candidate_pct": 36.75943991736486,
+      "no_majority_pairs": 41997,
+      "multiple_majority_pairs": 178409,
+      "majority_2_votes_pairs": 102216,
+      "unanimous_3_votes_pairs": 25898,
+      "unanimous_exact_singleton_pairs": 2327,
+      "majority_exact_singleton_pairs": 29715,
+      "label_majority_only_pairs": 96072
+    },
+    {
+      "language": "es",
+      "input_pairs": 6489,
+      "candidate_pairs": 267,
+      "candidate_pct": 4.11465557096625,
+      "no_majority_pairs": 92,
+      "multiple_majority_pairs": 6130,
+      "majority_2_votes_pairs": 142,
+      "unanimous_3_votes_pairs": 125,
+      "unanimous_exact_singleton_pairs": 5,
+      "majority_exact_singleton_pairs": 79,
+      "label_majority_only_pairs": 183
+    },
+    {
+      "language": "fr",
+      "input_pairs": 245746,
+      "candidate_pairs": 49490,
+      "candidate_pct": 20.13867977505229,
+      "no_majority_pairs": 10849,
+      "multiple_majority_pairs": 185407,
+      "majority_2_votes_pairs": 33664,
+      "unanimous_3_votes_pairs": 15826,
+      "unanimous_exact_singleton_pairs": 697,
+      "majority_exact_singleton_pairs": 10620,
+      "label_majority_only_pairs": 38173
+    },
+    {
+      "language": "it",
+      "input_pairs": 65332,
+      "candidate_pairs": 40801,
+      "candidate_pct": 62.451784730300616,
+      "no_majority_pairs": 771,
+      "multiple_majority_pairs": 23760,
+      "majority_2_votes_pairs": 16758,
+      "unanimous_3_votes_pairs": 24043,
+      "unanimous_exact_singleton_pairs": 6415,
+      "majority_exact_singleton_pairs": 19973,
+      "label_majority_only_pairs": 14413
+    },
+    {
+      "language": "ja",
+      "input_pairs": 35081,
+      "candidate_pairs": 26569,
+      "candidate_pct": 75.73615347339016,
+      "no_majority_pairs": 5238,
+      "multiple_majority_pairs": 3274,
+      "majority_2_votes_pairs": 18718,
+      "unanimous_3_votes_pairs": 7851,
+      "unanimous_exact_singleton_pairs": 813,
+      "majority_exact_singleton_pairs": 7470,
+      "label_majority_only_pairs": 18286
+    },
+    {
+      "language": "pt-BR",
+      "input_pairs": 1113,
+      "candidate_pairs": 176,
+      "candidate_pct": 15.813117699910153,
+      "no_majority_pairs": 22,
+      "multiple_majority_pairs": 915,
+      "majority_2_votes_pairs": 101,
+      "unanimous_3_votes_pairs": 75,
+      "unanimous_exact_singleton_pairs": 4,
+      "majority_exact_singleton_pairs": 69,
+      "label_majority_only_pairs": 103
+    },
+    {
+      "language": "ru",
+      "input_pairs": 150056,
+      "candidate_pairs": 25462,
+      "candidate_pct": 16.96833182278616,
+      "no_majority_pairs": 4383,
+      "multiple_majority_pairs": 120211,
+      "majority_2_votes_pairs": 18439,
+      "unanimous_3_votes_pairs": 7023,
+      "unanimous_exact_singleton_pairs": 18,
+      "majority_exact_singleton_pairs": 3454,
+      "label_majority_only_pairs": 21990
+    },
+    {
+      "language": "sl",
+      "input_pairs": 407,
+      "candidate_pairs": 32,
+      "candidate_pct": 7.862407862407863,
+      "no_majority_pairs": 5,
+      "multiple_majority_pairs": 370,
+      "majority_2_votes_pairs": 14,
+      "unanimous_3_votes_pairs": 18,
+      "unanimous_exact_singleton_pairs": 2,
+      "majority_exact_singleton_pairs": 12,
+      "label_majority_only_pairs": 18
+    },
+    {
+      "language": "ur",
+      "input_pairs": 255,
+      "candidate_pairs": 145,
+      "candidate_pct": 56.86274509803921,
+      "no_majority_pairs": 1,
+      "multiple_majority_pairs": 109,
+      "majority_2_votes_pairs": 112,
+      "unanimous_3_votes_pairs": 33,
+      "unanimous_exact_singleton_pairs": 2,
+      "majority_exact_singleton_pairs": 29,
+      "label_majority_only_pairs": 114
+    }
+  ],
+  "strategies": [
+    {
+      "strategy_code": "SYN",
+      "strategy_label": "Synonymy",
+      "candidate_pairs": 121044,
+      "candidate_pct": 44.60067429392583,
+      "majority_2_votes_pairs": 73790,
+      "unanimous_3_votes_pairs": 47254,
+      "unanimous_exact_singleton_pairs": 7486,
+      "majority_exact_singleton_pairs": 37914,
+      "label_majority_only_pairs": 75644
+    },
+    {
+      "strategy_code": "MOD",
+      "strategy_label": "Modulation",
+      "candidate_pairs": 6584,
+      "candidate_pct": 2.425984266475064,
+      "majority_2_votes_pairs": 5622,
+      "unanimous_3_votes_pairs": 962,
+      "unanimous_exact_singleton_pairs": 5,
+      "majority_exact_singleton_pairs": 525,
+      "label_majority_only_pairs": 6054
+    },
+    {
+      "strategy_code": "COMP",
+      "strategy_label": "Compression",
+      "candidate_pairs": 10988,
+      "candidate_pct": 4.048711287975092,
+      "majority_2_votes_pairs": 10807,
+      "unanimous_3_votes_pairs": 181,
+      "unanimous_exact_singleton_pairs": 0,
+      "majority_exact_singleton_pairs": 54,
+      "label_majority_only_pairs": 10934
+    },
+    {
+      "strategy_code": "EXPL",
+      "strategy_label": "Explanation",
+      "candidate_pairs": 111114,
+      "candidate_pct": 40.94180069640192,
+      "majority_2_votes_pairs": 80615,
+      "unanimous_3_votes_pairs": 30499,
+      "unanimous_exact_singleton_pairs": 2802,
+      "majority_exact_singleton_pairs": 31746,
+      "label_majority_only_pairs": 76566
+    },
+    {
+      "strategy_code": "SYNT",
+      "strategy_label": "Syntactic Change",
+      "candidate_pairs": 12557,
+      "candidate_pct": 4.6268354243814365,
+      "majority_2_votes_pairs": 11267,
+      "unanimous_3_votes_pairs": 1290,
+      "unanimous_exact_singleton_pairs": 10,
+      "majority_exact_singleton_pairs": 922,
+      "label_majority_only_pairs": 11625
+    },
+    {
+      "strategy_code": "OMIT",
+      "strategy_label": "Omission",
+      "candidate_pairs": 9108,
+      "candidate_pct": 3.3559940308406566,
+      "majority_2_votes_pairs": 8208,
+      "unanimous_3_votes_pairs": 900,
+      "unanimous_exact_singleton_pairs": 2,
+      "majority_exact_singleton_pairs": 386,
+      "label_majority_only_pairs": 8720
+    }
+  ],
+  "manifest": [
+    {
+      "language": "ar",
+      "input_file": "ar/feats_consolidated.jsonl",
+      "input_pairs": 231,
+      "candidate_pairs": 1,
+      "output_file": "data/ar/single_strategy_candidates.jsonl",
+      "bytes": 2880,
+      "sha256": "004e1a64c0446d59ad17d1d5d8ae54e7810f181396bc6edf61f5e0443487d18f"
+    },
+    {
+      "language": "ca",
+      "input_file": "ca/feats_consolidated.jsonl",
+      "input_pairs": 727,
+      "candidate_pairs": 244,
+      "output_file": "data/ca/single_strategy_candidates.jsonl",
+      "bytes": 640128,
+      "sha256": "14456758adcf7d702c2a5ef2deb6d529158ee17425efd903f66daefc6ceed023"
+    },
+    {
+      "language": "de",
+      "input_file": "de/feats_consolidated.jsonl",
+      "input_pairs": 529,
+      "candidate_pairs": 94,
+      "output_file": "data/de/single_strategy_candidates.jsonl",
+      "bytes": 226862,
+      "sha256": "181f60ec22c53ffa5a92d965470fb99dbadee83e184e574c42c5e98a4b1f58d5"
+    },
+    {
+      "language": "en",
+      "input_file": "en/feats_consolidated.jsonl",
+      "input_pairs": 348520,
+      "candidate_pairs": 128114,
+      "output_file": "data/en/single_strategy_candidates.jsonl",
+      "bytes": 307093765,
+      "sha256": "d052af4b0b2a6d86d7d35fdffa68c4802c8c6dfb0f3ad18da940d4f0e1301c44"
+    },
+    {
+      "language": "es",
+      "input_file": "es/feats_consolidated.jsonl",
+      "input_pairs": 6489,
+      "candidate_pairs": 267,
+      "output_file": "data/es/single_strategy_candidates.jsonl",
+      "bytes": 614940,
+      "sha256": "2796826946096ce2c133ee8ef9c57a1adf5b5733eb0f9a7586a238cfe31e91e8"
+    },
+    {
+      "language": "fr",
+      "input_file": "fr/feats_consolidated.jsonl",
+      "input_pairs": 245746,
+      "candidate_pairs": 49490,
+      "output_file": "data/fr/single_strategy_candidates.jsonl",
+      "bytes": 118321295,
+      "sha256": "9705dad535093d5ee17b2f82b5070cfed894a94e7ec756a3ce2effc5b2ef824d"
+    },
+    {
+      "language": "it",
+      "input_file": "it/feats_consolidated.jsonl",
+      "input_pairs": 65332,
+      "candidate_pairs": 40801,
+      "output_file": "data/it/single_strategy_candidates.jsonl",
+      "bytes": 93153929,
+      "sha256": "1a83edd33f92936f084cba49fbfff8a9edec7fc8ea2b00a66a572cead47e784b"
+    },
+    {
+      "language": "ja",
+      "input_file": "ja/feats_consolidated.jsonl",
+      "input_pairs": 35081,
+      "candidate_pairs": 26569,
+      "output_file": "data/ja/single_strategy_candidates.jsonl",
+      "bytes": 62195760,
+      "sha256": "9d1b88d64496d9073f0f168ca33e4970f7b866a142d347c1ca4cdb5a0f332920"
+    },
+    {
+      "language": "pt-BR",
+      "input_file": "pt-BR/feats_consolidated.jsonl",
+      "input_pairs": 1113,
+      "candidate_pairs": 176,
+      "output_file": "data/pt-BR/single_strategy_candidates.jsonl",
+      "bytes": 447935,
+      "sha256": "c3688e78c27101ecbfcdb1a7c0a637f9c015ff8969aeb5c567b18a65b7aa2b94"
+    },
+    {
+      "language": "ru",
+      "input_file": "ru/feats_consolidated.jsonl",
+      "input_pairs": 150056,
+      "candidate_pairs": 25462,
+      "output_file": "data/ru/single_strategy_candidates.jsonl",
+      "bytes": 63462110,
+      "sha256": "eed2d7b3e07f817e361585705f4d28182cd5b5c7f498d1a94b82af3adca966e1"
+    },
+    {
+      "language": "sl",
+      "input_file": "sl/feats_consolidated.jsonl",
+      "input_pairs": 407,
+      "candidate_pairs": 32,
+      "output_file": "data/sl/single_strategy_candidates.jsonl",
+      "bytes": 72790,
+      "sha256": "c13b932eb0db6aa442cbd0305896601f92c7fa46f19af083d88f33f08fce966b"
+    },
+    {
+      "language": "ur",
+      "input_file": "ur/feats_consolidated.jsonl",
+      "input_pairs": 255,
+      "candidate_pairs": 145,
+      "output_file": "data/ur/single_strategy_candidates.jsonl",
+      "bytes": 334477,
+      "sha256": "918bea1f0299134c7664d5ec3c5fa3bdee250a89977e6a75343a04211c9a96b2"
+    }
+  ],
+  "human_validation_required": true
+}

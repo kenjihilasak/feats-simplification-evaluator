@@ -1,0 +1,51 @@
+language,strategy_code,strategy_label,candidate_pairs,majority_2_votes_pairs,unanimous_3_votes_pairs,unanimous_exact_singleton_pairs,majority_exact_singleton_pairs,label_majority_only_pairs
+ar,OMIT,Omission,1,1,0,0,0,1
+ca,EXPL,Explanation,1,1,0,0,0,1
+ca,MOD,Modulation,1,1,0,0,0,1
+ca,SYN,Synonymy,242,81,161,22,107,113
+de,COMP,Compression,4,4,0,0,0,4
+de,EXPL,Explanation,1,1,0,0,0,1
+de,MOD,Modulation,32,15,17,0,7,25
+de,OMIT,Omission,6,6,0,0,0,6
+de,SYN,Synonymy,51,35,16,0,12,39
+en,COMP,Compression,4171,4080,91,0,38,4133
+en,EXPL,Explanation,85146,61871,23275,2307,25685,57154
+en,MOD,Modulation,2746,2569,177,0,35,2711
+en,OMIT,Omission,7113,6236,877,2,352,6759
+en,SYN,Synonymy,17505,17251,254,8,2712,14785
+en,SYNT,Syntactic Change,11433,10209,1224,10,893,10530
+es,EXPL,Explanation,12,10,2,0,4,8
+es,MOD,Modulation,194,84,110,5,58,131
+es,SYN,Synonymy,61,48,13,0,17,44
+fr,COMP,Compression,1306,1224,82,0,9,1297
+fr,EXPL,Explanation,24964,17778,7186,495,5977,18492
+fr,MOD,Modulation,330,304,26,0,30,300
+fr,OMIT,Omission,717,703,14,0,26,691
+fr,SYN,Synonymy,21100,12648,8452,202,4549,16349
+fr,SYNT,Syntactic Change,1073,1007,66,0,29,1044
+it,COMP,Compression,2,2,0,0,0,2
+it,EXPL,Explanation,25,21,4,0,9,16
+it,MOD,Modulation,120,113,7,0,27,93
+it,OMIT,Omission,52,51,1,0,0,52
+it,SYN,Synonymy,40602,16571,24031,6415,19937,14250
+ja,COMP,Compression,176,176,0,0,2,174
+ja,EXPL,Explanation,94,90,4,0,59,35
+ja,MOD,Modulation,331,313,18,0,47,284
+ja,OMIT,Omission,30,30,0,0,0,30
+ja,SYN,Synonymy,25938,18109,7829,813,7362,17763
+pt-BR,EXPL,Explanation,2,2,0,0,0,2
+pt-BR,MOD,Modulation,12,7,5,0,1,11
+pt-BR,OMIT,Omission,1,1,0,0,0,1
+pt-BR,SYN,Synonymy,159,89,70,4,68,87
+pt-BR,SYNT,Syntactic Change,2,2,0,0,0,2
+ru,COMP,Compression,5325,5318,7,0,4,5321
+ru,EXPL,Explanation,869,841,28,0,12,857
+ru,MOD,Modulation,2817,2215,602,0,320,2497
+ru,OMIT,Omission,1187,1179,8,0,8,1179
+ru,SYN,Synonymy,15215,8837,6378,18,3110,12087
+ru,SYNT,Syntactic Change,49,49,0,0,0,49
+sl,OMIT,Omission,1,1,0,0,0,1
+sl,SYN,Synonymy,31,13,18,2,12,17
+ur,COMP,Compression,4,3,1,0,1,3
+ur,MOD,Modulation,1,1,0,0,0,1
+ur,SYN,Synonymy,140,108,32,2,28,110

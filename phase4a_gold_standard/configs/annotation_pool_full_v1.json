@@ -1,0 +1,40 @@
+{
+  "schema": "feats-phase4a-annotation-pool-config-v1",
+  "pool_id": "2026-08-27_single_strategy_full_v1",
+  "pool_type": "primary_single_strategy_majority_vote",
+  "output_root": "phase4a_gold_standard/data",
+  "candidate_root": "phase3a_strategy_detection/gold_candidates/2026-08-26_single_strategy_majority_vote_v1",
+  "alignment_root": "phase3b_word_alignment/runs/2026-08-23_simalign_xlmr_large_itermax_full_v2",
+  "languages": [
+    "ar",
+    "ca",
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "pt-BR",
+    "ru",
+    "sl",
+    "ur"
+  ],
+  "expected_counts": {
+    "ar": 1,
+    "ca": 244,
+    "de": 94,
+    "en": 128114,
+    "es": 267,
+    "fr": 49490,
+    "it": 40801,
+    "ja": 26569,
+    "pt-BR": 176,
+    "ru": 25462,
+    "sl": 32,
+    "ur": 145
+  },
+  "expected_total": 271395,
+  "require_12_languages": true,
+  "queue_seed": "feats-phase4a-primary-v1",
+  "spreadsheet_safe_export": true
+}

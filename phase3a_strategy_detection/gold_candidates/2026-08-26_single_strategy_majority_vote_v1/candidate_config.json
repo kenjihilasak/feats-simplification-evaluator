@@ -1,0 +1,16 @@
+{
+  "schema": "feats-phase3a-gold-candidate-config-v1",
+  "candidate_id": "2026-08-26_single_strategy_majority_vote_v1",
+  "source_experiment_config": "phase3a_strategy_detection/configs/experiments/three_models_phase2b_full_v1.json",
+  "required_models": [
+    "multilingual_e5_large_bce",
+    "qwen2p5_7b_pairwise_qlora",
+    "xlmr_large_focal"
+  ],
+  "voting": {
+    "unit": "strategy_label",
+    "minimum_votes": 2,
+    "required_consensus_cardinality": 1
+  },
+  "output_root": "phase3a_strategy_detection/gold_candidates"
+}

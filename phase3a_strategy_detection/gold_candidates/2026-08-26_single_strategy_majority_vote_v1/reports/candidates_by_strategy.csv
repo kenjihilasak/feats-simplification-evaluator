@@ -1,0 +1,7 @@
+strategy_code,strategy_label,candidate_pairs,candidate_pct,majority_2_votes_pairs,unanimous_3_votes_pairs,unanimous_exact_singleton_pairs,majority_exact_singleton_pairs,label_majority_only_pairs
+SYN,Synonymy,121044,44.60067429392583,73790,47254,7486,37914,75644
+MOD,Modulation,6584,2.425984266475064,5622,962,5,525,6054
+COMP,Compression,10988,4.048711287975092,10807,181,0,54,10934
+EXPL,Explanation,111114,40.94180069640192,80615,30499,2802,31746,76566
+SYNT,Syntactic Change,12557,4.6268354243814365,11267,1290,10,922,11625
+OMIT,Omission,9108,3.3559940308406566,8208,900,2,386,8720

@@ -17,6 +17,7 @@ phase2a_cleaning/runs/*/decisions/
 phase2a_cleaning/runs/*/cleaned/
 phase2b_consolidation/data/
 .venv-phase3/
+.venv-phase4a/
 phase3a_strategy_detection/logs/*.out
 phase3a_strategy_detection/logs/*.err
 phase3a_strategy_detection/runs/*_smoke_*/
@@ -25,3 +26,13 @@ phase3a_strategy_detection/runs/*/shards/
 phase3a_strategy_detection/runs/*/models/*/predictions/
 phase3a_strategy_detection/runs/*/models/*/shards/
 phase3a_strategy_detection/samples/
+phase3a_strategy_detection/gold_candidates/*/data/
+phase4a_gold_standard/cache/
+phase4a_gold_standard/data/
+phase4a_gold_standard/exports/
+phase4a_gold_standard/runs/
+phase4a_gold_standard/state/
+phase4a_gold_standard/runtime/
+phase4a_gold_standard/logs/*.out
+phase4a_gold_standard/logs/*.err
+phase4a_gold_standard/configs/local/

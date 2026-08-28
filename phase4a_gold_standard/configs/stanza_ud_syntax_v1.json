@@ -1,0 +1,122 @@
+{
+  "schema": "feats-phase4a-stanza-ud-config-v1",
+  "syntax_id": "2026-08-27_stanza_ud_full_v1",
+  "payload_root": "phase4a_gold_standard/data/2026-08-27_single_strategy_full_v1",
+  "output_root": "phase4a_gold_standard/runs",
+  "model_dir": "phase4a_gold_standard/cache/stanza",
+  "stanza_version": "1.10.1",
+  "resources_version": "1.10.0",
+  "use_gpu": true,
+  "selected_languages": null,
+  "split_sentences": true,
+  "languages": {
+    "ar": {
+      "stanza_language": "ar",
+      "packages": {
+        "tokenize": "padt",
+        "lemma": "padt_nocharlm",
+        "pos": "padt_nocharlm",
+        "depparse": "padt_nocharlm"
+      }
+    },
+    "ca": {
+      "stanza_language": "ca",
+      "packages": {
+        "tokenize": "ancora",
+        "lemma": "ancora_nocharlm",
+        "pos": "ancora_nocharlm",
+        "depparse": "ancora_nocharlm"
+      }
+    },
+    "de": {
+      "stanza_language": "de",
+      "packages": {
+        "tokenize": "combined",
+        "lemma": "combined_nocharlm",
+        "pos": "combined_nocharlm",
+        "depparse": "combined_nocharlm"
+      }
+    },
+    "en": {
+      "stanza_language": "en",
+      "packages": {
+        "tokenize": "combined",
+        "lemma": "combined_nocharlm",
+        "pos": "combined_nocharlm",
+        "depparse": "combined_nocharlm"
+      }
+    },
+    "es": {
+      "stanza_language": "es",
+      "packages": {
+        "tokenize": "combined",
+        "lemma": "combined_nocharlm",
+        "pos": "combined_nocharlm",
+        "depparse": "combined_nocharlm"
+      }
+    },
+    "fr": {
+      "stanza_language": "fr",
+      "packages": {
+        "tokenize": "combined",
+        "lemma": "combined_nocharlm",
+        "pos": "combined_nocharlm",
+        "depparse": "combined_nocharlm"
+      }
+    },
+    "it": {
+      "stanza_language": "it",
+      "packages": {
+        "tokenize": "combined",
+        "lemma": "combined_nocharlm",
+        "pos": "combined_nocharlm",
+        "depparse": "combined_nocharlm"
+      }
+    },
+    "ja": {
+      "stanza_language": "ja",
+      "packages": {
+        "tokenize": "gsd",
+        "lemma": "gsd_nocharlm",
+        "pos": "gsd_nocharlm",
+        "depparse": "gsd_nocharlm"
+      }
+    },
+    "pt-BR": {
+      "stanza_language": "pt",
+      "packages": {
+        "tokenize": "bosque",
+        "lemma": "bosque_nocharlm",
+        "pos": "bosque_nocharlm",
+        "depparse": "bosque_nocharlm"
+      }
+    },
+    "ru": {
+      "stanza_language": "ru",
+      "packages": {
+        "tokenize": "syntagrus",
+        "lemma": "syntagrus_nocharlm",
+        "pos": "syntagrus_nocharlm",
+        "depparse": "syntagrus_nocharlm"
+      }
+    },
+    "sl": {
+      "stanza_language": "sl",
+      "packages": {
+        "tokenize": "ssj",
+        "lemma": "ssj_nocharlm",
+        "pos": "ssj_nocharlm",
+        "depparse": "ssj_nocharlm"
+      }
+    },
+    "ur": {
+      "stanza_language": "ur",
+      "packages": {
+        "tokenize": "udtb",
+        "lemma": "udtb_nocharlm",
+        "pos": "udtb_nocharlm",
+        "depparse": "udtb_nocharlm"
+      }
+    }
+  }
+}

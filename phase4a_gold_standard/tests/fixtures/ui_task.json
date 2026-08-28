@@ -1,0 +1,43 @@
+{
+  "schema": "feats-phase4a-annotation-task-v1",
+  "task_id": "review:en:syn:ui-smoke",
+  "review_task_id": "review:en:syn:ui-smoke",
+  "canonical_pair_id": "pair:en:ui-smoke",
+  "language": "en",
+  "sources": ["Phase 4a UI smoke fixture"],
+  "source_text": "The physician examined the child.",
+  "target_text": "The doctor examined the child.",
+  "candidate_strategy": "SYN",
+  "source_tokens": [
+    {"index": 0, "text": "The", "start": 0, "end": 3, "orthographic_parent_index": 0, "sentence_id": 0, "sentence_token_index": 0, "lemma": "the", "upos": "DET", "xpos": "DT", "feats": {"Definite": "Def", "PronType": "Art"}, "head_index": 1, "deprel": "det", "parse_status": "parsed"},
+    {"index": 1, "text": "physician", "start": 4, "end": 13, "orthographic_parent_index": 1, "sentence_id": 0, "sentence_token_index": 1, "lemma": "physician", "upos": "NOUN", "xpos": "NN", "feats": {"Number": "Sing"}, "head_index": 2, "deprel": "nsubj", "parse_status": "parsed"},
+    {"index": 2, "text": "examined", "start": 14, "end": 22, "orthographic_parent_index": 2, "sentence_id": 0, "sentence_token_index": 2, "lemma": "examine", "upos": "VERB", "xpos": "VBD", "feats": {"Tense": "Past"}, "head_index": null, "deprel": "root", "parse_status": "parsed"},
+    {"index": 3, "text": "the", "start": 23, "end": 26, "orthographic_parent_index": 3, "sentence_id": 0, "sentence_token_index": 3, "lemma": "the", "upos": "DET", "xpos": "DT", "feats": {"Definite": "Def", "PronType": "Art"}, "head_index": 4, "deprel": "det", "parse_status": "parsed"},
+    {"index": 4, "text": "child", "start": 27, "end": 32, "orthographic_parent_index": 4, "sentence_id": 0, "sentence_token_index": 4, "lemma": "child", "upos": "NOUN", "xpos": "NN", "feats": {"Number": "Sing"}, "head_index": 2, "deprel": "obj", "parse_status": "parsed"},
+    {"index": 5, "text": ".", "start": 32, "end": 33, "orthographic_parent_index": 5, "sentence_id": 0, "sentence_token_index": 5, "lemma": ".", "upos": "PUNCT", "xpos": ".", "feats": {}, "head_index": 2, "deprel": "punct", "parse_status": "parsed"}
+  ],
+  "target_tokens": [
+    {"index": 0, "text": "The", "start": 0, "end": 3, "orthographic_parent_index": 0, "sentence_id": 0, "sentence_token_index": 0, "lemma": "the", "upos": "DET", "xpos": "DT", "feats": {"Definite": "Def", "PronType": "Art"}, "head_index": 1, "deprel": "det", "parse_status": "parsed"},
+    {"index": 1, "text": "doctor", "start": 4, "end": 10, "orthographic_parent_index": 1, "sentence_id": 0, "sentence_token_index": 1, "lemma": "doctor", "upos": "NOUN", "xpos": "NN", "feats": {"Number": "Sing"}, "head_index": 2, "deprel": "nsubj", "parse_status": "parsed"},
+    {"index": 2, "text": "examined", "start": 11, "end": 19, "orthographic_parent_index": 2, "sentence_id": 0, "sentence_token_index": 2, "lemma": "examine", "upos": "VERB", "xpos": "VBD", "feats": {"Tense": "Past"}, "head_index": null, "deprel": "root", "parse_status": "parsed"},
+    {"index": 3, "text": "the", "start": 20, "end": 23, "orthographic_parent_index": 3, "sentence_id": 0, "sentence_token_index": 3, "lemma": "the", "upos": "DET", "xpos": "DT", "feats": {"Definite": "Def", "PronType": "Art"}, "head_index": 4, "deprel": "det", "parse_status": "parsed"},
+    {"index": 4, "text": "child", "start": 24, "end": 29, "orthographic_parent_index": 4, "sentence_id": 0, "sentence_token_index": 4, "lemma": "child", "upos": "NOUN", "xpos": "NN", "feats": {"Number": "Sing"}, "head_index": 2, "deprel": "obj", "parse_status": "parsed"},
+    {"index": 5, "text": ".", "start": 29, "end": 30, "orthographic_parent_index": 5, "sentence_id": 0, "sentence_token_index": 5, "lemma": ".", "upos": "PUNCT", "xpos": ".", "feats": {}, "head_index": 2, "deprel": "punct", "parse_status": "parsed"}
+  ],
+  "simalign_links": [
+    {"source_index": 0, "target_index": 0},
+    {"source_index": 1, "target_index": 1},
+    {"source_index": 2, "target_index": 2},
+    {"source_index": 3, "target_index": 3},
+    {"source_index": 4, "target_index": 4},
+    {"source_index": 5, "target_index": 5}
+  ],
+  "public_metadata": {
+    "candidate_strategy_label": "Synonymy",
+    "majority_votes": 2,
+    "quality_tier": "ui_smoke",
+    "pool_type": "primary_single_strategy_majority_vote"
+  },
+  "model_votes": {"e5": "yes", "qwen": "yes", "xlmr": "no"},
+  "queue_rank": 0
+}

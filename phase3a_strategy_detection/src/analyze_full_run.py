@@ -327,6 +327,59 @@ def mean_table(
     return lines
 
 
+def single_strategy_table(
+    rows: list[dict[str, Any]], model_aliases: list[str]
+) -> list[str]:
+    lookup = {
+        (str(row["model_alias"]), str(row["language"])): row
+        for row in rows
+    }
+    languages = sorted({str(row["language"]) for row in rows})
+    lines = [
+        "| Language | Pairs | " + " | ".join(model_aliases) + " |",
+        "|---|---:|" + "---:|" * len(model_aliases),
+    ]
+    for language in languages:
+        model_rows = [lookup[(alias, language)] for alias in model_aliases]
+        if len({int(row["pairs"]) for row in model_rows}) != 1:
+            raise RuntimeError(
+                f"Model pair counts differ for language {language}"
+            )
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    language,
+                    f"{int(model_rows[0]['pairs']):,}",
+                    *[
+                        f"{int(row['single_strategy_pairs']):,}"
+                        for row in model_rows
+                    ],
+                ]
+            )
+            + " |"
+        )
+    total_pairs = sum(
+        int(lookup[(model_aliases[0], language)]["pairs"])
+        for language in languages
+    )
+    totals = [
+        sum(
+            int(lookup[(alias, language)]["single_strategy_pairs"])
+            for language in languages
+        )
+        for alias in model_aliases
+    ]
+    lines.append(
+        "| **Total** | **"
+        + f"{total_pairs:,}"
+        + "** | **"
+        + "** | **".join(f"{total:,}" for total in totals)
+        + "** |"
+    )
+    return lines
+
+
 def markdown_report(
     path: Path,
     experiment_id: str,
@@ -351,6 +404,10 @@ def markdown_report(
         "All statistics are reported separately by model because their thresholds",
         "differ. A canonical pair is counted once per language and once per distinct",
         "Phase 2b source; a pair shared by two sources contributes once to each source.",
+        "",
+        "## Pairs with exactly one detected strategy, by language",
+        "",
+        *single_strategy_table(language, model_aliases),
         "",
         "## Mean strategies detected per pair, by language",
         "",

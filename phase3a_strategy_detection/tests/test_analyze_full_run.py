@@ -172,6 +172,9 @@ def test_full_analysis_answers_language_source_and_agreement(tmp_path: Path) -> 
     assert float(agreement["exact_set_match_pct"]) == pytest.approx(100 / 3)
     assert float(agreement["mean_jaccard"]) == pytest.approx(0.5)
     report = (reports / "full_analysis.md").read_text(encoding="utf-8")
+    assert "Pairs with exactly one detected strategy" in report
+    assert "| en | 2 | 1 | 2 |" in report
+    assert "| **Total** | **3** | **1** | **3** |" in report
     assert "by source within language" in report
     assert "SourceA" in report
 

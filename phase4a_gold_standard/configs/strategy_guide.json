@@ -1,0 +1,61 @@
+{
+  "schema": "feats-phase4a-strategy-guide-v1",
+  "taxonomy_version": "1.0.0",
+  "source_schema": "e2r-diastratic-taxonomy-v1",
+  "strategies": [
+    {
+      "code": "SYN",
+      "label": "Synonymy",
+      "definition": "A more common and general word is used instead of a more complex or specific one.",
+      "source_role": "complex_expression",
+      "simple_role": "simpler_equivalent",
+      "source_prompt": "Select the complex or specific source expression.",
+      "simple_prompt": "Select the simpler or more general replacement."
+    },
+    {
+      "code": "MOD",
+      "label": "Modulation",
+      "definition": "Information is redistributed or expressed linearly.",
+      "source_role": "source_information",
+      "simple_role": "redistributed_information",
+      "source_prompt": "Select the source information whose organization changes.",
+      "simple_prompt": "Select the corresponding information in its clearer or more linear organization."
+    },
+    {
+      "code": "COMP",
+      "label": "Compression",
+      "definition": "Grammatical or semantic constructs are compressed while their central content remains represented.",
+      "source_role": "expanded_content",
+      "simple_role": "compressed_content",
+      "source_prompt": "Select the expanded source content.",
+      "simple_prompt": "Select the expression that preserves it in compressed form."
+    },
+    {
+      "code": "EXPL",
+      "label": "Explanation",
+      "definition": "A word, expression, implicit grammatical construct, or implicit content is explained or made explicit using other words.",
+      "source_role": "explained_anchor",
+      "simple_role": "explanatory_content",
+      "source_prompt": "Select the source word, expression, or implicit-content anchor being explained.",
+      "simple_prompt": "Select the words that provide the explanation or make the content explicit."
+    },
+    {
+      "code": "SYNT",
+      "label": "Syntactic Change",
+      "definition": "A unit is changed into a different syntactic unit using the same words.",
+      "source_role": "source_construction",
+      "simple_role": "changed_construction",
+      "source_prompt": "Select the source construction involved in the syntactic change.",
+      "simple_prompt": "Select the corresponding changed construction."
+    },
+    {
+      "code": "OMIT",
+      "label": "Omission",
+      "definition": "Material considered unnecessary for understanding an idea is removed.",
+      "source_role": "omitted_content",
+      "simple_role": null,
+      "source_prompt": "Select the source material that was omitted.",
+      "simple_prompt": "No simplified-side evidence is required unless useful for context."
+    }
+  ]
+}
