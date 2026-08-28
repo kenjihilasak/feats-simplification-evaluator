@@ -5,6 +5,16 @@ campaign. Railway hosts one FastAPI service and one persistent volume. Reviewers
 need only the generated HTTPS URL and their individual Phase 4a credentials;
 they do not need AIRE, GitHub, Python, or access to any dataset files.
 
+## Active deployment
+
+- Project: `feats-phase4a-gold-review`
+- Service: `phase4a-review`
+- URL: <https://phase4a-review-production.up.railway.app>
+- Region/replicas: EU West, one replica
+- Loaded pool (2026-08-28): 271,395 materialized tasks across 12 languages
+
+Credentials, payloads, the live database, and downloaded backups remain private.
+
 ## Runtime architecture
 
 ```text
@@ -96,8 +106,8 @@ phase4a_gold_standard/deploy/railway/upload_language.sh \
 
 The script:
 
-1. uploads the JSONL to `/data/imports` on the Railway volume;
-2. imports it into the persistent SQLite campaign;
+1. uploads the JSONL to temporary storage in the running Railway service;
+2. imports it into the SQLite campaign on the persistent volume;
 3. prints administrative progress.
 
 Importing the same payload again is idempotent: unchanged tasks are not

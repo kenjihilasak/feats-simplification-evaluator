@@ -27,8 +27,10 @@ if ! command -v railway >/dev/null 2>&1; then
   exit 2
 fi
 
-remote_name="${language}-annotation_tasks.jsonl"
-railway ssh -- mkdir -p /data/imports
-railway volume files upload "${payload}" "/imports/${remote_name}"
-railway ssh -- python -m phase4a_gold_standard.backend import-tasks "/data/imports/${remote_name}"
+service=${PHASE4A_RAILWAY_SERVICE:-phase4a-review}
+remote_path="/tmp/phase4a-annotation_tasks.jsonl"
+railway service files --service "${service}" upload --overwrite \
+  "${payload}" "${remote_path}"
+railway ssh --service "${service}" -- \
+  python -m phase4a_gold_standard.backend import-tasks "${remote_path}"
 railway ssh -- python -m phase4a_gold_standard.backend progress
