@@ -1,0 +1,12 @@
+{
+  "schema": "feats-phase5-external-metrics-experiment-v1",
+  "experiment_id": "full_en_v1",
+  "input_file": "phase2b_consolidation/data/en/feats_consolidated.jsonl",
+  "expected_pairs": 348520,
+  "runs_root": "phase5_external_metrics/runs",
+  "cache_root": "cache/huggingface",
+  "metrics": {
+    "lens_salsa": "phase5_external_metrics/configs/models/lens_salsa.json",
+    "referee": "phase5_external_metrics/configs/models/referee.json"
+  }
+}

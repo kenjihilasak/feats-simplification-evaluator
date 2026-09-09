@@ -1,0 +1,12 @@
+{
+  "schema": "feats-phase5-external-metric-model-v1",
+  "alias": "referee",
+  "backend": "referee",
+  "score_field": "referee_score",
+  "backbone": "microsoft/deberta-v3-base",
+  "backbone_revision": "8ccc9b6f36199bec6961081d44eb72fb3f7353f3",
+  "checkpoint": "/scratch/pjbd103/feats-simplification-evaluator/cache/referee/pretrained.bin",
+  "checkpoint_sha256": "9a9fa4d65e44fd8cb8c5f4e97a47f0d7d2f48161b904dcefd290626f9dc834f8",
+  "max_length": 512,
+  "batch_size": 16
+}

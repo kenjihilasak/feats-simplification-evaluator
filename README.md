@@ -79,6 +79,12 @@ feats-simplification-evaluator/
 │   ├── configs/                      Full-pool and 12-language UD pins
 │   ├── jobs/                         Environment/download/GPU syntax jobs
 │   └── tests/                        Data, syntax, and service contract tests
+├── phase5_external_metrics/
+│   ├── README.md                     External-metric runbook and contracts
+│   ├── src/                          LENS/REFEREE runners, validation, analysis
+│   ├── configs/                      Pinned models and smoke/pilot/full runs
+│   ├── jobs/                         Separate environments and Slurm jobs
+│   └── tests/                        Model-independent contract tests
 ├── metadata/
 │   ├── inventories/                  Source and conversion inventories
 │   └── conversion_reports/           Phase 1 validation reports
@@ -175,6 +181,14 @@ Four named reviewers will each be assigned a different language from the
 priority set `en, es, it, ru, ar`. The exact four assignments remain private
 deployment configuration. See [the Phase 4a runbook](phase4a_gold_standard/README.md)
 and [annotation guide](phase4a_gold_standard/ANNOTATION_GUIDE.md).
+
+## Phase 5 external metrics
+
+Phase 5 is an English-only audit layer for LENS-SALSA and REFEREE. It writes
+independent, immutable score sidecars for the 348,520 canonical English Phase
+2b pairs, preserves both native scales, and never filters or labels training
+data. Smoke, stratified pilot, sharded full-run, validation and human-evaluation
+workflows are documented in [the Phase 5 runbook](phase5_external_metrics/README.md).
 
 
 ## Data sources and reuse

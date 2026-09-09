@@ -1,0 +1,11 @@
+{
+  "schema": "feats-phase5-external-metric-model-v1",
+  "alias": "lens_salsa",
+  "backend": "lens_salsa",
+  "score_field": "lens_salsa_score",
+  "repo_id": "davidheineman/lens-salsa",
+  "revision": "cc04094d084493e68bcd3eb196ff74e894cca00d",
+  "batch_size": 8,
+  "devices": [0],
+  "keep_tagged_output": true
+}

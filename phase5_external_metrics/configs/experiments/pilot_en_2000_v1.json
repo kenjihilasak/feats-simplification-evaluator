@@ -1,0 +1,12 @@
+{
+  "schema": "feats-phase5-external-metrics-experiment-v1",
+  "experiment_id": "pilot_en_2000_v1",
+  "input_file": "phase5_external_metrics/inputs/pilot_en_2000.jsonl",
+  "expected_pairs": 2000,
+  "runs_root": "phase5_external_metrics/runs",
+  "cache_root": "cache/huggingface",
+  "metrics": {
+    "lens_salsa": "phase5_external_metrics/configs/models/lens_salsa_pilot.json",
+    "referee": "phase5_external_metrics/configs/models/referee.json"
+  }
+}

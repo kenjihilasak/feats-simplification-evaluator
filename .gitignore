@@ -18,6 +18,9 @@ phase2a_cleaning/runs/*/cleaned/
 phase2b_consolidation/data/
 .venv-phase3/
 .venv-phase4a/
+.venv-phase5-lens/
+.venv-phase5-referee/
+.venv-phase5-analysis/
 phase3a_strategy_detection/logs/*.out
 phase3a_strategy_detection/logs/*.err
 phase3a_strategy_detection/runs/*_smoke_*/
@@ -40,3 +43,7 @@ phase4a_gold_standard/configs/local/
 phase4a_gold_standard/.env
 phase4a_gold_standard/backups/
 phase4a_gold_standard/railway-backups/
+phase5_external_metrics/inputs/
+phase5_external_metrics/runs/
+phase5_external_metrics/logs/*.out
+phase5_external_metrics/logs/*.err

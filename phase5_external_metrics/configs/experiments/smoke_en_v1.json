@@ -1,0 +1,12 @@
+{
+  "schema": "feats-phase5-external-metrics-experiment-v1",
+  "experiment_id": "smoke_en_v1",
+  "input_file": "phase5_external_metrics/inputs/smoke_en.jsonl",
+  "expected_pairs": 32,
+  "runs_root": "phase5_external_metrics/runs",
+  "cache_root": "cache/huggingface",
+  "metrics": {
+    "lens_salsa": "phase5_external_metrics/configs/models/lens_salsa_pilot.json",
+    "referee": "phase5_external_metrics/configs/models/referee.json"
+  }
+}
