@@ -9,8 +9,7 @@ This report uses English decisions recorded in the **Phase 4a review UI**.
 - **Excluded:** drafts.
 
 The current set contains 24 pairs: 7 positive and 17 negative (15 `Later`, 2
-`incorrect`, and no `uncertain`). LENS-SALSA and REFEREE produced valid scores
-for all 24 pairs, with no duplicates, non-finite values, or truncation.
+`incorrect`, and no `uncertain`).
 
 ## Results
 
@@ -23,6 +22,11 @@ REFEREE provides slightly better separation in this small sample. The
 no-skill average-precision baseline is 0.292 (7/24 positives). Scores remain on
 their native scales and are not directly compared or averaged.
 
+The REFEREE values reported here are the raw output of the official final
+regression head (`model_out[:, -1]`). They were not normalized and are not
+bounded to 0–5. REFEREE was trained using standardized human ratings, so its
+inference output may also be negative.
+
 ## Leading disagreements
 
 Ranks run from 1 (lowest metric score) to 24 (highest). A negative pair ranked
@@ -31,14 +35,11 @@ The disagreement value is a ranking aid, not an error probability.
 
 1. **Monteux (`Later`, negative):** the simplification incorrectly describes a
    *commune* as a place where religious people live. Both metrics nevertheless
-   rank it **22/24** (mean rank disagreement: **0.913**).
-2. **Coal and building materials (`incorrect`, negative):** the reviewer
-   corrected `SYN` to `OMIT`. LENS-SALSA ranks it **23/24** and REFEREE
-   **19/24** (mean rank disagreement: **0.870**), suggesting weak sensitivity
-   to the omitted content.
-3. **Multimedia devices (`Later`, negative):** the change resembles a
-   paraphrase rather than an explanation. LENS-SALSA ranks it **19/24**, while
-   REFEREE ranks it **13/24** (mean rank disagreement: **0.652**).
+   assign high scores: LENS-SALSA **75.547** and REFEREE **0.849**. The
+   candidate strategy recorded by the strategy model was `EXPL`.
+2. **Multimedia devices (`Later`, negative):** the change resembles a
+   paraphrase rather than an explanation. It receives LENS-SALSA **73.993**
+   and REFEREE **0.580**; the candidate strategy was `EXPL`.
 
 ## Interpretation
 
@@ -49,5 +50,7 @@ and may include deferred rather than definitively poor cases. More submitted
 `incorrect` and `uncertain` decisions—and ideally explicit human quality
 ratings—are needed for a reliable metric comparison.
 
-Detailed local artifacts are available in the corresponding ignored run
-directory as `human_metric_disagreements.csv` and `binary_evaluation.json`.
+The [complete ranked table of all 24 evaluated pairs](human_metric_disagreements.csv)
+includes the texts, human labels, strategies, metric scores, percentiles, and
+ranking-disagreement values. The table is ordered from highest to lowest mean
+ranking disagreement; not every row is necessarily a strong disagreement.
