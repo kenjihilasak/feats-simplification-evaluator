@@ -22,10 +22,9 @@ REFEREE provides slightly better separation in this small sample. The
 no-skill average-precision baseline is 0.292 (7/24 positives). Scores remain on
 their native scales and are not directly compared or averaged.
 
-The REFEREE values reported here are the raw output of the official final
-regression head (`model_out[:, -1]`). They were not normalized and are not
-bounded to 0–5. REFEREE was trained using standardized human ratings, so its
-inference output may also be negative.
+LENS-SALSA ranges from **0 to 100**. REFEREE has **no fixed lower or upper
+bound**; in this evaluation its scores range from **-0.569 to 1.103**. For both
+metrics, a higher score indicates better estimated simplification quality.
 
 ## Leading disagreements
 
