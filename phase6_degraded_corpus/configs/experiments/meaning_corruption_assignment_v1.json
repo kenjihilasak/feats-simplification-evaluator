@@ -1,0 +1,27 @@
+{
+  "schema": "feats-phase6-corruption-assignment-config-v1",
+  "experiment_id": "meaning_en_pilot_v1",
+  "seed": 20260918,
+  "input_file": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/selection/accepted_50.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/degradation",
+  "target_axis": "meaning",
+  "target_score": 0.0,
+  "corruption_types": [
+    "entity_replacement",
+    "number_replacement",
+    "date_replacement",
+    "negation_reversal",
+    "property_replacement",
+    "relation_reversal",
+    "event_replacement"
+  ],
+  "target_counts": {
+    "entity_replacement": 8,
+    "number_replacement": 7,
+    "date_replacement": 7,
+    "negation_reversal": 7,
+    "property_replacement": 7,
+    "relation_reversal": 7,
+    "event_replacement": 7
+  }
+}

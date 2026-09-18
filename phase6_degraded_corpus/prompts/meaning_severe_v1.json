@@ -1,0 +1,5 @@
+{
+  "prompt_id": "meaning_severe_v1",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. Rewrite only the valid simplified sentence. Introduce exactly one severe meaning-preservation error of the assigned type that contradicts or replaces one central fact supported by the original. Keep the output fluent, grammatical, English, similarly short, and structurally close to the valid simplification. Preserve its simplification strategy. Do not add a second factual error, explanation, complexity, or commentary. Return valid JSON only.",
+  "user_template": "Original:\n{original}\n\nValid simplified sentence:\n{clean_simplification}\n\nAssigned corruption type:\n{corruption_type}\n\nTarget span or cue:\n{target_span}\n\nReturn exactly:\n{{\"distorted_simplification\":\"...\",\"changed_clean_span\":\"...\",\"replacement_span\":\"...\",\"corruption_type\":\"{corruption_type}\",\"brief_verification\":\"State which original fact is contradicted.\"}}"
+}

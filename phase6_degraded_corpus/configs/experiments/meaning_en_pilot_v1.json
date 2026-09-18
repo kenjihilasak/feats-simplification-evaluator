@@ -1,0 +1,43 @@
+{
+  "schema": "feats-phase6-selection-config-v1",
+  "experiment_id": "meaning_en_pilot_v1",
+  "language": "en",
+  "seed": 20260917,
+  "primary_size": 50,
+  "backup_size": 150,
+  "require_single_strategy": true,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-02_target_simple_v1/data/en/feats_consolidated.jsonl",
+  "anchor_phase2b_file": "phase2b_consolidation/data/en/feats_consolidated.jsonl",
+  "phase2a_run_id": "2026-09-02_complexity_target_simple_smp01_labse062_095_full_flat_v3",
+  "phase2b_variant_id": "2026-09-02_target_simple_v1",
+  "human_judgments_file": "phase5_external_metrics/inputs/phase4a_decisions_en_v2/human_judgments.jsonl",
+  "strategy_predictions_file": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/gemma3_12b_pairwise_qlora/predictions/en/feats_consolidated.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/selection",
+  "allowed_corpora": [
+    "Wikipedia-Vikidia",
+    "WikiAutoEN"
+  ],
+  "excluded_corpora": [
+    "ASSET"
+  ],
+  "reserved_original_ids_file": null,
+  "length_bins": {
+    "short": [
+      8,
+      15
+    ],
+    "medium": [
+      16,
+      25
+    ],
+    "long": [
+      26,
+      45
+    ]
+  },
+  "primary_length_targets": {
+    "short": 15,
+    "medium": 20,
+    "long": 15
+  }
+}

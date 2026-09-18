@@ -16,6 +16,7 @@ phase2a_cleaning/runs/*/scores/
 phase2a_cleaning/runs/*/decisions/
 phase2a_cleaning/runs/*/cleaned/
 phase2b_consolidation/data/
+phase2b_consolidation/runs/*/data/
 .venv-phase3/
 .venv-phase4a/
 .venv-phase5-lens/
@@ -47,3 +48,5 @@ phase5_external_metrics/inputs/
 phase5_external_metrics/runs/
 phase5_external_metrics/logs/*.out
 phase5_external_metrics/logs/*.err
+phase6_degraded_corpus/runs/
+phase6_degraded_corpus/logs/
