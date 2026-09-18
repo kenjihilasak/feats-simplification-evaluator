@@ -2,6 +2,8 @@
 
 [Phase 6 README](../README.md)
 
+The complete pilot is available in a readable format: **[browse all 50 clean/degraded pairs](PILOT_PAIRS.md)**.
+
 ## Goal
 
 Create one fluent but factually wrong simplification for each of 50 English pairs. The pilot changes **Meaning Preservation only**: clean = `1`, severe distortion = `0`. Each clean input has one predicted simplification strategy, which the degradation should preserve.
