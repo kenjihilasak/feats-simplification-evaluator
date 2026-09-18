@@ -49,7 +49,7 @@ def render(rows: list[dict]) -> str:
             f"- **Degraded simplification:** {distorted}",
             f"- **Recorded change:** `{generation['changed_clean_span']}` → `{generation['replacement_span']}`", "",
         ])
-    return "\n".join(lines)
+    return "\n".join(lines).rstrip()
 
 
 def main() -> None:

@@ -522,4 +522,3 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Clean simplification:** In biology, **cloning is the process of producing one or more genetically-identical individuals**.
 - **Degraded simplification:** In biology, **cloning is produced by one or more genetically-identical individuals**.
 - **Recorded change:** `cloning is the process of producing one or more genetically-identical individuals` → `cloning is produced by one or more genetically-identical individuals`
-
