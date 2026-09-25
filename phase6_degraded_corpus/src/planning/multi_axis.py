@@ -81,7 +81,19 @@ def detect_illocution(original: str, simple: str) -> list[dict]:
         ("request_assertion_reversal", REQUEST),
         ("certainty_reversal", CERTAINTY),
     ):
-        source = _matches(pattern, simple) or _matches(pattern, original)
+        source_text = simple
+        source = _matches(pattern, simple)
+        if not source:
+            source_text = original
+            source = _matches(pattern, original)
+        if operation == "modality_reversal":
+            source = [
+                cue for cue in source
+                if not (
+                    cue["text"].casefold() == "may"
+                    and re.match(r"\s+\d", source_text[cue["end"]:])
+                )
+            ]
         for cue in source[:2]:
             opportunities.append({"operation": operation, **cue})
     return opportunities

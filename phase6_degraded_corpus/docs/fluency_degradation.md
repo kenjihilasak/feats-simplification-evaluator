@@ -33,9 +33,9 @@ The detector selects agreement, determiner, preposition, or local word-order cor
 
 | Automatic result | Count | Rate |
 |---|---:|---:|
-| Good | 10 | 20% |
-| Medium | 23 | 46% |
-| Failed | 17 | 34% |
+| Good | 9 | 18% |
+| Medium | 12 | 24% |
+| Failed | 29 | 58% |
 
 Automatic structural triage of 50 cases; semantic human audit is pending.
 

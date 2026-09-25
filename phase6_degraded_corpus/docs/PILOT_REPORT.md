@@ -2,14 +2,14 @@
 
 This is the single report for all seven Phase 6 pilots: 50 human-audited Meaning degradations and 300 generated examples covering the other six dimensions.
 
-For a quick human check, use the [50-case stratified random review](pilot_random_review.md).
+For a quick human check, use the [50-case stratified random review](pilot_random_review.md) and its [preliminary assistant audit](pilot_random_review_assistant_audit.md).
 
 ## Interpretation
 
 - **Accepted:** the Meaning degradation was manually audited and accepted.
 - **Good:** all automatic structural checks passed, but semantic human review is still required.
 - **Medium:** the text changed, but the declared changed/replacement span was not verified literally.
-- **Failed:** no usable degradation was produced, usually because Simplified and Degraded are identical.
+- **Failed:** no usable degradation was produced, because Simplified and Degraded are identical or differ only in formatting.
 
 The Meaning acceptance rate and the automatic rates for the other dimensions are not directly comparable because their review bases differ.
 
@@ -18,20 +18,20 @@ The Meaning acceptance rate and the automatic rates for the other dimensions are
 | Dimension | Accepted | Good | Medium | Failed | Review basis |
 |---|---:|---:|---:|---:|---|
 | MEANING | 50 | 0 | 0 | 0 | human audit |
-| FLUENCY | 0 | 10 | 23 | 17 | automatic triage |
-| OMIT | 0 | 8 | 14 | 28 | automatic triage |
-| SYN | 0 | 6 | 16 | 28 | automatic triage |
-| MOD | 0 | 23 | 27 | 0 | automatic triage |
+| FLUENCY | 0 | 9 | 12 | 29 | automatic triage |
+| OMIT | 0 | 7 | 13 | 30 | automatic triage |
+| SYN | 0 | 6 | 12 | 32 | automatic triage |
+| MOD | 0 | 23 | 24 | 3 | automatic triage |
 | ILLOC | 0 | 33 | 15 | 2 | automatic triage |
-| EXPL | 0 | 39 | 8 | 3 | automatic triage |
-| **Total** | **50** | **119** | **103** | **78** | mixed |
+| EXPL | 0 | 35 | 8 | 7 | automatic triage |
+| **Total** | **50** | **113** | **84** | **103** | mixed |
 
 ## Main findings
 
 - All 50 Meaning cases were manually audited; 19 required manual correction after both Qwen passes failed semantic audit.
 - Explanation and Illocution have the strongest automatic results among the six new dimensions.
-- Modulation changes every selected sentence, but many outputs have unverifiable span metadata.
-- Fluency often claims an edit that is absent from the generated sentence.
+- Modulation has three formatting-only no-ops, and many substantive outputs have unverifiable span metadata.
+- Fluency often claims an edit that is absent or changes only formatting.
 - Omission and Synonymy have the most outright failures and require prompt, cue, and source-label review before scaling.
 - The 12,140-pair full generation remains blocked until human review validates the six new dimensions.
 
@@ -40,12 +40,12 @@ The Meaning acceptance rate and the automatic rates for the other dimensions are
 | Dimension | Current evidence | Main risk | Next change |
 |---|---|---|---|
 | Meaning | 31/50 model outputs accepted; 19 manually corrected | Structural checks miss semantic failures | Constrained replacements plus contradiction verification |
-| Fluency | 10/50 good automatic triage | Declared edits are often absent | Deterministic local edits and literal span checks |
-| Omission | 8/50 good automatic triage | Token difference is not a reliable omitted detail | Extract and verify one contiguous original span |
+| Fluency | 9/50 good automatic triage | Declared edits are often absent | Deterministic local edits and literal span checks |
+| Omission | 7/50 good automatic triage | Token difference is not a reliable omitted detail | Extract and verify one contiguous original span |
 | Synonymy | 6/50 good automatic triage | Token difference does not establish synonymy | Add alignment, equivalence, and complexity checks |
-| Modulation | 23/50 good; no unchanged outputs | Structural change is poorly localized | Detect and verify split or clause-order operations |
+| Modulation | 23/50 good; 3 formatting-only no-ops | Structural change is poorly localized | Detect and verify split or clause-order operations |
 | Illocution | 33/50 good automatic triage | A cue may not represent an adaptation | Require a cue contrast and operation-specific checks |
-| Explanation | 39/50 good automatic triage | Added text is not always explanatory | Detect contiguous added spans and explanatory function |
+| Explanation | 35/50 good automatic triage | Added text is not always explanatory | Detect contiguous added spans and explanatory function |
 
 The main lesson is that prompt compliance is not degradation validity. Detector quality and axis-specific validators are the bottlenecks. Before full generation, the 300 automatically triaged cases require human audit; failed axes should then revise only their detector, prompt, and validator and rerun the 50-case pilot.
 
@@ -610,7 +610,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:06ae391ca30d4dfecb0de5b991384bf45a7daf8c19288bcea7f1556d4c4eabef`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Theodoros Angelopoulos was born in Athens on 27 April 1935.
 - Simplified: Angelopoulos was born in Athens, Greece on April 27, 1935 and studied at the University of Paris.
 - Degraded: Angelopoulos was born in Athens, Greece on April 27, 1935 and studied at the University of Paris.
@@ -621,7 +621,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:08810a2cf650a7fcb79299845f9d6bdf6b7473edede82c80dcdda9e59f223992`
 - Source strategy: `EXPL`
 - Assigned operation: `determiner_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: LaVey was born Howard Stanton Levey on April 11, 1930 in Chicago, Illinois.
 - Simplified: LaVey was born with the name Howard Stanton Levey and was of Jewish descent.He was born in Chicago, Illinois.
 - Degraded: LaVey was born with the name Howard Stanton Levey and was of Jewish descent. He was born in Chicago, Illinois.
@@ -632,7 +632,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:1b9a7a528413aeb7cfce456e4b851abf05235cbdc358bda7f765e5674f58639f`
 - Source strategy: `EXPL`
 - Assigned operation: `determiner_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Willie Aames (born Albert William Upton on July 15, 1960) is an American actor, film and television director, television producer, and screenwriter.
 - Simplified: Willie Aames (born Albert William Upton July 15, 1960 in Los Angeles, California) is an actor famous for the roles of Buddy Lembeck on "Charles in Charge", Tommy Bradford on "Eight is Enough" and the voice of Hank on "Dungeons & Dragons", the cartoon.
 - Degraded: Willie Aames (born Albert William Upton July 15, 1960 in Los Angeles, California) is an actor famous for the roles of Buddy Lembeck on 'Charles in Charge', Tommy Bradford on 'Eight is Enough' and the voice of Hank on Dungeons & Dragons, the cartoon.
@@ -643,7 +643,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:1dd5e9312f8bc0c4fc4947ed74cf47de0eb47b58bd2ec99dd39bab743755bfd4`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Sarah Victoria "Torri" Higginson is a Canadian actress.
 - Simplified: Sarah Victoria "Torri" Higginson (born Burlington, Ontario, December 6, 1969) is a Canadian actress.
 - Degraded: Sarah Victoria "Torri" Higginson (born Burlington, Ontario, December 6, 1969) is a Canadian actress.
@@ -665,7 +665,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:202c495d716089aa9e7140561fcd5b9300f25269d4143ccef196a3c94e7eb4ed`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Summary An average Gregorian year is 365.2425 days (52.1775 weeks, hours, minutes or seconds).
 - Simplified: In the most used calendar, called Gregorian calendar, a year is a period of 365 days starting from the first of January.
 - Degraded: In the most used calendar, called Gregorian calendar, a year is a period of 365 days starting from the first of January.
@@ -676,7 +676,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:210147a2f68e7302415eb7005c2121f2b50632e24d0e41565ad46446a40bed6a`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: "Sil" means "actual" or "practical," and "hak" means "studies" or "learning."
 - Simplified: "Sil" means "actual" or "practical," and "hak" means "studies" or "learning".It also meant "practical learning", like teaching how to farm and about economy.
 - Degraded: Sil means actual or practical, and hak means studies or learning. It also meant practical learning, like teaching how to farm and about economy.
@@ -698,7 +698,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:22a13e69082b169aa5d2b3ad9732d2828316aa97caf5ffedf6118a669dcc1018`
 - Source strategy: `EXPL`
 - Assigned operation: `determiner_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Mark Duggan was born on 15 September 1981 and grew up in Broadwater Farm, north London.
 - Simplified: Duggan was born on 15 September 1981 to a white mother, Pamela Duggan, and a black father, Bruno Hall.He grew up in Broadwater Farm.
 - Degraded: Duggan was born on 15 September 1981 to a white mother, Pamela Duggan, and a black father, Bruno Hall. He grew up in Broadwater Farm.
@@ -709,7 +709,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:299fea736aada3c670e04bed71c99c89b43bdd20a95040776e2d27b05e64549c`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Robert William Corddry (born February 4, 1971) is an American actor and comedian.
 - Simplified: Robert William "Rob" Corddry (born February 4, 1971) is an American movie, television, voice actor, television director and producer, writer and comedian who is known for his roles in "Hot Tub Time Machine" and in "Childrens Hospital".
 - Degraded: Robert William 'Rob' Corddry (born February 4, 1971) is an American movie, television, voice actor, television director and producer, writer and comedian who is known for his roles in 'Hot Tub Time Machine' and in 'Childrens Hospital'.
@@ -720,7 +720,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:2e83e98a00c7577c84bd7e39d581fcad9e7c56d564a9496cf283c22d0ef47b33`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The judiciary of Germany is the system of courts that interprets and applies the law in Germany.
 - Simplified: The judiciary, that is, the judges and Courts of Germany are independent.Federal law sets out the structure of the judiciary.
 - Degraded: The judiciary, that is, the judges and Courts of Germany are independent. Federal law sets out the structure of the judiciary.
@@ -742,7 +742,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:44118cbc6259530a0f46542e8934c93c5e4ec2cdaca570f9bd3bbb453a2e3465`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Chlorine dioxide is a chemical compound with the formula ClO.
 - Simplified: Chlorine dioxide is a chemical compound (a thing made when two or more chemical elements attach to each other).Its chemical formula is ClO.
 - Degraded: Chlorine dioxide is a chemical compound (a thing made when two or more chemical elements attach to each other). Its chemical formula is ClO.
@@ -808,7 +808,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:5203767b3a4cc5b5394c8e5bc3a4e6e51eed84f8b09b46264486afd30f6576a9`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: They were developed in the 19th century, but declined in popularity with the advent of cheap electric lighting.
 - Simplified: They were much used in the late 19th and early 20th centuries when electric lighting was very expensive.
 - Degraded: They were much used in the late 19th and early 20th centuries when electric lighting was very expensive.
@@ -819,7 +819,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:53d87bb956fbb2408404e32242b69bf1a4e34c24dec21b35fb0836b81d7d0e56`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Pamela Denise Anderson (born July 1, 1967) is a Canadian-American actress, model and animal rights activist.
 - Simplified: Pamela Denise Anderson (born July 1, 1967 in Ladysmith, British Columbia, Canada) is a Canadian-American actress, sex symbol, glamour model, producer, television personality, and author.
 - Degraded: Pamela Denise Anderson (born July 1, 1967 in Ladysmith, British Columbia, Canada) is a Canadian-American actress, sex symbol, glamour model, producer, television personality, and author.
@@ -918,7 +918,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:8a06b839c36e4f886b1df47ddb6256f0a6b566350c9f9a8a2800ddc1ac049b4c`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Around this time she was living in France and studying psychology at the Sorbonne.
 - Simplified: During the father's murder she was living in France and studying psychology at the Sorbonne University.
 - Degraded: During the father's murder she was living in France and studying psychology at the Sorbonne University.
@@ -929,7 +929,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:8a49192fca85c50ab142df7c0339ef1e91e9a923d8c9f3e4d3887fbff1261e91`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Climate is extremely arid albeit somewhat milder near the coast.
 - Simplified: The climate of the region is extremely arid (a desert climate) but somewhat milder near the coast and the highest mountains.
 - Degraded: The climate of the region is extremely arid (a desert climate) but somewhat milder near the coast and the highest mountains.
@@ -940,7 +940,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:8dc1480ee0737b0fe1ee5dee456c00f25d6f007e93545f489ad3fc9244d01a98`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Sulfur was used for fumigation in preclassical Greece; this is mentioned in the "Odyssey".
 - Simplified: Sulfur was used in fumigation (making fumes) and medicine in ancient Greece.
 - Degraded: Sulfur was used in fumigation (making fumes) and medicine in ancient Greece.
@@ -951,7 +951,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9c0217b23f56b092877f9e7e239186fd27e4ec11d01eecdced8a92d785577016`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Serj Tankian (] ; ; born August 21, 1967) is an American musician, singer, songwriter, multi-instrumentalist, record producer, poet and political activist.
 - Simplified: Serj Tankian (born on August 21, 1967 in Beirut, Lebanon) is an Armenian-American musician who lives in Los Angeles.
 - Degraded: Serj Tankian (born on August 21, 1967 in Beirut, Lebanon) is an Armenian-American musician who lives in Los Angeles.
@@ -962,7 +962,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9c29c9239ff1dcee00cb1f8f0e6c7cc3c482f02e4313cca03f0b9d404399e9a8`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Sol Polansky (November 7, 1926 – January 6, 2016) was an American diplomat.
 - Simplified: Sol Polansky (November 7, 1926 – January 6, 2016) was an American diplomat.Polansky died after a long illness on January 6, 2016, aged 89.
 - Degraded: Sol Polansky (November 7, 1926 – January 6, 2016) was an American diplomat.Polansky died after a long illness on January 6, 2016, aged 89.
@@ -973,7 +973,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:a38284406650663417f189f612e5aaa9f0dfd8178267c1ba95c4cd8e8f0e31af`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: William A. Thomas (October 21, 1948 – January 18, 2019) was an American football player and coach.
 - Simplified: William A. Thomas (October 21, 1948 – January 18, 2019) was an American football player and coach.Thomas died on January 18, 2019 at the age of 70.
 - Degraded: William A. Thomas (October 21, 1948 – January 18, 2019) was an American football player and coach.Thomas died on January 18, 2019 at the age of 70.
@@ -984,7 +984,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:a5ca1009a954cc54dc19881d74c264547a64e1ffd3a7ce72c48bcf48f7a8bec4`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Penicillin was discovered in 1928 by Scottish scientist Alexander Fleming.
 - Simplified: Penicillin was discovered by Scottish scientist Sir Alexander Fleming in 1928, but it was not mass-produced until 1940.Penicillin was discovered when Fleming noticed a mold that was stopping bacteria from growing in a petri dish.
 - Degraded: Penicillin was discovered by Scottish scientist Sir Alexander Fleming in 1928, but it was not mass-produced until 1940.Penicillin was discovered when Fleming noticed a mold that was stopping bacteria from growing in a petri dish.
@@ -995,7 +995,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:a9ba7eea4819c4993fe00fb56535eefd3bf95120436705092cf6338c501d73df`
 - Source strategy: `SYNT`
 - Assigned operation: `determiner_error`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: He was preparing to direct "Kite" at the time.
 - Simplified: At the end of his life he was directing "Kite".
 - Degraded: At the end of his life he was directing 'Kite'.
@@ -1017,7 +1017,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:ade5efad73c64621e06fbb2d778ec8134439b180154309abf85e5a879e38c7cd`
 - Source strategy: `EXPL`
 - Assigned operation: `preposition_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Battle of Crete ( , also "Unternehmen Merkur", "Operation Mercury," ) was fought during the Second World War on the Greek island of Crete.
 - Simplified: The Battle of Crete was a battle fought in World War 2 between the Nazis and British Commonwealth soldiers with Greek support.The battle was fought on the Greek island of Crete.
 - Degraded: The Battle of Crete was a battle fought in World War 2 between the Nazis and British Commonwealth soldiers with Greek support. The battle was fought on the Greek island of Crete.
@@ -1028,7 +1028,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:adfcc73482ad4c45ba19ed229094d24c020bdb27632f23d50eba74793a491071`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Sonie Rajbhandari is a Nepalese model & beauty queen.
 - Simplified: Sonie Rajbhandari born in Kathmandu, Nepal is a Nepali Model and the title winner of Miss Nepal International 2014.
 - Degraded: Sonie Rajbhandari born in Kathmandu, Nepal is a Nepali Model and the title winner of Miss Nepal International 2014.
@@ -1050,7 +1050,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:c80693c238cd932dd4969699dfad29a6b09024314d467babaa855100010cdc81`
 - Source strategy: `EXPL`
 - Assigned operation: `determiner_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: 2 is the second live album by the British rock band Slade.
 - Simplified: 2 is a 1978 rock album by English band Slade.It was the band's second live album.Released during the band's period of low popularity, the album failed to chart or gain the same success as the first live album "Slade Alive!"
 - Degraded: 2 is a 1978 rock album by English band Slade. It was the band's second live album. Released during the band's period of low popularity, the album failed to chart or gain the same success as the first live album 'Slade Alive!'
@@ -1061,7 +1061,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:cbdbf1b766af3d14dd719ecfd68a650ba8fc3874f2347fff107b562d48ae1bf6`
 - Source strategy: `EXPL`
 - Assigned operation: `agreement_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Bahrain is a generally flat and arid archipelago in the Persian Gulf.
 - Simplified: Bahrain is a flat and dry archipelago, with a low desert plain rising gently to a low central hill, in the Arabian Gulf, east of Saudi Arabia.
 - Degraded: Bahrain is a flat and dry archipelago, with a low desert plain rising gently to a low central hill, in the Arabian Gulf, east of Saudi Arabia.
@@ -1072,7 +1072,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:ccfbbe55b48ebb3c345b5472b0bc86871103ece6ea18ed3f0e66ad8235e53630`
 - Source strategy: `COMP`
 - Assigned operation: `determiner_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The 50PLUS (] ), abbreviated to 50+, is a political party in the Netherlands that advocates pensioners' interests.
 - Simplified: 50PLUS, the same in Dutch (shortened "50+"), is a Dutch political party.
 - Degraded: 50PLUS, the same in Dutch (shortened '50+'), is a Dutch political party.
@@ -1083,7 +1083,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:d9027bd1bdfd5441fe131de4e05dc8d3eb72d3d37a1f304a57ab22c56a04b86a`
 - Source strategy: `EXPL`
 - Assigned operation: `determiner_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Zoetermeer (] ) is a city in the western Netherlands, in the province of South Holland.
 - Simplified: Zoetermeer is a city in South Holland in the Netherlands (it has no city rights).
 - Degraded: Zoetermeer is a city in South Holland in the Netherlands (it has no city rights).
@@ -1116,7 +1116,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:e6edc8d99a08a1b78093ae1be1abe14c0561e29e2175b6f5f57401040c4d7f6c`
 - Source strategy: `EXPL`
 - Assigned operation: `local_word_order_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Beverly Joanne Linville (born January 15, 1928) is a retired American film and television actress.
 - Simplified: Joanne Linville (born January 15, 1928) is an American Jewish actress.
 - Degraded: Joanne Linville (born January 15, 1928) is an American Jewish actress.
@@ -1138,7 +1138,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f7d1013b843af10efd18e6348dc35d0fb6328e777d43bfe3840ba75b52a4ed21`
 - Source strategy: `COMP`
 - Assigned operation: `local_word_order_error`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The male fallow deer is known as a buck, the female is a doe, and the young a fawn.
 - Simplified: The male is called a "buck", the female is a "doe", and the young a "fawn".
 - Degraded: The male is called a buck, the female is a doe, and the young a fawn.
@@ -1149,7 +1149,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:ff6fe40c571aa8ca154fbdf3f403799ab3e39531ec25b640f7d90b33e31d9fab`
 - Source strategy: `SYNT`
 - Assigned operation: `preposition_error`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Human remains dating back more than 20,000 years have been found in limestone caves in the area.
 - Simplified: Remains found in limestone caves show that humans have lived in the area for well over 20,000 years.
 - Degraded: Remains found in limestone caves show that humans have lived in the area for well over 20,000 years.
@@ -1162,7 +1162,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:01ac54d89fb79c5f1afb9ca2c4811c920c229144e8008722e749f6e05a1d3d6d`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: From 1989 she was the general secretary of the All India Anna Dravida Munnetra Kazhagam (AIADMK), a Dravidian party whose cadre revered her as their "Amma" (mother) and Puratchi "Thalaivi" (revolutionary leader) .
 - Simplified: From 1989 she was the general secretary of the All India Anna Dravida Munnetra Kazhagam , a Dravidian party.
 - Degraded: From 1989 she was the general secretary of the All India Anna Dravida Munnetra Kazhagam, a Dravidian party.
@@ -1173,7 +1173,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:0230b6e271daf97e8b7112459be27ee4c7d3fd7bf8e9852e3f6eb65426c096ff`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: George L. Radosevich (January 25, 1928 – April 4, 2016) was an American football defensive back who played for the Baltimore Colts.
 - Simplified: George L. Radosevich (January 25, 1928 – April 4, 2016) was an American football defensive back.
 - Degraded: George L. Radosevich (January 25, 1928 – April 4, 2016) was an American football defensive back.
@@ -1184,7 +1184,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:02b7f1815900d5bff8972c8489215b6e94e129ab34d6f539c747c569e9ce7b76`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Italy national under-21 football team is the national under-21 football team of Italy and is controlled by the Italian Football Federation.
 - Simplified: The Italy national under-21 football team is the national under-21 football team of Italy.
 - Degraded: The Italy national under-21 football team is the national under-21 football team of Italy.
@@ -1195,7 +1195,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:060cb5e92d02eddec2b1cc52937529c51ac773a70e6f6f1255b4fece332d12e0`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Known as one of the most influential Cuban poets, her work is focused upon love, the role of women in society, and herself.
 - Simplified: She was known as one of the most influential Cuban poets.
 - Degraded: She was known as one of the most influential Cuban poets.
@@ -1206,7 +1206,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:0a038429b05d7a305919ce88166f06e5f341acac36c3f1656892b8b9236799d9`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Flanders was born in Minneapolis, Minnesota, the son of Bernice (née Brown) and Francis Michael Grey Flanders.
 - Simplified: Flanders was born in Minneapolis, Minnesota.
 - Degraded: Flanders was born in Minneapolis, Minnesota.
@@ -1228,7 +1228,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:0e634aa29e2d286b532bbad0c35e073d417d23a515a21b907a72683a7898f30c`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Northern Savonia or, officially, North Savo ( ; ) is a region in eastern Finland.
 - Simplified: Northern Savonia is a region in eastern Finland.
 - Degraded: Northern Savonia is a region in eastern Finland.
@@ -1239,7 +1239,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:1436f2844d1e706525de841936cb8af4bfe6c76fe112bc8602f42da344ec3b9e`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Kyle Douglas Glen Chipchura (born February 19, 1986) is a Canadian professional ice hockey centre who is currently playing with HC Slovan Bratislava of the Kontinental Hockey League (KHL).
 - Simplified: Kyle Douglas Glen Chipchura (born February 19, 1986) is a Canadian professional ice hockey centre.
 - Degraded: Kyle Douglas Glen Chipchura (born February 19, 1986) is a Canadian professional ice hockey centre.
@@ -1294,7 +1294,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:208145f50b24968d556185faf13b6e0e0dbb87d273c434d64364941e018c0993`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Clarke was born in Los Angeles, California, of French and Mexican heritage, and grew up in the predominantly Chicano neighborhood of East Los Angeles.
 - Simplified: He was born in Los Angeles, California.
 - Degraded: He was born in Los Angeles, California.
@@ -1305,7 +1305,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:20d70c35faa3366b15e8f22a76818905813bc4d7e4cbfa78e43f90477f4d49c6`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Born in White Plains, New York, Raimondo moved with his family to Yorktown Heights, New York when he was very young.
 - Simplified: He was born in White Plains, New York.
 - Degraded: He was born in White Plains, New York.
@@ -1327,7 +1327,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:33df762dc57f372e29c4be5a3fc347bd3a3928719f4af0b2178fa2a549b2170e`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Judith Pamela Butler (born 1956) is an American philosopher and gender theorist whose work has influenced political philosophy, ethics, and the fields of third-wave feminist, queer, and literary theory.
 - Simplified: Judith Butler (born February 24, 1956) is an American philosopher.
 - Degraded: Judith Butler (born February 24, 1956) is an American philosopher.
@@ -1338,7 +1338,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:381b6a8c9180cb4c3a787627d049a1eff6d949e53538f8e44c7c17aef5feec1e`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Marc Allison Veasey (born January 3, 1971) is an American politician from Fort Worth, Texas.
 - Simplified: Marc Allison Veasey (born January 3, 1971) is an American politician.
 - Degraded: Marc Allison Veasey (born January 3, 1971) is an American politician.
@@ -1349,7 +1349,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:38e6e849729772853bf1419650847279667d2ce511b34f4ee7c72067474ff71e`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Levente Lengyel (13 June 1933 – 18 August 2014) was a Hungarian chess player, who gained the Grandmaster title in 1964.
 - Simplified: Levente Lengyel (13 June 1933 – 18 August 2014) was a Hungarian chess player.
 - Degraded: Levente Lengyel (13 June 1933 – 18 August 2014) was a Hungarian chess player.
@@ -1371,7 +1371,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:3be522e9244c2997d36e70261159fa1027537e3febdd1607fbab06d1aca35921`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Despite being classified as an Atlantic island, Barbados is considered to be a part of the Caribbean, where it is ranked as a leading tourist destination.
 - Simplified: Barbados is a country in the Caribbean.
 - Degraded: Barbados is a country in the Caribbean.
@@ -1382,7 +1382,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:4355ddfe9df18d65be087a97c9c71658c818d104034b419f8995db74aeeca19d`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: There are also over 12,000 species of insects in the rainforest.
 - Simplified: There are also over 12,000 species of insects.
 - Degraded: There are also over 12,000 species of insects.
@@ -1415,7 +1415,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:5a72c0b0c92a9e90895f5fa8cd59c77ed842835c3c56319847cc017d4d476cdb`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: REO Speedwagon (originally styled as R.E.O. Speedwagon) is an American rock band from Champaign, Illinois.
 - Simplified: REO Speedwagon is an American rock band.
 - Degraded: REO Speedwagon is an American rock band.
@@ -1426,7 +1426,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:5a892dd26aba135031cfd021830eec4f2c1b575749a42ff316e35acf061030a1`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Pori (] ; ; ) is a city and municipality on the west coast of Finland.
 - Simplified: Pori is a city in Finland.
 - Degraded: Pori is a city in Finland.
@@ -1448,7 +1448,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:6709c763a11d1f27ee85dde21557f1c27e9b02d4f3e3de0f45f3d46a8e66f720`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Riegle was born in Flint, Michigan, and is a graduate of Flint Central High School.
 - Simplified: He was born in Flint, Michigan.
 - Degraded: He was born in Flint, Michigan.
@@ -1470,7 +1470,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:6dd57bb9af600a62afa238f33f11ad6ecd3df46d7837f7278b25b35d205780cd`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: BILLA (] ) is an Austrian supermarket chain that operates throughout Central, Eastern and Southeastern Europe.
 - Simplified: Billa (stylised BILLA) is an Austrian supermarket chain.
 - Degraded: Billa (stylised BILLA) is an Austrian supermarket chain.
@@ -1481,7 +1481,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:70d019c41ff3c336ef0f27dbf0aee770dbd240232f5bbf79ef7de893451b7620`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Bologna was born in Brooklyn, New York to an Italian-American family.
 - Simplified: Bologna was born in Brooklyn, New York.
 - Degraded: Bologna was born in Brooklyn, New York.
@@ -1503,7 +1503,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:7bf34c84b933793bdb584658094d794a1c167d180d81e1a64bd6dbf50b3624ef`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Upon Eritrea's independence in 1991, Tigrinya retained the status of working language in the country, the only state in the world to date to recognize Tigrinya on a national level.
 - Simplified: In 1991, Eritrea became independent from Ethiopia.
 - Degraded: In 1991, Eritrea became independent from Ethiopia.
@@ -1525,7 +1525,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:8545dafd922a54bf2e94267b80e32907cc97e5ddbc6363a612c428941ab50647`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: BBC Radio 5 Live Sports Extra (also known as just 5 Live Sports Extra or 5 Live Extra) is a national digital radio station in the United Kingdom, operated by the BBC, and specialising only in extended additional sports coverage.
 - Simplified: BBC Radio 5 Live Sports Extra is a digital radio station from the BBC.
 - Degraded: BBC Radio 5 Live Sports Extra is a digital radio station from the BBC.
@@ -1536,7 +1536,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:93bbb737ac35b9e6bd9e103720621d12d672b80bec241ff86ced5102923fc744`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Andrew Michael Bogut (born 28 November 1984) is an Australian professional basketball player for the Sydney Kings for the National Basketball League (NBL).
 - Simplified: Andrew Michael Bogut (born 28 November 1984) is an Australian professional basketball player.
 - Degraded: Andrew Michael Bogut (born 28 November 1984) is an Australian professional basketball player.
@@ -1558,7 +1558,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9cf224ab675099873e5298ed22d73789d9ec520293429f5f206f3fdd56cdcf7f`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Romans established a fort here about 70 AD, around which later developed a large linear civilian settlement focused on a bridge one mile (1.6 km) south of the present town.
 - Simplified: The Romans established a fort here about 70 AD.
 - Degraded: The Romans established a fort here about 70 AD.
@@ -1580,7 +1580,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:b02caff4a7548e3e7e372df5efb07a9fca0274ea51f1b93f42e5b58b7b03a0ea`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: In 1932, Democratic presidential nominee Franklin D. Roosevelt promised "a New Deal for the American people", coining the enduring label for his domestic policies.
 - Simplified: In 1932, he was defeated and Franklin D. Roosevelt became President.
 - Degraded: In 1932, he was defeated and Franklin D. Roosevelt became President.
@@ -1591,7 +1591,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:b21505bffb0e4c8ff9e6bf02988e44dc8b8859ad8a380fd26ca723b15bc39fbc`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Schickel was born in Milwaukee, Wisconsin, the son of Helen (née Hendricks) and Edward John Schickel.
 - Simplified: Schickel was born in Milwaukee, Wisconsin.
 - Degraded: Schickel was born in Milwaukee, Wisconsin.
@@ -1613,7 +1613,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:b8f662f8f6f2f9070791eb9646b78341e235283b985ef97b24dbe7df1a7163db`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Richard Carter (11 December 1953 – 13 July 2019) was an Australian actor and voice-over artist who appeared in several television series and independent films.
 - Simplified: Richard Carter (11 December 1953 – 13 July 2019) was an Australian actor.
 - Degraded: Richard Carter (11 December 1953 – 13 July 2019) was an Australian actor.
@@ -1646,7 +1646,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:c806a1d8a5b37b866fb03e12a3dc1b29ff604c0eaf1736ef89d380bfca40dac9`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: There are many rivers in French Guiana, including the Waki River.
 - Simplified: There are many rivers in French Guiana.
 - Degraded: There are many rivers in French Guiana.
@@ -1668,7 +1668,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f18b996eb5c32cc726ced1a2d4e6b037c57bed4e2032bad7469a45b65c1dc42a`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The lion-tailed macaque ("Macaca silenus"), also known as the bruh, is an Old World monkey endemic to the Western Ghats of South India.
 - Simplified: The lion-tailed macaque ("Macaca silenus") is an Old World monkey.
 - Degraded: The lion-tailed macaque ('Macaca silenus') is an Old World monkey.
@@ -1679,7 +1679,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f22273c7216540f276400d18e46ed78aeb0637831d3b68f98d9b28ed0697f4e8`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Polly Jean Harvey (born 9 October 1969) is an English musician, singer-songwriter, writer, artist, poet and composer.
 - Simplified: Polly Jean Harvey MBE (born 9 October 1969) is an English musician.
 - Degraded: Polly Jean Harvey MBE (born 9 October 1969) is an English musician.
@@ -1690,7 +1690,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f2dfd10164938b215bb4efbce8b277bd41107c2af5d9b5b01dab0c69e276df6b`
 - Source strategy: `OMIT`
 - Assigned operation: `restore_omitted_complex_detail`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Euclidean algorithm is one of the oldest algorithms in common use.
 - Simplified: The Euclidean algorithm is an algorithm.
 - Degraded: The Euclidean algorithm is an algorithm.
@@ -1714,7 +1714,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:01ff29a74629f4a9713cbc4bf805b2661dabe9412b0daa24026dd7b7a673bd55`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Tosh.0 is an American television series hosted and produced by comedian Daniel Tosh, who provides commentary on online viral video clips, society, celebrities, stereotypes, and popular culture as a whole.
 - Simplified: Tosh.0 is an American comedy cable television show that was created by comedian Daniel Tosh.The show focuses on viral videos from the internet with sarcastic commentary, interviews, and short comedy routines.
 - Degraded: Tosh.0 is an American comedy cable television show that was created by comedian Daniel Tosh.The show focuses on viral videos from the internet with sarcastic commentary, interviews, and short comedy routines.
@@ -1725,7 +1725,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:081f958c299f70ec8f43a59080137723bf9414e5c9776b24cbbd0faf9d4a89e9`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Alexandre Silveira Finazzi (born 20 August 1973), is a Brazilian footballer who plays for Goiânia.
 - Simplified: Alexandre Silveira Finazzi (born 20 August 1973) is a Brazilian professional athlete.
 - Degraded: Alexandre Silveira Finazzi (born 20 August 1973) is a Brazilian professional athlete.
@@ -1736,7 +1736,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:0f15d8529189012c2e86e75311aa84dbb20f11b26fd992d1a7673884c5a526ab`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: William Kistler Coors (August 11, 1916 – October 13, 2018) was an American brewery executive with the Coors Brewing Company.
 - Simplified: William Kistler "Bill" Coors (August 11, 1916 – October 13,2018) was an American businessman.
 - Degraded: William Kistler 'Bill' Coors (August 11, 1916 – October 13,2018) was an American businessman.
@@ -1747,7 +1747,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:109e797d7667b830e5560403264cfe451a15ca9b8fa6df93c4556921a8bb3f30`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Montaque N. Brown (born April 13, 1970) is an American former professional wrestler and National Football League linebacker.
 - Simplified: Monty Brown (born April 13, 1970) is a retired American professional wrestler and American football linebacker.
 - Degraded: Monty Brown (born April 13, 1970) is a retired American professional wrestler and American football linebacker.
@@ -1780,7 +1780,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:30a1bc5af36970bc33e9c05156c6db9f4dba7fac6d521f166220bb3c47db2d42`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Ion Andoni Goikoetxea Lasa (born 21 October 1965), often known as Goiko, is a Spanish retired footballer.
 - Simplified: Ion Andoni Goikoetxea (born 21 October 1965) is a former Spanish football player.
 - Degraded: Ion Andoni Goikoetxea (born 21 October 1965) is a former Spanish football player.
@@ -1802,7 +1802,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:41f5b8994cad62e8d32174db8e101f5881f59ceea2af6e7363af2bb667788107`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Venom is a secretion containing one or more toxins produced by an animal.
 - Simplified: Venom is a kind of poison used by animals.
 - Degraded: Venom is a kind of poison used by animals.
@@ -1813,7 +1813,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:448b0cbc0ff3e177da4c4506856c843615d9ab73af5302a65a3f9aa16731bb82`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Deadpool (Wade Winston Wilson) is a fictional character appearing in American comic books published by Marvel Comics.
 - Simplified: Deadpool (Finn Anderson the ranga), better known as Flanders not Randerz, is a comic book character in the Marvel Universe published by Marvel Comics.
 - Degraded: Deadpool (Finn Anderson the ranga), better known as Flanders not Randerz, is a comic book character in the Marvel Universe published by Marvel Comics.
@@ -1824,7 +1824,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:4635cb9b1fa39f9e8cbd01610525cec3870f8222f83e0d1b4c0fa3a80f24e673`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Star Wars is an American epic space-opera media franchise created by George Lucas.
 - Simplified: Star Wars is a series of science-fiction movies by George Lucas.
 - Degraded: Star Wars is a series of science-fiction movies by George Lucas.
@@ -1835,7 +1835,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:464990006f98c5d7b810434b1d72ff9aa9f3fa87ea95de9b74a5cac2f92e2c94`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: He has had bit parts in several films and television sitcoms.
 - Simplified: He has also acted in some films and television sitcoms.
 - Degraded: He has also acted in some films and television sitcoms.
@@ -1846,7 +1846,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:4681b3549e8814f1890cd10486e99480d4f39203cf942654ac63d1fd8dd7f6e7`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Volcanology (also spelled vulcanology) is the study of volcanoes, lava, magma, and related geological, geophysical and geochemical phenomena (volcanism).
 - Simplified: In geology, volcanology (also spelled vulcanology) is the part of geology that studies volcanoes, lava, magma, and other related things.
 - Degraded: In geology, volcanology (also spelled vulcanology) is the part of geology that studies volcanoes, lava, magma, and other related things.
@@ -1857,7 +1857,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:4860510219917c94384eb4c3c312709a7fac1ef7f76660a498e30ad9a4aed5f9`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Statutes of Kilkenny were a series of thirty-five acts passed at Kilkenny in 1366, aiming to curb the decline of the Hiberno-Norman Lordship of Ireland.
 - Simplified: The Statute of Kilkenny were a set of laws made by the English in 1367 to try and save the English colony in Ireland.They were passed at a meeting of the Irish parliament held at Kilkenny.
 - Degraded: The Statute of Kilkenny were a set of laws made by the English in 1367 to try and save the English colony in Ireland. They were passed at a meeting of the Irish parliament held at Kilkenny.
@@ -1879,7 +1879,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:52d41de0b38a31773c3886ebcbfe119a6bdaaae3a16aaa42654364d31b48d128`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: A Tesla coil is an electrical resonant transformer circuit designed by inventor Nikola Tesla in 1891.
 - Simplified: A Tesla coil is an electrical machine invented by Nikola Tesla in 1891.
 - Degraded: A Tesla coil is an electrical machine invented by Nikola Tesla in 1891.
@@ -1901,7 +1901,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:540f757b91c560a3f530eab89ac67a470a85038cdd41c735489412a99c6dd8a6`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Usually this occurs when the dust devil is not moving fast enough (depletion) or begins to enter a terrain where the surface temperatures are cooler.
 - Simplified: This usually happens when the dust devil becomes weak, or moves across a new terrain were the surface temperatures are cooler.
 - Degraded: This usually happens when the dust devil becomes weak, or moves across a new terrain were the surface temperatures are cooler.
@@ -1923,7 +1923,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:5f53223ccab7ba4b1914df8c1bae48b72de7bcd44e94f778e38a497f03c70068`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The European Union Youth Orchestra (EUYO) is a symphony orchestra with members drawn from each of the European Union's 28 Member States.
 - Simplified: The European Union Youth Orchestra (EUYO) is an orchestra for young people from countries in the European Union.
 - Degraded: The European Union Youth Orchestra (EUYO) is an orchestra for young people from countries in the European Union.
@@ -1945,7 +1945,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:688c81f60a2bf2164512034379aa34cd0eaf8c36460cb3f55bc2546240c0daa6`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: The Seven Cities of Gold, also known as the Seven Cities of Cibola, is a myth that was popular in the 16th century.
 - Simplified: The Seven Cities of Gold is a legend from the Spanish conquest of South America.
 - Degraded: The Seven Cities of Gold is a legend from the Spanish conquest of South America.
@@ -1956,7 +1956,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:746c2e3715e7db5bbd1a8d2b1210178f4c1ca764e6ce9610bc3e4e0d8d89e324`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: An ice core is a core sample that is typically removed from an ice sheet or a high mountain glacier.
 - Simplified: An ice core is a long piece of ice taken from a glacier.
 - Degraded: An ice core is a long piece of ice taken from a glacier.
@@ -1978,7 +1978,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:8793c901806cbebeae19f7558d83088bfb7dda07f7a0db2978d9a98dd9ef6440`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Mollie Sugden (21 July 19221 July 2009) was an English comedy actress, best known for portraying the saleswoman Mrs Slocombe in the British sitcom "Are You Being Served?"
 - Simplified: Mary Isobel 'Mollie' Sugden (21 July 1922 – 1 July 2009) was an English comedy actress best known for playing saleswoman Mrs. Slocombe in the popular British sitcom "Are You Being Served?"
 - Degraded: Mary Isobel 'Mollie' Sugden (21 July 1922 – 1 July 2009) was an English comedy actress best known for playing saleswoman Mrs. Slocombe in the popular British sitcom 'Are You Being Served?'
@@ -2011,7 +2011,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:942dbbf39be1c2a587d9e4ef5884b336eee772ccdd3a14d2385ac12ffb84b257`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: New Line Productions Inc., doing business as New Line Cinema, is an American film production studio of Warner Bros.
 - Simplified: New Line Film Productions Inc., often called New Line Cinema, is an American movie studio.
 - Degraded: New Line Film Productions Inc., often called New Line Cinema, is an American movie studio.
@@ -2022,7 +2022,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:948b3375975d1c9561972b21bbeb0b2834e262e59826cb4268a2221cd64dd909`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: An inert gas is a gas that does not undergo chemical reactions under a set of given conditions.
 - Simplified: An inert gas is a gas that does not usually react chemically with other things.
 - Degraded: An inert gas is a gas that does not usually react chemically with other things.
@@ -2044,7 +2044,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9672c86cbff9d08c92a0284033df25ce33ce4a92123f59f584d3b91f800e36ed`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Wester Shadric "Wes" Cooley (March 28, 1932 – February 4, 2015) was a Republican politician and rancher from Oregon.
 - Simplified: Wester Shadric "Wes" Cooley (March 28, 1932 – February 4, 2015) was an American politician and rancher.
 - Degraded: Wester Shadric "Wes" Cooley (March 28, 1932 – February 4, 2015) was an American politician and rancher.
@@ -2066,7 +2066,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9a4c6fc181fcf91adfbfd5894db12a1cce0251c4494045dcc1eb448c234298c0`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: It gives its name to the Carme group, made up of irregular retrograde moons orbiting Jupiter at a distance ranging between 23 and 24 Gm and at an inclination of about 165°.
 - Simplified: It gives its name to the Carme group, made up of non-spherical retrograde moons orbiting Jupiter at a distance ranging between 23,000,000 and 24,000,000 km and at an inclination of about 165°.
 - Degraded: It gives its name to the Carme group, made up of non-spherical retrograde moons orbiting Jupiter at a distance ranging between 23,000,000 and 24,000,000 km and at an inclination of about 165°.
@@ -2110,7 +2110,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:adb82c2675fb981925d22ce5543ec0c749ca6420fbbd2fb66e8c1c41a84babf9`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Monster Buster Club is a children's science fiction television series co-produced by the French-based company Marathon Media, Canadian animation studio Image Entertainment Corporation and Jetix Europe.
 - Simplified: Monster Buster Club is a children's comedy action animated television program series.It was created by Vincent Chalvon-Demersay and David Michel and by Marathon Media and Image Entertainment Corporation Inc.
 - Degraded: Monster Buster Club is a children's comedy action animated television program series.It was created by Vincent Chalvon-Demersay and David Michel and by Marathon Media and Image Entertainment Corporation Inc.
@@ -2132,7 +2132,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:b7a63028bb36f76c74da14abe0f35445560d7b1febbbb9c7070c078afb99959d`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: A presentation is the process of presenting a topic to an audience.
 - Simplified: Presentation is the process of presenting the content of a topic to an audience.
 - Degraded: Presentation is the process of presenting the content of a topic to an audience.
@@ -2143,7 +2143,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:b97e180de9125303f9c7226e85094684a2ad638e8f827ed1506f437842f61496`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: A puddle is a small accumulation of liquid, usually water, on a surface.
 - Simplified: A puddle is a small mass of liquid, usually water, uncontained on a surface.
 - Degraded: A puddle is a small mass of liquid, usually water, uncontained on a surface.
@@ -2154,7 +2154,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:be8083c815fc812f0e05dfd250a3fbe252d52197b95350af359839c4fdbb4a19`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: After World War II Ellis held several posts which were not related to nuclear weapons.
 - Simplified: After World War II Ellis had other jobs which were not related to nuclear weapons.
 - Degraded: After World War II Ellis had other jobs which were not related to nuclear weapons.
@@ -2165,7 +2165,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:bf958101ac1c52649957934814b53b852b072340d29da3d19eadf655a329988e`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Robert James Timlin (July 26, 1932 – January 17, 2017) was a United States District Judge of the United States District Court for the Central District of California.
 - Simplified: Robert James Timlin (July 26, 1932 – January 17, 2017) was an American federal judge.
 - Degraded: Robert James Timlin (July 26, 1932 – January 17, 2017) was an American federal judge.
@@ -2176,7 +2176,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:c236c6b37c99c713e410c6379bd5d5bd8ec8d5daefcb55cef9e9555cad3960f9`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: He became recognized following his performance in "Vennila Kabadi Kuzhu".
 - Simplified: He became a well known actor since his role in the movie "Vennila Kabaddi Kuzhu".
 - Degraded: He became a well known actor since his role in the movie 'Vennila Kabaddi Kuzhu'.
@@ -2198,7 +2198,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:d1134c0fac3d2972fcb5e8c452267801132331ed4986fcf2b5e101151559d289`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: A JavaScript engine is a computer program that executes JavaScript (JS) code.
 - Simplified: A JavaScript engine is a program that interprets JavaScript code.
 - Degraded: A JavaScript engine is a program that interprets JavaScript code.
@@ -2209,7 +2209,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:de6538c96861db43f9345c9f1e985fda53bca786056eafc1a0367e2ef2a5d97a`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: He is currently signed to WWE, where he performs on the Raw brand under the ring name Sami Zayn.
 - Simplified: He is currently working for WWE where he competes under the ring name, Sami Zayn.
 - Degraded: He is currently working for WWE where he competes under the ring name, Sami Zayn.
@@ -2231,7 +2231,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f0cae1c08e2684c1c021f0d8dfa6c1d062c1950f080e5d5d19281889285380e6`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Majority rule is a decision rule that selects alternatives which have a majority, that is, more than half the votes.
 - Simplified: Majority rule is a way of making decisions in government or in voting.A decision is made if it gets more than half of the votes.
 - Degraded: Majority rule is a way of making decisions in government or in voting.A decision is made if it gets more than half of the votes.
@@ -2242,7 +2242,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:f5aacedf09d32192057303e502e501842536b2d3361af8f8fc7a006c0ba8a9d9`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Black Christmas is a 1974 Canadian slasher film produced and directed by Bob Clark, and written by A. Roy Moore.
 - Simplified: Black Christmas (also released as Silent Night, Evil Night, and Stranger in the House) is a 1974 Canadian independent horror movie.It was directed and produced by Bob Clark.
 - Degraded: Black Christmas (also released as Silent Night, Evil Night, and Stranger in the House) is a 1974 Canadian independent horror movie.It was directed and produced by Bob Clark.
@@ -2253,7 +2253,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:fc5b5a510b0706cfa4e6416489bd5792f7ebd73914dfce5331b17ddf32a64f98`
 - Source strategy: `SYN`
 - Assigned operation: `restore_complex_lexical_item`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Katherine Milhous (1894–1977) was an American artist, illustrator, and writer.
 - Simplified: Katherine Milhous (November 27, 1894 - December 5, 1977) was an American artist, illustrator and author.
 - Degraded: Katherine Milhous (November 27, 1894 - December 5, 1977) was an American artist, illustrator and author.
@@ -2277,7 +2277,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:01140a3ef23e1c1ceab1be7238b8c8d49c9a430d140580bbae5d74940c07e3b1`
 - Source strategy: `MOD`
 - Assigned operation: `reverse_information_restructuring`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Adam Kenneth Compton Wood (born 13 March 1955) is a retired British diplomat, and was the Lieutenant Governor of the Isle of Man from 2011 to 2016.
 - Simplified: Adam Kenneth Compton Wood (born 13 March 1955) is a retired British diplomat.He is the current Lieutenant Governor of the Isle of Man.Wood was born on 13 March 1955.
 - Degraded: Adam Kenneth Compton Wood (born 13 March 1955) is a retired British diplomat. He is the current Lieutenant Governor of the Isle of Man. Wood was born on 13 March 1955.
@@ -2552,7 +2552,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:9ec701c550ccca64270d1eac6f7956f3dc18c4a4f8400a6e632e0fbcfcdca3bb`
 - Source strategy: `MOD`
 - Assigned operation: `reverse_information_restructuring`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Guanacaste (] ) is a province of Costa Rica located in the northwestern region of the country, along the coast of the Pacific Ocean.
 - Simplified: Guanacaste is a province of Costa Rica.The province is in the northwest of Costa Rica, along the Pacific Ocean.
 - Degraded: Guanacaste (] ) is a province of Costa Rica. The province is in the northwest of Costa Rica, along the Pacific Ocean.
@@ -2695,7 +2695,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:d64c6dea29e6b1527a43aa052f3389301e11018d535b282f28c0bdbaa8e813de`
 - Source strategy: `MOD`
 - Assigned operation: `reverse_information_restructuring`
-- Quality: **Medium** (`text_changed_but_declared_span_not_verified`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: That is where they encountered European explorers and traders, having relationships with French, English and Spanish during the colonial years.
 - Simplified: They were living here when European explorers and traders came.They had relationships with the French, English and Spanish during the colonial years.
 - Degraded: They were living here when European explorers and traders came. They had relationships with the French, English and Spanish during the colonial years.
@@ -2873,7 +2873,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:0f8332099f563f95c110476a357e5112e96777fa64fba63b9f450501409a6211`
 - Source strategy: `EXPL`
 - Assigned operation: `modality_reversal`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Intelligibility between languages can be asymmetric, with speakers of one understanding more of the other than speakers of the other understanding the first.
 - Simplified: When a speaker of one language can understand what a speaker of another language is saying but not the other way around, it is called asymmetric intelligibility.
 - Degraded: When a speaker of one language can understand what a speaker of another language is saying but not the other way around, it is called asymmetric intelligibility.
@@ -3258,7 +3258,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:d19a27838c8c35c4aa7e3a530f6e580d1abe2b10e3586f23cb771f75bb04b2a1`
 - Source strategy: `SYNT`
 - Assigned operation: `modality_reversal`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: In mathematics, magnitude is the size of a mathematical object, a property which determines whether the object is larger or smaller than other objects of the same kind.
 - Simplified: The magnitude of a mathematical object is its size: a property by which it can be larger or smaller than other objects of the same kind.
 - Degraded: The magnitude of a mathematical object is its size: a property by which it can be larger or smaller than other objects of the same kind.
@@ -3513,7 +3513,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:4dd7752095f5292277b311561efea04bc5242966a8c8ca98493a9dea5ed37693`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: It was originally called "aniline purple".
 - Simplified: It was originally called "aniline purple" or "Tyrian purple", the name of an ancient natural dye got from a mollusc.
 - Degraded: It was originally called "aniline purple" or Tyrian purple, the name of an ancient natural dye got from a mollusc.
@@ -3546,7 +3546,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:60f5f8fdde6f14d64a3629984d4eee1b7fdb7adbf39c2169c2ec58f48a915a09`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: María José de Pablo Fernández, known professionally as Cote de Pablo (born November 12, 1979), is a Chilean-American actress and singer.
 - Simplified: Maria Jose de Pablo Fernandez, also known as Cote de Pablo (born November 12, 1979 in Santiago, Chile), is a Chilean-American actress and singer.
 - Degraded: Maria Jose de Pablo Fernandez, also known as Cote de Pablo (born November 12, 1979 in Santiago, Chile), is a Chilean-American actress and singer.
@@ -3623,7 +3623,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:84de07d98a2f3e3cbfbf397f1c7ccc28090140f4a719203fdea5c3fb536dff7f`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Over 4,000 living species are known.
 - Simplified: There are about 5,000 living species, and 15,000 fossil species are known.
 - Degraded: There are about 5,000 living species, and 15,000 fossil species are known.
@@ -3634,7 +3634,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:88aa77ad66e9522c173f5366d31625f318be7f31b042f3e10f21abd21e9b33a5`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: A nutcracker is a tool designed to open nuts by cracking their shells.
 - Simplified: A nutcracker is a mechanical device for cracking nuts.Nutcrackers are often used for breaking any types of nuts, using the mechanism in the tool itself.
 - Degraded: A nutcracker is a mechanical device for cracking nuts. Nutcrackers are often used for breaking any types of nuts, using the mechanism in the tool itself.
@@ -3733,7 +3733,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:ab55f2b8231d7f6db5ca2c959f1c6daf9d39ebb2d817b33e05bb73fb078eb16e`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Failed** (`simplified_and_degraded_are_identical`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: He died in the hospital on 4 September 2017 from kidney failure.
 - Simplified: Moschin died of kidney failure on 4 September 2017 at his home in Terni, Italy at the age of 88.
 - Degraded: Moschin died of kidney failure on 4 September 2017 at his home in Terni, Italy at the age of 88.
@@ -3755,7 +3755,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:ba94cc3643f7aa89f6784ddaeeb257b2ac6e3b39b327bc504022cc2aa1f15908`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Tongyong Pinyin was the official romanization of Mandarin Chinese in Taiwan between 2002 and 2008.
 - Simplified: Tongyong Pinyin is a romanization of Mandarin Chinese, or a way to write Mandarin in the Roman alphabet, that was invented in Taiwan.In 2002, it became the official romanization in Taiwan, even though no one was forced to use it.
 - Degraded: Tongyong Pinyin is a romanization of Mandarin Chinese, or a way to write Mandarin in the Roman alphabet, that was invented in Taiwan. In 2002, it became the official romanization in Taiwan, even though no one was forced to use it.
@@ -3887,7 +3887,7 @@ The main lesson is that prompt compliance is not degradation validity. Detector 
 - Pair: `pair:en:edcd0c31c645c956b58c4f4f647cd5a919f1d2df619666089fe34ed119d5444d`
 - Source strategy: `EXPL`
 - Assigned operation: `remove_added_explanation`
-- Quality: **Good** (`all_automatic_checks_passed`; automatic_triage_pending_human_audit)
+- Quality: **Failed** (`no_substantive_change`; automatic_triage_pending_human_audit)
 - Original: Ginger ale is a carbonated soft drink flavoured with ginger.
 - Simplified: Ginger ale is a soft drink flavored with the root of a plant known as ginger.Ginger beer is a non-alcoholic soft drink that is also flavored with ginger root.
 - Degraded: Ginger ale is a soft drink flavored with the root of a plant known as ginger. Ginger beer is a non-alcoholic soft drink that is also flavored with ginger root.

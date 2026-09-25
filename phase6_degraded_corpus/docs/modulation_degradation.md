@@ -34,13 +34,13 @@ The current detector assigns a general restructuring reversal rather than an exa
 | Automatic result | Count | Rate |
 |---|---:|---:|
 | Good | 23 | 46% |
-| Medium | 27 | 54% |
-| Failed | 0 | 0% |
+| Medium | 24 | 48% |
+| Failed | 3 | 6% |
 
 Automatic structural triage of 50 cases; semantic human audit is pending.
 
 ## What we learned
 
-Every sentence changed, but 27/50 edits could not be verified from the declared spans.
+Three cases changed only formatting, and 24/50 substantive edits could not be verified from the declared spans.
 
 **Next change:** Detect the structural operation before prompting and validate clause order or sentence-boundary changes explicitly.

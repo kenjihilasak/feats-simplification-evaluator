@@ -33,9 +33,9 @@ The detector proposes original tokens absent from the simplified version. Qwen r
 
 | Automatic result | Count | Rate |
 |---|---:|---:|
-| Good | 8 | 16% |
-| Medium | 14 | 28% |
-| Failed | 28 | 56% |
+| Good | 7 | 14% |
+| Medium | 13 | 26% |
+| Failed | 30 | 60% |
 
 Automatic structural triage of 50 cases; semantic human audit is pending.
 

@@ -41,6 +41,11 @@ def parse_generation(text: str) -> dict:
     return value
 
 
+def lexical_signature(text: str) -> list[str]:
+    """Ignore casing, whitespace, and punctuation when detecting no-op edits."""
+    return re.findall(r"[\w]+", text.casefold(), flags=re.UNICODE)
+
+
 def automatic_checks(row: dict, generation: dict) -> dict:
     degraded = generation["degraded_simplification"].strip()
     replacement = generation["replacement_span"].strip()
@@ -49,6 +54,7 @@ def automatic_checks(row: dict, generation: dict) -> dict:
     return {
         "nonempty": bool(degraded),
         "different_from_clean": degraded != row["clean_simplification"],
+        "substantive_change": lexical_signature(degraded) != lexical_signature(row["clean_simplification"]),
         "operation_matches_assignment": generation["operation_type"] == row["assigned_operation"],
         "changed_span_declared": bool(changed),
         "replacement_present_or_deletion": not replacement or replacement in degraded,

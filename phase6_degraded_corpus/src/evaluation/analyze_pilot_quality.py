@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -12,16 +13,25 @@ from phase6_degraded_corpus.src.common.contracts import read_jsonl
 from phase6_degraded_corpus.src.planning.multi_axis import AXES
 
 
+def lexical_signature(text: str) -> list[str]:
+    """Ignore casing, whitespace, and punctuation when detecting no-op edits."""
+    return re.findall(r"[\w]+", text.casefold(), flags=re.UNICODE)
+
+
 def classify(row: dict) -> tuple[str, str]:
     checks = row.get("automatic_checks") or {}
-    if row.get("status") == "generated_pending_audit":
-        return "good", "all_automatic_checks_passed"
     if not row.get("generation"):
         return "failed", "missing_or_unparseable_generation"
+    simplified = row.get("clean_simplification", "")
+    degraded = row["generation"].get("degraded_simplification", "")
+    if lexical_signature(simplified) == lexical_signature(degraded):
+        return "failed", "no_substantive_change"
     if not checks.get("different_from_clean", False):
         return "failed", "simplified_and_degraded_are_identical"
     if not checks.get("operation_matches_assignment", False):
         return "failed", "operation_does_not_match_assignment"
+    if row.get("status") == "generated_pending_audit":
+        return "good", "all_automatic_checks_passed"
     return "medium", "text_changed_but_declared_span_not_verified"
 
 

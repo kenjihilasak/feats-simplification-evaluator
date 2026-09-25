@@ -40,6 +40,12 @@ class MultiAxisTests(unittest.TestCase):
         self.assertTrue(found["FLUENCY"])
         self.assertTrue(found["ILLOC"])
 
+    def test_month_may_is_not_modality(self):
+        row = candidate(99, "COMP")
+        row["original"] = "Alice was born on May 15, 1914."
+        row["clean_simplification"] = "She was born on May 15, 1914."
+        self.assertFalse(applicability(row)["ILLOC"])
+
     def test_allocator_is_deterministic_unique_and_protects_mod(self):
         strategies = ["MOD"] * 3 + ["OMIT"] * 8 + ["SYN"] * 8 + ["EXPL"] * 8 + ["COMP"] * 8
         rows = [candidate(index, strategy) for index, strategy in enumerate(strategies)]
@@ -102,6 +108,9 @@ class MultiAxisTests(unittest.TestCase):
         }))
         checks = automatic_checks(row, parsed)
         self.assertTrue(checks["different_from_clean"])
+        self.assertTrue(checks["substantive_change"])
+        format_only = {**parsed, "degraded_simplification": row["clean_simplification"].replace("London in", "London  in")}
+        self.assertFalse(automatic_checks(row, format_only)["substantive_change"])
         self.assertTrue(checks["operation_matches_assignment"])
         spaced = parse_generation(json.dumps({
             **parsed,

@@ -34,8 +34,8 @@ The current detector proposes original tokens absent from the simplified version
 | Automatic result | Count | Rate |
 |---|---:|---:|
 | Good | 6 | 12% |
-| Medium | 16 | 32% |
-| Failed | 28 | 56% |
+| Medium | 12 | 24% |
+| Failed | 32 | 64% |
 
 Automatic structural triage of 50 cases; semantic human audit is pending.
 

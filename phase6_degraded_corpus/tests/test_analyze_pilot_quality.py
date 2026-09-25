@@ -27,6 +27,10 @@ class PilotQualityTests(unittest.TestCase):
         self.assertEqual(classify(row("p2", "failed_validation"))[0], "medium")
         self.assertEqual(classify(row("p3", "failed_validation", different=False))[0], "failed")
         self.assertEqual(classify(row("p4", "failed_parse", generation=False))[0], "failed")
+        format_only = row("p5", "generated_pending_audit")
+        format_only["clean_simplification"] = "Sentence.One"
+        format_only["generation"]["degraded_simplification"] = "Sentence. One"
+        self.assertEqual(classify(format_only), ("failed", "no_substantive_change"))
 
     def test_summary_and_markdown(self):
         result = analyze([
