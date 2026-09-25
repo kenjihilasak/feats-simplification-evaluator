@@ -2,6 +2,8 @@
 
 This is the single report for all seven Phase 6 pilots: 50 human-audited Meaning degradations and 300 generated examples covering the other six dimensions.
 
+For a quick human check, use the [50-case stratified random review](pilot_random_review.md).
+
 ## Interpretation
 
 - **Accepted:** the Meaning degradation was manually audited and accepted.
