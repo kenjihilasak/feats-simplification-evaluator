@@ -56,4 +56,4 @@ python -m unittest discover -s phase6_degraded_corpus/tests -v
 
 Split and exclude by `canonical_original_id`. Keep every generated variant of one original in one split. Store exact prompts, model revision, decoding configuration, seed, hashes, validation, and reviewer provenance.
 
-See [`docs/DEGRADATION_AUTOMATION.md`](docs/DEGRADATION_AUTOMATION.md) for the methodology and [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md) for the combined pilot results and examples.
+See [`docs/meaning_degradation.md`](docs/meaning_degradation.md) for the methodology and [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md) for the combined pilot results and examples.

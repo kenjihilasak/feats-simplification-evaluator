@@ -1,18 +1,18 @@
 # Seven-axis weak-supervision corpus
 
-[Phase 6 README](../README.md) · [degradation methodology](DEGRADATION_AUTOMATION.md) · [combined pilot report](PILOT_REPORT.md)
+[Phase 6 README](../README.md) · [degradation methodology](meaning_degradation.md) · [combined pilot report](PILOT_REPORT.md)
 
 ## Methodology by dimension
 
 | Dimension | Methodology |
 |---|---|
-| Meaning | [Meaning degradation](DEGRADATION_AUTOMATION.md) |
-| Fluency | [Fluency degradation](FLUENCY_DEGRADATION.md) |
-| Omission | [Omission degradation](OMISSION_DEGRADATION.md) |
-| Synonymy | [Synonymy degradation](SYNONYMY_DEGRADATION.md) |
-| Modulation | [Modulation degradation](MODULATION_DEGRADATION.md) |
-| Illocution | [Illocution degradation](ILLOCUTION_DEGRADATION.md) |
-| Explanation | [Explanation degradation](EXPLANATION_DEGRADATION.md) |
+| Meaning | [Meaning degradation](meaning_degradation.md) |
+| Fluency | [Fluency degradation](fluency_degradation.md) |
+| Omission | [Omission degradation](omission_degradation.md) |
+| Synonymy | [Synonymy degradation](synonymy_degradation.md) |
+| Modulation | [Modulation degradation](modulation_degradation.md) |
+| Illocution | [Illocution degradation](illocution_degradation.md) |
+| Explanation | [Explanation degradation](explanation_degradation.md) |
 
 ## Purpose
 
