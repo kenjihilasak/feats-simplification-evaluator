@@ -5,13 +5,13 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from generate_degradations import automatic_checks, parse_generation
-from multi_axis import AXES, allocate, applicability
-from plan_multi_axis_degradations import plan
-from select_multi_axis_inputs import build_inventory
-from validate_and_materialize import validate_and_build
+from phase6_degraded_corpus.src.generation.generate_degradations import automatic_checks, parse_generation
+from phase6_degraded_corpus.src.planning.multi_axis import AXES, allocate, applicability
+from phase6_degraded_corpus.src.planning.plan_multi_axis_degradations import plan
+from phase6_degraded_corpus.src.selection.select_multi_axis_inputs import build_inventory
+from phase6_degraded_corpus.src.evaluation.validate_and_materialize import validate_and_build
 
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:

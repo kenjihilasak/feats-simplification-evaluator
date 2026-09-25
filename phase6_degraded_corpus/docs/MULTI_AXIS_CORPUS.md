@@ -1,6 +1,6 @@
 # Seven-axis weak-supervision corpus
 
-[Phase 6 README](../README.md) · [frozen Meaning pilot](DEGRADATION_AUTOMATION.md) · [50 audited Meaning pairs](PILOT_PAIRS.md)
+[Phase 6 README](../README.md) · [degradation methodology](DEGRADATION_AUTOMATION.md) · [combined pilot report](PILOT_REPORT.md)
 
 ## Purpose
 
@@ -63,15 +63,15 @@ Failed axes revise only their detector or prompt and rerun their pilot. After ac
 ## Reproduction
 
 ```bash
-python phase6_degraded_corpus/src/select_multi_axis_inputs.py \
+python -m phase6_degraded_corpus.src.selection.select_multi_axis_inputs \
   --config phase6_degraded_corpus/configs/experiments/multi_axis_en_v1.json
 
-python phase6_degraded_corpus/src/plan_multi_axis_degradations.py \
+python -m phase6_degraded_corpus.src.planning.plan_multi_axis_degradations \
   --config phase6_degraded_corpus/configs/experiments/multi_axis_assignment_v1.json
 
 sbatch phase6_degraded_corpus/jobs/submit_multi_axis_pilot_gpu.sh
 
-python phase6_degraded_corpus/src/consolidate_generations.py \
+python -m phase6_degraded_corpus.src.generation.consolidate_generations \
   --manifest phase6_degraded_corpus/runs/multi_axis_en_v1/assignment/pilot_manifest.jsonl \
   --shards phase6_degraded_corpus/runs/multi_axis_en_v1/generation/pilot_shard_*.jsonl \
   --output phase6_degraded_corpus/runs/multi_axis_en_v1/generation/pilot_consolidated.jsonl \

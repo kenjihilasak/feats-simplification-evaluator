@@ -9,7 +9,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from contracts import read_jsonl, stable_key, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
 
 YEAR = re.compile(r"\b(?:1[5-9]\d{2}|20\d{2}|2100)\b")
 NUMBER = re.compile(r"\b\d+(?:[.,]\d+)?%?\b")

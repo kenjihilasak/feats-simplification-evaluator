@@ -3,10 +3,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from merge_generation_retries import merge
-from select_generation_retries import select
+from phase6_degraded_corpus.src.generation.merge_generation_retries import merge
+from phase6_degraded_corpus.src.generation.select_generation_retries import select
 
 
 class RetryTests(unittest.TestCase):

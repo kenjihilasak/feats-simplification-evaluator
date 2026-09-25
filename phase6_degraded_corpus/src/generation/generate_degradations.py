@@ -11,7 +11,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-from contracts import read_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl
 
 REQUIRED_GENERATION_FIELDS = {
     "degraded_simplification",

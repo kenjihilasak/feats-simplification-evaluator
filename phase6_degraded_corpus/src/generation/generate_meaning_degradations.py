@@ -12,7 +12,7 @@ from pathlib import Path
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-from contracts import read_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl
 
 
 def sha(text: str) -> str:

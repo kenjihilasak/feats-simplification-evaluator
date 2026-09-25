@@ -9,8 +9,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from contracts import read_jsonl, stable_key, write_jsonl
-from multi_axis import AXES, allocate
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
+from phase6_degraded_corpus.src.planning.multi_axis import AXES, allocate
 
 
 def plan(config: dict) -> tuple[list[dict], list[dict], dict]:

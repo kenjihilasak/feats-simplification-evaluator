@@ -8,8 +8,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from contracts import read_jsonl
-from multi_axis import AXES
+from phase6_degraded_corpus.src.common.contracts import read_jsonl
+from phase6_degraded_corpus.src.planning.multi_axis import AXES
 
 
 def classify(row: dict) -> tuple[str, str]:

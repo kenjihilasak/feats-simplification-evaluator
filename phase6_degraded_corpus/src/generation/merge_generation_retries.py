@@ -8,7 +8,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from contracts import read_jsonl, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
 
 
 def merge(base: list[dict], retries: list[dict]) -> tuple[list[dict], dict]:

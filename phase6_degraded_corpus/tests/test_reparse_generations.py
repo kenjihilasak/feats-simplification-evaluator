@@ -4,9 +4,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from reparse_generations import reparse
+from phase6_degraded_corpus.src.generation.reparse_generations import reparse
 
 
 class ReparseTests(unittest.TestCase):

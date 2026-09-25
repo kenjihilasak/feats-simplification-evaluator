@@ -2,7 +2,7 @@
 
 [Phase 6 README](../README.md)
 
-The complete pilot is available in a readable format: **[browse all 50 simplified/degraded pairs](PILOT_PAIRS.md)**.
+The complete pilot is available in a readable format: **[browse the combined 350-case pilot report](PILOT_REPORT.md)**. Its Meaning section contains all 50 human-audited simplified/degraded pairs.
 
 ## Goal
 
@@ -80,10 +80,10 @@ Final effective distribution:
 ## Reproduction
 
 ```bash
-python phase6_degraded_corpus/src/select_pilot_inputs.py \
+python -m phase6_degraded_corpus.src.selection.select_pilot_inputs \
   --config phase6_degraded_corpus/configs/experiments/meaning_en_pilot_v1.json
 
-python phase6_degraded_corpus/src/plan_meaning_corruptions.py \
+python -m phase6_degraded_corpus.src.planning.plan_meaning_corruptions \
   --config phase6_degraded_corpus/configs/experiments/meaning_corruption_assignment_v1.json
 ```
 

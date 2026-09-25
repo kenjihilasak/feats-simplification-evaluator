@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from contracts import read_jsonl, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
 
 
 def file_sha256(path: Path) -> str:

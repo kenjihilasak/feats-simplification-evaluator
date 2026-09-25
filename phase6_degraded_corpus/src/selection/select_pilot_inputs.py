@@ -10,7 +10,7 @@ import re
 from collections import Counter, defaultdict, deque
 from pathlib import Path
 
-from contracts import SCHEMA, read_jsonl, stable_key, validate_candidate, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import SCHEMA, read_jsonl, stable_key, validate_candidate, write_jsonl
 
 TOKEN_RE = re.compile(r"\w+(?:[-’']\w+)*|[^\w\s]", re.UNICODE)
 BAD_PREFIXES = ("File:", "Category:", "Template:", "Image:")

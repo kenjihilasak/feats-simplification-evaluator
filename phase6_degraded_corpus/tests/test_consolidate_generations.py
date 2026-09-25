@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from consolidate_generations import consolidate
+from phase6_degraded_corpus.src.generation.consolidate_generations import consolidate
 
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:

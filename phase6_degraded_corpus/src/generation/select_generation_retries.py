@@ -8,7 +8,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from contracts import read_jsonl, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
 
 
 def select(manifest: list[dict], generated: list[dict], statuses: set[str]) -> tuple[list[dict], dict]:

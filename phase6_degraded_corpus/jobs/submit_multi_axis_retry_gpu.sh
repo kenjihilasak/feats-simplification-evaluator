@@ -27,7 +27,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 mkdir -p "${PROJECT_ROOT}/phase6_degraded_corpus/logs" "${RUN_DIR}/generation"
 cd "${PROJECT_ROOT}"
 nvidia-smi
-"${PYTHON_BIN}" phase6_degraded_corpus/src/generate_degradations.py \
+"${PYTHON_BIN}" -m phase6_degraded_corpus.src.generation.generate_degradations \
   --manifest "${RUN_DIR}/generation/retry_failed_parse_manifest.jsonl" \
   --prompt-dir phase6_degraded_corpus/prompts \
   --output "${RUN_DIR}/generation/retry_failed_parse.jsonl" \

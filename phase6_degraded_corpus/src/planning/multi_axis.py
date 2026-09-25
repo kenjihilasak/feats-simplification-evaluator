@@ -6,8 +6,8 @@ import re
 from collections import Counter
 from typing import Iterable
 
-from contracts import stable_key
-from plan_meaning_corruptions import detect as detect_meaning
+from phase6_degraded_corpus.src.common.contracts import stable_key
+from phase6_degraded_corpus.src.planning.plan_meaning_corruptions import detect as detect_meaning
 
 AXES = ("MEANING", "FLUENCY", "OMIT", "SYN", "MOD", "ILLOC", "EXPL")
 DIRECT_AXES = {"OMIT", "SYN", "MOD", "EXPL"}

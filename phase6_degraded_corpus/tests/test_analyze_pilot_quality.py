@@ -3,9 +3,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from analyze_pilot_quality import analyze, classify, render_markdown
+from phase6_degraded_corpus.src.evaluation.analyze_pilot_quality import analyze, classify, render_markdown
 
 
 def row(pair_id, status, different=True, operation=True, generation=True):

@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from select_pilot_inputs import build
+from phase6_degraded_corpus.src.selection.select_pilot_inputs import build
 
 
 def write_jsonl(path, rows):

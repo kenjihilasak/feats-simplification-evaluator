@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "phase6_degraded_corpus" / "src"))
+sys.path.insert(0, str(ROOT))
 
-from plan_meaning_corruptions import detect, plan
+from phase6_degraded_corpus.src.planning.plan_meaning_corruptions import detect, plan
 
 
 class MeaningCorruptionPlanTests(unittest.TestCase):

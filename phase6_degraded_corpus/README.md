@@ -8,9 +8,10 @@ The seven-axis weak-supervision expansion is implemented for `MEANING`,
 `FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. See
 [`docs/MULTI_AXIS_CORPUS.md`](docs/MULTI_AXIS_CORPUS.md) for the full pipeline.
 
-The original Meaning pilot below remains frozen and reproducible.
-
-See [`docs/PILOT_QUALITY_ANALYSIS.md`](docs/PILOT_QUALITY_ANALYSIS.md) for the good/medium/failed analysis of the 300-pair multi-axis pilot.
+The original Meaning pilot below remains frozen and reproducible. The single
+combined report, [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md), covers all 350
+pilot cases: the 50 audited Meaning cases and the 300 automatically triaged
+cases from the other six axes.
 
 The first pilot covers English meaning preservation. Selection is deterministic and precedes generation:
 
@@ -27,7 +28,7 @@ ASSET is excluded by default because it is a candidate evaluation corpus. The cu
 ## Select the pilot candidates
 
 ```bash
-python phase6_degraded_corpus/src/select_pilot_inputs.py \
+python -m phase6_degraded_corpus.src.selection.select_pilot_inputs \
   --config phase6_degraded_corpus/configs/experiments/meaning_en_pilot_v1.json
 ```
 
@@ -38,7 +39,7 @@ The selector does not declare candidates correct. The pilot review accepted 27 p
 ## Plan the corruptions
 
 ```bash
-python phase6_degraded_corpus/src/plan_meaning_corruptions.py \
+python -m phase6_degraded_corpus.src.planning.plan_meaning_corruptions \
   --config phase6_degraded_corpus/configs/experiments/meaning_corruption_assignment_v1.json
 ```
 
@@ -54,4 +55,4 @@ python -m unittest discover -s phase6_degraded_corpus/tests -v
 
 Split and exclude by `canonical_original_id`. Keep every generated variant of one original in one split. Store exact prompts, model revision, decoding configuration, seed, hashes, validation, and reviewer provenance.
 
-See [`docs/DEGRADATION_AUTOMATION.md`](docs/DEGRADATION_AUTOMATION.md) for the methodology and [`docs/PILOT_PAIRS.md`](docs/PILOT_PAIRS.md) to browse all 50 audited pairs.
+See [`docs/DEGRADATION_AUTOMATION.md`](docs/DEGRADATION_AUTOMATION.md) for the methodology and [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md) for the combined pilot results and examples.
