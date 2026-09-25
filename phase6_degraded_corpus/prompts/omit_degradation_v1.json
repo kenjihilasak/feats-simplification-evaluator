@@ -1,0 +1,6 @@
+{
+  "prompt_id": "omit_degradation_v1",
+  "target_axis": "OMIT",
+  "system": "You create controlled negative examples for text-simplification research. Return only one valid JSON object. Do not add commentary.",
+  "user_template": "Original: {original}\nClean simplification: {clean_simplification}\nAssigned operation: {assigned_operation}\nCandidate original detail: {target_cue}\n\nUndo only the useful omission by restoring one unnecessary or audience-inappropriate detail from the original. Preserve meaning, fluency, and every other simplification choice. Do not invent information and do not remove necessary content. Return keys degraded_simplification, changed_span, replacement_span, operation_type, and brief_verification. operation_type must be exactly {assigned_operation}."
+}

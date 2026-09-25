@@ -1,0 +1,15 @@
+{
+  "schema": "feats-phase6-multi-axis-selection-config-v1",
+  "experiment_id": "multi_axis_en_v1",
+  "language": "en",
+  "seed": 20260925,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-02_target_simple_v1/data/en/feats_consolidated.jsonl",
+  "single_strategy_file": "phase3a_strategy_detection/gold_candidates/2026-08-31_single_strategy_gemma_anchored_strict_v1/data/en/single_strategy_candidates.jsonl",
+  "phase2b_variant_id": "2026-09-02_target_simple_v1",
+  "phase3a_candidate_set_id": "2026-08-31_single_strategy_gemma_anchored_strict_v1",
+  "allowed_corpora": ["Wikipedia-Vikidia", "WikiAutoEN"],
+  "excluded_corpora": ["ASSET", "AssetAnn", "Human-Likert", "SimpEval-2022", "Simplicity-DA"],
+  "reserved_original_ids_files": [],
+  "original_token_range": [8, 45],
+  "output_dir": "phase6_degraded_corpus/runs/multi_axis_en_v1/selection"
+}

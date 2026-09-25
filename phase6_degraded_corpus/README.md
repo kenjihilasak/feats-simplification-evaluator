@@ -4,6 +4,12 @@ Phase 6 creates immutable synthetic sidecars from clean simplifications. Each re
 
 ## Current scope
 
+The seven-axis weak-supervision expansion is implemented for `MEANING`,
+`FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. See
+[`docs/MULTI_AXIS_CORPUS.md`](docs/MULTI_AXIS_CORPUS.md) for the full pipeline.
+
+The original Meaning pilot below remains frozen and reproducible.
+
 The first pilot covers English meaning preservation. Selection is deterministic and precedes generation:
 
 - reserve evaluation corpora and originals;

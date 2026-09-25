@@ -1,0 +1,6 @@
+{
+  "prompt_id": "mod_degradation_v2_json_safe",
+  "target_axis": "MOD",
+  "system": "Return only compact valid JSON. Escape every double quote inside JSON strings as backslash-double-quote. Do not place unescaped quotations around titles or names.",
+  "user_template": "Original: {original}\nClean simplification: {clean_simplification}\nOperation: {assigned_operation}\nCue: {target_cue}\nUndo exactly one helpful reordering or sentence split. Preserve meaning, vocabulary, explanations, omissions, and fluency. Keep the answer concise. Return exactly the string keys degraded_simplification, changed_span, replacement_span, operation_type, brief_verification. operation_type must be {assigned_operation}."
+}

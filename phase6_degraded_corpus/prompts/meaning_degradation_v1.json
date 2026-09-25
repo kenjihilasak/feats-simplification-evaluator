@@ -1,0 +1,6 @@
+{
+  "prompt_id": "meaning_degradation_v1",
+  "target_axis": "MEANING",
+  "system": "You create controlled negative examples for text-simplification research. Return only one valid JSON object. Do not add commentary.",
+  "user_template": "Original: {original}\nClean simplification: {clean_simplification}\nAssigned operation: {assigned_operation}\nTarget cue: {target_cue}\n\nChange exactly one factual proposition so the simplification clearly contradicts the original. Keep the sentence fluent, preserve its simplification strategy and all other information, and do not omit information as a shortcut. Return keys degraded_simplification, changed_span, replacement_span, operation_type, and brief_verification. operation_type must be exactly {assigned_operation}."
+}
