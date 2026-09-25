@@ -10,6 +10,8 @@ The seven-axis weak-supervision expansion is implemented for `MEANING`,
 
 The original Meaning pilot below remains frozen and reproducible.
 
+See [`docs/PILOT_QUALITY_ANALYSIS.md`](docs/PILOT_QUALITY_ANALYSIS.md) for the good/medium/failed analysis of the 300-pair multi-axis pilot.
+
 The first pilot covers English meaning preservation. Selection is deterministic and precedes generation:
 
 - reserve evaluation corpora and originals;
