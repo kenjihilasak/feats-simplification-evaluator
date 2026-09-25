@@ -1,6 +1,6 @@
 # Phase 6 — Controlled degraded corpus
 
-Phase 6 creates immutable synthetic sidecars from clean simplifications. Each record targets one FEATS axis and one controlled distortion. It never modifies Phase 2b.
+Phase 6 creates immutable synthetic sidecars from simplified versions. Each record targets one FEATS axis and one controlled distortion. It never modifies Phase 2b.
 
 ## Current scope
 
@@ -18,7 +18,7 @@ The first pilot covers English meaning preservation. Selection is deterministic 
 - require exactly one Gemma-predicted strategy per pair;
 - stratify by length, source, and that single strategy;
 - sample 50 primary records plus 150 deterministic backups;
-- manually approve the clean primary inputs before generating distortions.
+- manually approve the simplified primary inputs before generating distortions.
 
 ASSET is excluded by default because it is a candidate evaluation corpus. The current selection combines six non-ASSET Phase 4a reviewed anchors from official Phase 2b with 44 candidates from the validated `2026-09-02_target_simple_v1` consolidation. All backups also come from that target-simple variant.
 
@@ -40,7 +40,7 @@ python phase6_degraded_corpus/src/plan_meaning_corruptions.py \
   --config phase6_degraded_corpus/configs/experiments/meaning_corruption_assignment_v1.json
 ```
 
-This detects applicable corruption types and assigns one type and target cue to each pair reproducibly. Assignment can run before review, but generation remains `blocked_clean_review` until the corresponding clean input is accepted. The completed pilot contains 50 reviewed clean inputs and 50 audited meaning degradations.
+This detects applicable corruption types and assigns one type and target cue to each pair reproducibly. Assignment can run before review, but generation remains `blocked_clean_review` until the corresponding simplified version is accepted. The completed pilot contains 50 reviewed simplified versions and 50 audited meaning degradations.
 
 ## Tests
 

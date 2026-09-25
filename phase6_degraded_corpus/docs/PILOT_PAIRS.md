@@ -2,7 +2,7 @@
 
 [Automation and methodology](DEGRADATION_AUTOMATION.md) · [Phase 6 README](../README.md)
 
-Each example contains a source sentence, an accepted clean simplification, and a deliberately incorrect simplification with one severe meaning error. Bold text marks the recorded change when the span occurs literally.
+Each example contains a source sentence, an accepted simplified version, and a deliberately incorrect simplification with one severe meaning error. Bold text marks the recorded change when the span occurs literally.
 
 ## Summary
 
@@ -29,7 +29,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Qwen pass 1
 - **Original:** Federal elections were held in Germany on 24 September 2017 to elect the members of the 19th Bundestag.
-- **Clean simplification:** The **2017** German federal election was held in Germany on 24 September 2017.
+- **Simplified:** The **2017** German federal election was held in Germany on 24 September 2017.
 - **Degraded simplification:** The 2017 German federal election was held in Germany on 24 September **2018**.
 - **Recorded change:** `2017` → `2018`
 
@@ -39,7 +39,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Following the agreement, on 1 September 1939, Germany invaded Poland, marking the beginning of World War II in Europe.
-- **Clean simplification:** In **1939** the German invasion of Poland, began World War II in Europe.
+- **Simplified:** In **1939** the German invasion of Poland, began World War II in Europe.
 - **Degraded simplification:** In **1949** the German invasion of Poland began World War II in Europe.
 - **Recorded change:** `1939` → `1949`
 
@@ -49,7 +49,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Qwen pass 1
 - **Original:** Harriet Elisabeth Beecher was born in Litchfield, Connecticut, on June 14, 1811.
-- **Clean simplification:** She was born on June 14, **1811** in Litchfield, Connecticut.
+- **Simplified:** She was born on June 14, **1811** in Litchfield, Connecticut.
 - **Degraded simplification:** She was born on June 14, **1711** in Litchfield, Connecticut.
 - **Recorded change:** `1811` → `1711`
 
@@ -59,7 +59,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Angelo Peruzzi (] ; born 16 February 1970) is an Italian football coach and former goalkeeper, and a three-time winner of the Serie A Goalkeeper of the Year award.
-- **Clean simplification:** Angelo Peruzzi (born **16 February 1970**) is a former Italian football player.
+- **Simplified:** Angelo Peruzzi (born **16 February 1970**) is a former Italian football player.
 - **Degraded simplification:** Angelo Peruzzi (born **16 February 1980**) is a former Italian football player.
 - **Recorded change:** `16 February 1970` → `16 February 1980`
 
@@ -69,7 +69,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** Daniele was born to a working-class family in Naples, his father being a harbor worker.
-- **Clean simplification:** He was born in **Naples, Italy**.
+- **Simplified:** He was born in **Naples, Italy**.
 - **Degraded simplification:** He was born in **Rome, Italy**.
 - **Recorded change:** `Naples, Italy` → `Rome, Italy`
 
@@ -79,7 +79,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Maroda is located 9 km ahead of Devprayag on the way to Sabdar Khal and Pauri.
-- **Clean simplification:** It is only 9 km away from **Devpryag**, on the way to Pauri.
+- **Simplified:** It is only 9 km away from **Devpryag**, on the way to Pauri.
 - **Degraded simplification:** It is only 9 km away from **Delhi**, on the way to Pauri.
 - **Recorded change:** `Devpryag` → `Delhi`
 
@@ -89,7 +89,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `MOD`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System after Mercury.
-- **Clean simplification:** Mars is a planet in the **Solar System**. It is the fourth-closest planet to the Sun.
+- **Simplified:** Mars is a planet in the **Solar System**. It is the fourth-closest planet to the Sun.
 - **Degraded simplification:** Mars is a planet in the **Alpha Centauri system**. It is the fourth-closest planet to the Sun.
 - **Recorded change:** `Solar System` → `Alpha Centauri system`
 
@@ -99,7 +99,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 2
 - **Original:** The Sambre ] is a river in northern France and in Wallonia, Belgium.
-- **Clean simplification:** The Sambre is a river that flows through **France** and Belgium.
+- **Simplified:** The Sambre is a river that flows through **France** and Belgium.
 - **Degraded simplification:** The Sambre is a river that flows through **Germany** and Belgium.
 - **Recorded change:** `France` → `Germany`
 
@@ -109,7 +109,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 1
 - **Original:** The White House is the official residence and workplace of the president of the United States.
-- **Clean simplification:** The White House is a building in **Washington, D.C.** where the president of the United States lives.
+- **Simplified:** The White House is a building in **Washington, D.C.** where the president of the United States lives.
 - **Degraded simplification:** The White House is a building in **New York City** where the president of the United States lives.
 - **Recorded change:** `Washington, D.C.` → `New York City`
 
@@ -119,7 +119,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 2
 - **Original:** She was born in Warsaw, in what was then the Kingdom of Poland, part of the Russian Empire.
-- **Clean simplification:** She was born in **Warsaw**.
+- **Simplified:** She was born in **Warsaw**.
 - **Degraded simplification:** She was born in **Warsaw, in what is now the United States**.
 - **Recorded change:** `Warsaw` → `Warsaw, in what is now the United States`
 
@@ -129,7 +129,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** The Paris Opera Ballet () is a French ballet company that is an integral part of the Paris Opera and the oldest national ballet company.
-- **Clean simplification:** The **Paris Opera Ballet** (in french: Ballet de l'Opéra national de Paris) is the oldest national ballet company in the world.
+- **Simplified:** The **Paris Opera Ballet** (in french: Ballet de l'Opéra national de Paris) is the oldest national ballet company in the world.
 - **Degraded simplification:** The **London Opera Ballet** (in French: Ballet de l'Opéra national de Paris) is the oldest national ballet company in the world.
 - **Recorded change:** `Paris Opera Ballet` → `London Opera Ballet`
 
@@ -139,7 +139,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** A scientist who works in the field of acoustics is an acoustician while someone working in the field of acoustics technology may be called an acoustical engineer.
-- **Clean simplification:** A scientist who works in the field of acoustics is **an acoustician**.Someone who works with acoustics technology may be called an acoustical engineer.
+- **Simplified:** A scientist who works in the field of acoustics is **an acoustician**.Someone who works with acoustics technology may be called an acoustical engineer.
 - **Degraded simplification:** A scientist who works in the field of acoustics is **a botanist**. Someone who works with acoustics technology may be called an acoustical engineer.
 - **Recorded change:** `an acoustician` → `a botanist`
 
@@ -149,7 +149,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Qwen pass 1
 - **Original:** The flag of the Republic of Turkey, often referred to as the Turkish flag is a red flag featuring a white star and crescent.
-- **Clean simplification:** The flag of **Turkey** has a white crescent moon and a star on a red background.
+- **Simplified:** The flag of **Turkey** has a white crescent moon and a star on a red background.
 - **Degraded simplification:** The flag of **Greece** has a white crescent moon and a star on a red background.
 - **Recorded change:** `Turkey` → `Greece`
 
@@ -159,7 +159,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 1
 - **Original:** In the late 19th century, Japan was still largely unknown and exotic to Westerners.
-- **Clean simplification:** In the late 19th century, **Westerners** knew little about Japan.
+- **Simplified:** In the late 19th century, **Westerners** knew little about Japan.
 - **Degraded simplification:** In the late 19th century, **Japanese** knew little about Japan.
 - **Recorded change:** `Westerners` → `Japanese`
 
@@ -169,7 +169,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** A trainer is a class of aircraft designed specifically to facilitate flight training of pilots and aircrews.
-- **Clean simplification:** A **train**ing aircraft, sometimes called a trainer, is an aircraft used to train future pilots and crews of aircraft.
+- **Simplified:** A **train**ing aircraft, sometimes called a trainer, is an aircraft used to train future pilots and crews of aircraft.
 - **Degraded simplification:** A training aircraft, sometimes called a trainer, is an aircraft used to **test** future pilots and crews of aircraft.
 - **Recorded change:** `train` → `test`
 
@@ -179,7 +179,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** A meme ( ) is an idea, behavior, or style that spreads from person to person within a culture-often with the aim of conveying a particular phenomenon, theme, or meaning represented by the meme.
-- **Clean simplification:** A meme (pronounced "meem") is an element of culture or behaviour that **gets transmitted between** individuals.
+- **Simplified:** A meme (pronounced "meem") is an element of culture or behaviour that **gets transmitted between** individuals.
 - **Degraded simplification:** A meme (pronounced "meem") is an element of culture or behaviour that **gets concealed from** individuals.
 - **Recorded change:** `gets transmitted between` → `gets concealed from`
 
@@ -189,7 +189,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 2
 - **Original:** Chemical biology is a scientific discipline spanning the fields of chemistry and biology.
-- **Clean simplification:** Chemical biology is a science that **combines the fields of chemistry and biology**.
+- **Simplified:** Chemical biology is a science that **combines the fields of chemistry and biology**.
 - **Degraded simplification:** Chemical biology is a science that **separates the fields of chemistry and biology**.
 - **Recorded change:** `combines the fields of chemistry and biology` → `separates the fields of chemistry and biology`
 
@@ -199,7 +199,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 2
 - **Original:** Justinian's rule constitutes a distinct epoch in the history of the Later Roman empire, and his reign is marked by the ambitious but only partly realized renovatio imperii, or "restoration of the Empire".
-- **Clean simplification:** Justinian also **increased the territories of his Empire** during his reign, for he tried to reconstruct the Roman Empire as it was in the second century.
+- **Simplified:** Justinian also **increased the territories of his Empire** during his reign, for he tried to reconstruct the Roman Empire as it was in the second century.
 - **Degraded simplification:** Justinian also **decreased the territories of his Empire** during his reign, for he tried to reconstruct the Roman Empire as it was in the second century.
 - **Recorded change:** `increased the territories of his Empire` → `decreased the territories of his Empire`
 
@@ -209,7 +209,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** Later she returned the award because of her own principles.
-- **Clean simplification:** Later she **returned the award**.
+- **Simplified:** Later she **returned the award**.
 - **Degraded simplification:** Later she **refused the award**.
 - **Recorded change:** `returned the award` → `refused the award`
 
@@ -219,7 +219,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 1
 - **Original:** Although larvae eat only milkweed, adult monarchs feed on the nectar of many plants including:
-- **Clean simplification:** Its larvae feed on milkweed, but the **adults feed on the nectar of many flowers**.
+- **Simplified:** Its larvae feed on milkweed, but the **adults feed on the nectar of many flowers**.
 - **Degraded simplification:** Its larvae feed on milkweed, but the **adults drink water from many flowers**.
 - **Recorded change:** `adults feed on the nectar of many flowers` → `adults drink water from many flowers`
 
@@ -229,7 +229,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 1
 - **Original:** The blue whale is the largest animal known to have ever lived.
-- **Clean simplification:** The blue whale **is the largest animal on Earth**.
+- **Simplified:** The blue whale **is the largest animal on Earth**.
 - **Degraded simplification:** The blue whale is **not the largest animal on Earth**.
 - **Recorded change:** `is the largest animal on Earth` → `not the largest animal on Earth`
 
@@ -239,7 +239,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 1
 - **Original:** A spur is an outgrowth of bone covered in a sheath of horn found in various anatomical locations in some animals.
-- **Clean simplification:** A spur **is a bone covered in horn that grows out of an animal's body.**
+- **Simplified:** A spur **is a bone covered in horn that grows out of an animal's body.**
 - **Degraded simplification:** A spur is a bone covered in horn that **does not grow out of an animal's body.**
 - **Recorded change:** `is a bone covered in horn that grows out of an animal's body.` → `does not grow out of an animal's body.`
 
@@ -249,7 +249,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `EXPL`
 - **Accepted from:** Qwen pass 1
 - **Original:** VHD discs are 25 cm in diameter, and store up to 60 minutes of video per side.
-- **Clean simplification:** VHD discs **are** 25 cm (9 5/6 inches) in diameter, and store up to 60 minutes of video per side.
+- **Simplified:** VHD discs **are** 25 cm (9 5/6 inches) in diameter, and store up to 60 minutes of video per side.
 - **Degraded simplification:** VHD discs are 25 cm in diameter, and **do not store** up to 60 minutes of video per side.
 - **Recorded change:** `are` → `do not store`
 
@@ -259,7 +259,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** For its entire existence, it was a very safe Labor seat.
-- **Clean simplification:** It **was a very safe** Labor seat.
+- **Simplified:** It **was a very safe** Labor seat.
 - **Degraded simplification:** For its entire existence, it was **not a very safe** Labor seat.
 - **Recorded change:** `was a very safe` → `not a very safe`
 
@@ -269,7 +269,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 2
 - **Original:** Meadow voles are an important prey for many hawks, owls, and mammalian carnivores, and they are also taken by some snakes.
-- **Clean simplification:** The meadow vole **is preyed upon** by hawks, owls, snakes, and other predators.
+- **Simplified:** The meadow vole **is preyed upon** by hawks, owls, snakes, and other predators.
 - **Degraded simplification:** The meadow vole is **not preyed upon** by hawks, owls, snakes, and other predators.
 - **Recorded change:** `is preyed upon` → `not preyed upon`
 
@@ -279,7 +279,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** The most familiar carriers of electrical charge are the electron and proton.
-- **Clean simplification:** **Both electrons and protons carry** a charge.
+- **Simplified:** **Both electrons and protons carry** a charge.
 - **Degraded simplification:** **Neither electrons nor protons carry** a charge.
 - **Recorded change:** `Both electrons and protons carry` → `Neither electrons nor protons carry`
 
@@ -289,7 +289,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** The Iraqi dinar (] ) (Arabic: دينار, (sign: د.ع; code: IQD) is the currency of Iraq.
-- **Clean simplification:** The Iraqi dinar **is the currency of Iraq**.
+- **Simplified:** The Iraqi dinar **is the currency of Iraq**.
 - **Degraded simplification:** The Iraqi dinar is **not the currency of Iraq**.
 - **Recorded change:** `is the currency of Iraq` → `not the currency of Iraq`
 
@@ -299,7 +299,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 1
 - **Original:** The furcula works as a strut between a bird's shoulders, and articulates to each of the bird's scapulae.
-- **Clean simplification:** It **is a strut** between a bird's shoulders, and connects to each of the bird's scapulae (shoulder blades).
+- **Simplified:** It **is a strut** between a bird's shoulders, and connects to each of the bird's scapulae (shoulder blades).
 - **Degraded simplification:** It **is not a strut** between a bird's shoulders, and connects to each of the bird's scapulae (shoulder blades).
 - **Recorded change:** `is a strut` → `is not a strut`
 
@@ -309,7 +309,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 2
 - **Original:** Osteoarthritis begins in the cartilage and eventually causes the two opposing bones to erode into each other.
-- **Clean simplification:** Osteoarthritis **is caused by cartilage between the bones wearing down.**
+- **Simplified:** Osteoarthritis **is caused by cartilage between the bones wearing down.**
 - **Degraded simplification:** Osteoarthritis is **not caused by cartilage between the bones wearing down**.
 - **Recorded change:** `is caused by cartilage between the bones wearing down.` → `not caused by cartilage between the bones wearing down`
 
@@ -319,7 +319,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Qwen pass 1
 - **Original:** David Alan Coulier (born September 21, 1959) is an American stand-up comedian, actor, voice actor, impressionist television host and private pilot.
-- **Clean simplification:** David Alan "Dave" Coulier (born September 21, **1959**) is an American actor, voice actor, stand-up comedian, impressionist, and television host.
+- **Simplified:** David Alan "Dave" Coulier (born September 21, **1959**) is an American actor, voice actor, stand-up comedian, impressionist, and television host.
 - **Degraded simplification:** David Alan 'Dave' Coulier (born September 21, **1960**) is an American actor, voice actor, stand-up comedian, impressionist, and television host.
 - **Recorded change:** `1959` → `1960`
 
@@ -329,7 +329,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 2
 - **Original:** The league currently consists of 12 teams.
-- **Clean simplification:** It consists of **12** teams.
+- **Simplified:** It consists of **12** teams.
 - **Degraded simplification:** It consists of **11** teams.
 - **Recorded change:** `12` → `11`
 
@@ -339,7 +339,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** Michael Dibdin (21 March 1947 – 30 March 2007) was a British crime writer who was famous for inventing Aurelio Zen, the principal character in 11 crime novels set in Italy.
-- **Clean simplification:** Michael Dibdin (**21 March** 1947 – 30 March 2007) was a British crime writer.
+- **Simplified:** Michael Dibdin (**21 March** 1947 – 30 March 2007) was a British crime writer.
 - **Degraded simplification:** Michael Dibdin (**2 March** 1947 – 30 March 2007) was a British crime writer.
 - **Recorded change:** `21 March` → `2 March`
 
@@ -349,7 +349,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** He created roughly 900 oil paintings and more than 2,000 watercolors, as well as countless sketches and charcoal drawings.
-- **Clean simplification:** During his career, he created about **900** oil paintings and more than 2,000 watercolors, as well as many sketches and charcoal drawings.
+- **Simplified:** During his career, he created about **900** oil paintings and more than 2,000 watercolors, as well as many sketches and charcoal drawings.
 - **Degraded simplification:** During his career, he created about **90** oil paintings and more than 2,000 watercolors, as well as many sketches and charcoal drawings.
 - **Recorded change:** `900` → `90`
 
@@ -359,7 +359,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** The area of the country totals 22960 km2 , an area slightly larger than El Salvador, Israel, New Jersey or Wales.
-- **Clean simplification:** The area of the country totals **22960** km2.
+- **Simplified:** The area of the country totals **22960** km2.
 - **Degraded simplification:** The area of the country totals **2296** km2.
 - **Recorded change:** `22960` → `2296`
 
@@ -369,7 +369,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** They have three children, a daughter born in July 2011 and two sons born in October 2013 and March 2016.
-- **Clean simplification:** They have **three** children.
+- **Simplified:** They have **three** children.
 - **Degraded simplification:** They have **two** children.
 - **Recorded change:** `three` → `two`
 
@@ -379,7 +379,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 1
 - **Original:** Beginning in a first competition in 486 BC each playwright submitted a comedy.
-- **Clean simplification:** From **486** BC, each playwright also submitted a comedy.
+- **Simplified:** From **486** BC, each playwright also submitted a comedy.
 - **Degraded simplification:** From **386** BC, each playwright also submitted a comedy.
 - **Recorded change:** `486` → `386`
 
@@ -389,7 +389,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** The Blue Nile flows about 1,400 kilometres to Khartoum, where the Blue Nile and White Nile join to form the Nile.
-- **Clean simplification:** The Blue Nile flows about **1,400** kilometres to Khartoum.
+- **Simplified:** The Blue Nile flows about **1,400** kilometres to Khartoum.
 - **Degraded simplification:** The Blue Nile flows about **140** kilometres to Khartoum.
 - **Recorded change:** `1,400` → `140`
 
@@ -399,7 +399,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `EXPL`
 - **Accepted from:** Qwen pass 1
 - **Original:** The distance of the course (run counterclockwise around France) was 3657 km .
-- **Clean simplification:** The distance of the race was **3657** km (2272 mi).
+- **Simplified:** The distance of the race was **3657** km (2272 mi).
 - **Degraded simplification:** The distance of the course (run counterclockwise around France) was **2657** km.
 - **Recorded change:** `3657` → `2657`
 
@@ -409,7 +409,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Both symphonies were premiered in a long and under-rehearsed concert in the Theater an der Wien in Vienna on 22 December 1808.
-- **Clean simplification:** The symphony was **first** performed in Vienna, Austria, at the Theater an der Wien on 22 December 1808.
+- **Simplified:** The symphony was **first** performed in Vienna, Austria, at the Theater an der Wien on 22 December 1808.
 - **Degraded simplification:** The symphony was **last** performed in Vienna, Austria, at the Theater an der Wien on 22 December 1808.
 - **Recorded change:** `first` → `last`
 
@@ -419,7 +419,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Norman Rockwell was born on February 3, 1894, in New York City, to Jarvis Waring Rockwell and Anne Mary "Nancy" Rockwell, born Hill.
-- **Clean simplification:** Rockwell was born on February 3, 1894 in **New York City** to Jarvis Waring Rockwell and Anne Mary (Hill) Rockwell.
+- **Simplified:** Rockwell was born on February 3, 1894 in **New York City** to Jarvis Waring Rockwell and Anne Mary (Hill) Rockwell.
 - **Degraded simplification:** Rockwell was born on February 3, 1894 in **a rural village** to Jarvis Waring Rockwell and Anne Mary (Hill) Rockwell.
 - **Recorded change:** `New York City` → `a rural village`
 
@@ -429,7 +429,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `MOD`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Cassowaries have three-toed feet with sharp claws.
-- **Clean simplification:** Cassowaries have three toes on each foot. Each has a **sharp** claw.
+- **Simplified:** Cassowaries have three toes on each foot. Each has a **sharp** claw.
 - **Degraded simplification:** Cassowaries have three toes on each foot. Each has a **blunt** claw.
 - **Recorded change:** `sharp` → `blunt`
 
@@ -439,7 +439,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Qwen pass 2
 - **Original:** Destelbergen (] ) is a municipality located in the Belgian province of East Flanders.
-- **Clean simplification:** Destelbergen is a municipality in the **Belgian province of East Flanders**.
+- **Simplified:** Destelbergen is a municipality in the **Belgian province of East Flanders**.
 - **Degraded simplification:** Destelbergen is a municipality in the **French province of East Flanders**.
 - **Recorded change:** `Belgian province of East Flanders` → `French province of East Flanders`
 
@@ -449,7 +449,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYN`
 - **Accepted from:** Qwen pass 1
 - **Original:** The original texts of the Tanakh were mainly in Hebrew, with some portions in Aramaic.
-- **Clean simplification:** In the Old Testament, Tanakh was mostly written in Hebrew; a few parts were written in **Aramaic**.
+- **Simplified:** In the Old Testament, Tanakh was mostly written in Hebrew; a few parts were written in **Aramaic**.
 - **Degraded simplification:** In the Old Testament, Tanakh was mostly written in Hebrew; a few parts were written in **Greek**.
 - **Recorded change:** `Aramaic` → `Greek`
 
@@ -459,7 +459,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** * Dark chocolate: sugar, cocoa butter, cocoa liquor, and (sometimes) vanilla
-- **Clean simplification:** **Dark or bittersweet chocolate is made from sugar, cocoa butter, and chocolate liquor**.
+- **Simplified:** **Dark or bittersweet chocolate is made from sugar, cocoa butter, and chocolate liquor**.
 - **Degraded simplification:** **Sugar, cocoa butter, and chocolate liquor are made from dark or bittersweet chocolate**.
 - **Recorded change:** `Dark or bittersweet chocolate is made from sugar, cocoa butter, and chocolate liquor` → `Sugar, cocoa butter, and chocolate liquor are made from dark or bittersweet chocolate`
 
@@ -469,7 +469,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `MOD`
 - **Accepted from:** Qwen pass 2
 - **Original:** Metro is the second-busiest rapid transit system in the United States in number of passenger trips, after the New York City Subway.
-- **Clean simplification:** **It has the second busiest rapid transit system in the United States.The New York City Subway is the busiest.**
+- **Simplified:** **It has the second busiest rapid transit system in the United States.The New York City Subway is the busiest.**
 - **Degraded simplification:** **The New York City Subway has the second busiest rapid transit system in the United States. Metro is the busiest.**
 - **Recorded change:** `It has the second busiest rapid transit system in the United States.The New York City Subway is the busiest.` → `The New York City Subway has the second busiest rapid transit system in the United States. Metro is the busiest.`
 
@@ -479,7 +479,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `OMIT`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** It is 302.4 km2 , measuring 28 km long and 22 km wide, making it the 4th largest island in South Korea.
-- **Clean simplification:** The island measures **28 km long and 22 km wide**, and is the 4th largest island in South Korea.
+- **Simplified:** The island measures **28 km long and 22 km wide**, and is the 4th largest island in South Korea.
 - **Degraded simplification:** The island measures **28 km wide and 22 km long**, and is the 4th largest island in South Korea.
 - **Recorded change:** `28 km long and 22 km wide` → `28 km wide and 22 km long`
 
@@ -489,7 +489,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Dinosaurs laid eggs, some of which have been preserved as petrified fossils.
-- **Clean simplification:** **Dinosaurs also laid eggs**, of which fossils have been found.
+- **Simplified:** **Dinosaurs also laid eggs**, of which fossils have been found.
 - **Degraded simplification:** **Fossilized eggs produced dinosaurs**.
 - **Recorded change:** `Dinosaurs also laid eggs` → `Fossilized eggs produced dinosaurs`
 
@@ -499,7 +499,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `SYNT`
 - **Accepted from:** Qwen pass 2
 - **Original:** Some salamander species use tail autotomy to escape predators.
-- **Clean simplification:** Salamanders **can drop their tail to escape** predators.
+- **Simplified:** Salamanders **can drop their tail to escape** predators.
 - **Degraded simplification:** **Predators can drop their tail to escape** salamanders.
 - **Recorded change:** `can drop their tail to escape` → `Predators can drop their tail to escape`
 
@@ -509,7 +509,7 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `MOD`
 - **Accepted from:** Qwen pass 2
 - **Original:** Nearly half of all the mud volcanoes on Earth are concentrated in Azerbaijan, these volcanoes were also among nominees for the New7Wonders of Nature.
-- **Clean simplification:** Another interesting feature of Azerbaijan are the mud volcanoes - half of all mud volcanoes in the world are **situated in Azerbaijan**.
+- **Simplified:** Another interesting feature of Azerbaijan are the mud volcanoes - half of all mud volcanoes in the world are **situated in Azerbaijan**.
 - **Degraded simplification:** Another interesting feature of Azerbaijan are the mud volcanoes - half of all mud volcanoes in the world **situate in other countries**.
 - **Recorded change:** `situated in Azerbaijan` → `situate in other countries`
 
@@ -519,6 +519,6 @@ Each example contains a source sentence, an accepted clean simplification, and a
 - **Simplification strategy:** `COMP`
 - **Accepted from:** Manual correction after Qwen audit failure
 - **Original:** Cloning is the process of producing genetically identical individuals of an organism either naturally or artificially.
-- **Clean simplification:** In biology, **cloning is the process of producing one or more genetically-identical individuals**.
+- **Simplified:** In biology, **cloning is the process of producing one or more genetically-identical individuals**.
 - **Degraded simplification:** In biology, **cloning is produced by one or more genetically-identical individuals**.
 - **Recorded change:** `cloning is the process of producing one or more genetically-identical individuals` → `cloning is produced by one or more genetically-identical individuals`

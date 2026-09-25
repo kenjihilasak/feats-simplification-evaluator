@@ -2,19 +2,19 @@
 
 [Phase 6 README](../README.md)
 
-The complete pilot is available in a readable format: **[browse all 50 clean/degraded pairs](PILOT_PAIRS.md)**.
+The complete pilot is available in a readable format: **[browse all 50 simplified/degraded pairs](PILOT_PAIRS.md)**.
 
 ## Goal
 
-Create one fluent but factually wrong simplification for each of 50 English pairs. The pilot changes **Meaning Preservation only**: clean = `1`, severe distortion = `0`. Each clean input has one predicted simplification strategy, which the degradation should preserve.
+Create one fluent but factually wrong simplification for each of 50 English pairs. The pilot changes **Meaning Preservation only**: simplified = `1`, severe distortion = `0`. Each simplified version has one predicted simplification strategy, which the degradation should preserve.
 
 ## Pipeline
 
 1. **Select:** choose 50 unique originals; exclude evaluation corpora; stratify by corpus, length, and single strategy. Keep 150 deterministic backups.
-2. **Review clean inputs:** require faithfulness, no unsupported content, fluency, and meaningful simplification. Replace every rejection with an accepted backup.
+2. **Review simplified versions:** require faithfulness, no unsupported content, fluency, and meaningful simplification. Replace every rejection with an accepted backup.
 3. **Detect:** identify applicable entity, number, date, negation, property, relation, and event cues.
 4. **Assign:** choose one applicable corruption by minimizing `assigned_count / target_count`; break ties with a seeded hash.
-5. **Generate:** prompt the pinned Qwen model with the original, clean simplification, assigned type, and cue.
+5. **Generate:** prompt the pinned Qwen model with the original, simplified version, assigned type, and cue.
 6. **Validate:** require valid JSON, changed text, matching type, and literal application of the declared replacement.
 7. **Audit:** accept, retry, manually correct, or reject each output. Only an explicit contradiction with one meaning error enters the pilot corpus.
 
@@ -48,13 +48,13 @@ Exact prompts are versioned in [`meaning_severe_v1.json`](../prompts/meaning_sev
 
 ## Pilot outcome
 
-Clean-input review:
+Simplified-version review:
 
 - 50 primary candidates reviewed;
 - 27 accepted directly;
 - 23 rejected with reasons;
 - 23 accepted backups inserted;
-- 50 final clean pairs with unique `canonical_pair_id` and `canonical_original_id`.
+- 50 final simplified pairs with unique `canonical_pair_id` and `canonical_original_id`.
 
 Generation audit:
 

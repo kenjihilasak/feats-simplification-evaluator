@@ -22,7 +22,7 @@ def render(manifest: list[dict], generated: list[dict]) -> str:
         grouped[row["target_axis"]].append((row, predictions.get(row["canonical_pair_id"])))
     lines = [
         "# Phase 6 multi-axis pilot", "",
-        "Review whether the clean input is acceptable and whether the generated text contains exactly one degradation of the stated target axis. For every non-Meaning axis, the propositional meaning must remain unchanged.", "",
+        "Review whether the simplified version is acceptable and whether the generated text contains exactly one degradation of the stated target axis. For every non-Meaning axis, the propositional meaning must remain unchanged.", "",
         "Automatic validation is only a pre-screen; human audit is authoritative.", "",
         "| Axis | Pending audit | Failed automatic checks | Total |", "|---|---:|---:|---:|",
     ]
@@ -47,7 +47,7 @@ def render(manifest: list[dict], generated: list[dict]) -> str:
                 f"- Assigned operation: `{row['assigned_operation']}`",
                 f"- Automatic status: `{(prediction or {}).get('status', 'missing')}`",
                 f"- Original: {clean_cell(row['original'])}",
-                f"- Clean: {clean_cell(row['clean_simplification'])}",
+                f"- Simplified: {clean_cell(row['clean_simplification'])}",
                 f"- Degraded: {clean_cell(generation.get('degraded_simplification'))}",
                 f"- Model verification: {clean_cell(generation.get('brief_verification'))}",
                 "",

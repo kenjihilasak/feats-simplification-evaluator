@@ -26,7 +26,7 @@ def render(rows: list[dict]) -> str:
     lines = [
         "# Phase 6 meaning-degradation pilot: 50 audited pairs", "",
         "[Automation and methodology](DEGRADATION_AUTOMATION.md) · [Phase 6 README](../README.md)", "",
-        "Each example contains a source sentence, an accepted clean simplification, and a deliberately incorrect simplification with one severe meaning error. Bold text marks the recorded change when the span occurs literally.", "",
+        "Each example contains a source sentence, an accepted simplified version, and a deliberately incorrect simplification with one severe meaning error. Bold text marks the recorded change when the span occurs literally.", "",
         "## Summary", "", f"- Pairs: **{len(rows)}**",
         f"- Qwen pass 1: **{sources['qwen_v1']}**",
         f"- Qwen pass 2: **{sources['qwen_v2_retry']}**",
@@ -45,7 +45,7 @@ def render(rows: list[dict]) -> str:
             f"- **Simplification strategy:** `{row['predicted_strategy']}`",
             f"- **Accepted from:** {SOURCE_LABELS[row['accepted_source']]}",
             f"- **Original:** {row['original']}",
-            f"- **Clean simplification:** {clean}",
+            f"- **Simplified:** {clean}",
             f"- **Degraded simplification:** {distorted}",
             f"- **Recorded change:** `{generation['changed_clean_span']}` → `{generation['replacement_span']}`", "",
         ])

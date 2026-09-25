@@ -6,7 +6,7 @@
 
 Phase 6 builds controlled English training pairs for `MEANING`, `FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. It is synthetic weak supervision, not human gold data. The human-annotated Simplicity-DA, Human-Likert, AssetAnn, and SimpEval-2022 corpora remain reserved for final evaluation.
 
-Every selected `canonical_pair_id` is used once and receives one `target_axis`. `source_strategy` retains the single Phase 3a category found in the clean pair; it is not overwritten by the degradation target.
+Every selected `canonical_pair_id` is used once and receives one `target_axis`. `source_strategy` retains the single Phase 3a category found in the simplified pair; it is not overwritten by the degradation target.
 
 ## Inputs and selection
 
@@ -25,7 +25,7 @@ The current immutable inventory contains 12,140 unique pairs and 12,134 unique o
 
 ## Applicability and assignment
 
-- `OMIT`: restore one unnecessary or audience-inappropriate detail that the clean pair omitted.
+- `OMIT`: restore one unnecessary or audience-inappropriate detail that the simplified pair omitted.
 - `SYN`: restore one more complex original expression.
 - `MOD`: reverse one helpful reordering or sentence split.
 - `EXPL`: remove one helpful explanation.
@@ -51,14 +51,14 @@ The lower `MOD` and `ILLOC` totals reflect actual source supply and detector app
 
 Prompts are versioned per axis under `prompts/`. Qwen2.5-7B-Instruct is pinned at `a09a35458c702b33eeacc393d103063234e8bc28` and runs with greedy decoding, 4-bit NF4, bfloat16 computation, and resumable hash shards.
 
-The frozen 50-pair Meaning pilot is not regenerated. The first multi-axis generation contains 50 pairs for each of the other six axes. Human audit records whether the clean input is acceptable, whether exactly one target-axis degradation was made, and—outside Meaning—whether propositional meaning was preserved.
+The frozen 50-pair Meaning pilot is not regenerated. The first multi-axis generation contains 50 pairs for each of the other six axes. Human audit records whether the simplified version is acceptable, whether exactly one target-axis degradation was made, and—outside Meaning—whether propositional meaning was preserved.
 
 Full generation is blocked until every axis reaches:
 
-- at least 90% acceptable clean inputs;
+- at least 90% acceptable simplified versions;
 - at least 85% valid single-axis automatic degradations.
 
-Failed axes revise only their detector or prompt and rerun their pilot. After acceptance, each pair yields a clean instance scored `1` and a degraded instance scored `0` for its assigned axis only. No labels are inferred for the other axes. Train/validation is 90/10 by a stable hash of `canonical_original_id`; related pairs and both variants cannot cross splits. There is no synthetic test split.
+Failed axes revise only their detector or prompt and rerun their pilot. After acceptance, each pair yields a simplified instance scored `1` and a degraded instance scored `0` for its assigned axis only. No labels are inferred for the other axes. Train/validation is 90/10 by a stable hash of `canonical_original_id`; related pairs and both variants cannot cross splits. There is no synthetic test split.
 
 ## Reproduction
 
