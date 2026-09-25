@@ -2,6 +2,18 @@
 
 [Phase 6 README](../README.md) · [degradation methodology](DEGRADATION_AUTOMATION.md) · [combined pilot report](PILOT_REPORT.md)
 
+## Methodology by dimension
+
+| Dimension | Methodology |
+|---|---|
+| Meaning | [Meaning degradation](DEGRADATION_AUTOMATION.md) |
+| Fluency | [Fluency degradation](FLUENCY_DEGRADATION.md) |
+| Omission | [Omission degradation](OMISSION_DEGRADATION.md) |
+| Synonymy | [Synonymy degradation](SYNONYMY_DEGRADATION.md) |
+| Modulation | [Modulation degradation](MODULATION_DEGRADATION.md) |
+| Illocution | [Illocution degradation](ILLOCUTION_DEGRADATION.md) |
+| Explanation | [Explanation degradation](EXPLANATION_DEGRADATION.md) |
+
 ## Purpose
 
 Phase 6 builds controlled English training pairs for `MEANING`, `FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. It is synthetic weak supervision, not human gold data. The human-annotated Simplicity-DA, Human-Likert, AssetAnn, and SimpEval-2022 corpora remain reserved for final evaluation.

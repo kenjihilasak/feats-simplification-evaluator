@@ -7,6 +7,7 @@ Phase 6 creates immutable synthetic sidecars from simplified versions. Each reco
 The seven-axis weak-supervision expansion is implemented for `MEANING`,
 `FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. See
 [`docs/MULTI_AXIS_CORPUS.md`](docs/MULTI_AXIS_CORPUS.md) for the full pipeline.
+That page links to a concise methodology for each of the seven dimensions.
 
 The original Meaning pilot below remains frozen and reproducible. The single
 combined report, [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md), covers all 350

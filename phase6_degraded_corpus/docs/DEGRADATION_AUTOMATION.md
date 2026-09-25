@@ -1,6 +1,6 @@
 # Meaning-degradation pilot and automation
 
-[Phase 6 README](../README.md)
+[Phase 6 README](../README.md) · [all dimension methodologies](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
 
 The complete pilot is available in a readable format: **[browse the combined 350-case pilot report](PILOT_REPORT.md)**. Its Meaning section contains all 50 human-audited simplified/degraded pairs.
 
