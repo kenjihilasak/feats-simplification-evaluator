@@ -20,44 +20,54 @@ Phase 6 builds controlled English training pairs for `MEANING`, `FLUENCY`, `OMIT
 
 Every selected `canonical_pair_id` is used once and receives one `target_axis`. `source_strategy` retains the single Phase 3a category found in the simplified pair; it is not overwritten by the degradation target.
 
-## Inputs and selection
+## Inputs and assignment
 
-The v1 run intersects the English Phase 2b `target_simple_v1` consolidation with the strict Gemma-anchored, single-strategy Phase 3a candidates. It keeps non-identical, non-markup pairs with an 8–45-token original from WikiAutoEN or Wikipedia–Vikidia. ASSET and any configured evaluation originals are excluded.
+The 12,140 input pairs are the intersection of English Phase 2b `target_simple_v1` and the strict, single-strategy Phase 3a candidates. They are non-identical, have no markup, contain an 8–45-token original, come from WikiAutoEN or Wikipedia–Vikidia, and exclude evaluation corpora. Each pair is assigned exactly once.
 
-The current immutable inventory contains 12,140 unique pairs and 12,134 unique originals:
+```mermaid
+flowchart LR
+    subgraph INPUTS["Phase 3a source strategy — 12,140 pairs"]
+        COMP["COMP<br/>241"]
+        EXPL_IN["EXPL<br/>6,880"]
+        MOD_IN["MOD<br/>367"]
+        OMIT_IN["OMIT<br/>2,040"]
+        SYN_IN["SYN<br/>2,370"]
+        SYNT["SYNT<br/>242"]
+    end
 
-| Source strategy | Pairs |
-|---|---:|
-| COMP | 241 |
-| EXPL | 6,880 |
-| MOD | 367 |
-| OMIT | 2,040 |
-| SYN | 2,370 |
-| SYNT | 242 |
+    subgraph TARGETS["Phase 6 target dimension — one per pair"]
+        MEANING["Meaning<br/>2,134"]
+        FLUENCY["Fluency<br/>2,135"]
+        OMIT_OUT["Omission<br/>1,895"]
+        SYN_OUT["Synonymy<br/>2,109"]
+        MOD_OUT["Modulation<br/>367"]
+        ILLOC["Illocution<br/>1,365"]
+        EXPL_OUT["Explanation<br/>2,135"]
+    end
 
-## Applicability and assignment
+    COMP -->|110| MEANING
+    COMP -->|100| FLUENCY
+    COMP -->|31| ILLOC
 
-- `OMIT`: restore one unnecessary or audience-inappropriate detail that the simplified pair omitted.
-- `SYN`: restore one more complex original expression.
-- `MOD`: reverse one helpful reordering or sentence split.
-- `EXPL`: remove one helpful explanation.
-- `MEANING`: contradict one entity, number, date, negation, property, relation, or event.
-- `FLUENCY`: add one local agreement, determiner, preposition, or word-order error without changing meaning.
-- `ILLOC`: reverse one detected question, request, assertion, modality, or certainty adaptation.
+    EXPL_IN -->|1,931| MEANING
+    EXPL_IN -->|1,931| FLUENCY
+    EXPL_IN -->|883| ILLOC
+    EXPL_IN -->|2,135| EXPL_OUT
 
-`MOD` pairs are protected for `MOD`. The remaining applicable pairs are assigned deterministically to maximize coverage, balance axes where possible, prefer direct source/target matches, and resolve ties with a seeded hash. The current assignment uses all 12,140 pairs exactly once:
+    MOD_IN ==>|367| MOD_OUT
 
-| Target axis | Assigned pairs |
-|---|---:|
-| MEANING | 2,134 |
-| FLUENCY | 2,135 |
-| OMIT | 1,895 |
-| SYN | 2,109 |
-| MOD | 367 |
-| ILLOC | 1,365 |
-| EXPL | 2,135 |
+    OMIT_IN -->|145| ILLOC
+    OMIT_IN ==>|1,895| OMIT_OUT
 
-The lower `MOD` and `ILLOC` totals reflect actual source supply and detector applicability; the allocator does not invent applicability to force equal totals.
+    SYN_IN -->|261| ILLOC
+    SYN_IN ==>|2,109| SYN_OUT
+
+    SYNT -->|93| MEANING
+    SYNT -->|104| FLUENCY
+    SYNT -->|45| ILLOC
+```
+
+Arrow labels are pair counts. Thick arrows mark direct source-strategy-to-target assignments. Meaning and Fluency accept applicable unassigned pairs; Illocution additionally requires an explicit question, modality, request, or certainty cue. `MOD` pairs are protected for Modulation.
 
 ## Generation and audit gate
 
