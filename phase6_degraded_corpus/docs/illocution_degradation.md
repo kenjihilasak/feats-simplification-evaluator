@@ -34,6 +34,40 @@ flowchart LR
 
 The pilot compares Original and Simplified only for final question-mark mismatch. For modality, request, and certainty, it searches a fixed keyword list in Simplified first and falls back to Original. The allocator selects one cue reproducibly with the experiment seed; Qwen then attempts the reversal.
 
+## Labels and values sent to Qwen
+
+These fields have different roles:
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Phase 3a label describing the simplification already present in the pair. | `EXPL` |
+| `target_axis` | Phase 6 dimension selected for degradation. It chooses the prompt file. | `ILLOC` |
+| `assigned_operation` | Specific degradation instruction selected from the detected cues. | `modality_reversal` |
+| `target_cue` | Word or marker on which Qwen should apply the operation. | `will` |
+
+Example pipeline:
+
+```text
+source_strategy: EXPL
+        ↓ pair assigned to Illocution
+target_axis: ILLOC
+        ↓ cue selected
+assigned_operation: modality_reversal
+target_cue: will
+        ↓ prompt
+Qwen attempts to reverse the modality around "will"
+```
+
+Qwen receives the Original, Simplified, `assigned_operation`, and `target_cue`. It does **not** receive `source_strategy` directly. The strategy label remains record metadata; `target_axis` indirectly selects the Illocution prompt.
+
+### Implementation links
+
+- [Attach the Phase 3a `source_strategy`](../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Detect Illocution operations and cues](../src/planning/multi_axis.py#L72-L99)
+- [Choose `target_axis`, `assigned_operation`, and `target_cue`](../src/planning/multi_axis.py#L169-L207)
+- [Insert the selected operation and cue into the prompt](../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Illocution prompt](../prompts/illoc_degradation_v1.json)
+
 ## Prompt used in the pilot
 
 Exact version: [`illoc_degradation_v1.json`](../prompts/illoc_degradation_v1.json).
