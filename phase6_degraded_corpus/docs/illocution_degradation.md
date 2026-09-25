@@ -21,7 +21,44 @@ flowchart LR
     E --> F["Human audit"]
 ```
 
-The detector searches the simplified version first and then the original. Qwen reverses one cue with [`illoc_degradation_v1.json`](../prompts/illoc_degradation_v1.json).
+### Workflow blocks
+
+| Block | Main idea |
+|---|---|
+| A — Input | An unassigned pair with an explicit speech-act, modality, or certainty cue. |
+| B — Detect | Compare Original and Simplified cues; exclude false cues such as May in dates. |
+| C — Choose | Select one question, request, assertion, modality, or certainty reversal. |
+| D — Generate | Qwen changes only the selected communicative force. |
+| E — Check | Verify substantive change, matching operation, and declared spans. |
+| F — Audit | Confirm the illocution changed while propositional facts remained stable. |
+
+The detector searches the Simplified sentence first and then the Original for an explicit contrast. Qwen reverses one selected cue.
+
+## Prompt used in the pilot
+
+Exact version: [`illoc_degradation_v1.json`](../prompts/illoc_degradation_v1.json).
+
+<details>
+<summary>Show prompt</summary>
+
+**System**
+
+```text
+You create controlled negative examples for text-simplification research. Return only one valid JSON object. Do not add commentary.
+```
+
+**User template**
+
+```text
+Original: {original}
+Clean simplification: {clean_simplification}
+Assigned operation: {assigned_operation}
+Speech-act cue: {target_cue}
+
+Reverse exactly one useful illocutionary adaptation involving question, request, assertion, modality, or certainty. Preserve the propositional facts, fluency, and all other simplification operations. Return keys degraded_simplification, changed_span, replacement_span, operation_type, and brief_verification. operation_type must be exactly {assigned_operation}.
+```
+
+</details>
 
 ## Acceptance checks
 

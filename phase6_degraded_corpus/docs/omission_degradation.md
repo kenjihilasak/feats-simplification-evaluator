@@ -21,7 +21,44 @@ flowchart LR
     E --> F["Human audit"]
 ```
 
-The detector proposes original tokens absent from the simplified version. Qwen restores one detail with [`omit_degradation_v1.json`](../prompts/omit_degradation_v1.json).
+### Workflow blocks
+
+| Block | Main idea |
+|---|---|
+| A — Input | A pair whose only detected source strategy is OMIT. |
+| B — Detect | Find original content absent from the Simplified sentence. |
+| C — Select | Choose one omitted detail that was unnecessary for the target reader. |
+| D — Generate | Qwen restores only that original detail. |
+| E — Check | Verify a substantive change, matching operation, and literal restored span. |
+| F — Audit | Confirm the detail was usefully omitted and no other axis changed. |
+
+The detector currently proposes original tokens absent from the Simplified sentence. Qwen is asked to restore one candidate detail without inventing content.
+
+## Prompt used in the pilot
+
+Exact version: [`omit_degradation_v1.json`](../prompts/omit_degradation_v1.json).
+
+<details>
+<summary>Show prompt</summary>
+
+**System**
+
+```text
+You create controlled negative examples for text-simplification research. Return only one valid JSON object. Do not add commentary.
+```
+
+**User template**
+
+```text
+Original: {original}
+Clean simplification: {clean_simplification}
+Assigned operation: {assigned_operation}
+Candidate original detail: {target_cue}
+
+Undo only the useful omission by restoring one unnecessary or audience-inappropriate detail from the original. Preserve meaning, fluency, and every other simplification choice. Do not invent information and do not remove necessary content. Return keys degraded_simplification, changed_span, replacement_span, operation_type, and brief_verification. operation_type must be exactly {assigned_operation}.
+```
+
+</details>
 
 ## Acceptance checks
 
