@@ -6,11 +6,24 @@ This is a diagnostic review by Codex, **not human gold annotation**. It reviews 
 
 | Decision | Count | Rate |
 |---|---:|---:|
-| Valid | 9 | 18% |
-| Invalid | 36 | 72% |
+| Valid | 8 | 16% |
+| Invalid | 37 | 74% |
 | Unsure | 5 | 10% |
 
 Only clear `Valid` decisions should count as provisionally successful. The five `Unsure` cases require a project reviewer.
+
+### Results by dimension
+
+| Dimension | Valid | Invalid | Unsure | Clear-valid rate |
+|---|---:|---:|---:|---:|
+| EXPL | 2 | 6 | 1 | 22% |
+| FLUENCY | 2 | 7 | 0 | 22% |
+| ILLOC | 1 | 7 | 0 | 13% |
+| MOD | 0 | 3 | 3 | 0% |
+| OMIT | 2 | 6 | 1 | 22% |
+| SYN | 1 | 8 | 0 | 11% |
+
+**Best so far:** EXPL, FLUENCY, and OMIT are tied at 2 clearly valid cases out of 9 (22%). This comparison applies only to the deliberately stratified diagnostic sample; it does not estimate full-pilot accuracy.
 
 ## Case decisions
 
@@ -36,7 +49,7 @@ Only clear `Valid` decisions should count as provisionally successful. The five 
 | 18 | FLUENCY | MEDIUM | **Invalid** | The edit corrupts a proper title and may change content. |
 | 19 | OMIT | GOOD | **Unsure** | Only part of the omitted World Cup detail is restored. |
 | 20 | MOD | GOOD | **Invalid** | The split is retained; the main change is lexical. |
-| 21 | MOD | MEDIUM | **Valid** | Two simplified sentences are recombined in the original order. |
+| 21 | MOD | MEDIUM | **Invalid** | The MOD reversal is plausible, but the Simplified input already contains the `States.It` fluency error. |
 | 22 | ILLOC | MEDIUM | **Invalid** | The modal remains; this is not a modality reversal. |
 | 23 | OMIT | GOOD | **Invalid** | Only quotation style changes; omitted content is not restored. |
 | 24 | FLUENCY | MEDIUM | **Invalid** | Only sentence spacing changes; no grammatical error is introduced. |
