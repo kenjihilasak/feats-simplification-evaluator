@@ -14,8 +14,8 @@ Any unassigned single-strategy pair with an explicit question, modal, request/co
 
 ```mermaid
 flowchart LR
-    A["Original + simplified"] --> B["Detect illocution cue"]
-    B --> C["Choose one reversal"]
+    A["Original + simplified"] --> B["Regex cue search"]
+    B --> C["Seeded cue selection"]
     C --> D["Qwen generation"]
     D --> E["Automatic checks"]
     E --> F["Human audit"]
@@ -26,13 +26,13 @@ flowchart LR
 | Block | Main idea |
 |---|---|
 | A — Input | An unassigned pair with an explicit speech-act, modality, or certainty cue. |
-| B — Detect | Compare Original and Simplified cues; exclude false cues such as May in dates. |
-| C — Choose | Select one question, request, assertion, modality, or certainty reversal. |
+| B — Detect | Compare final question marks; otherwise search cue words in Simplified first and Original only if none are found. Exclude `May` followed by a date. |
+| C — Choose | If the pair is assigned to ILLOC, select one detected cue by stable seeded hash. This is deterministic, not a semantic ranking. |
 | D — Generate | Qwen changes only the selected communicative force. |
 | E — Check | Verify substantive change, matching operation, and declared spans. |
 | F — Audit | Confirm the illocution changed while propositional facts remained stable. |
 
-The detector searches the Simplified sentence first and then the Original for an explicit contrast. Qwen reverses one selected cue.
+The pilot compares Original and Simplified only for final question-mark mismatch. For modality, request, and certainty, it searches a fixed keyword list in Simplified first and falls back to Original. The allocator selects one cue reproducibly with the experiment seed; Qwen then attempts the reversal.
 
 ## Prompt used in the pilot
 
