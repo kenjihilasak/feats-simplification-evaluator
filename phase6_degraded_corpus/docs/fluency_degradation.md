@@ -4,12 +4,43 @@
 
 ## Goal
 
-Introduce exactly one local grammatical error while preserving meaning and all simplification operations. The simplified version receives `FLUENCY = 1`; the degraded version receives `FLUENCY = 0`.
+Introduce exactly one local grammatical error without changing meaning or another simplification operation. The simplified version receives `FLUENCY = 1`; the degraded version receives `FLUENCY = 0`.
 
-## Method
+## Eligible pairs
 
-Any unassigned English pair with one `source_strategy` is eligible when its simplified version contains an auxiliary, determiner, preposition, or at least five words. These cues permit one agreement, determiner, preposition, or local word-order error.
+Any unassigned single-strategy pair whose simplified version contains an auxiliary, determiner, preposition, or at least five words.
 
-Qwen2.5-7B-Instruct receives both texts, the assigned operation, and its cue through [`fluency_degradation_v1.json`](../prompts/fluency_degradation_v1.json). Automatic checks require valid JSON, changed text, the assigned operation, and declared spans. Human review must confirm one grammatical error, unchanged meaning, and no second degradation.
+## Degradation workflow
 
-Pilot: 10 good, 23 medium, and 17 failed automatic results. Revision and human audit are required before scaling.
+```mermaid
+flowchart LR
+    A["Simplified pair"] --> B["Detect grammar site"]
+    B --> C["Choose one local error"]
+    C --> D["Qwen generation"]
+    D --> E["Automatic checks"]
+    E --> F["Human audit"]
+```
+
+The detector selects agreement, determiner, preposition, or local word-order corruption. Qwen applies it with [`fluency_degradation_v1.json`](../prompts/fluency_degradation_v1.json).
+
+## Acceptance checks
+
+- one visible grammatical error
+- unchanged propositions and lexical meaning
+- declared edit occurs in the output
+
+## Pilot evaluation
+
+| Automatic result | Count | Rate |
+|---|---:|---:|
+| Good | 10 | 20% |
+| Medium | 23 | 46% |
+| Failed | 17 | 34% |
+
+Automatic structural triage of 50 cases; semantic human audit is pending.
+
+## What we learned
+
+The model often declared a fluency edit without actually changing the sentence.
+
+**Next change:** Use deterministic local edits where possible and compare the declared source and replacement spans directly.

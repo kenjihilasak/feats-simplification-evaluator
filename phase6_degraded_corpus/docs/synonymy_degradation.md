@@ -6,10 +6,41 @@
 
 Undo one helpful lexical simplification by restoring a more complex original expression. The simplified version receives `SYN = 1`; the degraded version receives `SYN = 0`.
 
-## Method
+## Eligible pairs
 
-Only pairs with the single Phase 3a `source_strategy = SYN` are eligible. The detector proposes up to four original tokens absent from the simplified version; token difference alone does not establish synonymy.
+Only pairs with the single Phase 3a `source_strategy = SYN`.
 
-Using [`syn_degradation_v1.json`](../prompts/syn_degradation_v1.json), Qwen restores one candidate expression. Automatic checks verify structure, change, operation, and spans. Human review must confirm that it comes from the original, is semantically equivalent, is more difficult, and is the only degradation.
+## Degradation workflow
 
-Pilot: 6 good, 16 medium, and 28 failed automatic results. Detection and prompting require revision before scaling.
+```mermaid
+flowchart LR
+    A["SYN pair"] --> B["Align lexical substitution"]
+    B --> C["Select complex original term"]
+    C --> D["Qwen restores term"]
+    D --> E["Automatic checks"]
+    E --> F["Human audit"]
+```
+
+The current detector proposes original tokens absent from the simplified version. Qwen restores one expression with [`syn_degradation_v1.json`](../prompts/syn_degradation_v1.json).
+
+## Acceptance checks
+
+- expressions are semantically equivalent
+- the restored expression is more difficult
+- grammar, facts, and other operations remain unchanged
+
+## Pilot evaluation
+
+| Automatic result | Count | Rate |
+|---|---:|---:|
+| Good | 6 | 12% |
+| Medium | 16 | 32% |
+| Failed | 28 | 56% |
+
+Automatic structural triage of 50 cases; semantic human audit is pending.
+
+## What we learned
+
+Unaligned token difference does not reliably identify a synonym substitution; this axis had the lowest good rate.
+
+**Next change:** Add word/phrase alignment plus semantic-equivalence and lexical-complexity checks before generation.

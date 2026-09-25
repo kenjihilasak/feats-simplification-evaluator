@@ -88,6 +88,17 @@ def render(rows: list[dict]) -> str:
         "- Fluency often claims an edit that is absent from the generated sentence.",
         "- Omission and Synonymy have the most outright failures and require prompt, cue, and source-label review before scaling.",
         "- The 12,140-pair full generation remains blocked until human review validates the six new dimensions.", "",
+        "## What we learned and how to improve", "",
+        "| Dimension | Current evidence | Main risk | Next change |",
+        "|---|---|---|---|",
+        "| Meaning | 31/50 model outputs accepted; 19 manually corrected | Structural checks miss semantic failures | Constrained replacements plus contradiction verification |",
+        "| Fluency | 10/50 good automatic triage | Declared edits are often absent | Deterministic local edits and literal span checks |",
+        "| Omission | 8/50 good automatic triage | Token difference is not a reliable omitted detail | Extract and verify one contiguous original span |",
+        "| Synonymy | 6/50 good automatic triage | Token difference does not establish synonymy | Add alignment, equivalence, and complexity checks |",
+        "| Modulation | 23/50 good; no unchanged outputs | Structural change is poorly localized | Detect and verify split or clause-order operations |",
+        "| Illocution | 33/50 good automatic triage | A cue may not represent an adaptation | Require a cue contrast and operation-specific checks |",
+        "| Explanation | 39/50 good automatic triage | Added text is not always explanatory | Detect contiguous added spans and explanatory function |", "",
+        "The main lesson is that prompt compliance is not degradation validity. Detector quality and axis-specific validators are the bottlenecks. Before full generation, the 300 automatically triaged cases require human audit; failed axes should then revise only their detector, prompt, and validator and rerun the 50-case pilot.", "",
         "## All 350 pilot examples", "",
     ])
     for axis in AXES:
@@ -105,7 +116,7 @@ def render(rows: list[dict]) -> str:
                 f"- Degraded: {text(generation.get('degraded_simplification'))}",
                 f"- Verification: {text(generation.get('brief_verification'))}", "",
             ])
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def main() -> None:
