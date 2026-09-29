@@ -1,0 +1,14 @@
+{
+  "experiment_id": "mmi_en_v2",
+  "seed": 20260930,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-29_target_simple_textrepair_v1/data/en/feats_consolidated.jsonl",
+  "strategy_file": "phase3a_strategy_detection/gold_candidates/2026-08-31_single_strategy_gemma_anchored_strict_v1/data/en/single_strategy_candidates.jsonl",
+  "reserved_membership_file": "phase6_degraded_corpus/runs/mmi_en_v2/pools/reserved_original_membership.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/mmi_en_v2/pools",
+  "split_output_dir": "phase6_degraded_corpus/runs/mmi_en_v2/splits",
+  "corpora": ["WikiAutoEN", "ASSET", "Wikipedia-Vikidia"],
+  "original_token_range": [8, 45],
+  "near_duplicate_jaccard": 0.8,
+  "dev_size": 40,
+  "heldout_size": 20
+}
