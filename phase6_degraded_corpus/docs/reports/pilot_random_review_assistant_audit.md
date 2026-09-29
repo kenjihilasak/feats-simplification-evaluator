@@ -1,6 +1,6 @@
-# Preliminary assistant audit of the random pilot sample
+# Preliminary automated audit of the random pilot sample
 
-This is a diagnostic review by Codex, **not human gold annotation**. It reviews the fixed 50-case sample in [`pilot_random_review.md`](pilot_random_review.md).
+This is a preliminary automated diagnostic review, **not human gold annotation**. It reviews the fixed 50-case sample in [`pilot_random_review.md`](pilot_random_review.md).
 
 ## Summary
 
