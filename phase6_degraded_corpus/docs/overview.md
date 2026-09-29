@@ -22,6 +22,8 @@ Every selected `canonical_pair_id` is used once and receives one `target_axis`. 
 
 ## Inputs and assignment
 
+> This section describes the frozen v1 corpus (raw, unrepaired text). From `mmi_en_v2` onward, inputs are defined in [inputs.md](inputs.md).
+
 The 12,140 input pairs are the intersection of English Phase 2b `target_simple_v1` and the strict, single-strategy Phase 3a candidates. They are non-identical, have no markup, contain an 8–45-token original, come from WikiAutoEN or Wikipedia–Vikidia, and exclude evaluation corpora. Each pair is assigned exactly once.
 
 ```mermaid

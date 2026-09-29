@@ -117,3 +117,7 @@ Human audit. The final 100% follows correction; it is not the model's unaided su
 Structural validation was insufficient: 19/50 cases still required manual correction after two model passes.
 
 **Next change:** Constrain replacements to detector-provided candidates, verify contradiction against the original, and reject outputs whose declared edit is absent.
+
+## v2 (2026-09-29)
+
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with span-in/span-out edits (the model returns only the replacement for a detector-chosen span supported by the Original) and rule-based number/date changes. On the shared dev split, v2 raises the automatic valid rate from 39% (v1 pipeline) to 75–76%. The v1 description above is kept unchanged for the frozen pilot.

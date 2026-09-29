@@ -45,8 +45,13 @@ def sample_sets(pool_dir: Path, seed: int, dev_size: int, heldout_size: int) -> 
             rows = read_jsonl(pool_dir / pool_filename(axis, corpus))
             split_candidates = [row for row in rows if row["allocation_pass"] == 1]
             ordered = stratified_order(split_candidates, axis, seed)
-            dev = ordered[:dev_size]
-            heldout = ordered[dev_size : dev_size + heldout_size]
+            if len(ordered) < dev_size + heldout_size:
+                # Underpowered cell: keep the dev:heldout ratio so the source still reaches the human audit.
+                dev_count = round(len(ordered) * dev_size / (dev_size + heldout_size))
+            else:
+                dev_count = dev_size
+            dev = ordered[:dev_count]
+            heldout = ordered[dev_count : dev_count + heldout_size]
             pilot = sorted(dev, key=lambda row: stable_key(seed + 1, row["canonical_pair_id"]))[:10]
             for split, selected in (("dev", dev), ("heldout", heldout)):
                 for row in selected:

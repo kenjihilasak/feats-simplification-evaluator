@@ -115,3 +115,7 @@ Automatic structural triage of 50 cases; semantic human audit is pending.
 Explicit cues made this axis relatively reliable, but cue presence alone does not prove a useful adaptation.
 
 **Next change:** Require an original–simplified cue contrast and add operation-specific checks for questions, modality, requests, and certainty.
+
+## v2 (2026-09-29)
+
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with injection of one speech-act change (statement → question / directive; hedged reported separately) on declarative clean text. On the shared dev split, v2 raises the automatic valid rate from 32% (v1 pipeline) to 88%. The v1 description above is kept unchanged for the frozen pilot.

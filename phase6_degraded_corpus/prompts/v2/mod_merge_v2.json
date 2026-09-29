@@ -1,0 +1,33 @@
+{
+  "prompt_id": "mod_merge_v2",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. You make exactly the one edit you are asked for and nothing else. Return only a JSON object that matches the requested schema.",
+  "user_template": "Sentence A: {sentence_a}\nSentence B: {sentence_b}\n\nCombine A and B into ONE sentence using a conjunction, a relative clause or a participle phrase. Keep every word of meaning: do not add facts, remove facts, or change word choice beyond the joining words and pronouns needed to connect them. Return {{\"merged_sentence\": ...}}.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "merged_sentence": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "merged_sentence"
+    ]
+  },
+  "examples": [
+    [
+      "Marie moved to Paris in 1891.",
+      "She studied physics there.",
+      "Marie moved to Paris in 1891, where she studied physics."
+    ],
+    [
+      "The river is 300 km long.",
+      "It flows into the Baltic Sea.",
+      "The river, which flows into the Baltic Sea, is 300 km long."
+    ],
+    [
+      "The album was released in 2004.",
+      "It sold over one million copies.",
+      "The album was released in 2004 and sold over one million copies."
+    ]
+  ]
+}

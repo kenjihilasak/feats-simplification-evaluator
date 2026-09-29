@@ -14,8 +14,15 @@
   "output_dir": "phase6_degraded_corpus/runs/mmi_en_v2/pools",
   "split_output_dir": "phase6_degraded_corpus/runs/mmi_en_v2/splits",
   "quality_scores_file": "phase6_degraded_corpus/runs/mmi_en_v2/pools/clean_quality_scores.jsonl",
-  "corpora": ["WikiAutoEN", "ASSET", "Wikipedia-Vikidia"],
-  "original_token_range": [8, 45],
+  "corpora": [
+    "WikiAutoEN",
+    "ASSET",
+    "Wikipedia-Vikidia"
+  ],
+  "original_token_range": [
+    8,
+    45
+  ],
   "near_duplicate_jaccard": 0.8,
   "split_quota": 60,
   "dev_size": 40,
@@ -28,5 +35,7 @@
   "tau_accept": 0.94626032,
   "delta": 0.04240996,
   "cache_dir": "cache/huggingface",
-  "checker_batch_size": 64
+  "checker_batch_size": 64,
+  "nli_gate": "non_contradiction",
+  "nli_contradiction_threshold": 0.5
 }

@@ -12,6 +12,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
+from phase6_degraded_corpus.src.planning.plan_mmi_operations import split_sentences
 from phase6_degraded_corpus.src.selection.freeze_evaluation_originals import strong_key
 
 TOKEN = re.compile(r"\w+(?:[-’']\w+)*|[^\w\s]", re.UNICODE)
@@ -95,8 +96,8 @@ def alignment_features(original: str, simplified: str) -> dict:
 
 
 def sentence_count(text: str) -> int:
-    chunks = [part for part in re.split(r"(?<=[.!?])\s+", text.strip()) if part]
-    return max(1, len(chunks))
+    # Shared splitter: does not break after initials or common titles ("Thomas E. Donilon").
+    return max(1, len(split_sentences(text)))
 
 
 def meaning_cues(text: str) -> list[str]:
@@ -349,6 +350,31 @@ def allocate_source(rows: list[dict], seed: int, quota: int) -> tuple[dict[str, 
     return allocated, pass1_counts
 
 
+def passes_nli_gate(score: dict, config: dict, exclusions: Counter) -> bool:
+    """Apply the configured clean-input NLI gate and count what each criterion rejects.
+
+    `non_contradiction` keeps elaborative simplifications (neutral w.r.t. the original);
+    `entailment` is the stricter v2.0 gate, still reported for comparison.
+    """
+    mode = config.get("nli_gate", "entailment")
+    if score["entailment"] < config["nli_entailment_threshold"]:
+        exclusions["would_fail_entailment_gate"] += 1
+    if mode == "entailment":
+        if score["entailment"] < config["nli_entailment_threshold"]:
+            exclusions["nli_entailment"] += 1
+            return False
+        return True
+    if mode != "non_contradiction":
+        raise ValueError(f"unknown nli_gate: {mode}")
+    probabilities = score.get("nli_probabilities")
+    if not probabilities:
+        raise ValueError(f"non_contradiction gate needs nli_probabilities: {score['canonical_pair_id']}")
+    if probabilities["contradiction"] >= config["nli_contradiction_threshold"]:
+        exclusions["nli_contradiction"] += 1
+        return False
+    return True
+
+
 def allocate_candidates(
     candidates: list[dict], scores: dict[str, dict], config: dict, base_report: dict
 ) -> tuple[dict[tuple[str, str], list[dict]], dict]:
@@ -361,14 +387,14 @@ def allocate_candidates(
         if score["acceptability"] < config["tau_accept"]:
             exclusions["acceptability"] += 1
             continue
-        if score["entailment"] < config["nli_entailment_threshold"]:
-            exclusions["nli_entailment"] += 1
+        if not passes_nli_gate(score, config, exclusions):
             continue
         passed.append(
             {
                 **row,
                 "clean_acceptability": score["acceptability"],
                 "clean_entailment": score["entailment"],
+                "clean_nli_probabilities": score.get("nli_probabilities"),
             }
         )
 
@@ -403,6 +429,8 @@ def allocate_candidates(
         "nli_model": config["nli_model"],
         "nli_revision": config["nli_revision"],
         "nli_entailment_threshold": config["nli_entailment_threshold"],
+        "nli_gate": config.get("nli_gate", "entailment"),
+        "nli_contradiction_threshold": config.get("nli_contradiction_threshold"),
         "acceptability_model": config["acceptability_model"],
         "acceptability_revision": config["acceptability_revision"],
         "tau_accept": config["tau_accept"],

@@ -1,0 +1,65 @@
+{
+  "prompt_id": "illoc_inject_v2",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. You make exactly the one edit you are asked for and nothing else. Return only a JSON object that matches the requested schema.",
+  "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep every fact and all the other words unchanged. Return {{\"degraded\": ...}}.",
+  "operation_guidance": {
+    "assertion_to_question": "turn the statement into a yes/no question that asks about exactly the same proposition (e.g. 'X was born in 1900.' -> 'Was X born in 1900?').",
+    "assertion_to_directive": "turn the statement into an instruction to the reader by adding a short directive frame such as 'Note that', 'Remember that' or 'Keep in mind that' at the start.",
+    "assertion_to_hedged": "weaken the certainty by adding one hedge such as 'might', 'probably', 'possibly' or 'It is believed that', without changing any fact."
+  },
+  "schema": {
+    "type": "object",
+    "properties": {
+      "degraded": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "degraded"
+    ]
+  },
+  "examples": {
+    "assertion_to_question": [
+      [
+        "The Eiffel Tower was built in 1889.",
+        "Was the Eiffel Tower built in 1889?"
+      ],
+      [
+        "Koalas eat eucalyptus leaves.",
+        "Do koalas eat eucalyptus leaves?"
+      ],
+      [
+        "She has written three novels.",
+        "Has she written three novels?"
+      ]
+    ],
+    "assertion_to_directive": [
+      [
+        "The Eiffel Tower was built in 1889.",
+        "Note that the Eiffel Tower was built in 1889."
+      ],
+      [
+        "Koalas eat eucalyptus leaves.",
+        "Remember that koalas eat eucalyptus leaves."
+      ],
+      [
+        "She has written three novels.",
+        "Keep in mind that she has written three novels."
+      ]
+    ],
+    "assertion_to_hedged": [
+      [
+        "The Eiffel Tower was built in 1889.",
+        "The Eiffel Tower was probably built in 1889."
+      ],
+      [
+        "Koalas eat eucalyptus leaves.",
+        "Koalas might eat eucalyptus leaves."
+      ],
+      [
+        "She has written three novels.",
+        "It is believed that she has written three novels."
+      ]
+    ]
+  }
+}

@@ -94,6 +94,39 @@ class AllocationTest(unittest.TestCase):
         selected = {row["canonical_pair_id"] for row in pools[("MEANING", "WikiAutoEN")]}
         self.assertEqual(selected, {"pair:pass-1", "pair:pass-2"})
 
+    def test_non_contradiction_gate_keeps_neutral_elaborations(self):
+        rows = [
+            candidate("entailed", ["MOD"]),
+            candidate("neutral", ["MOD"]),
+            candidate("contradicted", ["MOD"]),
+        ]
+        probs = lambda e, n, c: {"entailment": e, "neutral": n, "contradiction": c}
+        scores = {
+            "pair:entailed": {"canonical_pair_id": "pair:entailed", "acceptability": 0.9,
+                              "entailment": 0.9, "nli_probabilities": probs(0.9, 0.08, 0.02)},
+            "pair:neutral": {"canonical_pair_id": "pair:neutral", "acceptability": 0.9,
+                             "entailment": 0.1, "nli_probabilities": probs(0.1, 0.85, 0.05)},
+            "pair:contradicted": {"canonical_pair_id": "pair:contradicted", "acceptability": 0.9,
+                                  "entailment": 0.05, "nli_probabilities": probs(0.05, 0.15, 0.8)},
+        }
+        config = {
+            "tau_accept": 0.5, "nli_entailment_threshold": 0.5,
+            "nli_gate": "non_contradiction", "nli_contradiction_threshold": 0.5,
+            "seed": 3, "split_quota": 2,
+            "corpora": ["WikiAutoEN", "ASSET", "Wikipedia-Vikidia"],
+            "phase3a_prediction_files": {"gemma": "unused"},
+            "nli_model": "nli", "nli_revision": "nli-rev",
+            "acceptability_model": "cola", "acceptability_revision": "cola-rev", "delta": 0.1,
+        }
+        pools, report = allocate_candidates(
+            rows, scores, config, {"schema": "test", "reserved": {}, "filters_before_quality": {}}
+        )
+        selected = {row["canonical_pair_id"] for row in pools[("MOD", "WikiAutoEN")]}
+        self.assertEqual(selected, {"pair:entailed", "pair:neutral"})
+        exclusions = report["quality_gates"]["exclusions"]
+        self.assertEqual(exclusions["nli_contradiction"], 1)
+        self.assertEqual(exclusions["would_fail_entailment_gate"], 2)
+
     def test_sampling_is_deterministic_and_disjoint(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

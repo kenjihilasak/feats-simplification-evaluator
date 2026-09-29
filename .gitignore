@@ -50,3 +50,4 @@ phase5_external_metrics/logs/*.out
 phase5_external_metrics/logs/*.err
 phase6_degraded_corpus/runs/
 phase6_degraded_corpus/logs/
+.venv-phase6-vllm/

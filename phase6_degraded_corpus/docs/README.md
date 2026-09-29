@@ -4,6 +4,8 @@
 
 ## Start here
 
+- [**Inputs: which data Phase 6 reads**](inputs.md)
+- [Active plan: MEANING/MOD/ILLOC v2](plans/meaning_mod_illoc_v2_plan.md)
 - [Corpus overview and assignment](overview.md)
 - [Combined 350-case pilot report](reports/pilot_report.md)
 - [50-case review file](reports/pilot_random_review.md)

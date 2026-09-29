@@ -110,3 +110,7 @@ Automatic structural triage of 50 cases; semantic human audit is pending.
 Three cases changed only formatting, and 24/50 substantive edits could not be verified from the declared spans.
 
 **Next change:** Detect the structural operation before prompting and validate clause order or sentence-boundary changes explicitly.
+
+## v2 (2026-09-29)
+
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with a merge of one pair of adjacent Simplified sentences; the model never sees the Original. On the shared dev split, v2 raises the automatic valid rate from 6% (v1 pipeline) to 85%. The v1 description above is kept unchanged for the frozen pilot.
