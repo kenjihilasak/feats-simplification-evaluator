@@ -147,21 +147,44 @@ def eligible_axes(row: dict) -> dict[str, dict]:
     return result
 
 
-def build_pools(config: dict) -> tuple[dict[tuple[str, str], list[dict]], dict]:
-    strategy = {
-        row["canonical_pair_id"]: row
-        for row in read_jsonl(Path(config["strategy_file"]))
+def load_phase3(config: dict) -> tuple[dict[str, dict[str, list[str]]], dict[str, int], set[str]]:
+    per_pair: dict[str, dict[str, list[str]]] = defaultdict(dict)
+    gemma_counts = {}
+    for alias, filename in config["phase3a_prediction_files"].items():
+        for row in read_jsonl(Path(filename)):
+            pair_id = row["canonical_pair_id"]
+            per_pair[pair_id][alias] = list(row.get("predicted_codes") or [])
+            if alias == config["gemma_alias"]:
+                gemma_counts[pair_id] = int(row.get("strategy_count", len(row.get("predicted_codes") or [])))
+    strict = {
+        row["canonical_pair_id"]
+        for row in read_jsonl(Path(config["strict_candidate_file"]))
     }
+    return per_pair, gemma_counts, strict
+
+
+def prepare_candidates(config: dict) -> tuple[list[dict], dict]:
+    phase3_codes, gemma_counts, strict = load_phase3(config)
     reserved_rows = read_jsonl(Path(config["reserved_membership_file"]))
     matcher = ReservedMatcher(reserved_rows, config["near_duplicate_jaccard"])
+    all_rows = read_jsonl(Path(config["phase2b_file"]))
+    asset_choice = {}
+    for row in all_rows:
+        if corpus_of(row) != "ASSET":
+            continue
+        original_id = row["canonical_original_id"]
+        old = asset_choice.get(original_id)
+        if old is None or stable_key(config["seed"], row["canonical_pair_id"]) < stable_key(
+            config["seed"], old
+        ):
+            asset_choice[original_id] = row["canonical_pair_id"]
+
     counters = Counter()
     near_matches = []
     exact_matches = []
-    candidates: dict[str, list[tuple[str, dict, dict]]] = defaultdict(list)
-    allowed = set(config["corpora"])
-
+    candidates = []
     seen_pairs = set()
-    for row in read_jsonl(Path(config["phase2b_file"])):
+    for row in all_rows:
         pair_id = row["canonical_pair_id"]
         if pair_id in seen_pairs:
             raise ValueError(f"duplicate canonical_pair_id: {pair_id}")
@@ -171,8 +194,11 @@ def build_pools(config: dict) -> tuple[dict[tuple[str, str], list[dict]], dict]:
             counters["repaired_duplicate"] += 1
             continue
         corpus = corpus_of(row)
-        if corpus not in allowed:
+        if corpus not in set(config["corpora"]):
             counters["corpus"] += 1
+            continue
+        if corpus == "ASSET" and asset_choice[row["canonical_original_id"]] != pair_id:
+            counters["asset_reference_dedup"] += 1
             continue
         original = row.get("original", "").strip()
         simplified = row.get("simple", "").strip()
@@ -216,57 +242,32 @@ def build_pools(config: dict) -> tuple[dict[tuple[str, str], list[dict]], dict]:
         if not axes:
             counters["no_axis"] += 1
             continue
-        metadata = strategy.get(pair_id)
-        strategy_code = metadata.get("candidate_strategy_code") if metadata else None
-        base = {
-            "schema": "feats-phase6-mmi-pool-v1",
-            "canonical_pair_id": pair_id,
-            "canonical_original_id": row["canonical_original_id"],
-            "language": "en",
-            "original": original,
-            "clean_simplification": simplified,
-            "original_raw": row.get("original_raw"),
-            "clean_simplification_raw": row.get("simple_raw"),
-            "glue_repaired": bool(row.get("text_repaired")),
-            "source": row["corpora"][0].get("source"),
-            "corpus": corpus,
-            "source_strategy": strategy_code,
-            "source_strategy_count": 1 if strategy_code else 0,
-            "phase3a_quality_tier": metadata.get("quality_tier") if metadata else None,
-            "usage": "pipeline_selection",
-        }
-        for axis, details in axes.items():
-            candidates[row["canonical_original_id"]].append((axis, base, details))
-
-    selected: dict[tuple[str, str], list[dict]] = {(a, c): [] for a in AXES for c in CORPORA}
-    for original_id, choices in candidates.items():
-        choices.sort(
-            key=lambda item: (
-                PRIORITY.index(item[0]),
-                stable_key(config["seed"], item[1]["canonical_pair_id"]),
-            )
+        candidates.append(
+            {
+                "schema": "feats-phase6-mmi-candidate-v2",
+                "canonical_pair_id": pair_id,
+                "canonical_original_id": row["canonical_original_id"],
+                "language": "en",
+                "original": original,
+                "clean_simplification": simplified,
+                "original_raw": row.get("original_raw"),
+                "clean_simplification_raw": row.get("simple_raw"),
+                "glue_repaired": bool(row.get("text_repaired")),
+                "source": row["corpora"][0].get("source"),
+                "corpus": corpus,
+                "eligible_axes": sorted(axes),
+                "selection_features_by_axis": axes,
+                "phase3a_predicted_codes": phase3_codes.get(pair_id, {}),
+                "gemma_strategy_count": gemma_counts.get(pair_id),
+                "strict_single_strategy_candidate": pair_id in strict,
+                "usage": "pipeline_selection",
+            }
         )
-        axis, base, details = choices[0]
-        output = {**base, "target_axis": axis, "selection_features": details}
-        selected[(axis, base["corpus"])].append(output)
-
-    # ASSET references and any remaining repeated original are reduced deterministically.
-    for cell, rows in selected.items():
-        by_original: dict[str, dict] = {}
-        for row in rows:
-            key = row["canonical_original_id"]
-            previous = by_original.get(key)
-            if previous is None or stable_key(config["seed"], row["canonical_pair_id"]) < stable_key(
-                config["seed"], previous["canonical_pair_id"]
-            ):
-                by_original[key] = row
-        selected[cell] = sorted(by_original.values(), key=lambda row: row["canonical_pair_id"])
-
+    candidates.sort(key=lambda row: row["canonical_pair_id"])
     report = {
-        "schema": "feats-phase6-mmi-pool-report-v1",
+        "schema": "feats-phase6-mmi-pool-report-v2",
         "experiment_id": config["experiment_id"],
-        "quality_gates": "pending NLI and acceptability checker stage",
-        "filters": dict(sorted(counters.items())),
+        "filters_before_quality": dict(sorted(counters.items())),
         "reserved": {
             "exact_count": len(exact_matches),
             "near_count": len(near_matches),
@@ -274,31 +275,211 @@ def build_pools(config: dict) -> tuple[dict[tuple[str, str], list[dict]], dict]:
             "exact_matches": exact_matches,
             "near_matches": near_matches,
         },
-        "cells": {},
+        "structural_candidates": len(candidates),
     }
-    for (axis, corpus), rows in selected.items():
+    return candidates, report
+
+
+def allocate_source(rows: list[dict], seed: int, quota: int) -> tuple[dict[str, list[dict]], dict]:
+    allocated = {axis: [] for axis in AXES}
+    remaining = list(rows)
+    used_originals = set()
+    pass1_counts = {}
+
+    while True:
+        deficits = {axis: max(0, quota - len(allocated[axis])) for axis in AXES}
+        short = {axis for axis, deficit in deficits.items() if deficit}
+        if not short:
+            break
+        available = [
+            row for row in remaining
+            if row["canonical_original_id"] not in used_originals
+            and short.intersection(row["eligible_axes"])
+        ]
+        if not available:
+            break
+        supply = {
+            axis: sum(axis in row["eligible_axes"] for row in available)
+            for axis in short
+        }
+        available.sort(
+            key=lambda row: (
+                len(short.intersection(row["eligible_axes"])),
+                stable_key(seed, row["canonical_pair_id"]),
+            )
+        )
+        row = available[0]
+        possible = short.intersection(row["eligible_axes"])
+        axis = min(
+            possible,
+            key=lambda value: (
+                -(deficits[value] / max(1, supply[value])),
+                stable_key(seed, row["canonical_pair_id"] + value),
+            ),
+        )
+        allocated[axis].append(
+            {
+                **row,
+                "target_axis": axis,
+                "selection_features": row["selection_features_by_axis"][axis],
+                "allocation_pass": 1,
+            }
+        )
+        used_originals.add(row["canonical_original_id"])
+
+    pass1_counts = {axis: len(allocated[axis]) for axis in AXES}
+    remaining.sort(key=lambda row: stable_key(seed, row["canonical_pair_id"]))
+    for row in remaining:
+        if row["canonical_original_id"] in used_originals:
+            continue
+        axis = next((value for value in PRIORITY if value in row["eligible_axes"]), None)
+        if axis is None:
+            continue
+        allocated[axis].append(
+            {
+                **row,
+                "target_axis": axis,
+                "selection_features": row["selection_features_by_axis"][axis],
+                "allocation_pass": 2,
+            }
+        )
+        used_originals.add(row["canonical_original_id"])
+    for rows_for_axis in allocated.values():
+        rows_for_axis.sort(key=lambda row: row["canonical_pair_id"])
+    return allocated, pass1_counts
+
+
+def allocate_candidates(
+    candidates: list[dict], scores: dict[str, dict], config: dict, base_report: dict
+) -> tuple[dict[tuple[str, str], list[dict]], dict]:
+    passed = []
+    exclusions = Counter()
+    for row in candidates:
+        score = scores.get(row["canonical_pair_id"])
+        if score is None:
+            raise ValueError(f"missing checker score: {row['canonical_pair_id']}")
+        if score["acceptability"] < config["tau_accept"]:
+            exclusions["acceptability"] += 1
+            continue
+        if score["entailment"] < config["nli_entailment_threshold"]:
+            exclusions["nli_entailment"] += 1
+            continue
+        passed.append(
+            {
+                **row,
+                "clean_acceptability": score["acceptability"],
+                "clean_entailment": score["entailment"],
+            }
+        )
+
+    passed_before_dedup = len(passed)
+    source_supply = Counter(row["corpus"] for row in passed)
+    by_original: dict[str, list[dict]] = defaultdict(list)
+    for row in passed:
+        by_original[row["canonical_original_id"]].append(row)
+    deduplicated = []
+    cross_source_dedup = 0
+    for rows_for_original in by_original.values():
+        rows_for_original.sort(
+            key=lambda row: (
+                source_supply[row["corpus"]],
+                stable_key(config["seed"], row["canonical_pair_id"]),
+            )
+        )
+        deduplicated.append(rows_for_original[0])
+        cross_source_dedup += len(rows_for_original) - 1
+    passed = deduplicated
+    pools = {(axis, corpus): [] for axis in AXES for corpus in CORPORA}
+    pass1_counts = {}
+    for corpus in CORPORA:
+        source_rows = [row for row in passed if row["corpus"] == corpus]
+        allocated, counts = allocate_source(source_rows, config["seed"], config["split_quota"])
+        for axis, rows in allocated.items():
+            pools[(axis, corpus)] = rows
+            pass1_counts[f"{axis}_{corpus}"] = counts[axis]
+
+    report = dict(base_report)
+    report["quality_gates"] = {
+        "nli_model": config["nli_model"],
+        "nli_revision": config["nli_revision"],
+        "nli_entailment_threshold": config["nli_entailment_threshold"],
+        "acceptability_model": config["acceptability_model"],
+        "acceptability_revision": config["acceptability_revision"],
+        "tau_accept": config["tau_accept"],
+        "delta": config["delta"],
+        "calibration_report": "checker_calibration.json",
+        "candidate_count": len(candidates),
+        "passed_before_original_dedup": passed_before_dedup,
+        "passed_count": len(passed),
+        "cross_source_original_dedup": cross_source_dedup,
+        "exclusions": dict(sorted(exclusions.items())),
+    }
+    report["cells"] = {}
+    for (axis, corpus), rows in pools.items():
+        alias_names = sorted(config["phase3a_prediction_files"])
         report["cells"][f"{axis}_{corpus}"] = {
             "records": len(rows),
             "unique_originals": len({row["canonical_original_id"] for row in rows}),
-            "source_strategy_count": dict(
-                sorted(Counter(str(row["source_strategy_count"]) for row in rows).items())
+            "allocation_pass_1": pass1_counts[f"{axis}_{corpus}"],
+            "allocation_pass_2": sum(row["allocation_pass"] == 2 for row in rows),
+            "underpowered": pass1_counts[f"{axis}_{corpus}"] < config["split_quota"],
+            "gemma_strategy_count": dict(
+                sorted(Counter(str(row["gemma_strategy_count"]) for row in rows).items())
             ),
-            "source_strategy": dict(
-                sorted(Counter(row["source_strategy"] or "null" for row in rows).items())
+            "strict_single_strategy_candidate": dict(
+                sorted(Counter(str(row["strict_single_strategy_candidate"]).lower() for row in rows).items())
             ),
-            "underpowered": len(rows) < 60,
+            "phase3a_predicted_codes": {
+                alias: {
+                    "code_counts": dict(
+                        sorted(
+                            Counter(
+                                code
+                                for row in rows
+                                for code in row["phase3a_predicted_codes"].get(alias, [])
+                            ).items()
+                        )
+                    ),
+                    "set_counts": dict(
+                        sorted(
+                            Counter(
+                                "+".join(row["phase3a_predicted_codes"].get(alias, [])) or "<none>"
+                                for row in rows
+                            ).items()
+                        )
+                    ),
+                }
+                for alias in alias_names
+            },
         }
-    return selected, report
+    return pools, report
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--stage", choices=("prepare", "allocate"), required=True)
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding="utf-8"))
-    pools, report = build_pools(config)
     output_dir = Path(config["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
+    if args.stage == "prepare":
+        candidates, report = prepare_candidates(config)
+        write_jsonl(output_dir / "structural_candidates.jsonl", candidates)
+        (output_dir / "pool_report_pre_quality.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        print(json.dumps({"structural_candidates": len(candidates)}, indent=2))
+        return
+
+    candidates = read_jsonl(output_dir / "structural_candidates.jsonl")
+    scores = {
+        row["canonical_pair_id"]: row
+        for row in read_jsonl(Path(config["quality_scores_file"]))
+    }
+    base_report = json.loads((output_dir / "pool_report_pre_quality.json").read_text())
+    pools, report = allocate_candidates(candidates, scores, config, base_report)
     for (axis, corpus), rows in pools.items():
         write_jsonl(output_dir / f"{axis.lower()}_{corpus.lower().replace('-', '_')}.jsonl", rows)
     report["input_sha256"] = hashlib.sha256(Path(config["phase2b_file"]).read_bytes()).hexdigest()

@@ -43,7 +43,8 @@ def sample_sets(pool_dir: Path, seed: int, dev_size: int, heldout_size: int) -> 
     for axis in AXES:
         for corpus in CORPORA:
             rows = read_jsonl(pool_dir / pool_filename(axis, corpus))
-            ordered = stratified_order(rows, axis, seed)
+            split_candidates = [row for row in rows if row["allocation_pass"] == 1]
+            ordered = stratified_order(split_candidates, axis, seed)
             dev = ordered[:dev_size]
             heldout = ordered[dev_size : dev_size + heldout_size]
             pilot = sorted(dev, key=lambda row: stable_key(seed + 1, row["canonical_pair_id"]))[:10]
@@ -60,12 +61,21 @@ def sample_sets(pool_dir: Path, seed: int, dev_size: int, heldout_size: int) -> 
                 "dev": len(dev),
                 "heldout": len(heldout),
                 "gemini_pilot": len(pilot),
-                "underpowered": len(rows) < dev_size + heldout_size,
-                "dev_source_strategy_count": dict(
-                    sorted(Counter(str(row["source_strategy_count"]) for row in dev).items())
+                "underpowered": len(split_candidates) < dev_size + heldout_size,
+                "dev_gemma_strategy_count": dict(
+                    sorted(Counter(str(row["gemma_strategy_count"]) for row in dev).items())
                 ),
-                "heldout_source_strategy_count": dict(
-                    sorted(Counter(str(row["source_strategy_count"]) for row in heldout).items())
+                "heldout_gemma_strategy_count": dict(
+                    sorted(Counter(str(row["gemma_strategy_count"]) for row in heldout).items())
+                ),
+                "dev_strict_single_strategy_candidate": dict(
+                    sorted(Counter(str(row["strict_single_strategy_candidate"]).lower() for row in dev).items())
+                ),
+                "heldout_strict_single_strategy_candidate": dict(
+                    sorted(Counter(str(row["strict_single_strategy_candidate"]).lower() for row in heldout).items())
+                ),
+                "allocation_pass": dict(
+                    sorted(Counter(str(row["allocation_pass"]) for row in dev + heldout).items())
                 ),
                 "dev_meaning_cues": dict(
                     sorted(
