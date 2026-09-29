@@ -1,6 +1,6 @@
 # Explanation degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,38 @@ flowchart LR
 
 The pilot detector proposes Simplified tokens absent from the Original. Qwen removes one candidate span; human review determines whether it was truly explanatory.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Required Phase 3a label for this direct assignment. | `EXPL` |
+| `target_axis` | Phase 6 dimension selected for degradation. | `EXPL` |
+| `assigned_operation` | Instruction to remove an added explanation. | `remove_added_explanation` |
+| `target_cue` | Candidate explanatory text added in Simplified. | `the root of a plant known as ginger` |
+
+```text
+source_strategy: EXPL
+target_axis: EXPL
+assigned_operation: remove_added_explanation
+target_cue: the root of a plant known as ginger
+        ↓ prompt
+Qwen removes one added explanation
+```
+
+This is a direct assignment: `source_strategy` must equal `EXPL`. Qwen receives Original, Simplified, `assigned_operation`, and `target_cue`, but not the strategy label itself.
+
+### Implementation links
+
+- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Explanation operation and cue](../../src/planning/multi_axis.py#L114-L117)
+- [Require matching strategy and target](../../src/planning/multi_axis.py#L121-L139)
+- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Explanation prompt](../../prompts/expl_degradation_v1.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`expl_degradation_v1.json`](../prompts/expl_degradation_v1.json).
+Exact version: [`expl_degradation_v1.json`](../../prompts/expl_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

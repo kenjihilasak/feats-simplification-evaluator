@@ -27,7 +27,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Degraded:** Ginger ale is a soft drink flavored with the root of a plant known as ginger. Ginger beer is a non-alcoholic soft drink that is also flavored with ginger root.
 
 - [ ] Valid
-- [ ] Invalid
+- [x] Invalid
 - [ ] Unsure
 - **Note:**
 
@@ -41,7 +41,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Degraded:** Maria Jose de Pablo Fernandez, also known as Cote de Pablo (born November 12, 1979 in Santiago, Chile), is a Chilean-American actress and singer.
 
 - [ ] Valid
-- [ ] Invalid
+- [x] Invalid
 - [ ] Unsure
 - **Note:**
 
@@ -55,7 +55,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Degraded:** By 1700 the empire had broken up into areas that were controlled by individual groups of people which the Portuguese by collecting information.
 
 - [ ] Valid
-- [ ] Invalid
+- [x] Invalid
 - [ ] Unsure
 - **Note:**
 
@@ -97,7 +97,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Degraded:** When three people have sex with each other, it is called a threesomes.
 
 - [ ] Valid
-- [ ] Invalid
+- [x] Invalid
 - [ ] Unsure
 - **Note:**
 
@@ -138,7 +138,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Simplified:** These trees were planted in Washington, D.C..
 - **Degraded:** These trees were planted in Washington, D.C., and another 3,800 trees were donated.
 
-- [ ] Valid
+- [x] Valid
 - [ ] Invalid
 - [ ] Unsure
 - **Note:**
@@ -306,7 +306,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Simplified:** The Tri-State Tornado was the deadliest tornado in the history of the United States.It took place on Wednesday, March 18, 1925.
 - **Degraded:** The Tri-State Tornado of Wednesday, March 18, 1925 was the deadliest tornado in the history of the United States.
 
-- [ ] Valid
+- [x] Valid
 - [ ] Invalid
 - [ ] Unsure
 - **Note:**
@@ -390,7 +390,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Simplified:** In 480 BC the Persians arrived and attacked the Greeks, both on land and on sea.
 - **Degraded:** In 480 BC the Persians arrived and attacked the Greeks, both on land and in sea.
 
-- [ ] Valid
+- [x] Valid
 - [ ] Invalid
 - [ ] Unsure
 - **Note:**
@@ -418,7 +418,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Simplified:** He is the President of Ghana, in office since January 2017.
 - **Degraded:** He has been in office since January 2017.
 
-- [ ] Valid
+- [x] Valid
 - [ ] Invalid
 - [ ] Unsure
 - **Note:**
@@ -518,7 +518,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 
 - [ ] Valid
 - [ ] Invalid
-- [ ] Unsure
+- [x] Unsure
 - **Note:**
 
 ### Case 37
@@ -572,7 +572,7 @@ For each case, select one decision. A valid case must contain exactly one degrad
 - **Simplified:** The River Fowey is a river in Cornwall, United Kingdom, which follows an irregular course across Bodmin Moor and enters the English Channel at Fowey.
 - **Degraded:** The River Fowey is a river in Cornwall, United Kingdom, and enters the English Channel at Fowey.
 
-- [ ] Valid
+- [x] Valid
 - [ ] Invalid
 - [ ] Unsure
 - **Note:**

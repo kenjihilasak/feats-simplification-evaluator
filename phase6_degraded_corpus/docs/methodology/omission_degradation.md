@@ -1,6 +1,6 @@
 # Omission degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,38 @@ flowchart LR
 
 The detector currently proposes original tokens absent from the Simplified sentence. Qwen is asked to restore one candidate detail without inventing content.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Required Phase 3a label for this direct assignment. | `OMIT` |
+| `target_axis` | Phase 6 dimension selected for degradation. | `OMIT` |
+| `assigned_operation` | Instruction to restore omitted source content. | `restore_omitted_complex_detail` |
+| `target_cue` | Candidate original detail absent from Simplified. | `in the 1934 FIFA World Cup` |
+
+```text
+source_strategy: OMIT
+target_axis: OMIT
+assigned_operation: restore_omitted_complex_detail
+target_cue: in the 1934 FIFA World Cup
+        ↓ prompt
+Qwen restores one omitted original detail
+```
+
+This is a direct assignment: `source_strategy` must equal `OMIT`. Qwen receives Original, Simplified, `assigned_operation`, and `target_cue`, but not the strategy label itself.
+
+### Implementation links
+
+- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Omission operation and cue](../../src/planning/multi_axis.py#L102-L107)
+- [Require matching strategy and target](../../src/planning/multi_axis.py#L121-L139)
+- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Omission prompt](../../prompts/omit_degradation_v1.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`omit_degradation_v1.json`](../prompts/omit_degradation_v1.json).
+Exact version: [`omit_degradation_v1.json`](../../prompts/omit_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

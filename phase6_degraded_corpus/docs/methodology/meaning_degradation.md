@@ -1,6 +1,6 @@
 # Meaning degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,36 @@ flowchart LR
 
 The detector proposes a factual cue and the allocator selects one applicable corruption. Qwen generates the negative example; a reviewer accepts, retries, corrects, or rejects it.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `predicted_strategy` | Phase 3a label describing the simplification already present. | `OMIT` |
+| `target_axis` | Dimension degraded by this frozen pilot. | `MEANING` |
+| `assigned_corruption` | Specific factual-error type selected by the planner. | `number_replacement` |
+| `target_cue` | Detected fact span that Qwen should alter. | `1935` |
+
+```text
+predicted_strategy: OMIT
+target_axis: MEANING
+assigned_corruption: number_replacement
+target_cue: 1935
+        ↓ prompt
+Qwen introduces one incompatible number
+```
+
+Qwen receives Original, Simplified, `assigned_corruption` as `corruption_type`, and the cue text as `target_span`. It does **not** receive `predicted_strategy` directly.
+
+### Implementation links
+
+- [Attach the Phase 3a predicted strategy](../../src/selection/select_pilot_inputs.py#L140-L142)
+- [Assign `target_axis`, corruption, and cue](../../src/planning/plan_meaning_corruptions.py#L80-L105)
+- [Insert corruption and cue into the Meaning prompt](../../src/generation/generate_meaning_degradations.py#L72-L84)
+- [Versioned Meaning prompt](../../prompts/meaning_severe_v2.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`meaning_severe_v2.json`](../prompts/meaning_severe_v2.json).
+Exact version: [`meaning_severe_v2.json`](../../prompts/meaning_severe_v2.json).
 
 <details>
 <summary>Show prompt</summary>

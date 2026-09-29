@@ -6,11 +6,11 @@ Phase 6 creates immutable synthetic sidecars from simplified versions. Each reco
 
 The seven-axis weak-supervision expansion is implemented for `MEANING`,
 `FLUENCY`, `OMIT`, `SYN`, `MOD`, `ILLOC`, and `EXPL`. See
-[`docs/MULTI_AXIS_CORPUS.md`](docs/MULTI_AXIS_CORPUS.md) for the full pipeline.
+[`docs/overview.md`](docs/overview.md) for the full pipeline.
 That page links to a concise methodology for each of the seven dimensions.
 
 The original Meaning pilot below remains frozen and reproducible. The single
-combined report, [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md), covers all 350
+combined report, [`docs/reports/pilot_report.md`](docs/reports/pilot_report.md), covers all 350
 pilot cases: the 50 audited Meaning cases and the 300 automatically triaged
 cases from the other six axes.
 
@@ -56,4 +56,4 @@ python -m unittest discover -s phase6_degraded_corpus/tests -v
 
 Split and exclude by `canonical_original_id`. Keep every generated variant of one original in one split. Store exact prompts, model revision, decoding configuration, seed, hashes, validation, and reviewer provenance.
 
-See [`docs/meaning_degradation.md`](docs/meaning_degradation.md) for the methodology and [`docs/PILOT_REPORT.md`](docs/PILOT_REPORT.md) for the combined pilot results and examples.
+See [`docs/methodology/meaning_degradation.md`](docs/methodology/meaning_degradation.md) for the methodology and [`docs/reports/pilot_report.md`](docs/reports/pilot_report.md) for the combined pilot results and examples.

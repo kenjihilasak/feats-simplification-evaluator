@@ -1,6 +1,6 @@
 # Synonymy degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,38 @@ flowchart LR
 
 The pilot detector uses original tokens absent from the Simplified sentence as candidate expressions. This approximation must be replaced by phrase alignment before scaling.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Required Phase 3a label for this direct assignment. | `SYN` |
+| `target_axis` | Phase 6 dimension selected for degradation. | `SYN` |
+| `assigned_operation` | Instruction to restore a harder original expression. | `restore_complex_lexical_item` |
+| `target_cue` | Candidate complex expression from Original. | `British National Party` |
+
+```text
+source_strategy: SYN
+target_axis: SYN
+assigned_operation: restore_complex_lexical_item
+target_cue: British National Party
+        ↓ prompt
+Qwen restores one harder original expression
+```
+
+This is a direct assignment: `source_strategy` must equal `SYN`. Qwen receives Original, Simplified, `assigned_operation`, and `target_cue`, but not the strategy label itself.
+
+### Implementation links
+
+- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Synonymy operation and cue](../../src/planning/multi_axis.py#L108-L111)
+- [Require matching strategy and target](../../src/planning/multi_axis.py#L121-L139)
+- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Synonymy prompt](../../prompts/syn_degradation_v1.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`syn_degradation_v1.json`](../prompts/syn_degradation_v1.json).
+Exact version: [`syn_degradation_v1.json`](../../prompts/syn_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

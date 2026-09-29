@@ -1,6 +1,6 @@
 # Fluency degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,37 @@ flowchart LR
 
 The detector selects an agreement, determiner, preposition, or local word-order site. The prompt asks Qwen to apply one error at that site.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Phase 3a label already present in the pair. | `EXPL` |
+| `target_axis` | Phase 6 dimension selected for degradation. | `FLUENCY` |
+| `assigned_operation` | Specific grammatical error to introduce. | `preposition_error` |
+| `target_cue` | Local form selected for editing. | `on` |
+
+```text
+source_strategy: EXPL
+target_axis: FLUENCY
+assigned_operation: preposition_error
+target_cue: on
+        ↓ prompt
+Qwen introduces one local preposition error
+```
+
+Qwen receives Original, Simplified, `assigned_operation`, and `target_cue`. It does **not** receive `source_strategy` directly; `target_axis` selects the Fluency prompt.
+
+### Implementation links
+
+- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Detect Fluency operations and cues](../../src/planning/multi_axis.py#L48-L69)
+- [Choose axis, operation, and cue](../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Fluency prompt](../../prompts/fluency_degradation_v1.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`fluency_degradation_v1.json`](../prompts/fluency_degradation_v1.json).
+Exact version: [`fluency_degradation_v1.json`](../../prompts/fluency_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

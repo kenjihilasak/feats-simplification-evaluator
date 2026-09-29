@@ -1,6 +1,6 @@
 # Modulation degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -34,9 +34,38 @@ flowchart LR
 
 The pilot assigns a general restructuring reversal rather than an exact structural span. Qwen compares both texts and attempts one recombination or reordering.
 
+## Labels and values sent to Qwen
+
+| Field | Meaning | Example |
+|---|---|---|
+| `source_strategy` | Required Phase 3a label for this direct assignment. | `MOD` |
+| `target_axis` | Phase 6 dimension selected for degradation. | `MOD` |
+| `assigned_operation` | Instruction to undo helpful restructuring. | `reverse_information_restructuring` |
+| `target_cue` | Generic structural cue used in the pilot. | `sentence structure` |
+
+```text
+source_strategy: MOD
+target_axis: MOD
+assigned_operation: reverse_information_restructuring
+target_cue: sentence structure
+        ↓ prompt
+Qwen attempts one recombination or reordering
+```
+
+This is a direct protected assignment: every `MOD` pair is reserved for Modulation. Qwen receives Original, Simplified, `assigned_operation`, and the generic cue, but not the strategy label itself.
+
+### Implementation links
+
+- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Modulation operation](../../src/planning/multi_axis.py#L112-L113)
+- [Protect MOD during allocation](../../src/planning/multi_axis.py#L159-L173)
+- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Modulation prompt](../../prompts/mod_degradation_v1.json)
+
 ## Prompt used in the pilot
 
-Exact version: [`mod_degradation_v1.json`](../prompts/mod_degradation_v1.json).
+Exact version: [`mod_degradation_v1.json`](../../prompts/mod_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

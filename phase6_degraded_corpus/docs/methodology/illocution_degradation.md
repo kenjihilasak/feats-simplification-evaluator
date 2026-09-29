@@ -1,6 +1,6 @@
 # Illocution degradation
 
-[Methodology index](MULTI_AXIS_CORPUS.md) · [pilot report](PILOT_REPORT.md)
+[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
 
 ## Goal
 
@@ -62,15 +62,15 @@ Qwen receives the Original, Simplified, `assigned_operation`, and `target_cue`. 
 
 ### Implementation links
 
-- [Attach the Phase 3a `source_strategy`](../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Detect Illocution operations and cues](../src/planning/multi_axis.py#L72-L99)
-- [Choose `target_axis`, `assigned_operation`, and `target_cue`](../src/planning/multi_axis.py#L169-L207)
-- [Insert the selected operation and cue into the prompt](../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Illocution prompt](../prompts/illoc_degradation_v1.json)
+- [Attach the Phase 3a `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Detect Illocution operations and cues](../../src/planning/multi_axis.py#L72-L99)
+- [Choose `target_axis`, `assigned_operation`, and `target_cue`](../../src/planning/multi_axis.py#L169-L207)
+- [Insert the selected operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Illocution prompt](../../prompts/illoc_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`illoc_degradation_v1.json`](../prompts/illoc_degradation_v1.json).
+Exact version: [`illoc_degradation_v1.json`](../../prompts/illoc_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

@@ -18,5 +18,5 @@ python -m phase6_degraded_corpus.src.selection.select_multi_axis_inputs --help
 The workflow order is selection → planning → generation → evaluation → reporting.
 
 The canonical human-readable pilot output is
-[`../docs/PILOT_REPORT.md`](../docs/PILOT_REPORT.md). Do not publish separate
+[`../docs/reports/pilot_report.md`](../docs/reports/pilot_report.md). Do not publish separate
 Meaning or per-run pilot reports.
