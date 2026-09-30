@@ -367,3 +367,24 @@ Reviewer instruction: count **Unsure as Valid**. Macro human valid rate on heldo
 | MEANING | 84% | 82% | p = 1.0 | **C1, provisional**: neither reaches 85%; fix negation (rule-based) and a/an agreement, then re-audit a fresh heldout sample |
 | MOD | 89% | **95%** | p = 0.38 | **C2**: both eligible and equivalent; tie-break §6.4.3(a), cost per valid output (same GPU time, more valid outputs) |
 | ILLOC | **90%** | 89% | p = 1.0 | **C1**: equivalent; tie-break §6.4.3(a), smaller model (7B vs 12B) for the same valid rate; also far better on `hedged` in dev (84% vs 29%) |
+
+## MEANING v2.1 re-audit (2026-09-30)
+
+Changes: rule-based negation, a/an agreement. Fresh blinded heldout of 57 cases, C1 only ([`mmi_v21_meaning_heldout_review.md`](mmi_v21_meaning_heldout_review.md)): 20 new WikiAutoEN + 20 new ASSET pairs, plus the 18 Vikidia heldout pairs reused with new outputs (Vikidia has no unused pairs). Unsure counts as valid; case H026 has two marks and counts as not valid.
+
+| Source | Valid |
+|---|---|
+| WikiAutoEN | 18/20 (90%) |
+| ASSET | 15/20 (75%) |
+| Wikipedia-Vikidia | 17/17 (100%, reused pairs) |
+| **Macro** | **88%** (micro 50/57) |
+
+**Decision: C1 (Qwen2.5-7B, v2.1) is approved for MEANING** (≥ 85%). Residual errors: entity/relation swaps that produce hybrids or internal inconsistencies, and one plural "A Chronicles". Known follow-up: require the predicate around a swapped entity to be supported by the Original (case "Second Battle of Lille").
+
+### Final configuration
+
+| Axis | Config |
+|---|---|
+| MEANING | C1: Qwen2.5-7B bf16, v2.1 (rule-based number/date/negation, LLM for the rest) |
+| MOD | C2: Gemma-3-12B bf16, v2 |
+| ILLOC | C1: Qwen2.5-7B bf16, v2 (question + directive; hedged pending the FEATS definition) |
