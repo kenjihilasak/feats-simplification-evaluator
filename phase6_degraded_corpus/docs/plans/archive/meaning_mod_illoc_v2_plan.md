@@ -4,7 +4,7 @@ Execution plan. Experiment id: **`mmi_en_v2`**. Language: English only.
 
 ## 0. Context and hard constraints
 
-The v1 pilot (Qwen2.5-7B, 4-bit NF4, greedy, zero-shot prompts) produced unusable degradations: see [`../reports/pilot_random_review_assistant_audit.md`](../reports/pilot_random_review_assistant_audit.md). Failure modes: identical/format-only outputs, output copying the Original (MOD 10/50, ILLOC 5/50), edits in the wrong axis, multiple edits, broken Simplified inputs, and false cues (`May` in dates).
+The v1 pilot (Qwen2.5-7B, 4-bit NF4, greedy, zero-shot prompts) produced unusable degradations: see [`../../reports/archive/pilot_random_review_assistant_audit.md`](../../reports/archive/pilot_random_review_assistant_audit.md). Failure modes: identical/format-only outputs, output copying the Original (MOD 10/50, ILLOC 5/50), edits in the wrong axis, multiple edits, broken Simplified inputs, and false cues (`May` in dates).
 
 This plan fixes source selection and generation for **MEANING, MOD, ILLOC only**, compares **5 generation configs**, and reports every result **separately for the three English sources**: `WikiAutoEN`, `ASSET`, `Wikipedia-Vikidia`.
 
@@ -12,7 +12,7 @@ This plan fixes source selection and generation for **MEANING, MOD, ILLOC only**
 
 Hard constraints:
 
-1. Do **not** modify or regenerate: `runs/meaning_en_pilot_v1/`, `runs/multi_axis_en_v1/`, any `prompts/*_v1.json`, `prompts/meaning_severe_v*.json`, `prompts/retry_v2/`. New prompts are new files.
+1. Do **not** modify or regenerate: `runs/archive/meaning_en_pilot_v1/`, `runs/archive/multi_axis_en_v1/`, any `prompts/*_v1.json`, `prompts/meaning_severe_v*.json`, `prompts/retry_v2/`. New prompts are new files.
 2. All run products go under `phase6_degraded_corpus/runs/mmi_en_v2/` (Git-ignored). Code, configs, prompts, jobs, tests, docs are committed.
 3. **ASSET is usable, except the originals of the evaluation corpora.** ASSET has 2,359 originals (2,000 from the official validation split + 359 from the official test split). AssetAnn is the annotated subset of the official **test** originals. Other reserved corpora (Simplicity-DA, Human-Likert, SimpEval) may also rate outputs on ASSET/TurkCorpus test originals. Rules:
    - **Done (2026-09-30):** `src/selection/freeze_evaluation_originals.py` froze Simplicity-DA, Human-Likert, AssetAnn, SimpEval-2022 and the official `asset.test.orig`, with commits and SHA-256 recorded in `runs/mmi_en_v2/pools/evaluation_sources_manifest.json`. Do not match on ids: MultiSim re-splits ASSET, so the upstream split label cannot be trusted. (The 288 Phase 2b ASSET pairs that match are exactly the MultiSim `test` split.)
@@ -81,7 +81,7 @@ Module `src/selection/sample_mmi_devsets.py`. There are 9 cells (3 axes × 3 sou
 
 **Order:** the clean-input quality gates of §1.1 (acceptability and NLI) are applied to the pools **before** allocation and sampling. Splits sampled before the gates must be discarded and re-sampled; nothing has been generated on them, so this costs nothing. Dev and held-out are disjoint by `canonical_original_id`. When a cell has fewer than 60 pairs, fill `dev` first and then `heldout` with whatever remains. Stratify MEANING dev by cue type (number/date/entity/negation) as evenly as the cell allows.
 
-MEANING also gets an extra `pilot50` set: the 50 frozen inputs from `runs/meaning_en_pilot_v1/selection/accepted_50.jsonl`. It is used only for the comparison with human-accepted outputs in §7.
+MEANING also gets an extra `pilot50` set: the 50 frozen inputs from `runs/archive/meaning_en_pilot_v1/selection/accepted_50.jsonl`. It is used only for the comparison with human-accepted outputs in §7.
 
 Expected size: about 9 × 40 = 360 dev inputs (minus Vikidia MOD) and about 180 held-out inputs.
 
@@ -195,15 +195,15 @@ Aggregation and statistics:
 - One checklist prompt per axis (`prompts/judge_{axis}_v2.json`), with output `{"valid": bool, "single_change": bool, "target_axis_changed": bool, "other_axes_preserved": bool, "reason": str}`.
 - Cross-family only: Gemma-3-12B judges C0/C1/C3 outputs; Qwen2.5-7B bf16 judges C2 outputs; Gemma-3-12B judges C4 outputs. Greedy decoding.
 - **Calibration before use:**
-  - MEANING: the v1/retry outputs in `runs/meaning_en_pilot_v1/degradation/`. Outputs whose `accepted_source` is `qwen_v1` or `qwen_v2_retry` count as valid; the rejected model outputs of manually corrected rows count as invalid.
-  - MOD/ILLOC: the human-marked cases in `docs/reports/pilot_random_review.md`.
+  - MEANING: the v1/retry outputs in `runs/archive/meaning_en_pilot_v1/degradation/`. Outputs whose `accepted_source` is `qwen_v1` or `qwen_v2_retry` count as valid; the rejected model outputs of manually corrected rows count as invalid.
+  - MOD/ILLOC: the human-marked cases in `docs/reports/archive/pilot_random_review.md`.
   - If agreement is < 85% on an axis, the judge is **reported but not used for ranking** on that axis.
 
 ### 6.3 Ranking and human audit
 
 1. Rank configs per axis by **macro** end-to-end `yield@4`, tie-broken by `judge_valid` (only if calibrated), then `single_edit_rate`. Only `assertion_to_question` and `assertion_to_directive` count for the ILLOC ranking; `assertion_to_hedged` is reported separately until the FEATS definition is settled. C4 enters the ranking only if the user approved its full dev run.
 2. Take the **top 2 configs per axis** and generate on the `heldout` split.
-3. Build a **blinded** review file (reuse `src/reporting/build_random_review.py` style; shuffle; hide config id; keep a private key file under `runs/`): `docs/reports/mmi_v2_heldout_review.md`, with Valid / Invalid / Unsure checkboxes and a Note, like `pilot_random_review.md`. Also show the `source` of each case.
+3. Build a **blinded** review file (reuse `src/reporting/build_random_review.py` style; shuffle; hide config id; keep a private key file under `runs/`): `docs/reports/current/mmi_v2_heldout_review.md`, with Valid / Invalid / Unsure checkboxes and a Note, like `pilot_random_review.md`. Also show the `source` of each case.
 4. **STOP** for the human audit.
 5. After the audit: compute the valid rate per config × axis × source. **The human heldout result, not the LLM judge, decides the winner per axis**, using the paired statistics of §6.1. Gate (unchanged from v1): ≥ 85% valid single-axis degradations per axis. Per-source rates are diagnostic. A source cell that is systematically worse (> 15 pp below the axis mean) gets flagged in the report.
 
@@ -224,18 +224,18 @@ With about 60 paired held-out items per axis, only differences of roughly 15–2
 
 - `runs/mmi_en_v2/pools/pool_report.json`: per-filter counts per cell.
 - `runs/mmi_en_v2/reports/gemini_pilot_cost.md` (§5.1).
-- `docs/reports/mmi_v2_model_comparison.md`: tables per axis with rows = configs and columns = sources, for each metric in §6.1; an ILLOC per-operation table; a MEANING per-cue-type table; for MEANING `pilot50`, the rate at which each config reaches a valid output on inputs where v1 needed manual correction (19 cases); 5 examples per axis per config (good and bad); a recommendation per axis.
-- `docs/reports/mmi_v2_heldout_review.md` (blinded audit file) and, after the audit, a results section appended to the comparison report.
+- `docs/reports/current/mmi_v2_model_comparison.md`: tables per axis with rows = configs and columns = sources, for each metric in §6.1; an ILLOC per-operation table; a MEANING per-cue-type table; for MEANING `pilot50`, the rate at which each config reaches a valid output on inputs where v1 needed manual correction (19 cases); 5 examples per axis per config (good and bad); a recommendation per axis.
+- `docs/reports/current/mmi_v2_heldout_review.md` (blinded audit file) and, after the audit, a results section appended to the comparison report.
 - Update `docs/methodology/{meaning,modulation,illocution}_degradation.md` with a short "v2" section that links to the plan and the report. Do not rewrite the v1 description.
 - Tests (unittest, under `phase6_degraded_corpus/tests/`): the pool filters on hand-made rows; per-cell disjointness by `canonical_original_id`; the reserved-original exclusion and materializer guard; span splicing for MEANING; MOD sentence-count and content-word checks; ILLOC form checks for each operation; the budget-cap abort in the Gemini backend (mock the client); deterministic dev sampling (same seed → same ids).
 
 ## Execution status (2026-09-29)
 
-- Steps 0–5 done; step 8 prepared for the local finalists. Results: [`../reports/mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md) (includes the deviations list).
+- Steps 0–5 done; step 8 prepared for the local finalists. Results: [`../reports/current/mmi_v2_model_comparison.md`](../reports/current/mmi_v2_model_comparison.md) (includes the deviations list).
 - Finalists on all three axes: **C1** (Qwen2.5-7B bf16, v2) and **C2** (Gemma-3-12B, v2). The LLM judge failed calibration (55–60% agreement) and is not used.
 - **Blocked:** C3 Llama (HF 403, access not granted); C4 Gemini (STOP §5.1.0).
-- **Waiting for the human audit:** [`../reports/mmi_v2_heldout_review.md`](../reports/mmi_v2_heldout_review.md) (222 blinded cases). Score it with:
-  `python -m phase6_degraded_corpus.src.reporting.build_mmi_heldout_review score --review phase6_degraded_corpus/docs/reports/mmi_v2_heldout_review.md --key phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_review_key.json --results-json phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_results.json --append-to phase6_degraded_corpus/docs/reports/mmi_v2_model_comparison.md`
+- **Waiting for the human audit:** [`../reports/current/mmi_v2_heldout_review.md`](../reports/current/mmi_v2_heldout_review.md) (222 blinded cases). Score it with:
+  `python -m phase6_degraded_corpus.src.reporting.build_mmi_heldout_review score --review phase6_degraded_corpus/docs/reports/current/mmi_v2_heldout_review.md --key phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_review_key.json --results-json phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_results.json --append-to phase6_degraded_corpus/docs/reports/current/mmi_v2_model_comparison.md`
 
 ## 8. Order of execution and STOP points
 

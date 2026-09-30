@@ -1,6 +1,6 @@
 # Phase 6 inputs
 
-[Phase 6 overview](overview.md) · [MEANING/MOD/ILLOC v2 plan](plans/meaning_mod_illoc_v2_plan.md) · [Phase 2b text repair](../../phase2b_consolidation/docs/text_repair_plan.md)
+[Phase 6 overview](overview.md) · [MEANING/MOD/ILLOC v2 plan](plans/archive/meaning_mod_illoc_v2_plan.md) · [Phase 2b text repair](../../phase2b_consolidation/docs/text_repair_plan.md)
 
 This page is the single source of truth for **which data Phase 6 reads**. Every Phase 6 config must point to the files listed here and record their SHA-256 in its run report.
 
@@ -32,7 +32,7 @@ Phase 6 needs clean positives. `target_simple` applies the stricter Phase 2a fil
 
 - Phase 6 never repairs or rewrites text itself. If a new text defect is found, fix it in a new Phase 2b variant and update this page.
 - Phase 6 never modifies Phase 2b files.
-- **Reserved evaluation originals** are excluded before any selection: Simplicity-DA, Human-Likert, AssetAnn, SimpEval-2022 and the official ASSET test set, frozen by `src/selection/freeze_evaluation_originals.py` (manifest: `runs/mmi_en_v2/pools/evaluation_sources_manifest.json`; 419 distinct sentences). Matching uses the strong key (NFKC, casefold, alphanumerics only) plus near-duplicate exclusion (word Jaccard ≥ 0.8). See §0 item 3 of the [v2 plan](plans/meaning_mod_illoc_v2_plan.md). This applies to every Phase 6 experiment and to any future training set.
+- **Reserved evaluation originals** are excluded before any selection: Simplicity-DA, Human-Likert, AssetAnn, SimpEval-2022 and the official ASSET test set, frozen by `src/selection/freeze_evaluation_originals.py` (manifest: `runs/mmi_en_v2/pools/evaluation_sources_manifest.json`; 419 distinct sentences). Matching uses the strong key (NFKC, casefold, alphanumerics only) plus near-duplicate exclusion (word Jaccard ≥ 0.8). See §0 item 3 of the [v2 plan](plans/archive/meaning_mod_illoc_v2_plan.md). This applies to every Phase 6 experiment and to any future training set.
 
 ## 2. Strategy labels (Phase 3a)
 

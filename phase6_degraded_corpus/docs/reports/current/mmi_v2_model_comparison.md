@@ -387,4 +387,4 @@ Changes: rule-based negation, a/an agreement. Fresh blinded heldout of 57 cases,
 |---|---|
 | MEANING | C1: Qwen2.5-7B bf16, v2.1 (rule-based number/date/negation, LLM for the rest) |
 | MOD | C2: Gemma-3-12B bf16, v2 |
-| ILLOC | C1: Qwen2.5-7B bf16, v2 (question + directive; hedged pending the FEATS definition) |
+| ILLOC | C1: Qwen2.5-7B bf16, v2 (question, directive and hedged; decision 2026-09-30: hedged = ILLOC, pending its own human audit) |

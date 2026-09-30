@@ -1,6 +1,6 @@
 # Fluency degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -56,15 +56,15 @@ Qwen receives Original, Simplified, `assigned_operation`, and `target_cue`. It d
 
 ### Implementation links
 
-- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Detect Fluency operations and cues](../../src/planning/multi_axis.py#L48-L69)
-- [Choose axis, operation, and cue](../../src/planning/multi_axis.py#L177-L207)
-- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Fluency prompt](../../prompts/fluency_degradation_v1.json)
+- [Attach `source_strategy`](../../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Detect Fluency operations and cues](../../../src/planning/multi_axis.py#L48-L69)
+- [Choose axis, operation, and cue](../../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Fluency prompt](../../../prompts/archive/v1/fluency_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`fluency_degradation_v1.json`](../../prompts/fluency_degradation_v1.json).
+Exact version: [`fluency_degradation_v1.json`](../../../prompts/archive/v1/fluency_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

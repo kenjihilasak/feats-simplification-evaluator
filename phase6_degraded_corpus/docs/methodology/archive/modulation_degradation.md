@@ -1,6 +1,6 @@
 # Modulation degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -56,16 +56,16 @@ This is a direct protected assignment: every `MOD` pair is reserved for Modulati
 
 ### Implementation links
 
-- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Build the Modulation operation](../../src/planning/multi_axis.py#L112-L113)
-- [Protect MOD during allocation](../../src/planning/multi_axis.py#L159-L173)
-- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
-- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Modulation prompt](../../prompts/mod_degradation_v1.json)
+- [Attach `source_strategy`](../../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Modulation operation](../../../src/planning/multi_axis.py#L112-L113)
+- [Protect MOD during allocation](../../../src/planning/multi_axis.py#L159-L173)
+- [Choose and store operation and cue](../../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Modulation prompt](../../../prompts/archive/v1/mod_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`mod_degradation_v1.json`](../../prompts/mod_degradation_v1.json).
+Exact version: [`mod_degradation_v1.json`](../../../prompts/archive/v1/mod_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>
@@ -113,4 +113,4 @@ Three cases changed only formatting, and 24/50 substantive edits could not be ve
 
 ## v2 (2026-09-29)
 
-The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with a merge of one pair of adjacent Simplified sentences; the model never sees the Original. On the shared dev split, v2 raises the automatic valid rate from 6% (v1 pipeline) to 85%. The v1 description above is kept unchanged for the frozen pilot.
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../../plans/archive/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../../reports/current/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with a merge of one pair of adjacent Simplified sentences; the model never sees the Original. On the shared dev split, v2 raises the automatic valid rate from 6% (v1 pipeline) to 85%. The v1 description above is kept unchanged for the frozen pilot.

@@ -1,6 +1,6 @@
 # Omission degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -56,16 +56,16 @@ This is a direct assignment: `source_strategy` must equal `OMIT`. Qwen receives 
 
 ### Implementation links
 
-- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Build the Omission operation and cue](../../src/planning/multi_axis.py#L102-L107)
-- [Require matching strategy and target](../../src/planning/multi_axis.py#L121-L139)
-- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
-- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Omission prompt](../../prompts/omit_degradation_v1.json)
+- [Attach `source_strategy`](../../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Omission operation and cue](../../../src/planning/multi_axis.py#L102-L107)
+- [Require matching strategy and target](../../../src/planning/multi_axis.py#L121-L139)
+- [Choose and store operation and cue](../../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Omission prompt](../../../prompts/archive/v1/omit_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`omit_degradation_v1.json`](../../prompts/omit_degradation_v1.json).
+Exact version: [`omit_degradation_v1.json`](../../../prompts/archive/v1/omit_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

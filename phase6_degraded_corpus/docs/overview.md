@@ -1,18 +1,18 @@
-# Seven-axis weak-supervision corpus
+# Historical v1: seven-axis weak-supervision corpus
 
-[Phase 6 README](../README.md) · [degradation methodology](methodology/meaning_degradation.md) · [combined pilot report](reports/pilot_report.md)
+[Phase 6 README](../README.md) · [degradation methodology](methodology/archive/meaning_degradation.md) · [combined pilot report](reports/archive/pilot_report.md)
 
 ## Methodology by dimension
 
 | Dimension | Methodology |
 |---|---|
-| Meaning | [Meaning degradation](methodology/meaning_degradation.md) |
-| Fluency | [Fluency degradation](methodology/fluency_degradation.md) |
-| Omission | [Omission degradation](methodology/omission_degradation.md) |
-| Synonymy | [Synonymy degradation](methodology/synonymy_degradation.md) |
-| Modulation | [Modulation degradation](methodology/modulation_degradation.md) |
-| Illocution | [Illocution degradation](methodology/illocution_degradation.md) |
-| Explanation | [Explanation degradation](methodology/explanation_degradation.md) |
+| Meaning | [Meaning degradation](methodology/archive/meaning_degradation.md) |
+| Fluency | [Fluency degradation](methodology/archive/fluency_degradation.md) |
+| Omission | [Omission degradation](methodology/archive/omission_degradation.md) |
+| Synonymy | [Synonymy degradation](methodology/archive/synonymy_degradation.md) |
+| Modulation | [Modulation degradation](methodology/archive/modulation_degradation.md) |
+| Illocution | [Illocution degradation](methodology/archive/illocution_degradation.md) |
+| Explanation | [Explanation degradation](methodology/archive/explanation_degradation.md) |
 
 ## Purpose
 
@@ -88,20 +88,20 @@ Failed axes revise only their detector or prompt and rerun their pilot. After ac
 
 ```bash
 python -m phase6_degraded_corpus.src.selection.select_multi_axis_inputs \
-  --config phase6_degraded_corpus/configs/experiments/multi_axis_en_v1.json
+  --config phase6_degraded_corpus/configs/archive/multi_axis_en_v1.json
 
 python -m phase6_degraded_corpus.src.planning.plan_multi_axis_degradations \
-  --config phase6_degraded_corpus/configs/experiments/multi_axis_assignment_v1.json
+  --config phase6_degraded_corpus/configs/archive/multi_axis_assignment_v1.json
 
-sbatch phase6_degraded_corpus/jobs/submit_multi_axis_pilot_gpu.sh
+sbatch phase6_degraded_corpus/jobs/archive/submit_multi_axis_pilot_gpu.sh
 
 python -m phase6_degraded_corpus.src.generation.consolidate_generations \
-  --manifest phase6_degraded_corpus/runs/multi_axis_en_v1/assignment/pilot_manifest.jsonl \
-  --shards phase6_degraded_corpus/runs/multi_axis_en_v1/generation/pilot_shard_*.jsonl \
-  --output phase6_degraded_corpus/runs/multi_axis_en_v1/generation/pilot_consolidated.jsonl \
-  --report phase6_degraded_corpus/runs/multi_axis_en_v1/generation/consolidation_manifest.json
+  --manifest phase6_degraded_corpus/runs/archive/multi_axis_en_v1/assignment/pilot_manifest.jsonl \
+  --shards phase6_degraded_corpus/runs/archive/multi_axis_en_v1/generation/pilot_shard_*.jsonl \
+  --output phase6_degraded_corpus/runs/archive/multi_axis_en_v1/generation/pilot_consolidated.jsonl \
+  --report phase6_degraded_corpus/runs/archive/multi_axis_en_v1/generation/consolidation_manifest.json
 
 python -m unittest discover -s phase6_degraded_corpus/tests -v
 ```
 
-Run products, model responses, audits, and training data remain under `phase6_degraded_corpus/runs/multi_axis_en_v1/` and are ignored by Git. Versioned code, configs, prompts, tests, and methodology are committed.
+Run products, model responses, audits, and training data remain under `phase6_degraded_corpus/runs/archive/multi_axis_en_v1/` and are ignored by Git. Versioned code, configs, prompts, tests, and methodology are committed.

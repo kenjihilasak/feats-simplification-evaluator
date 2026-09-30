@@ -1,6 +1,6 @@
 # Illocution degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -62,15 +62,15 @@ Qwen receives the Original, Simplified, `assigned_operation`, and `target_cue`. 
 
 ### Implementation links
 
-- [Attach the Phase 3a `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Detect Illocution operations and cues](../../src/planning/multi_axis.py#L72-L99)
-- [Choose `target_axis`, `assigned_operation`, and `target_cue`](../../src/planning/multi_axis.py#L169-L207)
-- [Insert the selected operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Illocution prompt](../../prompts/illoc_degradation_v1.json)
+- [Attach the Phase 3a `source_strategy`](../../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Detect Illocution operations and cues](../../../src/planning/multi_axis.py#L72-L99)
+- [Choose `target_axis`, `assigned_operation`, and `target_cue`](../../../src/planning/multi_axis.py#L169-L207)
+- [Insert the selected operation and cue into the prompt](../../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Illocution prompt](../../../prompts/archive/v1/illoc_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`illoc_degradation_v1.json`](../../prompts/illoc_degradation_v1.json).
+Exact version: [`illoc_degradation_v1.json`](../../../prompts/archive/v1/illoc_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>
@@ -118,4 +118,4 @@ Explicit cues made this axis relatively reliable, but cue presence alone does no
 
 ## v2 (2026-09-29)
 
-The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with injection of one speech-act change (statement → question / directive; hedged reported separately) on declarative clean text. On the shared dev split, v2 raises the automatic valid rate from 32% (v1 pipeline) to 88%. The v1 description above is kept unchanged for the frozen pilot.
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../../plans/archive/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../../reports/current/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with injection of one speech-act change (statement → question / directive; hedged reported separately) on declarative clean text. On the shared dev split, v2 raises the automatic valid rate from 32% (v1 pipeline) to 88%. The v1 description above is kept unchanged for the frozen pilot.

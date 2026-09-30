@@ -1,6 +1,6 @@
 # Meaning degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -56,14 +56,14 @@ Qwen receives Original, Simplified, `assigned_corruption` as `corruption_type`, 
 
 ### Implementation links
 
-- [Attach the Phase 3a predicted strategy](../../src/selection/select_pilot_inputs.py#L140-L142)
-- [Assign `target_axis`, corruption, and cue](../../src/planning/plan_meaning_corruptions.py#L80-L105)
-- [Insert corruption and cue into the Meaning prompt](../../src/generation/generate_meaning_degradations.py#L72-L84)
-- [Versioned Meaning prompt](../../prompts/meaning_severe_v2.json)
+- [Attach the Phase 3a predicted strategy](../../../src/selection/select_pilot_inputs.py#L140-L142)
+- [Assign `target_axis`, corruption, and cue](../../../src/planning/plan_meaning_corruptions.py#L80-L105)
+- [Insert corruption and cue into the Meaning prompt](../../../src/generation/generate_meaning_degradations.py#L72-L84)
+- [Versioned Meaning prompt](../../../prompts/meaning_severe_v2.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`meaning_severe_v2.json`](../../prompts/meaning_severe_v2.json).
+Exact version: [`meaning_severe_v2.json`](../../../prompts/meaning_severe_v2.json).
 
 <details>
 <summary>Show prompt</summary>
@@ -120,4 +120,4 @@ Structural validation was insufficient: 19/50 cases still required manual correc
 
 ## v2 (2026-09-29)
 
-The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../plans/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../reports/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with span-in/span-out edits (the model returns only the replacement for a detector-chosen span supported by the Original) and rule-based number/date changes. On the shared dev split, v2 raises the automatic valid rate from 39% (v1 pipeline) to 75–76%. The v1 description above is kept unchanged for the frozen pilot.
+The v2 pipeline (plan [`meaning_mod_illoc_v2_plan.md`](../../plans/archive/meaning_mod_illoc_v2_plan.md), results [`mmi_v2_model_comparison.md`](../../reports/current/mmi_v2_model_comparison.md)) replaces the v1 prompt described above with span-in/span-out edits (the model returns only the replacement for a detector-chosen span supported by the Original) and rule-based number/date changes. On the shared dev split, v2 raises the automatic valid rate from 39% (v1 pipeline) to 75–76%. The v1 description above is kept unchanged for the frozen pilot.

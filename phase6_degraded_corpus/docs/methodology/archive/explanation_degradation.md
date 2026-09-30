@@ -1,6 +1,6 @@
 # Explanation degradation
 
-[Documentation index](../README.md) · [methodology overview](../overview.md) · [pilot report](../reports/pilot_report.md)
+[Documentation index](../../README.md) · [methodology overview](../../overview.md) · [pilot report](../../reports/archive/pilot_report.md)
 
 ## Goal
 
@@ -56,16 +56,16 @@ This is a direct assignment: `source_strategy` must equal `EXPL`. Qwen receives 
 
 ### Implementation links
 
-- [Attach `source_strategy`](../../src/selection/select_multi_axis_inputs.py#L99-L101)
-- [Build the Explanation operation and cue](../../src/planning/multi_axis.py#L114-L117)
-- [Require matching strategy and target](../../src/planning/multi_axis.py#L121-L139)
-- [Choose and store operation and cue](../../src/planning/multi_axis.py#L177-L207)
-- [Insert operation and cue into the prompt](../../src/generation/generate_degradations.py#L136-L152)
-- [Versioned Explanation prompt](../../prompts/expl_degradation_v1.json)
+- [Attach `source_strategy`](../../../src/selection/select_multi_axis_inputs.py#L99-L101)
+- [Build the Explanation operation and cue](../../../src/planning/multi_axis.py#L114-L117)
+- [Require matching strategy and target](../../../src/planning/multi_axis.py#L121-L139)
+- [Choose and store operation and cue](../../../src/planning/multi_axis.py#L177-L207)
+- [Insert operation and cue into the prompt](../../../src/generation/generate_degradations.py#L136-L152)
+- [Versioned Explanation prompt](../../../prompts/archive/v1/expl_degradation_v1.json)
 
 ## Prompt used in the pilot
 
-Exact version: [`expl_degradation_v1.json`](../../prompts/expl_degradation_v1.json).
+Exact version: [`expl_degradation_v1.json`](../../../prompts/archive/v1/expl_degradation_v1.json).
 
 <details>
 <summary>Show prompt</summary>

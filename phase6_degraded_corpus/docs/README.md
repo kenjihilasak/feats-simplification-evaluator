@@ -2,23 +2,20 @@
 
 [Phase 6 README](../README.md)
 
-## Start here
+## Current: MMI v2
 
-- [**Inputs: which data Phase 6 reads**](inputs.md)
-- [Active plan: MEANING/MOD/ILLOC v2](plans/meaning_mod_illoc_v2_plan.md)
-- [Corpus overview and assignment](overview.md)
-- [Combined 350-case pilot report](reports/pilot_report.md)
-- [50-case review file](reports/pilot_random_review.md)
-- [Preliminary assistant audit](reports/pilot_random_review_assistant_audit.md)
+- [Inputs and evaluation-original exclusions](inputs.md)
+- [Model comparison](reports/current/mmi_v2_model_comparison.md)
+- [Blinded held-out review](reports/current/mmi_v2_heldout_review.md)
+- [Selected configurations per axis](methodology/README.md): [Meaning](methodology/meaning.md), [Modulation](methodology/modulation.md), [Illocution](methodology/illocution.md)
+- [Full-corpus generation plan](plans/full_corpus_mmi_v2_plan.md)
 
-## Methodology by dimension
+## Historical archive
 
-- [Meaning](methodology/meaning_degradation.md)
-- [Fluency](methodology/fluency_degradation.md)
-- [Omission](methodology/omission_degradation.md)
-- [Synonymy](methodology/synonymy_degradation.md)
-- [Modulation](methodology/modulation_degradation.md)
-- [Illocution](methodology/illocution_degradation.md)
-- [Explanation](methodology/explanation_degradation.md)
+- [v1 pilot reports](reports/archive/)
+- [MMI v2 experiment plan](plans/archive/meaning_mod_illoc_v2_plan.md)
+- [Historical seven-axis overview](overview.md)
 
-Each methodology page contains the selection rule, visual workflow, field definitions, implementation links, exact pilot prompt, evaluation, and next improvement.
+- [v1 methodology pages (all seven axes)](methodology/archive/)
+
+FLUENCY, OMIT, SYN and EXPL have not been redesigned yet; their v1 methodology is in the archive.
