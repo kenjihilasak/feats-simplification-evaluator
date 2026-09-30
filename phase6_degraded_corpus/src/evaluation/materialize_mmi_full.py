@@ -50,7 +50,9 @@ def materialize(
             raise ValueError(f"reserved evaluation row reached materializer: {pair_id}")
         original_id = planned["canonical_original_id"]
         if original_id in excluded_originals:
-            raise ValueError(f"audited original reached materializer: {original_id}")
+            # Text-matched audited originals (see expand_audited_exclusions.py) are dropped, not fatal.
+            drops["excluded_audited_original"] += 1
+            continue
         if planned.get("plan_status") != "ready":
             drops[f"plan:{planned.get('plan_status')}"] += 1
             continue
