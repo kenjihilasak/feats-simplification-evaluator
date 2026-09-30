@@ -2,7 +2,8 @@
 
 One model per FEATS axis, trained on the Phase 6 corpora and evaluated on held-out human judgments. Design: [`internal_docs/FEATS_AXIS_MODELS_PLAN.md`](../internal_docs/FEATS_AXIS_MODELS_PLAN.md).
 
-- Current plan: [Phase 7a — axis-model validation](docs/plans/axis_models_validation_v1_plan.md)
+- [Phase 7a — axis-model validation](docs/plans/axis_models_validation_v1_plan.md) ([result](docs/reports/axis_validation_v1.md): MEANING Q1 fails)
+- Current plan: [MEANING recipe v2 — graded meaning loss](docs/plans/meaning_recipe_v2_plan.md)
 - Current report: [axis_validation_v1](docs/reports/axis_validation_v1.md)
 
 ## Reproduce the pre-training gate
