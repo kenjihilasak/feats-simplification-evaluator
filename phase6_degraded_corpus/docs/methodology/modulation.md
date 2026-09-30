@@ -13,6 +13,14 @@
 - **Which pair:** one adjacent sentence pair is chosen by stable hash.
 - **What the model sees:** only the two sentences, **never the Original**. It returns `merged_sentence`, which replaces the pair.
 
+## Workflow
+
+1. Start from a clean Simplified text with more sentences than its Original.
+2. Choose one adjacent Simplified-sentence pair by stable hash.
+3. Send only that pair to Gemma and request one merged sentence.
+4. Replace exactly those two sentences with the returned sentence.
+5. Keep the result only if it reduces the sentence count by one and preserves wording, facts, names, numbers, negation, and fluency.
+
 ## Automatic checks
 
 A candidate is kept only if it passes all of these:

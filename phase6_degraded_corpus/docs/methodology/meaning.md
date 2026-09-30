@@ -19,6 +19,15 @@ The planner picks **one** span in the Simplified text. Each type is balanced wit
 
 After splicing, a/an agreement is fixed.
 
+## Workflow
+
+1. Start from a clean Simplified sentence that passes the input gates.
+2. Detect one factual cue shared by the Original and Simplified text.
+3. Select its corruption type and target span.
+4. Apply a deterministic corruption for numbers, dates, and negation, or ask Qwen for one span replacement for the other types.
+5. Insert the replacement without rewriting the rest of the Simplified text.
+6. Keep the result only if it is a single fluent edit that contradicts the Original.
+
 ## Automatic checks
 
 A candidate is kept only if it passes all of these:
