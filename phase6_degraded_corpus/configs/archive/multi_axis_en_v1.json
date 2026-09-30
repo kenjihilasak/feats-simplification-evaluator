@@ -11,5 +11,5 @@
   "excluded_corpora": ["ASSET", "AssetAnn", "Human-Likert", "SimpEval-2022", "Simplicity-DA"],
   "reserved_original_ids_files": [],
   "original_token_range": [8, 45],
-  "output_dir": "phase6_degraded_corpus/runs/multi_axis_en_v1/selection"
+  "output_dir": "phase6_degraded_corpus/runs/archive/multi_axis_en_v1/selection"
 }

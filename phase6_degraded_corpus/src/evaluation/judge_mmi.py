@@ -79,7 +79,7 @@ def main() -> None:
     parser.add_argument("--mode", choices=("calibrate", "judge"), required=True)
     parser.add_argument("--judge-config-id", required=True, help="config id in the generation config used as judge")
     parser.add_argument("--generation-config", type=Path, required=True)
-    parser.add_argument("--pilot-dir", type=Path, default=Path("phase6_degraded_corpus/runs/meaning_en_pilot_v1"))
+    parser.add_argument("--pilot-dir", type=Path, default=Path("phase6_degraded_corpus/runs/archive/meaning_en_pilot_v1"))
     parser.add_argument("--scored", type=Path, nargs="*", default=[])
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()

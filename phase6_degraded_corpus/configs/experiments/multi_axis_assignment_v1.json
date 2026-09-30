@@ -1,9 +1,0 @@
-{
-  "schema": "feats-phase6-multi-axis-assignment-config-v1",
-  "experiment_id": "multi_axis_en_v1",
-  "seed": 20260925,
-  "input_file": "phase6_degraded_corpus/runs/multi_axis_en_v1/selection/candidate_inventory.jsonl",
-  "output_dir": "phase6_degraded_corpus/runs/multi_axis_en_v1/assignment",
-  "pilot_size_per_axis": 50,
-  "frozen_pilot_axes": ["MEANING"]
-}

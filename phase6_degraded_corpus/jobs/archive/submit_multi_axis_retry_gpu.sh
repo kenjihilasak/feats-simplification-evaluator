@@ -17,7 +17,7 @@ MODEL_REVISION=a09a35458c702b33eeacc393d103063234e8bc28
 TOKENIZER_REVISION=4d795bc6b8ae8a1f2f447d2e83a57a4f8ebd711d
 MODEL_PATH=${PROJECT_ROOT}/cache/huggingface/models--Qwen--Qwen2.5-7B-Instruct/snapshots/${MODEL_REVISION}
 TOKENIZER_PATH=${PROJECT_ROOT}/cache/huggingface/models--hannah-khallaf--e2r-strategy-qwen2.5-7b-pairwise-qlora/snapshots/${TOKENIZER_REVISION}
-RUN_DIR=${PROJECT_ROOT}/phase6_degraded_corpus/runs/multi_axis_en_v1
+RUN_DIR=${PROJECT_ROOT}/phase6_degraded_corpus/runs/archive/multi_axis_en_v1
 
 export PYTHONUNBUFFERED=1
 export TOKENIZERS_PARALLELISM=false

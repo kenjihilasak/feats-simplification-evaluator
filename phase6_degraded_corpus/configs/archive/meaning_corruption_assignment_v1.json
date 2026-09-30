@@ -2,8 +2,8 @@
   "schema": "feats-phase6-corruption-assignment-config-v1",
   "experiment_id": "meaning_en_pilot_v1",
   "seed": 20260918,
-  "input_file": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/selection/accepted_50.jsonl",
-  "output_dir": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/degradation",
+  "input_file": "phase6_degraded_corpus/runs/archive/meaning_en_pilot_v1/selection/accepted_50.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/archive/meaning_en_pilot_v1/degradation",
   "target_axis": "meaning",
   "target_score": 0.0,
   "corruption_types": [

@@ -12,7 +12,7 @@
   "phase2b_variant_id": "2026-09-02_target_simple_v1",
   "human_judgments_file": "phase5_external_metrics/inputs/phase4a_decisions_en_v2/human_judgments.jsonl",
   "strategy_predictions_file": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/gemma3_12b_pairwise_qlora/predictions/en/feats_consolidated.jsonl",
-  "output_dir": "phase6_degraded_corpus/runs/meaning_en_pilot_v1/selection",
+  "output_dir": "phase6_degraded_corpus/runs/archive/meaning_en_pilot_v1/selection",
   "allowed_corpora": [
     "Wikipedia-Vikidia",
     "WikiAutoEN"
