@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
-from phase6_degraded_corpus.src.planning.plan_mmi_operations import splice
+from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles, splice
 
 PROMPT_FILES = {"MEANING": "meaning_span_v2.json", "MOD": "mod_merge_v2.json", "ILLOC": "illoc_inject_v2.json"}
 
@@ -81,7 +81,7 @@ def degraded_from(row: dict, parsed: dict | None) -> str | None:
     axis = row["target_axis"]
     if axis == "MEANING":
         span = row["target_span"]
-        return splice(row["clean_simplification"], span["start"], span["end"], parsed["replacement"].strip())
+        return fix_articles(splice(row["clean_simplification"], span["start"], span["end"], parsed["replacement"].strip()))
     if axis == "MOD":
         i, sentences = row["merge_index"], row["sentences"]
         return " ".join(sentences[:i] + [parsed["merged_sentence"].strip()] + sentences[i + 2 :])

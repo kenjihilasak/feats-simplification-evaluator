@@ -3,7 +3,7 @@ import unittest
 from phase6_degraded_corpus.src.evaluation.analyze_mmi_comparison import mcnemar_exact, wilson
 from phase6_degraded_corpus.src.evaluation.score_mmi_candidates import check_illoc, diff_blocks, tokens
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import (
-    corrupt_date, corrupt_number, meaning_candidates, plan_meaning, splice, split_sentences,
+    fix_articles, negate, corrupt_date, corrupt_number, meaning_candidates, plan_meaning, splice, split_sentences,
 )
 
 
@@ -41,6 +41,23 @@ class PlannerTests(unittest.TestCase):
     def test_splice_deletion_keeps_spacing(self):
         text = "The bridge was never completed."
         self.assertEqual(splice(text, 15, 20, ""), "The bridge was completed.")
+
+
+class NegationRuleTests(unittest.TestCase):
+    def neg(self, text, word):
+        start = text.index(word)
+        return negate(text, {"text": word, "start": start, "end": start + len(word)})
+
+    def test_cases_from_heldout_audit(self):
+        self.assertEqual(self.neg("In 1800 there were Russian settlements.", "were"), "In 1800 there were no Russian settlements.")
+        self.assertEqual(self.neg("He was also a singer.", "was"), "He was also not a singer.")
+        self.assertEqual(self.neg("The flight will leave now.", "will"), "The flight will not leave now.")
+        self.assertEqual(self.neg("He has two sons.", "has"), "He does not have two sons.")
+        self.assertEqual(self.neg("He has won titles.", "has"), "He has not won titles.")
+        self.assertEqual(self.neg("It was never built.", "never"), "It was built.")
+
+    def test_articles(self):
+        self.assertEqual(fix_articles("a American and an player, an hour, a university"), "an American and a player, an hour, a university")
 
 
 class CheckTests(unittest.TestCase):
