@@ -1,0 +1,24 @@
+{
+  "schema": "feats-phase7-experiment-v1",
+  "experiment_id": "axis_validation_v1",
+  "language": "en",
+  "synthetic_inputs": [
+    "phase6_degraded_corpus/runs/mmi_en_v2_full/corpus/train.jsonl",
+    "phase6_degraded_corpus/runs/mmi_en_v2_full/corpus/validation.jsonl"
+  ],
+  "evaluation_inputs": {
+    "simplicity_da": "phase6_degraded_corpus/runs/mmi_en_v2/pools/evaluation_sources/simplicity_da/data/simplicity_DA.csv",
+    "human_likert": "phase6_degraded_corpus/runs/mmi_en_v2/pools/evaluation_sources/questeval_human_evaluations/simplification_human_evaluations/questeval_simplification_likert_ratings.csv",
+    "simpeval_2022": "phase6_degraded_corpus/runs/mmi_en_v2/pools/evaluation_sources/lens_heineman/data/simpeval_2022.csv",
+    "heldout_v2_review": "phase6_degraded_corpus/docs/reports/current/mmi_v2_heldout_review.md",
+    "heldout_v2_key": "phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_review_key.json",
+    "heldout_meaning_v21_review": "phase6_degraded_corpus/docs/reports/current/mmi_v21_meaning_heldout_review.md",
+    "heldout_meaning_v21_key": "phase6_degraded_corpus/runs/mmi_en_v2/reports/heldout_meaning_v21_key.json"
+  },
+  "near_duplicate_threshold": 0.8,
+  "axes": ["MEANING", "MOD", "ILLOC"],
+  "models": ["xlm_roberta_large", "deberta_v3_base"],
+  "learning_rates": [1e-5, 2e-5],
+  "seeds": [17, 29, 43],
+  "test_policy": "once_after_synthetic_validation_selection"
+}

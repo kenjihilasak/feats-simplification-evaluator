@@ -1,0 +1,16 @@
+{
+  "schema": "feats-phase7-model-config-v1",
+  "model_name": "xlm-roberta-large",
+  "revision": "c23d21b0620b635a76227c604d44e43a9f0ee389",
+  "local_files_only": true,
+  "max_length": 256,
+  "pair_batch_size": 2,
+  "eval_pair_batch_size": 8,
+  "gradient_accumulation_steps": 8,
+  "gradient_checkpointing": true,
+  "epochs": 3,
+  "weight_decay": 0.01,
+  "margin": 0.5,
+  "pairwise_weight": 1.0,
+  "max_grad_norm": 1.0
+}
