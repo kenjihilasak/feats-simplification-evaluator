@@ -28,15 +28,22 @@ def read_selected_ids(
     count: int,
     shard_index: int | None = None,
     num_shards: int | None = None,
+    where_equals: dict[str, Any] | None = None,
 ) -> list[str]:
     ids: list[str] = []
     with path.open(encoding="utf-8") as handle:
-        for index, line in enumerate(handle):
-            if index >= count:
-                break
-            if shard_index is not None and index % int(num_shards) != shard_index:
+        selected_index = 0
+        for line in handle:
+            record = json.loads(line)
+            if where_equals and any(record.get(k) != v for k, v in where_equals.items()):
                 continue
-            ids.append(str(json.loads(line)["id"]))
+            if selected_index >= count:
+                break
+            current_index = selected_index
+            selected_index += 1
+            if shard_index is not None and current_index % int(num_shards) != shard_index:
+                continue
+            ids.append(str(record["id"]))
     return ids
 
 
@@ -86,6 +93,7 @@ def validate(
 
     with manifest_path.open(encoding="utf-8", newline="") as handle:
         manifest = list(csv.DictReader(handle))
+    where_equals = requested["selection"].get("where_equals")
 
     total_expected = 0
     total_observed = 0
@@ -100,6 +108,7 @@ def validate(
             selected,
             shard_index=shard_index,
             num_shards=num_shards,
+            where_equals=where_equals,
         )
         total_expected += len(expected_ids)
         observed_ids: list[str] = []

@@ -64,6 +64,7 @@ def consolidate(
         shard_reports.append(validation)
 
     limit = resolved.selection.get("limit_per_file")
+    where_equals = resolved.selection.get("where_equals")
     output_rows = []
     total_pairs = 0
     for manifest_row in manifest:
@@ -91,11 +92,15 @@ def consolidate(
             output_handle = stack.enter_context(
                 temporary.open("w", encoding="utf-8")
             )
-            for index, input_line in enumerate(input_handle):
-                if limit is not None and index >= int(limit):
-                    break
+            selected_index = 0
+            for input_line in input_handle:
                 input_record = json.loads(input_line)
-                shard_index = index % num_shards
+                if where_equals and any(input_record.get(k) != v for k, v in where_equals.items()):
+                    continue
+                if limit is not None and selected_index >= int(limit):
+                    break
+                shard_index = selected_index % num_shards
+                selected_index += 1
                 prediction_line = shard_handles[shard_index].readline()
                 if not prediction_line:
                     raise ValueError(

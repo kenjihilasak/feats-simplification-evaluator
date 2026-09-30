@@ -84,6 +84,22 @@ python phase3a_strategy_detection/src/package_full_release.py \
 The stable v1 sidecar schema identifiers retain their existing `feats-phase3-*`
 names for compatibility; the repository stage and folder are Phase 3a.
 
+## Active text-repaired predictions
+
+The active Phase 3a result is
+`2026-09-30_four_models_textrepair_effective_v1`. It contains 854,486
+predictions per model: v1 predictions for unrepaired pairs and fresh predictions
+for all 105,559 repaired pairs. Each prediction records `prediction_source` as
+`v1` or `textrepair_delta`. The repaired `original` and `simple` fields come from
+`phase2b_consolidation/runs/2026-09-29_base_textrepair_v1/`.
+
+A deterministic, language-stratified control of 1,000 unrepaired pairs passed
+the required 99.5% label-set agreement for every model (XLM-R 99.5%, E5
+99.7%, Qwen 100%, Gemma 100%). All four effective prediction sets validate at
+exactly 854,486 unique canonical IDs. See
+`runs/2026-09-30_four_models_textrepair_delta_v1/reports/label_change_report.md`
+for strategy and candidate changes.
+
 ## Full-run analysis
 
 The full analysis joins each model's sidecars to Phase 2b provenance and
@@ -146,6 +162,7 @@ individual models may predict additional strategies.
 | `predicted_labels` | Full names meeting their thresholds. |
 | `strategy_count` | Number of predicted strategies. |
 | `diagnostics` | Model-specific token or truncation information. |
+| `prediction_source` | Effective-run source: `v1` or `textrepair_delta`. |
 
 Texts and corpus metadata are not duplicated; join predictions to Phase 2b by
 `canonical_pair_id`.

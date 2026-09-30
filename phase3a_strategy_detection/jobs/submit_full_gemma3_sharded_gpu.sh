@@ -1,0 +1,45 @@
+#!/bin/bash
+#SBATCH --job-name=feats_p3a_gemma_full
+#SBATCH --output=/scratch/pjbd103/feats-simplification-evaluator/phase3a_strategy_detection/logs/full_gemma_%A_%a.out
+#SBATCH --error=/scratch/pjbd103/feats-simplification-evaluator/phase3a_strategy_detection/logs/full_gemma_%A_%a.err
+#SBATCH --time=06:00:00
+#SBATCH --nodes=1
+#SBATCH --partition=gpu
+#SBATCH --exclude=gpu013
+#SBATCH --gres=gpu:1
+#SBATCH --mem=96G
+#SBATCH --cpus-per-task=8
+#SBATCH --array=0-127%16
+
+set -euo pipefail
+
+PROJECT_ROOT=/scratch/pjbd103/feats-simplification-evaluator
+PYTHON_BIN=${PROJECT_ROOT}/.venv-phase3/bin/python
+CONFIG=phase3a_strategy_detection/configs/experiments/gemma3_phase2b_full_v1.json
+MODEL_ALIAS=gemma3_12b_pairwise_qlora
+NUM_SHARDS=128
+SHARD_INDEX=${SLURM_ARRAY_TASK_ID}
+
+if [[ ! -x "${PYTHON_BIN}" ]]; then
+  echo "Missing ${PYTHON_BIN}. Run setup_environment.sh first." >&2
+  exit 1
+fi
+
+export PYTHONUNBUFFERED=1
+export TOKENIZERS_PARALLELISM=false
+export HF_HOME=${PROJECT_ROOT}/cache/huggingface
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+cd "${PROJECT_ROOT}"
+nvidia-smi
+"${PYTHON_BIN}" phase3a_strategy_detection/src/run_strategy_detection.py \
+  --config "${CONFIG}" \
+  --model-alias "${MODEL_ALIAS}" \
+  --shard-index "${SHARD_INDEX}" \
+  --num-shards "${NUM_SHARDS}" \
+  --resume
+"${PYTHON_BIN}" phase3a_strategy_detection/src/validate_run.py \
+  --config "${CONFIG}" \
+  --model-alias "${MODEL_ALIAS}" \
+  --shard-index "${SHARD_INDEX}" \
+  --num-shards "${NUM_SHARDS}"

@@ -16,7 +16,7 @@ PROJECT_ROOT=/scratch/pjbd103/feats-simplification-evaluator
 PYTHON_BIN=${PROJECT_ROOT}/.venv-phase3/bin/python
 CONFIG=${1:-phase3a_strategy_detection/configs/experiments/three_models_phase2b_full_v1.json}
 MODEL_ALIAS=qwen2p5_7b_pairwise_qlora
-NUM_SHARDS=64
+NUM_SHARDS=${NUM_SHARDS:-64}
 SHARD_INDEX=${SLURM_ARRAY_TASK_ID}
 
 if [[ ! -x "${PYTHON_BIN}" ]]; then

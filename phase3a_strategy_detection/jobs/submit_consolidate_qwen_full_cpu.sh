@@ -14,7 +14,7 @@ PROJECT_ROOT=/scratch/pjbd103/feats-simplification-evaluator
 PYTHON_BIN=${PROJECT_ROOT}/.venv-phase3/bin/python
 CONFIG=${1:-phase3a_strategy_detection/configs/experiments/three_models_phase2b_full_v1.json}
 MODEL_ALIAS=qwen2p5_7b_pairwise_qlora
-NUM_SHARDS=64
+NUM_SHARDS=${NUM_SHARDS:-64}
 
 if [[ ! -x "${PYTHON_BIN}" ]]; then
   echo "Missing ${PYTHON_BIN}. Run setup_environment.sh first." >&2

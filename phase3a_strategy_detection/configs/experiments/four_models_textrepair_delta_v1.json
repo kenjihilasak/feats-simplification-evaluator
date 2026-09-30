@@ -1,0 +1,35 @@
+{
+  "schema": "feats-phase3-experiment-v2",
+  "experiment_id": "2026-09-30_four_models_textrepair_delta_v1",
+  "input_schema": "feats-phase2b-consolidated",
+  "input_root": "phase2b_consolidation/runs/2026-09-29_base_textrepair_v1/data",
+  "expected_pairs": 105559,
+  "runs_root": "phase3a_strategy_detection/runs",
+  "cache_root": "cache/huggingface",
+  "models": {
+    "xlmr_large_focal": "phase3a_strategy_detection/configs/models/xlmr_large_focal.json",
+    "multilingual_e5_large_bce": "phase3a_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+    "qwen2p5_7b_pairwise_qlora": "phase3a_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json",
+    "gemma3_12b_pairwise_qlora": "phase3a_strategy_detection/configs/models/gemma3_12b_pairwise_qlora.json"
+  },
+  "selection": {
+    "files": [
+      "ar/feats_consolidated.jsonl",
+      "ca/feats_consolidated.jsonl",
+      "de/feats_consolidated.jsonl",
+      "en/feats_consolidated.jsonl",
+      "es/feats_consolidated.jsonl",
+      "fr/feats_consolidated.jsonl",
+      "it/feats_consolidated.jsonl",
+      "ja/feats_consolidated.jsonl",
+      "pt-BR/feats_consolidated.jsonl",
+      "ru/feats_consolidated.jsonl",
+      "sl/feats_consolidated.jsonl",
+      "ur/feats_consolidated.jsonl"
+    ],
+    "limit_per_file": null,
+    "where_equals": {
+      "text_repaired": true
+    }
+  }
+}

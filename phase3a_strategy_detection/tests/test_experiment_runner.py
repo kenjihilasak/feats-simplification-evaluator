@@ -243,3 +243,18 @@ def test_shards_consolidate_in_canonical_order(tmp_path, monkeypatch):
     )
     outputs = [json.loads(line) for line in output_path.read_text().splitlines()]
     assert [row["id"] for row in outputs] == [record["id"] for record in records]
+
+
+def test_where_equals_filters_before_limit_and_sharding(tmp_path):
+    path = tmp_path / "rows.jsonl"
+    rows = [
+        {"id": f"p{i}", "language": "en", "original": "o", "simple": "s",
+         "text_repaired": i in {1, 2, 4, 5}}
+        for i in range(6)
+    ]
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+    selected = list(run_strategy_detection.read_jsonl(
+        path, limit=3, shard_index=1, num_shards=2,
+        where_equals={"text_repaired": True},
+    ))
+    assert [row["id"] for row in selected] == ["p2"]

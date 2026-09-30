@@ -55,13 +55,11 @@ def read_jsonl(
     require_canonical: bool = False,
     shard_index: int | None = None,
     num_shards: int | None = None,
+    where_equals: dict[str, Any] | None = None,
 ) -> Iterable[dict[str, Any]]:
     with path.open(encoding="utf-8") as handle:
+        selected_index = 0
         for index, line in enumerate(handle):
-            if limit is not None and index >= limit:
-                break
-            if shard_index is not None and index % int(num_shards) != shard_index:
-                continue
             try:
                 record = json.loads(line)
             except json.JSONDecodeError as error:
@@ -79,6 +77,14 @@ def read_jsonl(
                     raise ValueError(
                         f"{path}:{index + 1} does not use canonical Phase 2b IDs"
                     )
+            if where_equals and any(record.get(k) != v for k, v in where_equals.items()):
+                continue
+            if limit is not None and selected_index >= limit:
+                break
+            current_index = selected_index
+            selected_index += 1
+            if shard_index is not None and current_index % int(num_shards) != shard_index:
+                continue
             yield record
 
 
@@ -178,6 +184,7 @@ def build_manifest(
     relative_files: list[str],
     limit_per_file: int | None,
     manifest_path: Path,
+    where_equals: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     if manifest_path.is_file():
         with manifest_path.open(encoding="utf-8", newline="") as handle:
@@ -194,7 +201,8 @@ def build_manifest(
         if not input_path.is_file():
             raise FileNotFoundError(f"Phase 3a input does not exist: {input_path}")
         total = line_count(input_path)
-        selected = total if limit_per_file is None else min(total, limit_per_file)
+        matching = sum(1 for _ in read_jsonl(input_path, where_equals=where_equals)) if where_equals else total
+        selected = matching if limit_per_file is None else min(matching, limit_per_file)
         relative_path = Path(relative)
         output_relative = Path("predictions") / relative_path
         rows.append(
@@ -203,6 +211,7 @@ def build_manifest(
                 "output_file": output_relative.as_posix(),
                 "language": relative_path.parent.as_posix(),
                 "total_pairs": total,
+                "matching_pairs": matching,
                 "selected_pairs": selected,
                 "input_sha256": sha256(input_path),
             }
@@ -254,9 +263,12 @@ def run(
     relative_files = [str(value) for value in selection["files"]]
     if not relative_files:
         raise ValueError("selection.files cannot be empty.")
+    where_equals = selection.get("where_equals")
+    if where_equals is not None and (not isinstance(where_equals, dict) or not where_equals):
+        raise ValueError("selection.where_equals must be a non-empty object.")
 
     manifest = build_manifest(
-        input_root, relative_files, limit, resolved.manifest_path
+        input_root, relative_files, limit, resolved.manifest_path, where_equals
     )
     expected_pairs = config.get("expected_pairs")
     selected_pairs = sum(int(row["selected_pairs"]) for row in manifest)
@@ -373,6 +385,7 @@ def run(
                     require_canonical=canonical_input,
                     shard_index=shard_index,
                     num_shards=num_shards,
+                    where_equals=where_equals,
                 )
                 for batch in batches(records, backend.batch_size):
                     predictions = backend.predict_batch(

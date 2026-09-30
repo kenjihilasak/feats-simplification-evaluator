@@ -38,12 +38,12 @@ Phase 6 needs clean positives. `target_simple` applies the stricter Phase 2a fil
 
 | Consumer | Phase 3a input | Role |
 |---|---|---|
-| `mmi_en_v2` (MEANING, MOD, ILLOC) | the text-repaired Phase 3a run once it is available (§3); until then, `2026-08-31_single_strategy_gemma_anchored_strict_v1` | **Metadata only** (`source_strategy`, may be `null`). None of the MEANING/MOD/ILLOC pools or checks depend on it; MOD pools are defined by sentence-split evidence from the repaired text. |
+| `mmi_en_v2` (MEANING, MOD, ILLOC) | `2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1` | **Metadata only** (`source_strategy`, may be `null`). None of the MEANING/MOD/ILLOC pools or checks depend on it; MOD pools are defined by sentence-split evidence from the repaired text. |
 | Later plans for OMIT, SYN, EXPL, FLUENCY | **must** use the text-repaired Phase 3a candidate set | Selection gate: these axes require a single detected strategy. |
 
 Phase 3a v1 labels were predicted on glued text. For about 21k English pairs, "two sentences" looked like one, which mainly affects `MOD` and `COMP`. That is why the axes that are gated on strategy wait for the re-run, while `mmi_en_v2` does not.
 
-`mmi_en_v2` selection is cheap and deterministic. When the re-run lands, re-run only its selection step, which refreshes the `source_strategy` metadata. Pools and dev sets stay identical because they do not depend on Phase 3a.
+`mmi_en_v2` selection is cheap and deterministic. After adopting the re-run, re-run only its selection step to refresh the `source_strategy` metadata. Pools and dev sets stay identical because they do not depend on Phase 3a.
 
 ## 3. Phase 3a re-run status
 
@@ -51,11 +51,11 @@ Plan: [`phase3a_strategy_detection/docs/textrepair_rerun_plan.md`](../../phase3a
 
 | Item | Path | Status |
 |---|---|---|
-| Predictions (delta re-run on repaired rows) | `phase3a_strategy_detection/runs/2026-09-30_four_models_textrepair_delta_v1/` | pending |
-| Effective predictions (v1 + delta) | `phase3a_strategy_detection/runs/2026-09-30_four_models_textrepair_effective_v1/` | pending |
-| Candidate set | `phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/` | pending |
+| Predictions (delta re-run on 105,559 repaired rows) | `phase3a_strategy_detection/runs/2026-09-30_four_models_textrepair_delta_v1/` | validated (4 models) |
+| Effective predictions (v1 + delta) | `phase3a_strategy_detection/runs/2026-09-30_four_models_textrepair_effective_v1/` | validated (854,486/model) |
+| Candidate set | `phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/` | validated (168,382) |
 
-Update this table when each item is validated.
+The 1,000-row reproducibility control passed for all four models; see the control report in the Phase 3a run.
 
 ## 4. Frozen historical inputs (do not regenerate)
 

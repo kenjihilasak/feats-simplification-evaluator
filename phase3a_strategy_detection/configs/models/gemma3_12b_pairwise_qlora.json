@@ -1,0 +1,18 @@
+{
+  "schema": "feats-phase3-model-v1",
+  "backend": "gemma_pairwise",
+  "alias": "gemma3_12b_pairwise_qlora",
+  "model_id": "hannah-khallaf/e2r-strategy-gemma-3-12b-pairwise-qlora",
+  "revision": "e1386adab6b1c07b350c917b7b3f96f9a499395f",
+  "base_model_id": "google/gemma-3-12b-it",
+  "base_revision": "96b6f1eccf38110c56df3a15bffe176da04bfd80",
+  "batch_size": 1,
+  "progress_every_pairs": 50,
+  "verbose_predictions": false,
+  "quantization": {
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "compute_dtype": "bfloat16",
+    "double_quant": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "feats-phase3a-gemma-anchored-candidate-config-v1",
+  "candidate_id": "2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1",
+  "source_experiment_config": "phase3a_strategy_detection/configs/experiments/four_models_textrepair_effective_v1.json",
+  "anchor_model": "gemma3_12b_pairwise_qlora",
+  "confirmation_models": [
+    "multilingual_e5_large_bce",
+    "qwen2p5_7b_pairwise_qlora",
+    "xlmr_large_focal"
+  ],
+  "selection": {
+    "anchor_strategy_count": 1,
+    "confirmation_mode": "exact_singleton",
+    "minimum_confirmation_models": 1
+  },
+  "expected_candidates": 168382,
+  "output_root": "phase3a_strategy_detection/gold_candidates"
+}
