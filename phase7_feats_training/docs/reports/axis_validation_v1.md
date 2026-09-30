@@ -1,64 +1,69 @@
-# Axis validation v1 — stopped before training
+# Axis validation v1: MEANING result
 
-**Experiment:** `axis_validation_v1`
-**Date:** 30 September 2026
-**Status:** **STOP — pre-training leakage gate failed**
+**Experiment:** `axis_validation_v1` · **Date:** 30 September 2026
+**Status:** **STOP after Q1 (plan §9.4).** Q1 fails its pre-registered criterion. MOD and ILLOC were not trained.
 
 ## Decision
 
-No baseline was scored and no model was trained or evaluated. The plan requires the pre-training leakage check to fail on any exact or near-duplicate match and says to stop at every STOP point. The audit found one exact match and four further near-duplicate matches between the Phase 6 full synthetic corpus and the human-audited heldout reviews.
+The MEANING model trained on the Phase 6 synthetic corpus **tracks human meaning ratings well** (Spearman 0.64 on Simplicity-DA, 0.50 on Human-Likert). It **does not improve on**, and on Human-Likert is significantly **worse than**, the NLI checker that was used to build its own training data. Q1 therefore fails (non-inferiority margin −0.05), and Q2 is negative. The synthetic corpus, as built, teaches the model roughly *what the NLI checker already knows*.
 
-Consequently Q1–Q3 are **not evaluated**. It would be invalid to answer them using a model trained on the current corpus.
+## Setup (as pre-registered, with the §1b amendments)
 
-## Pre-training audit
+- **Training data:** 18,533 MMI pairs after the text-based exclusion of audited originals. The leakage gate passed: 0 exact and 0 near-duplicate matches with the 664 evaluation originals.
+- **Grid:** 2 backbones × 2 learning rates × 3 seeds, with BCE + margin-ranking loss.
+- **Selection:** on synthetic validation only. Chosen configuration: `deberta_v3_base / lr 2e-5`, mean validation pairwise accuracy 0.9995.
+- **Evaluation:** test sets read once; predictions averaged over the 3 seeds. Spearman with 95% bootstrap CIs grouped by original (10,000 repetitions); paired bootstrap for differences.
+- **Deviations from the plan:**
+  - DeBERTa was trained without gradient checkpointing (a reentrant-checkpoint crash);
+  - bf16 was used instead of fp16;
+  - the conflicting review H026 was excluded.
 
-The contract conversion examined 37,076 rows (18,538 controlled pairs/originals):
+## Q1 and Q2: MEANING vs human meaning ratings
 
-| Check | Result |
-|---|---:|
-| Unit tests | 6/6 passed |
-| Training originals | 18,538 |
-| Evaluation originals | 664 |
-| Exact strong-key matches | 1 |
-| Near duplicates at word Jaccard ≥ 0.8 | 4 |
-| Leakage gate | **FAIL** |
-
-The exact original appears in two MEANING review campaigns (H116 in v2 and H047 in v2.1): “The Firebird (; ) is a ballet and orchestral concert work by the Russian composer Igor Stravinsky.”
-
-The additional matches are:
-
-| Training original (abbreviated) | Heldout set | Jaccard |
-|---|---|---:|
-| “However, admirals have always needed additional facilities, including a meeting room…” | v2 | 0.968 |
-| “In ancient times, the sea was the birthplace of two ancient civilizations…” | MEANING v2.1 | 0.824 |
-| “It is normally abbreviated with the dollar sign… ‘BZ$’…” | v2 | 0.889 |
-| “The Democratic Party is one of the two major contemporary political parties…” | v2 | 0.895 |
-
-The full machine-readable evidence is in the ignored run artifact `phase7_feats_training/runs/axis_validation_v1/data/leakage_check.json`.
-
-One independent source-quality issue was found: MEANING v2.1 case H026 has both `Valid` and `Invalid` checked. The loader records it as `Conflicting` and excludes it from human-valid/Unsure scoring rather than guessing the intended label. Phase 6 inputs were not modified.
-
-## Plan evaluation
-
-The plan is strong: it pre-registers construct-matched criteria, separates synthetic selection from one-time human testing, and uses grouped/paired bootstrap inference. The paired objective and original-level split fit the controlled contrasts.
-
-Four issues need correction before execution resumes:
-
-1. The claimed heldout exclusion is false for the materialized `mmi_en_v2_full` corpus. Rebuild it after excluding the union of all audited canonical originals and all strong-key/Jaccard matches, then rerun this unchanged gate.
-2. Only `xlm-roberta-large` was locally cached. DeBERTa-v3-base, the NLI checker, and CoLA must be staged at their pinned revisions before offline jobs run.
-3. LENS-SALSA and REFEREE are named without a frozen adapter from these evaluation schemas to Phase 5 inputs, including treatment of unavailable references. Freeze that adapter before training.
-4. “Not significantly worse” needs a pre-registered non-inferiority margin. A paired CI containing zero does not establish non-inferiority.
-
-## Q1–Q3
-
-| Question | Result | Reason |
+| Scorer | Simplicity-DA ρ [95% CI] (n = 600) | Human-Likert ρ [95% CI] (n = 277) |
 |---|---|---|
-| Q1: MEANING vs human ratings | Not evaluated | Pre-training leakage STOP |
-| Q2: MEANING vs NLI | Not evaluated | Pre-training leakage STOP |
-| Q3: MOD/ILLOC heldout ranking | Not evaluated | Q1/training not reached |
+| **MEANING model** | **0.635** [0.586, 0.680] | **0.502** [0.411, 0.580] |
+| NLI bidirectional entailment | 0.650 [0.601, 0.696] | 0.629 [0.543, 0.704] |
+| LENS-SALSA (reference-free) | 0.569 [0.506, 0.629] | 0.624 [0.528, 0.702] |
+| CoLA acceptability | 0.540 [0.480, 0.593] | 0.541 [0.444, 0.629] |
+| REFEREE | 0.421 [0.344, 0.493] | 0.407 [0.285, 0.525] |
+| Length ratio | 0.359 [0.284, 0.427] | 0.266 [0.154, 0.380] |
 
-MOD and ILLOC still have no construct-matched human rating data; after repair, their human-audited degradation ranking remains the only evidence available here.
+| Criterion | Simplicity-DA | Human-Likert |
+|---|---|---|
+| Model ρ CI excludes 0 | ✅ | ✅ |
+| Non-inferior to the strongest baseline (NLI): lower CI bound of Δρ > −0.05 | ❌ Δ = −0.015 [−0.071, +0.043] | ❌ Δ = −0.127 [−0.229, −0.029] |
+| **Q1** | **fail** (narrowly) | **fail** |
+| Q2: model − NLI | tie | NLI significantly better |
+
+**Context (not a criterion):**
+- **Simplicity-DA, system level:** the model's Pearson is only **0.02**, against 0.60 for NLI and 0.88–0.89 for LENS-SALSA and REFEREE. The model ranks sentences reasonably but does not separate systems.
+- **SimpEval-2022 (overall quality):** the model's ρ is −0.21, against 0.43 for REFEREE. This is expected to differ (overall ≠ meaning), but the negative sign is a warning.
+
+## Human-audited heldout degradations (MEANING)
+
+The model ranks the clean simplification above the human-validated degradation in **103/103 pairs (100%)**, against 97% for NLI, 68% for acceptability and 7% for the length ratio. It detects the controlled contradictions perfectly, which is exactly what it was trained on.
+
+## Why it fails: diagnosis
+
+1. **The training task is saturated.** Synthetic validation pairwise accuracy is 99.6–100% for every configuration, so model selection had no signal.
+2. **The training contrasts are the NLI's own decisions.** Every MEANING degradation was *selected* by the NLI checker (contradiction ≥ 0.5). The model learns "contradiction vs no contradiction", a subset of what NLI measures. Human meaning ratings also reflect **graded** loss: omitted content, vaguer paraphrases, partial distortions. These never appear as negatives in the corpus.
+3. **Only one kind of positive.** All positives are fluent reference simplifications. The model never sees mediocre system outputs, which dominate Simplicity-DA and Human-Likert; this probably explains the near-zero system-level correlation.
 
 ## Recommendation
 
-Do **not** continue FOSE-axis corpus work or train `axis_validation_v1` yet. Repair and rematerialize Phase 6 using the frozen review originals, resolve or formally exclude the conflicting review, stage every pinned checkpoint, and rerun the pre-training gate. If the rebuilt corpus passes with zero hits, resume at fixed baseline scoring; do not weaken this audit.
+Do **not** scale the same recipe to more axes before changing it. For MEANING, in order of expected value:
+
+1. **Graded negatives:** add meaning-*loss* degradations (deletion of a content clause, generalisation "Warsaw" → "a city", vaguer paraphrases) with intermediate target scores, not only contradictions.
+2. **Harder synthetic validation:** it must not saturate. Use graded negatives and pairs with small edits, so that model selection has signal.
+3. **Use NLI instead of competing with it:** NLI is already a strong meaning baseline. Train a model whose input includes NLI features, or train on NLI-*uncertain* pairs.
+4. **REFEREE-style curriculum** (internal plan): after synthetic pre-training, fine-tune on a small amount of human meaning data. Keep an original-disjoint human test set; Simplicity-DA vs Human-Likert cross-evaluation is possible.
+
+**Implication for FOSE (FLUENCY/OMIT/SYN/EXPL):** building their pools and the human review can continue. **Do not train FOSE models** until the recipe is revised; the same saturation will probably appear there (the FOSE rules even guarantee a length or acceptability signal).
+
+**MOD/ILLOC:** not trained, per the STOP. Their Q3 remains open.
+
+## Artifacts
+
+- **Code:** `src/run_evaluation.py` (selection, prediction, Q1–Q3); training fixes in `src/train_axis_model.py` and `jobs/train_axis_validation_v1_gpu.sh`.
+- **Results:** `runs/axis_validation_v1/evaluation/MEANING/results.json` and the scored items per set (Git-ignored).
