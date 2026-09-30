@@ -14,7 +14,7 @@ Fix these before looking at any test result.
 
 | # | Question | Pass criterion |
 |---|---|---|
-| Q1 | Does the **MEANING** model track human meaning-preservation ratings? | Segment-level Spearman with human meaning ratings is **> 0** with a 95% grouped-bootstrap CI excluding 0, **and** not significantly worse than the strongest simple baseline (§5), on both Simplicity-DA and Human-Likert. |
+| Q1 | Does the **MEANING** model track human meaning-preservation ratings? | Segment-level Spearman with human meaning ratings is **> 0** with a 95% grouped-bootstrap CI excluding 0, **and** **non-inferior** to the strongest simple baseline (§5), on both Simplicity-DA and Human-Likert: the lower bound of the 95% paired-bootstrap CI of (model − baseline) Spearman must be **> −0.05** (pre-registered margin). |
 | Q2 | Does it add anything over the tool used to build its data? | MEANING model vs the NLI baseline (the same checker used to select degradations): the difference in Spearman is reported with a paired bootstrap CI. **Beating** NLI is the strong result; matching it is the weak result. |
 | Q3 | Do MOD and ILLOC models learn their axis rather than a shortcut? | On the human-audited heldout degradations (§4.3), pairwise accuracy (clean > degraded) is ≥ 0.85, **and** it is ≥ 10 points above the best shortcut baseline (length ratio, acceptability). |
 
@@ -22,6 +22,13 @@ Fix these before looking at any test result.
 - Q1 and Q2 positive → build the remaining axes with the same method (the FOSE plan).
 - Q1 negative → **STOP** and report before any more corpus work.
 - MOD and ILLOC have **no human rating data** for their construct (see §4). Q3 is the only evidence possible now; say so explicitly in the report.
+
+## 1b. Amendments after the first leakage STOP (2026-09-30)
+
+1. **Leakage fixed upstream.** The Phase 6 exclusion of audited originals was id-based, so 5 training originals matched heldout items by text. Phase 6 now expands the exclusions by strong key + Jaccard ≥ 0.8 (`phase6_degraded_corpus/src/selection/expand_audited_exclusions.py`, report `runs/mmi_en_v2_full/allocation/audited_text_match_report.json`). The corpus was rematerialized: **18,533 pairs**. The unchanged gate now passes (0 exact, 0 near). The previous corpus is kept in `corpus_pre_text_exclusion/`.
+2. **Conflicting review H026** (MEANING v2.1, both Valid and Invalid ticked) is **excluded** from every human-labelled evaluation, and the report says so. No label is guessed.
+3. **Checkpoints must be staged before any offline job:** `microsoft/deberta-v3-base` (project cache `cache/huggingface/`), the NLI and CoLA checkers (`cache/huggingface/hub/`, revisions in `phase6_degraded_corpus/configs/experiments/mmi_en_v2_pools.json`) and `xlm-roberta-large`. Resolve each to a pinned snapshot path in `configs/models/*.json`. The job fails if a snapshot is missing.
+4. **LENS-SALSA / REFEREE adapter:** both are used **reference-free**, exactly as in Phase 5. Map each evaluation item to the Phase 5 input schema with `original` → source and the rated output → simplification, and no references, even where the evaluation set provides them. Pinned revisions as in Phase 5. Freeze this adapter, with a unit test on 3 items per set, **before** any training.
 
 ## 2. Hard constraints
 
