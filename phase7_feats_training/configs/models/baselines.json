@@ -2,10 +2,12 @@
   "schema": "feats-phase7-baseline-config-v1",
   "nli": {
     "model_name": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
-    "revision": "b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7"
+    "revision": "b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7",
+    "snapshot_path": "cache/huggingface/hub/models--MoritzLaurer--DeBERTa-v3-large-mnli-fever-anli-ling-wanli/snapshots/b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7"
   },
   "acceptability": {
     "model_name": "cointegrated/roberta-large-cola-krishna2020",
-    "revision": "efffc0dbebedfdb84747a32b30ec0c3df15812b1"
+    "revision": "efffc0dbebedfdb84747a32b30ec0c3df15812b1",
+    "snapshot_path": "cache/huggingface/hub/models--cointegrated--roberta-large-cola-krishna2020/snapshots/efffc0dbebedfdb84747a32b30ec0c3df15812b1"
   }
 }

@@ -9,10 +9,17 @@ from pathlib import Path
 from contracts import read_jsonl, write_jsonl
 
 
+def candidate_text(row: dict) -> str:
+    for key in ("candidate", "candidate_simplification", "simple", "degraded"):
+        if key in row:
+            return str(row[key])
+    raise ValueError("Input row has no candidate text")
+
+
 def length_scores(rows: list[dict]) -> list[dict]:
     output = []
     for row in rows:
-        candidate = row.get("candidate", row.get("candidate_simplification", row.get("degraded", "")))
+        candidate = candidate_text(row)
         original_words = max(1, len(row["original"].split()))
         ratio = len(candidate.split()) / original_words
         output.append({**row, "length_ratio": ratio, "inverse_length_ratio": 1.0 / max(ratio, 1e-12)})
@@ -26,12 +33,17 @@ def neural_scores(rows: list[dict], config: dict, nli: bool, cola: bool, batch_s
     output = [dict(row) for row in rows]
     if nli:
         spec = config["nli"]
-        tokenizer = AutoTokenizer.from_pretrained(spec["model_name"], revision=spec["revision"], local_files_only=True)
-        model = AutoModelForSequenceClassification.from_pretrained(spec["model_name"], revision=spec["revision"], local_files_only=True).to(device).eval()
+        snapshot = Path(spec["snapshot_path"])
+        if not snapshot.is_absolute():
+            snapshot = Path(__file__).resolve().parents[2] / snapshot
+        if not snapshot.is_dir():
+            raise FileNotFoundError(f"Pinned NLI snapshot is missing: {snapshot}")
+        tokenizer = AutoTokenizer.from_pretrained(snapshot, local_files_only=True)
+        model = AutoModelForSequenceClassification.from_pretrained(snapshot, local_files_only=True).to(device).eval()
         entailment = int(model.config.label2id["entailment"])
         pairs = []
         for row in rows:
-            candidate = row.get("candidate", row.get("candidate_simplification", row.get("degraded", "")))
+            candidate = candidate_text(row)
             pairs.extend(((row["original"], candidate), (candidate, row["original"])))
         probabilities = []
         with torch.inference_mode():
@@ -46,9 +58,14 @@ def neural_scores(rows: list[dict], config: dict, nli: bool, cola: bool, batch_s
         torch.cuda.empty_cache()
     if cola:
         spec = config["acceptability"]
-        tokenizer = AutoTokenizer.from_pretrained(spec["model_name"], revision=spec["revision"], local_files_only=True)
-        model = AutoModelForSequenceClassification.from_pretrained(spec["model_name"], revision=spec["revision"], local_files_only=True).to(device).eval()
-        texts = [row.get("candidate", row.get("candidate_simplification", row.get("degraded", ""))) for row in rows]
+        snapshot = Path(spec["snapshot_path"])
+        if not snapshot.is_absolute():
+            snapshot = Path(__file__).resolve().parents[2] / snapshot
+        if not snapshot.is_dir():
+            raise FileNotFoundError(f"Pinned acceptability snapshot is missing: {snapshot}")
+        tokenizer = AutoTokenizer.from_pretrained(snapshot, local_files_only=True)
+        model = AutoModelForSequenceClassification.from_pretrained(snapshot, local_files_only=True).to(device).eval()
+        texts = [candidate_text(row) for row in rows]
         probabilities = []
         with torch.inference_mode():
             for start in range(0, len(texts), batch_size):

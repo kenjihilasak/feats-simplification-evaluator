@@ -90,11 +90,14 @@ def train(config_path: Path, dataset_path: Path, output_dir: Path, axis: str,
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     rows = list(read_jsonl(dataset_path))
     train_pairs, validation_pairs = paired(rows, axis, "train"), paired(rows, axis, "validation")
-    tokenizer = AutoTokenizer.from_pretrained(config["model_name"], revision=config["revision"],
-                                               local_files_only=config.get("local_files_only", True))
+    snapshot = Path(config["snapshot_path"])
+    if not snapshot.is_absolute():
+        snapshot = Path(__file__).resolve().parents[2] / snapshot
+    if not snapshot.is_dir():
+        raise FileNotFoundError(f"Pinned model snapshot is missing: {snapshot}")
+    tokenizer = AutoTokenizer.from_pretrained(snapshot, local_files_only=True)
     model = AutoModelForSequenceClassification.from_pretrained(
-        config["model_name"], revision=config["revision"], num_labels=1,
-        local_files_only=config.get("local_files_only", True), ignore_mismatched_sizes=True,
+        snapshot, num_labels=1, local_files_only=True, ignore_mismatched_sizes=True,
     ).to(device)
     if config.get("gradient_checkpointing", False):
         model.gradient_checkpointing_enable()
@@ -106,7 +109,8 @@ def train(config_path: Path, dataset_path: Path, output_dir: Path, axis: str,
                                    collate_fn=lambda rows: collate(rows, tokenizer))
     optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=config["weight_decay"])
     accumulation = int(config["gradient_accumulation_steps"])
-    scaler = torch.amp.GradScaler("cuda", enabled=device.type == "cuda")
+    # bf16 autocast: fp16 overflows on DeBERTa-v3; no loss scaling needed with bf16.
+    scaler = torch.amp.GradScaler("cuda", enabled=False)
     output_dir.mkdir(parents=True, exist_ok=True)
     history, best = [], -1.0
     for epoch in range(1, int(config["epochs"]) + 1):
@@ -116,7 +120,7 @@ def train(config_path: Path, dataset_path: Path, output_dir: Path, axis: str,
         for step, batch in enumerate(train_loader, 1):
             labels = batch.pop("labels").to(device)
             inputs = {key: value.to(device) for key, value in batch.items()}
-            with torch.autocast(device_type=device.type, dtype=torch.float16, enabled=device.type == "cuda"):
+            with torch.autocast(device_type=device.type, dtype=torch.bfloat16, enabled=device.type == "cuda"):
                 logits = model(**inputs).logits.squeeze(-1)
                 bce = F.binary_cross_entropy_with_logits(logits, labels)
                 ranking = F.margin_ranking_loss(logits[0::2], logits[1::2],

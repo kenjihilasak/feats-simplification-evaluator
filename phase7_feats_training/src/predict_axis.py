@@ -18,7 +18,9 @@ def predict(checkpoint: Path, input_path: Path, output_path: Path, batch_size: i
     with torch.inference_mode():
         for start in range(0, len(rows), batch_size):
             batch = rows[start:start + batch_size]
-            candidates = [row.get("candidate", row.get("candidate_simplification")) for row in batch]
+            candidates = [row.get("candidate", row.get("candidate_simplification", row.get("simple"))) for row in batch]
+            if any(candidate is None for candidate in candidates):
+                raise ValueError("Prediction input row has no candidate text")
             encoded = tokenizer([row["original"] for row in batch], candidates, padding=True,
                                 truncation=True, max_length=256, return_tensors="pt")
             logits = model(**{key: value.to(device) for key, value in encoded.items()}).logits.squeeze(-1)

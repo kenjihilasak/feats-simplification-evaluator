@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -35,7 +36,8 @@ def load_human_likert(path: Path) -> list[dict[str, Any]]:
         if len(originals) != 1:
             raise ValueError(f"Inconsistent originals for Human-Likert {sentence_id}/{system}")
         result.append({
-            "evaluation_id": f"human_likert:{sentence_id}:{system}", "dataset": "human_likert",
+            "evaluation_id": f"human_likert:{sentence_id}:{system}:{hashlib.sha256(candidate.encode('utf-8')).hexdigest()[:12]}", "dataset": "human_likert",
+            "aggregation_id": f"human_likert:{sentence_id}:{system}",
             "original_id": f"human_likert:{sentence_id}", "original": next(iter(originals.values())),
             "candidate": candidate, "system": system,
             "human_score": mean(float(row["rating"]) for row in rows), "human_scale": "meaning_likert_mean",

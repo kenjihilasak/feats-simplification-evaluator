@@ -52,3 +52,4 @@ phase6_degraded_corpus/runs/
 phase6_degraded_corpus/logs/
 .venv-phase6-vllm/
 phase7_feats_training/runs/
+phase7_feats_training/logs/

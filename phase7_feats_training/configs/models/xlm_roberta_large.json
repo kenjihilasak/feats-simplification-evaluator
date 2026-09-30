@@ -2,6 +2,7 @@
   "schema": "feats-phase7-model-config-v1",
   "model_name": "xlm-roberta-large",
   "revision": "c23d21b0620b635a76227c604d44e43a9f0ee389",
+  "snapshot_path": "/users/pjbd103/.cache/huggingface/hub/models--xlm-roberta-large/snapshots/c23d21b0620b635a76227c604d44e43a9f0ee389",
   "local_files_only": true,
   "max_length": 256,
   "pair_batch_size": 2,
