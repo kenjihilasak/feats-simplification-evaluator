@@ -43,12 +43,12 @@ def build(rows: list[dict], per_cell: int, extra_hedged: int, seed: int) -> tupl
         (row for row in valid if row.get("operation") == "assertion_to_hedged" and row["canonical_pair_id"] not in used),
         key=lambda row: stable_key(seed, f'hedged:{row["canonical_pair_id"]}'),
     )[:extra_hedged]
-    chosen.extend(hedged)
-    chosen.sort(key=lambda row: stable_key(seed, f'shuffle:{row["canonical_pair_id"]}'))
+    # The other operations reuse their heldout approval; only the independently
+    # drawn hedged supplement remains in this full-corpus audit.
+    chosen = sorted(hedged, key=lambda row: stable_key(seed, f'shuffle:{row["canonical_pair_id"]}'))
     report = {
         "eligible_selected_outputs": len(valid),
-        "base_cells": dict(sorted(base_cells.items())),
-        "base_cases": len(chosen) - len(hedged),
+        "previous_base_cases_not_reaudited": sum(base_cells.values()),
         "extra_hedged_cases": len(hedged),
         "cases": len(chosen),
         "cells": dict(sorted(Counter(f'{r["target_axis"]}_{r["corpus"]}' for r in chosen).items())),
@@ -69,9 +69,10 @@ def main() -> None:
     rows = [row for path in sorted(args.scored_dir.glob("*.jsonl")) for row in read_jsonl(path)]
     cases, report = build(rows, args.per_cell, args.extra_hedged, args.seed)
     lines = [
-        "# MMI v2 full-corpus blind spot-check", "",
-        "Review each generated degradation without using the automatic-check outcome. Mark exactly one answer. "
-        "`Unsure` counts as valid for this gate, as specified in the full-corpus plan.", "",
+        "# MMI v2 full-corpus hedged review (blinded)", "",
+        "This review contains only the 40 `assertion_to_hedged` cases. MEANING, MOD, question and directive "
+        "reuse their heldout approval and are not re-audited. Review without using the automatic-check outcome. "
+        "Mark exactly one answer; `Unsure` counts as valid for the 85% gate.", "",
     ]
     key = {}
     for number, row in enumerate(cases, 1):

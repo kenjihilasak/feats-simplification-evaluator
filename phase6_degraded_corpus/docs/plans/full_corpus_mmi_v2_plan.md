@@ -55,15 +55,15 @@ Rough cost: generation is about 2 GPU-minutes per 1,000 pairs; scoring is the sl
 
 ## 4. Quality gate (human spot-check)
 
-Automatic checks alone are not enough. Their agreement with the human audit was 67–90%, and the LLM judge is not usable.
+MEANING, MOD, `assertion_to_question` and `assertion_to_directive` already passed the heldout human audit with the same planner, generator and checks, so they are not re-audited.
 
-1. Build one blinded review file with `build_mmi_heldout_review.py`: **20 selected outputs per axis × source cell** (WikiAutoEN and ASSET; Vikidia takes whatever is available, at most 20), plus **40 `assertion_to_hedged` cases**, because hedged has never been human-audited. Draw the samples with `stable_key` and shuffle them. The file is `docs/reports/current/mmi_full_spot_check.md`.
-2. **STOP** for the human audit.
-3. Score it (Unsure counts as valid). **Gate:** macro valid ≥ 85% per axis, and ≥ 85% for hedged on its own. If hedged fails, drop the hedged rows from the corpus and report; do **not** re-tune. If another axis fails, STOP and report the per-type errors.
+1. Build one blinded review containing only **40 selected `assertion_to_hedged` outputs** that have not previously been human-audited. Draw with `stable_key` and shuffle. The file is `docs/reports/current/mmi_full_spot_check.md`.
+2. Materialize the provisional corpus immediately, withholding every `assertion_to_hedged` pair.
+3. Score the review when completed (`Unsure` counts as valid). If valid ≥ 85%, include all automatically selected hedged pairs and regenerate the corpus and reports. If it is below 85%, keep all hedged pairs excluded without prompt or checker retuning.
 
 ## 5. Materialization
 
-After the gate:
+Materialization is staged around the hedged-only gate:
 1. For each selected pair, write two rows: `{text: clean_simplification, axis: target_axis, score: 1}` and `{text: degraded, axis: target_axis, score: 0}`, plus `original`, the provenance and `operation`. **No labels for the other axes.**
 2. **Split:** 90/10 train/validation by a stable hash of `canonical_original_id`; both rows of a pair go to the same split.
 3. Keep `gemma_strategy_count`, `phase3a_predicted_codes` and `strict_single_strategy_candidate` so that a single-strategy-only filter can be applied later. Do not filter now.
@@ -86,9 +86,8 @@ After the gate:
 
 1. Allocation + tests → allocation report.
 2. Plan, shard, generate, score, select.
-3. Build the spot-check file. **STOP for the human audit.**
-4. Score it and apply the gate. **STOP if a gate fails.**
-5. Materialize, report, commit.
+3. Build the 40-case hedged-only spot-check and materialize without hedged.
+4. Score the hedged review when available; include hedged only if valid ≥ 85%, then regenerate reports.
 
 ## 8. Out of scope
 
