@@ -9,6 +9,7 @@
 - [Blinded held-out review](reports/current/mmi_v2_heldout_review.md)
 - [Selected configurations per axis](methodology/README.md): [Meaning](methodology/meaning.md), [Modulation](methodology/modulation.md), [Illocution](methodology/illocution.md)
 - [Full-corpus generation plan](plans/full_corpus_mmi_v2_plan.md)
+- [Next: FLUENCY / OMIT / SYN / EXPL plan](plans/fluency_omit_syn_expl_plan.md)
 - [Full-corpus blind spot-check (awaiting human review)](reports/current/mmi_full_spot_check.md)
 - [Full-corpus provisional report](reports/current/mmi_full_corpus_report.md)
 
