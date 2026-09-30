@@ -86,7 +86,7 @@ def parse_review(text: str) -> dict[str, str]:
     decisions = {}
     for block in re.split(r"\n### Case ", text)[1:]:
         case_id = block.split("\n", 1)[0].strip()
-        ticked = re.findall(r"- \[[xX]\] (Valid|Invalid|Unsure)", block)
+        ticked = re.findall(r"^\s*[-*] \[[xX]\] (Valid|Invalid|Unsure)", block, flags=re.M)
         decisions[case_id] = ticked[0] if len(ticked) == 1 else ("MULTIPLE" if ticked else "UNMARKED")
     return decisions
 

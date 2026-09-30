@@ -325,3 +325,35 @@ Split: `dev`. Configs: `C0`, `C1`, `C1_greedy`, `C2`. These are **automatic** re
   Clean: The endometrium is the innermost membrane of the uterus.  
   Degraded: The endometrium possibly is the innermost membrane of the uterus. — failed: acceptable
 
+
+## Heldout human audit results
+
+Cases: 222; unmarked or multiple marks: 0. Unsure counts as not valid.
+
+### ILLOC
+
+| Config | Macro valid | WikiAutoEN (n) | ASSET (n) | Wikipedia-Vikidia (n) | Unsure | Auto–human agreement |
+|---|---|---|---|---|---|---|
+| `C1` | **90%** | 93% (14) | 93% (14) | 83% (12) | 0 | 85% |
+| `C2` | **89%** | 93% (14) | 100% (14) | 75% (12) | 0 | 90% |
+
+Decision: **no automatic winner** — equivalent: apply the cost / local / per-source tie-break (§6.4.3).
+
+### MEANING
+
+| Config | Macro valid | WikiAutoEN (n) | ASSET (n) | Wikipedia-Vikidia (n) | Unsure | Auto–human agreement |
+|---|---|---|---|---|---|---|
+| `C1` | **84%** | 80% (20) | 82% (17) | 88% (17) | 0 | 69% |
+| `C2` | **82%** | 75% (20) | 82% (17) | 88% (17) | 0 | 67% |
+
+Decision: **no automatic winner** — no finalist reaches 85%: revise and repeat (§6.4.1).
+
+### MOD
+
+| Config | Macro valid | WikiAutoEN (n) | ASSET (n) | Wikipedia-Vikidia (n) | Unsure | Auto–human agreement |
+|---|---|---|---|---|---|---|
+| `C1` | **79%** | 85% (20) | 80% (20) | 73% (11) | 5 | 76% |
+| `C2` | **92%** | 95% (20) | 100% (20) | 82% (11) | 1 | 88% |
+
+Decision: **C2** — only eligible finalist (§6.4.2).
+
