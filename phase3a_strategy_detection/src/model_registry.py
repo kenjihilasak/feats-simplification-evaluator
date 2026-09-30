@@ -11,6 +11,7 @@ from strategy_backend import StrategyBackend
 
 BACKENDS = {
     "encoder_multilabel": ("encoder_multilabel", "EncoderMultilabelBackend"),
+    "gemma_pairwise": ("gemma_pairwise", "GemmaPairwiseBackend"),
     "qwen_pairwise": ("qwen_pairwise", "QwenPairwiseBackend"),
 }
 

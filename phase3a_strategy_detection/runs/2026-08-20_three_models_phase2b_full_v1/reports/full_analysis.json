@@ -17,12 +17,40 @@
     "ur": 255
   },
   "models": [
+    "gemma3_12b_pairwise_qlora",
     "multilingual_e5_large_bce",
     "qwen2p5_7b_pairwise_qlora",
     "xlmr_large_focal"
   ],
   "source_counting": "Each canonical pair is counted once per distinct Phase 2b source.",
   "overall_cardinality": [
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "mean_strategy_count": 1.6132072380354974,
+      "median_strategy_count": 2.0,
+      "std_strategy_count": 0.9713290224902952,
+      "zero_strategy_pairs": 83404,
+      "zero_strategy_pct": 9.76072165020843,
+      "single_strategy_pairs": 343634,
+      "single_strategy_pct": 40.21528731892623,
+      "multilabel_pairs": 427448,
+      "multilabel_pct": 50.02399103086534,
+      "strategy_count_0_pairs": 83404,
+      "strategy_count_0_pct": 9.76072165020843,
+      "strategy_count_1_pairs": 343634,
+      "strategy_count_1_pct": 40.21528731892623,
+      "strategy_count_2_pairs": 280846,
+      "strategy_count_2_pct": 32.86724416783891,
+      "strategy_count_3_pairs": 117959,
+      "strategy_count_3_pct": 13.80467321875373,
+      "strategy_count_4_pairs": 24359,
+      "strategy_count_4_pct": 2.8507196138965414,
+      "strategy_count_5_pairs": 3880,
+      "strategy_count_5_pct": 0.45407414515861,
+      "strategy_count_6_pairs": 404,
+      "strategy_count_6_pct": 0.04727988521754599
+    },
     {
       "model_alias": "multilingual_e5_large_bce",
       "pairs": 854486,
@@ -106,6 +134,60 @@
     }
   ],
   "overall_prevalence": [
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "SYN",
+      "strategy_label": "Synonymy",
+      "predicted_pairs": 383397,
+      "predicted_pct": 44.868728100869994,
+      "mean_score": 0.46704357294447446
+    },
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "MOD",
+      "strategy_label": "Modulation",
+      "predicted_pairs": 70670,
+      "predicted_pct": 8.270469030504888,
+      "mean_score": 0.18448889628688997
+    },
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "COMP",
+      "strategy_label": "Compression",
+      "predicted_pairs": 362457,
+      "predicted_pct": 42.41813207003977,
+      "mean_score": 0.1546596590766144
+    },
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "EXPL",
+      "strategy_label": "Explanation",
+      "predicted_pairs": 157171,
+      "predicted_pct": 18.39363079090822,
+      "mean_score": 0.11964883722907324
+    },
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "SYNT",
+      "strategy_label": "Syntactic Change",
+      "predicted_pairs": 51811,
+      "predicted_pct": 6.063411220312562,
+      "mean_score": 0.06400210148322143
+    },
+    {
+      "model_alias": "gemma3_12b_pairwise_qlora",
+      "pairs": 854486,
+      "strategy_code": "OMIT",
+      "strategy_label": "Omission",
+      "predicted_pairs": 352957,
+      "predicted_pct": 41.3063525909143,
+      "mean_score": 0.22152281317199005
+    },
     {
       "model_alias": "multilingual_e5_large_bce",
       "pairs": 854486,
@@ -270,6 +352,36 @@
     }
   ],
   "overall_model_agreement": [
+    {
+      "model_a": "gemma3_12b_pairwise_qlora",
+      "model_b": "multilingual_e5_large_bce",
+      "pairs": 854486,
+      "exact_set_match_pct": 6.874893210655294,
+      "mean_jaccard": 0.3299673526933855,
+      "label_agreement_pct": 61.465742758414606,
+      "mean_abs_strategy_count_difference": 1.3947437406815326,
+      "mean_score_mae": 0.22781074146422278
+    },
+    {
+      "model_a": "gemma3_12b_pairwise_qlora",
+      "model_b": "qwen2p5_7b_pairwise_qlora",
+      "pairs": 854486,
+      "exact_set_match_pct": 30.136362678850208,
+      "mean_jaccard": 0.536418482378227,
+      "label_agreement_pct": 80.23181967482986,
+      "mean_abs_strategy_count_difference": 0.7417979931795254,
+      "mean_score_mae": 0.13169714690791037
+    },
+    {
+      "model_a": "gemma3_12b_pairwise_qlora",
+      "model_b": "xlmr_large_focal",
+      "pairs": 854486,
+      "exact_set_match_pct": 7.261558410553245,
+      "mean_jaccard": 0.20757000894886446,
+      "label_agreement_pct": 58.22016588530025,
+      "mean_abs_strategy_count_difference": 0.9495193601767612,
+      "mean_score_mae": 0.343649533409496
+    },
     {
       "model_a": "multilingual_e5_large_bce",
       "model_b": "qwen2p5_7b_pairwise_qlora",

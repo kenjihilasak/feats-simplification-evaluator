@@ -2,7 +2,8 @@
 set -eu
 
 port=${PORT:-8000}
-database=${PHASE4A_DATABASE:-/data/gold_review.sqlite3}
+database=${PHASE4A_DATABASE:-/data/gemma_anchored_strict_v2.sqlite3}
+campaign=${PHASE4A_CAMPAIGN_ID:-gemma-anchored-strict-v2}
 session_secret=${PHASE4A_SESSION_SECRET:-}
 
 if [ "${#session_secret}" -lt 32 ]; then
@@ -26,6 +27,7 @@ case "${database}" in
 esac
 
 export PHASE4A_DATABASE="${database}"
+export PHASE4A_CAMPAIGN_ID="${campaign}"
 export PHASE4A_COOKIE_SECURE="${PHASE4A_COOKIE_SECURE:-1}"
 mkdir -p "$(dirname "${database}")"
 

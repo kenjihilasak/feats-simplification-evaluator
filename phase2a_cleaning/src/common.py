@@ -58,6 +58,19 @@ def output_path(config: dict, section: str, corpus_file: CorpusFile) -> Path:
     return run_root(config) / section / corpus_file.language / corpus_file.filename
 
 
+def score_path(config: dict, score_type: str, corpus_file: CorpusFile) -> Path:
+    """Resolve scores, optionally reusing them from an earlier versioned run."""
+    score_run_id = config.get("score_source_run_id", config["run_id"])
+    return (
+        project_path(config["runs_root"])
+        / str(score_run_id)
+        / "scores"
+        / score_type
+        / corpus_file.language
+        / corpus_file.filename
+    )
+
+
 def iter_jsonl(path: Path, limit: int | None = None) -> Iterator[dict]:
     with path.open(encoding="utf-8") as handle:
         for index, line in enumerate(handle):

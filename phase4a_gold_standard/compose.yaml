@@ -8,7 +8,8 @@ services:
     env_file:
       - .env
     environment:
-      PHASE4A_DATABASE: /data/gold_review.sqlite3
+      PHASE4A_DATABASE: /data/gemma_anchored_strict_v2.sqlite3
+      PHASE4A_CAMPAIGN_ID: gemma-anchored-strict-v2
       PHASE4A_COOKIE_SECURE: "0"
       PORT: "8000"
     volumes:

@@ -14,13 +14,13 @@ set -euo pipefail
 
 PROJECT_ROOT=/scratch/pjbd103/feats-simplification-evaluator
 PYTHON_BIN=${PROJECT_ROOT}/.venv-phase4a/bin/python
-CONFIG=${1:-phase4a_gold_standard/configs/stanza_ud_syntax_v1.json}
-POOL_ROOT=${PROJECT_ROOT}/phase4a_gold_standard/data/2026-08-27_single_strategy_full_v1
+CONFIG=${1:-phase4a_gold_standard/configs/stanza_ud_syntax_gemma_anchored_strict_v2.json}
+POOL_ROOT=${PROJECT_ROOT}/phase4a_gold_standard/data/2026-08-31_gemma_anchored_strict_v2
 LANGUAGES=(ar ca de en es fr it ja pt-BR ru sl ur)
 LANGUAGE=${LANGUAGES[${SLURM_ARRAY_TASK_ID}]}
 SHARD_BASE=${PROJECT_ROOT}/phase4a_gold_standard/runs/stanza_shards/${LANGUAGE}
-SYNTAX_ROOT=${SHARD_BASE}/2026-08-27_stanza_ud_full_v1
-MATERIALIZED_ROOT=${PROJECT_ROOT}/phase4a_gold_standard/runs/materialized/2026-08-27_stanza_ud_full_v1/${LANGUAGE}
+SYNTAX_ROOT=${SHARD_BASE}/2026-08-31_stanza_ud_gemma_anchored_strict_v2
+MATERIALIZED_ROOT=${PROJECT_ROOT}/phase4a_gold_standard/runs/materialized/2026-08-31_stanza_ud_gemma_anchored_strict_v2/${LANGUAGE}
 
 if [[ ! -x "${PYTHON_BIN}" ]]; then
   echo "Missing ${PYTHON_BIN}; run phase4a_gold_standard/jobs/setup_environment.sh" >&2

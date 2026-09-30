@@ -21,10 +21,15 @@ can later be expanded through the Phase 2b `provenance` field.
 | `xlmr_large_focal` | `hannah-khallaf/e2r-strategy-xlmr-large-focal` | Batched pair encoder, sigmoid, threshold `0.46`. |
 | `multilingual_e5_large_bce` | `hannah-khallaf/e2r-strategy-multilingual-e5-large-bce` | Batched pair encoder with `query: ` on both inputs, threshold `0.23`. |
 | `qwen2p5_7b_pairwise_qlora` | `hannah-khallaf/e2r-strategy-qwen2.5-7b-pairwise-qlora` | Six binary prompts per pair with label-specific thresholds. |
+| `gemma3_12b_pairwise_qlora` | `hannah-khallaf/e2r-strategy-gemma-3-12b-pairwise-qlora` | Six Gemma-formatted binary prompts per pair with label-specific thresholds. |
 
 All revisions, thresholds, preprocessing, and batch settings are pinned under
-`configs/models/`. XLM-R and E5 share `src/encoder_multilabel.py`; Qwen keeps
-its prompt-based backend.
+`configs/models/`. XLM-R and E5 share `src/encoder_multilabel.py`; Qwen and
+Gemma keep separate checkpoint-compatible prompt backends.
+
+The Gemma adapter is public, but its `google/gemma-3-12b-it` base model is
+gated. The Hugging Face account used on the cluster must accept the Gemma terms
+and authenticate before either the smoke or full run can load the base weights.
 
 The fixed output order is:
 
@@ -88,14 +93,19 @@ the complete 0–6 cardinality distribution, per-strategy prevalence and mean
 scores, language/source/corpus breakdowns, and pairwise model agreement.
 
 ```bash
-python phase3a_strategy_detection/src/analyze_full_run.py
+python phase3a_strategy_detection/src/analyze_full_run.py \
+  --config phase3a_strategy_detection/configs/experiments/four_models_phase2b_full_v1.json
+python phase3a_strategy_detection/src/analyze_gemma_anchored_consensus.py \
+  --config phase3a_strategy_detection/configs/experiments/four_models_phase2b_full_v1.json
 ```
 
 The principal answer is rendered in
 [full_analysis.md](runs/2026-08-20_three_models_phase2b_full_v1/reports/full_analysis.md);
 the underlying CSV tables are stored alongside it. These are descriptive output
 statistics rather than accuracy estimates because the full corpus has no
-verified gold strategy labels.
+verified gold strategy labels. The second command compares strict and inclusive
+single-strategy consensus anchored in Gemma; it writes analysis reports only
+and does not extract candidate JSONL data.
 
 ## Single-strategy gold candidates
 

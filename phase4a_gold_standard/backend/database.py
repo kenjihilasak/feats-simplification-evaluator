@@ -488,11 +488,31 @@ class AnnotationDatabase:
         placeholders = ",".join("?" for _ in allowed_languages)
         return f" AND {column} IN ({placeholders})", list(allowed_languages)
 
+    @staticmethod
+    def _task_filter_clause(
+        sources: Sequence[str], agreeing_models: Sequence[str]
+    ) -> tuple[str, list[Any]]:
+        sql = ""
+        params: list[Any] = []
+        if sources:
+            placeholders = ",".join("?" for _ in sources)
+            sql += (
+                " AND EXISTS (SELECT 1 FROM json_each(t.sources_json) src "
+                f"WHERE src.value IN ({placeholders}))"
+            )
+            params.extend(sources)
+        for model in agreeing_models:
+            sql += " AND json_extract(t.model_votes_json, ?) = 'yes'"
+            params.append(f"$.{model}")
+        return sql, params
+
     def claim_next(
         self,
         *,
         reviewer_id: int,
         allowed_languages: Sequence[str] | None,
+        sources: Sequence[str] = (),
+        agreeing_models: Sequence[str] = (),
         request_id: str | None = None,
         remote_addr: str | None = None,
     ) -> dict[str, Any] | None:
@@ -500,6 +520,7 @@ class AnnotationDatabase:
         now = isoformat_utc(now_dt)
         expires = isoformat_utc(now_dt + timedelta(seconds=self.lease_seconds))
         allowed_sql, allowed_params = self._allowed_clause(allowed_languages)
+        filter_sql, filter_params = self._task_filter_clause(sources, agreeing_models)
         language_case = "CASE " + " ".join(
             f"WHEN t.language=? THEN {index}" for index, _ in enumerate(self.language_priority)
         ) + f" ELSE {len(self.language_priority)} END"
@@ -509,15 +530,21 @@ class AnnotationDatabase:
             LEFT JOIN annotations a ON a.task_id=t.task_id
             LEFT JOIN leases l ON l.task_id=t.task_id AND l.expires_at>?
             WHERE t.campaign_id=?
-              AND (a.task_id IS NULL OR (a.reviewer_id=? AND a.state='draft'))
+              AND (a.task_id IS NULL OR (a.reviewer_id=? AND a.state IN ('draft', 'skipped')))
               AND (l.task_id IS NULL OR l.reviewer_id=?)
               {allowed_sql}
-            ORDER BY CASE WHEN a.reviewer_id=? AND a.state='draft' THEN 0 ELSE 1 END,
+              {filter_sql}
+            ORDER BY CASE
+                         WHEN a.reviewer_id=? AND a.state='draft' THEN 0
+                         WHEN a.task_id IS NULL THEN 1
+                         ELSE 2
+                     END,
                      {language_case}, t.language, t.queue_rank, t.task_id
             LIMIT 1
         """
         params: list[Any] = [now, self.campaign_id, reviewer_id, reviewer_id]
         params.extend(allowed_params)
+        params.extend(filter_params)
         params.append(reviewer_id)
         params.extend(self.language_priority)
         with self.transaction(immediate=True) as connection:
@@ -545,6 +572,18 @@ class AnnotationDatabase:
                     "SELECT * FROM annotations WHERE task_id=?", (task_id,)
                 ).fetchone()
                 self._revision(connection, annotation, event="claimed", at=now)
+            elif annotation["state"] == "skipped":
+                version = int(annotation["version"]) + 1
+                connection.execute(
+                    """UPDATE annotations SET state='draft', version=?, verdict=NULL,
+                       corrected_strategy=NULL, skip_reason='', last_activity_at=?,
+                       updated_at=?, submitted_at=NULL WHERE task_id=?""",
+                    (version, now, now, task_id),
+                )
+                annotation = connection.execute(
+                    "SELECT * FROM annotations WHERE task_id=?", (task_id,)
+                ).fetchone()
+                self._revision(connection, annotation, event="deferred_resumed", at=now)
             connection.execute(
                 """INSERT INTO leases(task_id, reviewer_id, acquired_at, renewed_at, expires_at)
                    VALUES(?, ?, ?, ?, ?)
@@ -561,10 +600,15 @@ class AnnotationDatabase:
                 annotation_version=int(annotation["version"]),
                 request_id=request_id,
                 remote_addr=remote_addr,
-                details={"lease_expires_at": expires},
+                details={
+                    "lease_expires_at": expires,
+                    "source_filters": sorted(set(sources)),
+                    "model_filters": sorted(set(agreeing_models)),
+                    "review_mode": "visible_model_votes",
+                },
                 at=now,
             )
-            return self._task_bundle(connection, task_id, include_model_votes=False)
+            return self._task_bundle(connection, task_id, include_model_votes=True)
 
     def get_task(
         self,
@@ -587,7 +631,7 @@ class AnnotationDatabase:
             if role != "admin" and annotation and int(annotation["reviewer_id"]) != user_id:
                 raise PermissionDeniedError("this task belongs to another reviewer")
             return self._task_bundle(
-                connection, task_id, include_model_votes=include_model_votes and role == "admin"
+                connection, task_id, include_model_votes=include_model_votes
             )
 
     def list_mine(
@@ -602,13 +646,31 @@ class AnnotationDatabase:
         with self.connect() as connection:
             rows = connection.execute(
                 f"""SELECT a.task_id, t.language, t.candidate_strategy, a.state, a.version,
-                    a.updated_at, a.verdict
+                    a.updated_at, a.verdict, t.sources_json, t.source_text, t.target_text
                     FROM annotations a JOIN tasks t ON t.task_id=a.task_id
                     WHERE a.reviewer_id=? AND a.state IN ({placeholders})
                     ORDER BY a.updated_at DESC, a.task_id""",
                 [reviewer_id, *states],
             ).fetchall()
         return [dict(row) for row in rows]
+
+    def filter_options(
+        self, allowed_languages: Sequence[str] | None
+    ) -> dict[str, Any]:
+        allowed_sql, allowed_params = self._allowed_clause(allowed_languages)
+        with self.connect() as connection:
+            rows = connection.execute(
+                f"""SELECT DISTINCT src.value AS source
+                    FROM tasks t, json_each(t.sources_json) src
+                    WHERE t.campaign_id=? {allowed_sql}
+                    ORDER BY src.value""",
+                [self.campaign_id, *allowed_params],
+            ).fetchall()
+        return {
+            "sources": [str(row["source"]) for row in rows],
+            "anchor_model": "gemma",
+            "models": ["qwen", "e5", "xlmr"],
+        }
 
     def renew_lease(self, task_id: str, *, reviewer_id: int) -> dict[str, str]:
         now_dt = self._now()
@@ -775,8 +837,6 @@ class AnnotationDatabase:
                 raise NotFoundError("the task has no annotation to resume")
             if int(current["reviewer_id"]) != reviewer_id and role != "admin":
                 raise PermissionDeniedError("this task belongs to another reviewer")
-            if current["state"] == "submitted":
-                raise ConflictError("submitted annotations are immutable in campaign v1")
             if int(current["version"]) != expected_version:
                 raise ConflictError(
                     "annotation version is stale",
@@ -789,13 +849,20 @@ class AnnotationDatabase:
                 raise ConflictError("the task is currently leased to another reviewer")
             owner_id = int(current["reviewer_id"])
             version = expected_version + 1
-            connection.execute(
-                """UPDATE annotations SET state='draft', version=?, verdict=NULL,
-                   corrected_strategy=NULL, skip_reason='', last_activity_at=?,
-                   updated_at=?, submitted_at=NULL
-                   WHERE task_id=?""",
-                (version, now, now, task_id),
-            )
+            if current["state"] == "submitted":
+                connection.execute(
+                    """UPDATE annotations SET state='draft', version=?,
+                       last_activity_at=?, updated_at=?, submitted_at=NULL
+                       WHERE task_id=?""",
+                    (version, now, now, task_id),
+                )
+            else:
+                connection.execute(
+                    """UPDATE annotations SET state='draft', version=?, verdict=NULL,
+                       corrected_strategy=NULL, skip_reason='', last_activity_at=?,
+                       updated_at=?, submitted_at=NULL WHERE task_id=?""",
+                    (version, now, now, task_id),
+                )
             connection.execute(
                 """INSERT INTO leases(task_id, reviewer_id, acquired_at, renewed_at, expires_at)
                    VALUES(?, ?, ?, ?, ?)
@@ -819,7 +886,7 @@ class AnnotationDatabase:
                 details={"lease_expires_at": expires},
                 at=now,
             )
-            return self._task_bundle(connection, task_id, include_model_votes=False)
+            return self._task_bundle(connection, task_id, include_model_votes=True)
 
     def _task_bundle(
         self, connection: sqlite3.Connection, task_id: str, *, include_model_votes: bool
@@ -874,6 +941,25 @@ class AnnotationDatabase:
             "submitted_at": row["submitted_at"],
             "active_duration_seconds": float(row["active_duration_seconds"]),
         }
+
+    def post_submit_result(self, task_id: str, *, reviewer_id: int) -> dict[str, Any]:
+        with self.connect() as connection:
+            row = connection.execute(
+                """SELECT t.sources_json, t.candidate_strategy, t.model_votes_json,
+                          a.state, a.reviewer_id
+                   FROM tasks t JOIN annotations a ON a.task_id=t.task_id
+                   WHERE t.task_id=?""",
+                (task_id,),
+            ).fetchone()
+            if row is None or int(row["reviewer_id"]) != reviewer_id:
+                raise PermissionDeniedError("this task does not belong to the reviewer")
+            if row["state"] != "submitted":
+                raise ConflictError("model agreement is available only after submit")
+            return {
+                "sources": json.loads(row["sources_json"]),
+                "candidate_strategy": row["candidate_strategy"],
+                "model_votes": json.loads(row["model_votes_json"]),
+            }
 
     @staticmethod
     def _blind_metadata(value: Any) -> Any:
@@ -1003,19 +1089,25 @@ class AnnotationDatabase:
         }
 
     def reviewer_progress(
-        self, reviewer_id: int, *, allowed_languages: Sequence[str] | None
+        self,
+        reviewer_id: int,
+        *,
+        allowed_languages: Sequence[str] | None,
+        sources: Sequence[str] = (),
+        agreeing_models: Sequence[str] = (),
     ) -> dict[str, Any]:
         """Return progress for one reviewer without leaking other annotations."""
 
         allowed_sql, allowed_params = self._allowed_clause(allowed_languages)
+        filter_sql, filter_params = self._task_filter_clause(sources, agreeing_models)
         with self.connect() as connection:
             rows = connection.execute(
                 f"""SELECT t.language, a.reviewer_id, a.state
                     FROM tasks t
                     LEFT JOIN annotations a ON a.task_id=t.task_id
-                    WHERE t.campaign_id=? {allowed_sql}
+                    WHERE t.campaign_id=? {allowed_sql} {filter_sql}
                     ORDER BY t.language, t.queue_rank, t.task_id""",
-                [self.campaign_id, *allowed_params],
+                [self.campaign_id, *allowed_params, *filter_params],
             ).fetchall()
         by_language: dict[str, dict[str, int]] = {}
         totals = {

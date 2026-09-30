@@ -21,7 +21,7 @@ Credentials, payloads, the live database, and downloaded backups remain private.
 Reviewer browser
     -> Railway HTTPS domain
     -> Phase 4a FastAPI service (one replica)
-    -> /data/gold_review.sqlite3 on the attached volume
+    -> /data/gemma_anchored_strict_v2.sqlite3 on the attached volume
 ```
 
 The Docker image contains application code only. Materialized language payloads,
@@ -42,7 +42,8 @@ In the Railway dashboard:
 7. Add these service variables:
 
 ```text
-PHASE4A_DATABASE=/data/gold_review.sqlite3
+PHASE4A_DATABASE=/data/gemma_anchored_strict_v2.sqlite3
+PHASE4A_CAMPAIGN_ID=gemma-anchored-strict-v2
 PHASE4A_SESSION_SECRET=<at-least-32-random-characters>
 PHASE4A_COOKIE_SECURE=1
 PHASE4A_LANGUAGE_PRIORITY=en,es,it,ru,ar
@@ -97,11 +98,11 @@ volume when prompted.
 Only upload syntax-materialized payloads. For Spanish:
 
 ```bash
-test -s phase4a_gold_standard/runs/materialized/2026-08-27_stanza_ud_full_v1/es/payloads/es/annotation_tasks.jsonl
+test -s phase4a_gold_standard/runs/materialized/2026-08-31_stanza_ud_gemma_anchored_strict_v2/es/payloads/es/annotation_tasks.jsonl
 
 phase4a_gold_standard/deploy/railway/upload_language.sh \
   es \
-  phase4a_gold_standard/runs/materialized/2026-08-27_stanza_ud_full_v1/es/payloads/es/annotation_tasks.jsonl
+  phase4a_gold_standard/runs/materialized/2026-08-31_stanza_ud_gemma_anchored_strict_v2/es/payloads/es/annotation_tasks.jsonl
 ```
 
 The script:

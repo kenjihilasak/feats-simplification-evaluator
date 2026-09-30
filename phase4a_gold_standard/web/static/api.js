@@ -113,12 +113,24 @@ export const api = {
     return payload;
   },
 
-  progress(signal) {
-    return request("/me/progress", { signal });
+  progress(filters = {}, signal) {
+    const query = new URLSearchParams();
+    (filters.sources || []).forEach((value) => query.append("sources", value));
+    (filters.models || []).forEach((value) => query.append("models", value));
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return request(`/me/progress${suffix}`, { signal });
   },
 
-  nextTask(signal) {
-    return request("/tasks/next", { signal });
+  queueFilters(signal) {
+    return request("/queue/filters", { signal });
+  },
+
+  nextTask(filters = {}, signal) {
+    const query = new URLSearchParams();
+    (filters.sources || []).forEach((value) => query.append("sources", value));
+    (filters.models || []).forEach((value) => query.append("models", value));
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return request(`/tasks/next${suffix}`, { signal });
   },
 
   task(taskId, signal) {
@@ -152,6 +164,20 @@ export const api = {
     return request(`/annotations/${encodeURIComponent(taskId)}/skip`, {
       method: "POST",
       body: { reason, notes, expected_version: expectedVersion },
+      signal,
+    });
+  },
+
+  mine(states = ["submitted"], signal) {
+    const query = new URLSearchParams();
+    states.forEach((value) => query.append("states", value));
+    return request(`/annotations/mine?${query.toString()}`, { signal });
+  },
+
+  resume(taskId, expectedVersion, signal) {
+    return request(`/annotations/${encodeURIComponent(taskId)}/resume`, {
+      method: "POST",
+      body: { expected_version: expectedVersion },
       signal,
     });
   },

@@ -30,11 +30,11 @@ automatically from the selected tokens.
   its evidence.
 - **Uncertain:** the evidence is genuinely ambiguous or specialist/contextual
   information is missing. Explain the ambiguity briefly in notes.
-- **Skip:** use only for a technical or adjudication blocker such as corrupted
-  text, unusable parse, wrong language, or a pair requiring escalation.
+- **Later:** postpone the pair without judging it. It stays in the queue and
+  returns after the currently unreviewed pairs. No reason is required.
 
-Do not use `uncertain` merely because the example is difficult, and do not
-use `skip` as a negative strategy judgment.
+Do not use `uncertain` merely because the example is difficult, and do not use
+**Later** as a negative strategy judgment.
 
 ## Alignment review
 
@@ -55,14 +55,17 @@ needed to justify the strategy even when no SimAlign link connects it.
 
 The upper tree belongs to the original sentence and the mirrored lower tree to
 the simplification. A parse warning means the syntax should not be trusted;
-review the text and links, add a note, and skip only when the task cannot be
-judged responsibly. Arabic and Urdu render right-to-left; Japanese tokens are
+review the text and links, add a note, and choose **Later** when you do not want
+to judge the task yet. Arabic and Urdu render right-to-left; Japanese tokens are
 shown without injected spaces.
 
 ## Saving and submission
 
-Drafts autosave and remain editable. Submission is final in campaign v1 and
-creates an immutable revision/audit event. Before submitting, check:
+Drafts autosave and remain editable. Each submission creates an immutable
+revision/audit event. A submitted pair may be reopened from **Previous**; its
+first submitted revision remains intact, while the editable copy becomes a new
+version. Because model votes are revealed after the first submit, a reopened
+version is an unblinded review. Before submitting, check:
 
 1. the verdict matches the candidate strategy;
 2. required source/target evidence is selected;

@@ -434,6 +434,57 @@ def markdown_report(
             f"{float(row['multilabel_pct']):.2f}% | "
             f"{highest['strategy_code']} ({float(highest['predicted_pct']):.2f}%) |"
         )
+    gemma_alias = next(
+        (alias for alias in model_aliases if alias.startswith("gemma3_12b_")),
+        None,
+    )
+    if gemma_alias is not None:
+        gemma_row = overall_by_model[gemma_alias]
+        gemma_agreements = [
+            row
+            for row in agreement
+            if gemma_alias in (str(row["model_a"]), str(row["model_b"]))
+        ]
+        closest = max(gemma_agreements, key=lambda row: float(row["mean_jaccard"]))
+        closest_alias = (
+            str(closest["model_b"])
+            if str(closest["model_a"]) == gemma_alias
+            else str(closest["model_a"])
+        )
+        lines.extend(
+            [
+                "",
+                "### Gemma relative to the other models",
+                "",
+                "| Other model | Exact strategy-set match | Mean Jaccard | Label agreement | Mean strategy-count difference |",
+                "|---|---:|---:|---:|---:|",
+            ]
+        )
+        for row in gemma_agreements:
+            other_alias = (
+                str(row["model_b"])
+                if str(row["model_a"]) == gemma_alias
+                else str(row["model_a"])
+            )
+            lines.append(
+                f"| `{other_alias}` | {float(row['exact_set_match_pct']):.2f}% | "
+                f"{float(row['mean_jaccard']):.3f} | "
+                f"{float(row['label_agreement_pct']):.2f}% | "
+                f"{float(row['mean_abs_strategy_count_difference']):.3f} |"
+            )
+        lines.extend(
+            [
+                "",
+                f"Gemma detects a mean of {float(gemma_row['mean_strategy_count']):.3f} "
+                f"strategies per pair; {float(gemma_row['single_strategy_pct']):.2f}% "
+                f"of pairs receive exactly one strategy and "
+                f"{float(gemma_row['zero_strategy_pct']):.2f}% receive none. Its closest "
+                f"output profile is `{closest_alias}` (mean Jaccard "
+                f"{float(closest['mean_jaccard']):.3f}). Agreement measures output "
+                "compatibility, not accuracy, because these corpus-wide predictions "
+                "do not have verified gold strategy labels.",
+            ]
+        )
     lines.extend(
         [
             "",

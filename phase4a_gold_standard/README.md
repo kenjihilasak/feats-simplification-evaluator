@@ -1,6 +1,6 @@
 # Phase 4a — Gold-standard human validation
 
-Phase 4a turns the single-strategy majority-vote candidates from Phase 3a into
+Phase 4a turns the strict Gemma-anchored single-strategy candidates from Phase 3a into
 a human-validated multilingual evaluation set. It is a standalone component:
 the historical HTML under `/scratch/pjbd103/Align-and-Shine-dev` informed the
 visual layout only. Phase 4a does not import its code, assets, or runtime
@@ -8,10 +8,10 @@ packages.
 
 ## Status
 
-- Primary pool built and validated: **271,395** tasks in 12 languages.
+- Primary pool built and validated: **167,238** tasks in 12 languages.
 - One clean canonical CSV and one spreadsheet-safe CSV are available per
   language.
-- Phase 3b v2 SimAlign links join all 271,395 candidates.
+- Phase 3b v2 SimAlign links join all 167,238 candidates.
 - Stanza UD syntax enrichment, materialization, private review server, audit
   trail, deterministic exports, and reports are implemented.
 - Human review has not started, so this pool is a **gold candidate**, not yet a
@@ -20,13 +20,13 @@ packages.
   account-to-language assignments remain deployment configuration; the
   priority order is `en, es, it, ru, ar`.
 - Sparse-language expansion, especially for Arabic, remains a separate
-  supplemental pool and never changes the 271,395-task primary denominator.
+  supplemental pool and never changes the 167,238-task primary denominator.
 
 ## Inputs
 
 | Input | Role |
 |---|---|
-| Phase 3a `2026-08-26_single_strategy_majority_vote_v1` | One candidate strategy supported by at least two of E5, Qwen, and XLM-R |
+| Phase 3a `2026-08-31_single_strategy_gemma_anchored_strict_v1` | Gemma singleton confirmed by an exact singleton from at least one of E5, Qwen, or XLM-R |
 | Phase 3b `2026-08-23_simalign_xlmr_large_itermax_full_v2` | Exact tokens, offsets, orthographic parents, and SimAlign links |
 | Stanza 1.10.1 / resources 1.10.0 | Pretokenized UD lemma, POS, features, heads, and dependency relations |
 
@@ -34,24 +34,24 @@ packages.
 
 | Language | Tasks |
 |---|---:|
-| ar | 1 |
-| ca | 244 |
-| de | 94 |
-| en | 128,114 |
-| es | 267 |
-| fr | 49,490 |
-| it | 40,801 |
-| ja | 26,569 |
-| pt-BR | 176 |
-| ru | 25,462 |
-| sl | 32 |
-| ur | 145 |
-| **Total** | **271,395** |
+| ar | 20 |
+| ca | 149 |
+| de | 48 |
+| en | 66,768 |
+| es | 375 |
+| fr | 35,404 |
+| it | 26,771 |
+| ja | 20,181 |
+| pt-BR | 250 |
+| ru | 17,050 |
+| sl | 18 |
+| ur | 204 |
+| **Total** | **167,238** |
 
 Generated files are local and intentionally excluded from Git:
 
 ```text
-phase4a_gold_standard/data/2026-08-27_single_strategy_full_v1/
+phase4a_gold_standard/data/2026-08-31_gemma_anchored_strict_v2/
 ├── data/<language>/annotation_pool.csv
 ├── data/<language>/annotation_pool.spreadsheet_safe.csv
 ├── payloads/<language>/annotation_tasks.jsonl
@@ -63,18 +63,18 @@ phase4a_gold_standard/data/2026-08-27_single_strategy_full_v1/
 The canonical CSV preserves exact text and has these human-oriented fields:
 `review_task_id`, `queue_rank`, `canonical_pair_id`, `language`,
 `sources`, `corpora`, `original`, `simplification`, strategy code and
-label, the three lowercase `yes/no` model columns, `majority_votes`,
+label, the lowercase E5/Qwen/XLM-R exact-singleton confirmation columns, Gemma as the required anchor, `majority_votes`,
 `quality_tier`, and `pool_type`. The spreadsheet-safe copy neutralizes
 formula prefixes for office software; use the canonical CSV for computation.
 
 Build or revalidate the full pool:
 
 ```bash
-.venv-phase4a/bin/python phase4a_gold_standard/src/prepare_annotation_pool.py \
-  --config phase4a_gold_standard/configs/annotation_pool_full_v1.json
+.venv-phase4a/bin/python phase4a_gold_standard/src/prepare_gemma_anchored_pool.py \
+  --config phase4a_gold_standard/configs/annotation_pool_gemma_anchored_strict_v2.json
 
-.venv-phase4a/bin/python phase4a_gold_standard/src/prepare_annotation_pool.py \
-  --validate-only phase4a_gold_standard/data/2026-08-27_single_strategy_full_v1
+.venv-phase4a/bin/python phase4a_gold_standard/src/prepare_gemma_anchored_pool.py \
+  --validate-only phase4a_gold_standard/data/2026-08-31_gemma_anchored_strict_v2
 ```
 
 ## Syntax for complex languages
@@ -105,21 +105,26 @@ sbatch phase4a_gold_standard/jobs/submit_stanza_syntax_gpu.sh
 
 Each syntax job fails on parser/token-contract errors and then materializes an
 import-ready JSONL for only its language under
-`runs/materialized/2026-08-27_stanza_ud_full_v1/<language>/payloads/`.
+`runs/materialized/2026-08-31_stanza_ud_gemma_anchored_strict_v2/<language>/payloads/`.
 
 ## Private review UI
 
-The reviewer sees the candidate strategy, original dependency tree above the
-source tokens, SimAlign links between both sentences, target tokens, and the
-mirrored target dependency tree below. Model identities, individual votes,
-majority size, and quality tier are hidden to prevent anchoring.
+The reviewer sees the corpus source, candidate strategy, dependency trees,
+tokens, and SimAlign links. Model votes remain hidden while the judgment is
+being made and are revealed only after a successful submit.
+
+The queue supports multi-select source and model filters. Sources use OR
+semantics; all selected models must support the candidate strategy. Claims made
+with model filters are recorded as `unblinded_model_filter` in the audit log.
 
 A reviewer:
 
-1. chooses `correct`, `incorrect`, or `uncertain`;
-2. selects the strategy-specific source and target evidence tokens;
-3. marks visible SimAlign links valid/invalid and may add missing links;
-4. saves a draft or submits the immutable final judgment.
+1. optionally filters the next queue by source and supporting model;
+2. chooses `correct`, `incorrect`, or `uncertain`;
+3. selects evidence tokens and reviews alignment links;
+4. submits, then sees model agreement;
+5. may reopen a prior submission from **Previous**, preserving its original
+   revision and creating a new editable version.
 
 Correct and determinate corrected strategies require source evidence; every
 strategy except `OMIT` also requires target evidence. See
@@ -127,7 +132,7 @@ strategy except `OMIT` also requires target evidence. See
 
 The UI supports RTL layout for Arabic/Urdu, preserves Japanese token display,
 autosaves drafts, renews task leases, detects stale versions, and records every
-claim, save, submission, skip, login, and administrative action.
+claim, save, submission, defer-for-later action, login, and administrative action.
 
 ## Server operation
 
@@ -139,7 +144,8 @@ backup procedure, and Windows fallback are documented in the
 Use a long random session secret and HTTPS in the private deployment:
 
 ```bash
-export PHASE4A_DATABASE=/secure/path/phase4a.sqlite3
+export PHASE4A_DATABASE=/secure/path/gemma_anchored_strict_v2.sqlite3
+export PHASE4A_CAMPAIGN_ID=gemma-anchored-strict-v2
 export PHASE4A_SESSION_SECRET='replace-with-a-long-random-secret'
 export PHASE4A_COOKIE_SECURE=1
 
@@ -148,7 +154,7 @@ export PHASE4A_COOKIE_SECURE=1
   --username reviewer-en --display-name 'English reviewer' \
   --role reviewer --language en
 .venv-phase4a/bin/python -m phase4a_gold_standard.backend import-tasks \
-  phase4a_gold_standard/runs/materialized/2026-08-27_stanza_ud_full_v1/en/payloads/en/annotation_tasks.jsonl
+  phase4a_gold_standard/runs/materialized/2026-08-31_stanza_ud_gemma_anchored_strict_v2/en/payloads/en/annotation_tasks.jsonl
 .venv-phase4a/bin/python -m phase4a_gold_standard.backend serve \
   --host 127.0.0.1 --port 8000
 ```
@@ -169,8 +175,8 @@ Administrative outputs:
 
 Reports include strategy correctness overall/by language/source/strategy,
 selected words with lemma/POS/dependency metadata, SimAlign acceptance among
-judged links, link-judgment coverage, and human-added links. Drafts/skips are
-reported as progress but do not enter linguistic quality denominators.
+judged links, link-judgment coverage, and human-added links. Drafts and deferred tasks are reported as progress but do not enter linguistic
+quality denominators. Deferred tasks remain eligible for later review.
 
 ## Verification
 

@@ -51,6 +51,12 @@
       <div class="header-status" aria-label="Session status">
         <span id="language-badge" class="language-badge">—</span>
         <span id="save-status" class="save-status" role="status" aria-live="polite">Ready</span>
+        <button id="filters-button" class="button button-quiet" type="button" aria-haspopup="dialog">
+          Filters <span id="filters-count" class="filter-count" hidden>0</span>
+        </button>
+        <button id="previous-button" class="button button-quiet" type="button" aria-haspopup="dialog">
+          Previous
+        </button>
         <button id="shortcuts-button" class="button button-quiet" type="button" aria-haspopup="dialog">
           Shortcuts <kbd>?</kbd>
         </button>
@@ -87,6 +93,8 @@
             <h2 id="review-heading">Loading task…</h2>
           </div>
           <p id="strategy-definition" class="strategy-definition"></p>
+          <p class="task-source"><strong>Source:</strong> <span id="source-value">—</span></p>
+          <p class="task-source"><strong>Agreeing models:</strong> <span id="models-value">—</span></p>
           <details class="strategy-guide" open>
             <summary>What to mark</summary>
             <p id="strategy-instructions"></p>
@@ -221,7 +229,7 @@
             <code id="task-identity">—</code>
           </div>
           <div class="action-buttons">
-            <button id="skip-button" class="button button-quiet" type="button">Skip <kbd>K</kbd></button>
+            <button id="skip-button" class="button button-quiet" type="button" title="Keep this pair in the queue for later">Later <kbd>K</kbd></button>
             <button id="save-button" class="button button-secondary" type="button">Save draft <kbd>S</kbd></button>
             <button id="submit-button" class="button button-primary" type="button">
               Submit &amp; next <kbd>Ctrl ↵</kbd>
@@ -242,7 +250,7 @@
           <div><dt><kbd>E</kbd> / <kbd>A</kbd></dt><dd>Evidence or alignment mode</dd></div>
           <div><dt><kbd>1</kbd>–<kbd>4</kbd></dt><dd>Select an evidence role</dd></div>
           <div><dt><kbd>S</kbd></dt><dd>Save draft</dd></div>
-          <div><dt><kbd>K</kbd></dt><dd>Skip pair</dd></div>
+          <div><dt><kbd>K</kbd></dt><dd>Keep pair for later</dd></div>
           <div><dt><kbd>Ctrl</kbd> + <kbd>Enter</kbd></dt><dd>Submit and open next pair</dd></div>
           <div><dt><kbd>Esc</kbd></dt><dd>Clear pending alignment endpoints</dd></div>
         </dl>
@@ -250,29 +258,58 @@
       </form>
     </dialog>
 
-    <dialog id="skip-dialog" class="app-dialog">
-      <form id="skip-form" method="dialog">
+    <dialog id="filters-dialog" class="app-dialog">
+      <form id="filters-form" method="dialog">
         <header>
-          <h2>Skip this pair</h2>
+          <h2>Queue filters</h2>
           <button class="dialog-close" value="cancel" aria-label="Close">×</button>
         </header>
-        <label for="skip-reason">Reason</label>
-        <select id="skip-reason" required>
-          <option value="">Select a reason…</option>
-          <option value="language_expertise">Outside my language expertise</option>
-          <option value="corrupt_text">Corrupt or incomplete text</option>
-          <option value="tokenization_error">Tokenization prevents review</option>
-          <option value="parse_error">Parse prevents review</option>
-          <option value="too_ambiguous">Too ambiguous to decide</option>
-          <option value="other">Other</option>
-        </select>
-        <label for="skip-notes">Details <span>(optional)</span></label>
-        <textarea id="skip-notes" rows="3" maxlength="1000"></textarea>
-        <div class="dialog-actions">
-          <button class="button button-quiet" value="cancel">Cancel</button>
-          <button id="confirm-skip" class="button button-primary" value="confirm">Skip &amp; next</button>
-        </div>
+        <fieldset>
+          <legend>Sources</legend>
+          <p class="help-text">No selection means all sources. Previously applied selections remain checked.</p>
+          <div id="source-filters" class="filter-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Models agreeing with the candidate strategy</legend>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" checked disabled aria-label="Gemma is always required">
+              <span>Gemma 3 12B pairwise QLoRA (required)</span>
+            </label>
+          </div>
+          <p class="help-text">No selection means any Gemma-anchored candidate. Every selected model must also agree; multiple selections use AND.</p>
+          <div id="model-filters" class="filter-options"></div>
+        </fieldset>
+        <footer class="dialog-actions">
+          <button id="clear-filters" class="button button-quiet" type="button">Clear</button>
+          <button class="button button-primary" value="apply" type="submit">Apply filters</button>
+        </footer>
       </form>
+    </dialog>
+
+    <dialog id="previous-dialog" class="app-dialog previous-dialog">
+      <section>
+        <header>
+          <h2>Previous submissions</h2>
+          <button id="previous-close" class="dialog-close" type="button" aria-label="Close">×</button>
+        </header>
+        <p class="help-text">Reopening preserves the original submitted revision before you edit and resubmit.</p>
+        <div id="previous-loading" class="help-text">Loading…</div>
+        <div id="previous-empty" class="help-text" hidden>No submitted pairs yet.</div>
+        <div id="previous-list" class="previous-list"></div>
+      </section>
+    </dialog>
+
+    <dialog id="result-dialog" class="app-dialog result-dialog">
+      <section>
+        <header><h2>Submission saved</h2></header>
+        <p><strong>Source:</strong> <span id="result-source">—</span></p>
+        <p class="section-kicker">Model agreement</p>
+        <div id="result-models" class="model-results"></div>
+        <footer class="dialog-actions">
+          <button id="result-next" class="button button-primary" type="button">Next pair</button>
+        </footer>
+      </section>
     </dialog>
 
     <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>

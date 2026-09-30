@@ -184,14 +184,37 @@ def create_app(
         return {"ok": True}
 
     @application.get("/api/me/progress")
-    def my_progress(user: AuthenticatedUser = Depends(current_user)) -> dict[str, Any]:
-        return {"progress": service.my_progress(user)}
+    def my_progress(
+        sources: list[str] = Query(default=[]),
+        models: list[str] = Query(default=[]),
+        user: AuthenticatedUser = Depends(current_user),
+    ) -> dict[str, Any]:
+        return {
+            "progress": service.my_progress(
+                user, sources=sources, agreeing_models=models
+            )
+        }
+
+    @application.get("/api/queue/filters")
+    def queue_filters(
+        user: AuthenticatedUser = Depends(current_user),
+    ) -> dict[str, Any]:
+        service.require_reviewer(user)
+        return service.database.filter_options(user.allowed_languages)
 
     @application.get("/api/tasks/next")
     def next_task(
-        request: Request, user: AuthenticatedUser = Depends(current_user)
+        request: Request,
+        sources: list[str] = Query(default=[]),
+        models: list[str] = Query(default=[]),
+        user: AuthenticatedUser = Depends(current_user),
     ) -> dict[str, Any]:
-        task = service.claim_next(user, **request_context(request))
+        task = service.claim_next(
+            user,
+            sources=sources,
+            agreeing_models=models,
+            **request_context(request),
+        )
         return {"task": task}
 
     @application.get("/api/tasks/{task_id}")
@@ -239,7 +262,12 @@ def create_app(
             submit=True,
             **request_context(request),
         )
-        return {"annotation": annotation}
+        return {
+            "annotation": annotation,
+            "result": service.database.post_submit_result(
+                task_id, reviewer_id=user.user_id
+            ),
+        }
 
     @application.post("/api/annotations/{task_id}/skip")
     def skip(

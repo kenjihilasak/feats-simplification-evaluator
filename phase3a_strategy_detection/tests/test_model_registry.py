@@ -31,6 +31,30 @@ def test_registry_constructs_qwen_without_loading_weights(tmp_path):
     assert backend.model is None
 
 
+def test_registry_constructs_gemma_without_loading_weights(tmp_path):
+    backend = create_backend(
+        {
+            "backend": "gemma_pairwise",
+            "alias": "gemma-test",
+            "model_id": "owner/adapter",
+            "revision": "a" * 40,
+            "base_model_id": "owner/base",
+            "base_revision": "b" * 40,
+            "quantization": {
+                "load_in_4bit": True,
+                "quant_type": "nf4",
+                "compute_dtype": "bfloat16",
+                "double_quant": True,
+            },
+        },
+        cache_root=tmp_path,
+    )
+
+    assert backend.alias == "gemma-test"
+    assert backend.model is None
+    assert backend.processor is None
+
+
 def test_registry_constructs_encoder_without_loading_weights(tmp_path):
     labels = (
         "Synonymy", "Modulation", "Compression", "Explanation",

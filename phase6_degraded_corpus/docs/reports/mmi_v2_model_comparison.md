@@ -357,3 +357,13 @@ Decision: **no automatic winner** — no finalist reaches 85%: revise and repeat
 
 Decision: **C2** — only eligible finalist (§6.4.2).
 
+
+## Final configuration per axis (2026-09-30)
+
+Reviewer instruction: count **Unsure as Valid**. Macro human valid rate on heldout:
+
+| Axis | C1 (Qwen2.5-7B, v2) | C2 (Gemma-3-12B, v2) | Paired (McNemar) | Decision |
+|---|---|---|---|---|
+| MEANING | 84% | 82% | p = 1.0 | **C1, provisional**: neither reaches 85%; fix negation (rule-based) and a/an agreement, then re-audit a fresh heldout sample |
+| MOD | 89% | **95%** | p = 0.38 | **C2**: both eligible and equivalent; tie-break §6.4.3(a), cost per valid output (same GPU time, more valid outputs) |
+| ILLOC | **90%** | 89% | p = 1.0 | **C1**: equivalent; tie-break §6.4.3(a), smaller model (7B vs 12B) for the same valid rate; also far better on `hedged` in dev (84% vs 29%) |

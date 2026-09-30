@@ -7,9 +7,7 @@
   "runs_root": "phase3a_strategy_detection/runs",
   "cache_root": "cache/huggingface",
   "models": {
-    "xlmr_large_focal": "phase3a_strategy_detection/configs/models/xlmr_large_focal.json",
-    "multilingual_e5_large_bce": "phase3a_strategy_detection/configs/models/multilingual_e5_large_bce.json",
-    "qwen2p5_7b_pairwise_qlora": "phase3a_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json"
+    "gemma3_12b_pairwise_qlora": "phase3a_strategy_detection/configs/models/gemma3_12b_pairwise_qlora.json"
   },
   "selection": {
     "files": [

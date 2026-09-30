@@ -18,6 +18,7 @@ from common import (
     load_config,
     output_path,
     run_root,
+    score_path,
     sha256,
     write_json,
 )
@@ -28,12 +29,14 @@ COUNT_FIELDS = (
     "kept_pairs",
     "removed_pairs",
     "complexity_inversion",
+    "target_not_confidently_simple",
     "labse_below_min",
     "labse_above_max",
 )
 PERCENT_FIELDS = (
     "removed_pct",
     "complexity_inversion_pct",
+    "target_not_confidently_simple_pct",
     "labse_below_min_pct",
     "labse_above_max_pct",
 )
@@ -54,9 +57,17 @@ def expected_reasons(complexity: dict, similarity: float, config: dict) -> list[
         and float(original["smp_max_mean_uncertainty"]) < threshold
         and float(simple["smp_max_mean_uncertainty"]) < threshold
     )
+    target_not_confidently_simple = bool(
+        filters.get("require_target_confidently_simple", False)
+    ) and not (
+        simple["mc_mean_predicted_label"] == "simple"
+        and float(simple["smp_max_mean_uncertainty"]) < threshold
+    )
     reasons = []
     if inversion:
         reasons.append("complexity_inversion")
+    if target_not_confidently_simple:
+        reasons.append("target_not_confidently_simple")
     if similarity < float(filters["labse_min"]):
         reasons.append("labse_below_min")
     if similarity > float(filters["labse_max"]):
@@ -83,8 +94,10 @@ def add_error(errors: list[str], message: str, maximum: int = 100) -> None:
 def validate_file(corpus_file, config: dict, errors: list[str]) -> dict:
     label = f"{corpus_file.language}/{corpus_file.filename}"
     paths = {
-        section: output_path(config, section, corpus_file)
-        for section in ("scores/complexity", "scores/labse", "decisions", "cleaned")
+        "scores/complexity": score_path(config, "complexity", corpus_file),
+        "scores/labse": score_path(config, "labse", corpus_file),
+        "decisions": output_path(config, "decisions", corpus_file),
+        "cleaned": output_path(config, "cleaned", corpus_file),
     }
     if any(not path.is_file() for path in paths.values()):
         for section, path in paths.items():
@@ -150,6 +163,9 @@ def validate_file(corpus_file, config: dict, errors: list[str]) -> dict:
         **{field: counters[field] for field in COUNT_FIELDS},
         "removed_pct": percent(counters["removed_pairs"], total),
         "complexity_inversion_pct": percent(counters["complexity_inversion"], total),
+        "target_not_confidently_simple_pct": percent(
+            counters["target_not_confidently_simple"], total
+        ),
         "labse_below_min_pct": percent(counters["labse_below_min"], total),
         "labse_above_max_pct": percent(counters["labse_above_max"], total),
         "cleaned_sha256": sha256(paths["cleaned"]),
@@ -173,10 +189,10 @@ def validate_report(run_path: Path, rows: list[dict], errors: list[str]) -> None
             if str(expected[field]) != observed[field]:
                 add_error(errors, f"Report field mismatch for {expected['file']}: {field}")
         for field in COUNT_FIELDS:
-            if int(expected[field]) != int(observed[field]):
+            if int(expected[field]) != int(observed.get(field, 0)):
                 add_error(errors, f"Report count mismatch for {expected['file']}: {field}")
         for field in PERCENT_FIELDS:
-            if abs(float(expected[field]) - float(observed[field])) > 1e-9:
+            if abs(float(expected[field]) - float(observed.get(field, 0.0))) > 1e-9:
                 add_error(errors, f"Report percentage mismatch for {expected['file']}: {field}")
 
 
@@ -185,7 +201,10 @@ def validate(config: dict) -> dict:
     files = input_files(config)
     root = run_root(config)
     expected_layout = {f"{item.language}/{item.filename}" for item in files}
-    for section in ("scores/complexity", "scores/labse", "decisions", "cleaned"):
+    sections = ["decisions", "cleaned"]
+    if "score_source_run_id" not in config:
+        sections[:0] = ["scores/complexity", "scores/labse"]
+    for section in sections:
         observed = output_files(root, section)
         if observed != expected_layout:
             missing = sorted(expected_layout - observed)

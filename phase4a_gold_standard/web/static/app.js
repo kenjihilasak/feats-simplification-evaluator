@@ -90,9 +90,18 @@ const state = {
   autosaveTimer: null,
   leaseTimer: null,
   loadController: null,
+  filters: { sources: [], models: [] },
+  filterOptions: { sources: [], models: [] },
 };
 
 const byId = (id) => document.getElementById(id);
+
+const MODEL_LABELS = {
+  gemma: "Gemma 3 12B pairwise QLoRA",
+  qwen: "Qwen2.5 7B pairwise QLoRA",
+  e5: "Multilingual-E5 Large BCE",
+  xlmr: "XLM-R Large focal classifier",
+};
 const elements = {
   loginView: byId("login-view"),
   loginForm: byId("login-form"),
@@ -113,6 +122,8 @@ const elements = {
   strategyCode: byId("strategy-code"),
   reviewHeading: byId("review-heading"),
   strategyDefinition: byId("strategy-definition"),
+  sourceValue: byId("source-value"),
+  modelsValue: byId("models-value"),
   strategyInstructions: byId("strategy-instructions"),
   strategyExample: byId("strategy-example"),
   verdictControl: byId("verdict-control"),
@@ -149,12 +160,25 @@ const elements = {
   skipButton: byId("skip-button"),
   saveButton: byId("save-button"),
   submitButton: byId("submit-button"),
+  filtersButton: byId("filters-button"),
+  filtersCount: byId("filters-count"),
+  filtersDialog: byId("filters-dialog"),
+  filtersForm: byId("filters-form"),
+  sourceFilters: byId("source-filters"),
+  modelFilters: byId("model-filters"),
+  clearFilters: byId("clear-filters"),
+  previousButton: byId("previous-button"),
+  previousDialog: byId("previous-dialog"),
+  previousClose: byId("previous-close"),
+  previousLoading: byId("previous-loading"),
+  previousEmpty: byId("previous-empty"),
+  previousList: byId("previous-list"),
+  resultDialog: byId("result-dialog"),
+  resultSource: byId("result-source"),
+  resultModels: byId("result-models"),
+  resultNext: byId("result-next"),
   shortcutsButton: byId("shortcuts-button"),
   shortcutsDialog: byId("shortcuts-dialog"),
-  skipDialog: byId("skip-dialog"),
-  skipForm: byId("skip-form"),
-  skipReason: byId("skip-reason"),
-  skipNotes: byId("skip-notes"),
   toastRegion: byId("toast-region"),
 };
 
@@ -455,7 +479,7 @@ function renderProgress(rawProgress) {
   const total = Math.max(0, Number(values.total ?? progress.total ?? 0));
   const completed = Math.max(
     0,
-    Number(values.completed ?? ((values.submitted || 0) + (values.skipped || 0))),
+    Number(values.submitted ?? values.completed ?? 0),
   );
   const percentage = total ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   elements.progressCount.textContent = String(completed) + " / " + String(total);
@@ -472,6 +496,11 @@ function renderStrategy() {
   elements.strategyCode.textContent = state.task.candidate_strategy || "—";
   elements.reviewHeading.textContent = strategy.label;
   elements.strategyDefinition.textContent = strategy.definition;
+  elements.sourceValue.textContent = (state.task.sources || []).join(", ") || "—";
+  const agreeingModels = Object.entries(state.task.model_votes || {})
+    .filter(([, vote]) => vote === "yes")
+    .map(([model]) => MODEL_LABELS[model] || model);
+  elements.modelsValue.textContent = agreeingModels.join(", ") || "—";
   elements.strategyInstructions.textContent = strategy.instructions;
   const example = state.task.metadata?.strategy_example ??
     state.task.public_metadata?.strategy_example;
@@ -1270,7 +1299,8 @@ async function submitAndNext() {
     clearLocalDraft(state.task.task_id);
     state.dirty = false;
     toast("Annotation submitted.");
-    await loadNextTask();
+    stopLeaseRenewal();
+    showSubmissionResult(response.result || {});
   } catch (error) {
     if (error instanceof ApiError && error.status === 409) {
       await showVersionConflict(error);
@@ -1286,30 +1316,31 @@ async function submitAndNext() {
   }
 }
 
-async function confirmSkip() {
-  if (!state.task || !elements.skipReason.value || state.submitting) return;
+async function deferAndNext() {
+  if (!state.task || !state.annotation || state.submitting) return;
   if (state.saving) {
     toast("Wait for the current save to finish.", true);
     return;
+  }
+  if (state.dirty) {
+    const saved = await saveDraft({ quiet: true });
+    if (!saved) return;
   }
   state.submitting = true;
   setActionsDisabled(true);
   try {
     await api.skip(
       state.task.task_id,
-      elements.skipReason.value,
-      elements.skipNotes.value,
+      "review_later",
+      state.annotation.notes,
       state.annotation.version,
     );
     clearLocalDraft(state.task.task_id);
     state.dirty = false;
-    elements.skipDialog.close();
-    elements.skipForm.reset();
-    toast("Pair skipped.");
+    toast("Pair kept in the queue for later.");
     await loadNextTask();
   } catch (error) {
     if (error instanceof ApiError && error.status === 409) {
-      elements.skipDialog.close();
       await showVersionConflict(error);
     } else {
       toast(errorText(error), true);
@@ -1367,7 +1398,7 @@ function startLeaseRenewal() {
 
 async function refreshProgress() {
   try {
-    renderProgress(await api.progress());
+    renderProgress(await api.progress(state.filters));
   } catch (error) {
     if (!(error instanceof ApiError && error.status === 401)) {
       toast("Progress could not be refreshed.", true);
@@ -1384,8 +1415,8 @@ async function loadNextTask() {
   showLoading();
   try {
     const [taskPayload, progressPayload] = await Promise.all([
-      api.nextTask(state.loadController.signal),
-      api.progress(state.loadController.signal),
+      api.nextTask(state.filters, state.loadController.signal),
+      api.progress(state.filters, state.loadController.signal),
     ]);
     renderProgress(progressPayload);
     const rawTask = unwrapTask(taskPayload);
@@ -1426,6 +1457,136 @@ async function loadNextTask() {
     showGlobalError(errorText(error));
     setSaveStatus("Load failed", "error");
   }
+}
+
+function setFilterCount() {
+  const count = state.filters.sources.length + state.filters.models.length;
+  elements.filtersCount.textContent = String(count);
+  elements.filtersCount.hidden = count === 0;
+}
+
+function renderFilterChoices(container, values, selected, kind) {
+  container.replaceChildren();
+  values.forEach((value) => {
+    const label = document.createElement("label");
+    label.className = "filter-option";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = kind;
+    input.value = value;
+    input.checked = selected.includes(value);
+    const textNode = document.createElement("span");
+    textNode.textContent = kind === "models" ? (MODEL_LABELS[value] || value) : value;
+    label.append(input, textNode);
+    container.append(label);
+  });
+}
+
+async function openFilters() {
+  try {
+    state.filterOptions = await api.queueFilters();
+    renderFilterChoices(
+      elements.sourceFilters,
+      state.filterOptions.sources || [],
+      state.filters.sources,
+      "sources",
+    );
+    renderFilterChoices(
+      elements.modelFilters,
+      state.filterOptions.models || [],
+      state.filters.models,
+      "models",
+    );
+    elements.filtersDialog.showModal();
+  } catch (error) {
+    toast(errorText(error), true);
+  }
+}
+
+function selectedFilterValues(name) {
+  return Array.from(elements.filtersForm.querySelectorAll(`input[name="${name}"]:checked`))
+    .map((input) => input.value);
+}
+
+function showSubmissionResult(result) {
+  elements.resultSource.textContent = (result.sources || []).join(", ") || "—";
+  elements.resultModels.replaceChildren();
+  const votes = result.model_votes || {};
+  ["gemma", "qwen", "e5", "xlmr"].forEach((model) => {
+    const vote = String(votes[model] || "unknown").toLowerCase();
+    const card = document.createElement("div");
+    card.className = `model-vote is-${vote}`;
+    const name = document.createElement("strong");
+    name.textContent = model.toUpperCase();
+    const value = document.createElement("div");
+    value.textContent = vote === "yes" ? "Agrees" : vote === "no" ? "Does not agree" : "No vote";
+    card.append(name, value);
+    elements.resultModels.append(card);
+  });
+  elements.resultDialog.showModal();
+}
+
+async function openPrevious() {
+  elements.previousList.replaceChildren();
+  elements.previousLoading.hidden = false;
+  elements.previousEmpty.hidden = true;
+  elements.previousDialog.showModal();
+  try {
+    const payload = await api.mine(["submitted"]);
+    const rows = payload.annotations || [];
+    elements.previousLoading.hidden = true;
+    elements.previousEmpty.hidden = rows.length > 0;
+    rows.forEach((row) => {
+      const item = document.createElement("article");
+      item.className = "previous-item";
+      const strategy = document.createElement("strong");
+      strategy.textContent = row.candidate_strategy;
+      const copy = document.createElement("div");
+      copy.className = "previous-copy";
+      const source = document.createElement("small");
+      let sources = [];
+      try { sources = JSON.parse(row.sources_json || "[]"); } catch { sources = []; }
+      source.textContent = sources.join(", ") || "Unknown source";
+      const pair = document.createElement("p");
+      pair.textContent = `${row.source_text} → ${row.target_text}`;
+      copy.append(source, pair);
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "button button-secondary";
+      edit.textContent = "Edit";
+      edit.addEventListener("click", async () => {
+        edit.disabled = true;
+        try {
+          if (state.dirty) await saveDraft({ quiet: true });
+          const response = await api.resume(row.task_id, row.version);
+          elements.previousDialog.close();
+          activateTask(unwrapTask(response), "Previous submission reopened");
+        } catch (error) {
+          toast(errorText(error), true);
+          edit.disabled = false;
+        }
+      });
+      item.append(strategy, copy, edit);
+      elements.previousList.append(item);
+    });
+  } catch (error) {
+    elements.previousLoading.hidden = true;
+    toast(errorText(error), true);
+  }
+}
+
+function activateTask(rawTask, status = "Draft loaded") {
+  state.task = normalizeTask(rawTask);
+  state.annotation = normalizeAnnotation(rawTask.annotation);
+  state.dirty = false;
+  state.activeRole = strategyFor().roles[0]?.[0] || null;
+  state.pendingEndpoint = null;
+  state.zoom = 1;
+  elements.canvas.style.setProperty("--canvas-scale", "1");
+  elements.zoomValue.value = "100%";
+  setSaveStatus(status, "saved");
+  renderTask();
+  startLeaseRenewal();
 }
 
 async function completeLogin(payload) {
@@ -1480,6 +1641,39 @@ function bindEvents() {
       elements.loginButton.disabled = false;
     }
   });
+
+  elements.filtersButton.addEventListener("click", openFilters);
+  elements.filtersForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (state.saving) {
+      toast("Wait for the current save to finish.", true);
+      return;
+    }
+    if (state.dirty) {
+      const saved = await saveDraft({ quiet: true });
+      if (!saved) return;
+    }
+    state.filters = {
+      sources: selectedFilterValues("sources"),
+      models: selectedFilterValues("models"),
+    };
+    setFilterCount();
+    elements.filtersDialog.close();
+    await loadNextTask();
+    toast("Filters applied.");
+  });
+  elements.clearFilters.addEventListener("click", () => {
+    elements.filtersForm.querySelectorAll('input[type="checkbox"]:not(:disabled)').forEach((input) => {
+      input.checked = false;
+    });
+  });
+  elements.previousButton.addEventListener("click", openPrevious);
+  elements.previousClose.addEventListener("click", () => elements.previousDialog.close());
+  elements.resultNext.addEventListener("click", () => {
+    elements.resultDialog.close();
+    loadNextTask();
+  });
+  elements.resultDialog.addEventListener("cancel", (event) => event.preventDefault());
 
   elements.logoutButton.addEventListener("click", async () => {
     if (state.dirty) await saveDraft({ quiet: true });
@@ -1538,14 +1732,7 @@ function bindEvents() {
   elements.zoomIn.addEventListener("click", () => setZoom(state.zoom + 0.1));
   elements.saveButton.addEventListener("click", () => saveDraft());
   elements.submitButton.addEventListener("click", submitAndNext);
-  elements.skipButton.addEventListener("click", () => {
-    elements.skipDialog.showModal();
-    elements.skipReason.focus();
-  });
-  elements.skipForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    confirmSkip();
-  });
+  elements.skipButton.addEventListener("click", deferAndNext);
   elements.refreshQueue.addEventListener("click", loadNextTask);
   elements.shortcutsButton.addEventListener("click", () => {
     elements.shortcutsDialog.showModal();
@@ -1560,7 +1747,8 @@ function bindEvents() {
       clearPendingEndpoint("Pending link endpoints cleared.");
       return;
     }
-    if (editing || elements.skipDialog.open || elements.shortcutsDialog.open) return;
+    if (editing || elements.shortcutsDialog.open || elements.filtersDialog.open ||
+        elements.previousDialog.open || elements.resultDialog.open) return;
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       event.preventDefault();
       submitAndNext();

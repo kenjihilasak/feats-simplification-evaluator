@@ -18,6 +18,7 @@ from common import (
     load_config,
     output_path,
     run_root,
+    score_path,
     write_json,
 )
 
@@ -25,6 +26,7 @@ from common import (
 SUMMARY_FIELDS = [
     "language", "source", "corpus", "file", "total_pairs", "kept_pairs", "removed_pairs",
     "removed_pct", "complexity_inversion", "complexity_inversion_pct",
+    "target_not_confidently_simple", "target_not_confidently_simple_pct",
     "labse_below_min", "labse_below_min_pct", "labse_above_max", "labse_above_max_pct",
 ]
 
@@ -50,8 +52,8 @@ def decide_file(corpus_file, config: dict) -> dict:
     lower = float(settings["labse_min"])
     upper = float(settings["labse_max"])
     source_records = iter_jsonl(corpus_file.path, input_limit(config))
-    complexity_records = iter_jsonl(output_path(config, "scores/complexity", corpus_file))
-    labse_records = iter_jsonl(output_path(config, "scores/labse", corpus_file))
+    complexity_records = iter_jsonl(score_path(config, "complexity", corpus_file))
+    labse_records = iter_jsonl(score_path(config, "labse", corpus_file))
 
     cleaned_path = output_path(config, "cleaned", corpus_file)
     decisions_path = output_path(config, "decisions", corpus_file)
@@ -79,12 +81,20 @@ def decide_file(corpus_file, config: dict) -> dict:
                 and original["smp_max_mean_uncertainty"] < smp_threshold
                 and simple["smp_max_mean_uncertainty"] < smp_threshold
             )
+            target_not_confidently_simple = bool(
+                settings.get("require_target_confidently_simple", False)
+            ) and not (
+                simple["mc_mean_predicted_label"] == "simple"
+                and simple["smp_max_mean_uncertainty"] < smp_threshold
+            )
             similarity = float(labse["labse_similarity"])
             below = similarity < lower
             above = similarity > upper
             reasons = []
             if inversion:
                 reasons.append("complexity_inversion")
+            if target_not_confidently_simple:
+                reasons.append("target_not_confidently_simple")
             if below:
                 reasons.append("labse_below_min")
             if above:
@@ -94,6 +104,9 @@ def decide_file(corpus_file, config: dict) -> dict:
             counters["total_pairs"] += 1
             counters["kept_pairs" if keep else "removed_pairs"] += 1
             counters["complexity_inversion"] += int(inversion)
+            counters["target_not_confidently_simple"] += int(
+                target_not_confidently_simple
+            )
             counters["labse_below_min"] += int(below)
             counters["labse_above_max"] += int(above)
             identity.update(source=source["source"], corpus=source["corpus"])
@@ -131,6 +144,10 @@ def decide_file(corpus_file, config: dict) -> dict:
         "removed_pct": percent(counters["removed_pairs"], total),
         "complexity_inversion": counters["complexity_inversion"],
         "complexity_inversion_pct": percent(counters["complexity_inversion"], total),
+        "target_not_confidently_simple": counters["target_not_confidently_simple"],
+        "target_not_confidently_simple_pct": percent(
+            counters["target_not_confidently_simple"], total
+        ),
         "labse_below_min": counters["labse_below_min"],
         "labse_below_min_pct": percent(counters["labse_below_min"], total),
         "labse_above_max": counters["labse_above_max"],
@@ -149,7 +166,7 @@ def write_reports(config: dict, rows: list[dict]) -> None:
 
     totals = Counter()
     for row in rows:
-        for field in ("total_pairs", "kept_pairs", "removed_pairs", "complexity_inversion", "labse_below_min", "labse_above_max"):
+        for field in ("total_pairs", "kept_pairs", "removed_pairs", "complexity_inversion", "target_not_confidently_simple", "labse_below_min", "labse_above_max"):
             totals[field] += int(row[field])
     total = totals["total_pairs"]
     config_copy = {key: value for key, value in config.items() if not key.startswith("_")}
@@ -160,11 +177,12 @@ def write_reports(config: dict, rows: list[dict]) -> None:
         f"- Retained: **{totals['kept_pairs']:,}** ({percent(totals['kept_pairs'], total):.2f}%)",
         f"- Removed by the union of filters: **{totals['removed_pairs']:,}** ({percent(totals['removed_pairs'], total):.2f}%)",
         f"- Confident complexity inversions: {totals['complexity_inversion']:,} ({percent(totals['complexity_inversion'], total):.2f}%)",
+        f"- Targets not confidently simple: {totals['target_not_confidently_simple']:,} ({percent(totals['target_not_confidently_simple'], total):.2f}%)",
         f"- LaBSE < {config['filters']['labse_min']}: {totals['labse_below_min']:,} ({percent(totals['labse_below_min'], total):.2f}%)",
         f"- LaBSE > {config['filters']['labse_max']}: {totals['labse_above_max']:,} ({percent(totals['labse_above_max'], total):.2f}%)",
         "", "## By language and corpus", "",
-        "| Language | Source | Corpus | Input | Kept | Removed | Removed % | Complexity inversion % | LaBSE low % | LaBSE high % |",
-        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Language | Source | Corpus | Input | Kept | Removed | Removed % | Complexity inversion % | Target not confidently simple % | LaBSE low % | LaBSE high % |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     previous = None
     for row in rows:
@@ -172,7 +190,8 @@ def write_reports(config: dict, rows: list[dict]) -> None:
         lines.append(
             f"| {language} | {source} | {corpus} | {row['total_pairs']:,} | "
             f"{row['kept_pairs']:,} | {row['removed_pairs']:,} | {row['removed_pct']:.2f} | "
-            f"{row['complexity_inversion_pct']:.2f} | {row['labse_below_min_pct']:.2f} | {row['labse_above_max_pct']:.2f} |"
+            f"{row['complexity_inversion_pct']:.2f} | {row['target_not_confidently_simple_pct']:.2f} | "
+            f"{row['labse_below_min_pct']:.2f} | {row['labse_above_max_pct']:.2f} |"
         )
         previous = row
     qualitative_reports = [
@@ -196,9 +215,9 @@ def run(config: dict) -> None:
     for corpus_file in input_files(config):
         expected = expected_count(corpus_file, config)
         for score_type in ("complexity", "labse"):
-            score_path = output_path(config, f"scores/{score_type}", corpus_file)
-            if not score_path.is_file():
-                raise FileNotFoundError(score_path)
+            path = score_path(config, score_type, corpus_file)
+            if not path.is_file():
+                raise FileNotFoundError(path)
         print(f"[decisions] {corpus_file.language}/{corpus_file.filename} ({expected:,})", flush=True)
         rows.append(decide_file(corpus_file, config))
     write_reports(config, rows)

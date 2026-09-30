@@ -1,4 +1,112 @@
 model_alias,language,source,pairs,strategy_code,strategy_label,predicted_pairs,predicted_pct,mean_score
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,SYN,Synonymy,92,39.82683982683983,0.4085926105659127
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,MOD,Modulation,2,0.8658008658008658,0.05437281035728222
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,COMP,Compression,186,80.51948051948052,0.6302224583502912
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,EXPL,Explanation,16,6.926406926406926,0.0530276437541012
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,SYNT,Syntactic Change,2,0.8658008658008658,0.014044324970324963
+gemma3_12b_pairwise_qlora,ar,Saaq al-Bambuu,231,OMIT,Omission,184,79.65367965367966,0.6266486859983733
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,SYN,Synonymy,197,50.51282051282051,0.5272216759011749
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,MOD,Modulation,2,0.5128205128205128,0.05218273268328144
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,COMP,Compression,215,55.12820512820513,0.21154736903972038
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,EXPL,Explanation,76,19.487179487179485,0.11237528115335295
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,SYNT,Syntactic Change,51,13.076923076923077,0.10954363756593846
+gemma3_12b_pairwise_qlora,ca,Align-and-Shine,390,OMIT,Omission,215,55.12820512820513,0.28035186292239356
+gemma3_12b_pairwise_qlora,ca,iDEM,337,SYN,Synonymy,310,91.98813056379822,0.8997750573205602
+gemma3_12b_pairwise_qlora,ca,iDEM,337,MOD,Modulation,42,12.462908011869436,0.18493879212677639
+gemma3_12b_pairwise_qlora,ca,iDEM,337,COMP,Compression,90,26.706231454005934,0.10913133974947035
+gemma3_12b_pairwise_qlora,ca,iDEM,337,EXPL,Explanation,55,16.320474777448073,0.1426198468525026
+gemma3_12b_pairwise_qlora,ca,iDEM,337,SYNT,Syntactic Change,159,47.18100890207715,0.3126829343271737
+gemma3_12b_pairwise_qlora,ca,iDEM,337,OMIT,Omission,11,3.264094955489614,0.023755507977004233
+gemma3_12b_pairwise_qlora,de,MultiSim,529,SYN,Synonymy,296,55.954631379962194,0.5615898276323653
+gemma3_12b_pairwise_qlora,de,MultiSim,529,MOD,Modulation,333,62.948960302457465,0.6642980841810945
+gemma3_12b_pairwise_qlora,de,MultiSim,529,COMP,Compression,282,53.30812854442344,0.19039935481845868
+gemma3_12b_pairwise_qlora,de,MultiSim,529,EXPL,Explanation,42,7.939508506616257,0.05480449868058811
+gemma3_12b_pairwise_qlora,de,MultiSim,529,SYNT,Syntactic Change,87,16.446124763705104,0.12959168418550712
+gemma3_12b_pairwise_qlora,de,MultiSim,529,OMIT,Omission,266,50.283553875236294,0.2046265493584295
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,SYN,Synonymy,893,36.71875,0.3946149180040866
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,MOD,Modulation,147,6.0444078947368425,0.1541664369985497
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,COMP,Compression,983,40.41940789473684,0.13493258597644148
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,EXPL,Explanation,563,23.14967105263158,0.14373720242412813
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,SYNT,Syntactic Change,178,7.319078947368421,0.0788149146670649
+gemma3_12b_pairwise_qlora,en,Align-and-Shine,2432,OMIT,Omission,987,40.58388157894737,0.20995033797519932
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,SYN,Synonymy,123642,35.714657099776424,0.3840480500289494
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,MOD,Modulation,35672,10.304049174740175,0.18207715554441609
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,COMP,Compression,127785,36.91138494601293,0.12933883166382884
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,EXPL,Explanation,61911,17.88332553423803,0.12026901010059467
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,SYNT,Syntactic Change,24096,6.960259276590582,0.06918402915891395
+gemma3_12b_pairwise_qlora,en,MultiSim,346194,OMIT,Omission,143663,41.497830696083696,0.2162390177773797
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,SYN,Synonymy,2845,45.857511283043195,0.4721492012508112
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,MOD,Modulation,3494,56.318504190844614,0.7218171110730836
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,COMP,Compression,2672,43.06898774983881,0.14632851048124193
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,EXPL,Explanation,1622,26.144422952933592,0.15897075676282757
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,SYNT,Syntactic Change,341,5.49645390070922,0.07128598630734646
+gemma3_12b_pairwise_qlora,es,Align-and-Shine,6204,OMIT,Omission,2158,34.78401031592521,0.17307825989523629
+gemma3_12b_pairwise_qlora,es,iDEM,285,SYN,Synonymy,228,80.0,0.788063301030258
+gemma3_12b_pairwise_qlora,es,iDEM,285,MOD,Modulation,269,94.3859649122807,0.9433335363575015
+gemma3_12b_pairwise_qlora,es,iDEM,285,COMP,Compression,97,34.03508771929825,0.15364513683316158
+gemma3_12b_pairwise_qlora,es,iDEM,285,EXPL,Explanation,68,23.859649122807017,0.1976152096973032
+gemma3_12b_pairwise_qlora,es,iDEM,285,SYNT,Syntactic Change,46,16.140350877192983,0.14884763437042697
+gemma3_12b_pairwise_qlora,es,iDEM,285,OMIT,Omission,26,9.12280701754386,0.044576563248449955
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,SYN,Synonymy,33650,35.99353934687503,0.40374993692772
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,MOD,Modulation,3581,3.830397159024056,0.1916364484779122
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,COMP,Compression,41676,44.57850656226936,0.14991369988982142
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,EXPL,Explanation,33913,36.27485586539593,0.22734372543328477
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,SYNT,Syntactic Change,6987,7.47360652055322,0.0852779933505451
+gemma3_12b_pairwise_qlora,fr,Align-and-Shine,93489,OMIT,Omission,39410,42.15469199584978,0.2112777910497284
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,SYN,Synonymy,74498,48.92911327558011,0.5052639530540626
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,MOD,Modulation,6931,4.552171657132349,0.1685215825548119
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,COMP,Compression,78502,51.558877424354876,0.18892332729397712
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,EXPL,Explanation,27443,18.024130253453045,0.1143913872880551
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,SYNT,Syntactic Change,10329,6.783924548625023,0.0720939341474286
+gemma3_12b_pairwise_qlora,fr,MultiSim,152257,OMIT,Omission,67508,44.33819134752425,0.2454655210459579
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,SYN,Synonymy,5862,68.146942571495,0.6693575666450048
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,MOD,Modulation,1565,18.193443385259243,0.3351282455056949
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,COMP,Compression,5372,62.45059288537549,0.26017426381098085
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,EXPL,Explanation,1688,19.623343408509648,0.12139456998242254
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,SYNT,Syntactic Change,789,9.172285514996512,0.09188321683530919
+gemma3_12b_pairwise_qlora,it,Align-and-Shine,8602,OMIT,Omission,5775,67.13554987212277,0.39527834080429747
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,SYN,Synonymy,37227,65.98075184771628,0.646363655824038
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,MOD,Modulation,924,1.6376880948582975,0.07744471331749127
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,COMP,Compression,13966,24.75319473245777,0.0846652736799687
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,EXPL,Explanation,643,1.139646585491218,0.010491855713684897
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,SYNT,Syntactic Change,919,1.628826146293047,0.01838483000668088
+gemma3_12b_pairwise_qlora,it,MultiSim,56421,OMIT,Omission,16810,29.793871076372273,0.166250984365905
+gemma3_12b_pairwise_qlora,it,iDEM,309,SYN,Synonymy,305,98.70550161812298,0.9782068044611939
+gemma3_12b_pairwise_qlora,it,iDEM,309,MOD,Modulation,261,84.46601941747574,0.8463262478979573
+gemma3_12b_pairwise_qlora,it,iDEM,309,COMP,Compression,204,66.01941747572816,0.4054691640558088
+gemma3_12b_pairwise_qlora,it,iDEM,309,EXPL,Explanation,87,28.155339805825243,0.24833832122654778
+gemma3_12b_pairwise_qlora,it,iDEM,309,SYNT,Syntactic Change,130,42.07119741100323,0.31982309703019485
+gemma3_12b_pairwise_qlora,it,iDEM,309,OMIT,Omission,209,67.63754045307444,0.3012771146386738
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,SYN,Synonymy,29404,83.81745104187452,0.8118967699637446
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,MOD,Modulation,26,0.0741141928679342,0.04286335327318272
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,COMP,Compression,4471,12.744790627405148,0.06157752732289671
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,EXPL,Explanation,4989,14.221373393004761,0.09128963024708864
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,SYNT,Syntactic Change,694,1.9782788403979361,0.026972165421968015
+gemma3_12b_pairwise_qlora,ja,MultiSim,35081,OMIT,Omission,603,1.7188791653601665,0.012535718528745922
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,SYN,Synonymy,559,50.22461814914645,0.5203144956848768
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,MOD,Modulation,636,57.142857142857146,0.6409746027066604
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,COMP,Compression,298,26.774483378256964,0.08758780223721564
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,EXPL,Explanation,146,13.11769991015274,0.0735706324488186
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,SYNT,Syntactic Change,107,9.613656783468103,0.08663346206107818
+gemma3_12b_pairwise_qlora,pt-BR,MultiSim,1113,OMIT,Omission,259,23.270440251572328,0.09719632722979939
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,SYN,Synonymy,72954,48.6178493362478,0.495968099753175
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,MOD,Modulation,16749,11.161832915711468,0.2376728770435481
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,COMP,Compression,85383,56.900757050701074,0.2226496760950328
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,EXPL,Explanation,23888,15.91939009436477,0.10261231889976243
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,SYNT,Syntactic Change,6880,4.5849549501519435,0.05267635670821439
+gemma3_12b_pairwise_qlora,ru,MultiSim,150056,OMIT,Omission,74588,49.706776136908886,0.27817375980060116
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,SYN,Synonymy,219,53.80835380835381,0.5297089895944402
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,MOD,Modulation,36,8.845208845208845,0.18020870178060108
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,COMP,Compression,312,76.65847665847666,0.38529775650778986
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,EXPL,Explanation,37,9.090909090909092,0.048116189435495935
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,SYNT,Syntactic Change,26,6.388206388206388,0.06533526599510388
+gemma3_12b_pairwise_qlora,sl,MultiSim,407,OMIT,Omission,333,81.81818181818181,0.4867803902159527
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,SYN,Synonymy,255,100.0,0.976506562434352
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,MOD,Modulation,0,0.0,0.00913356676397169
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,COMP,Compression,8,3.1372549019607843,0.012074350431720934
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,EXPL,Explanation,0,0.0,0.003998083220826281
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,SYNT,Syntactic Change,0,0.0,0.0025764996713998245
+gemma3_12b_pairwise_qlora,ur,SimplifyUR,255,OMIT,Omission,0,0.0,0.00480871531418683
 multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,SYN,Synonymy,181,78.35497835497836,0.3358933750169102
 multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,MOD,Modulation,5,2.1645021645021645,0.10650449810606061
 multilingual_e5_large_bce,ar,Saaq al-Bambuu,231,COMP,Compression,231,100.0,0.7121349516369048

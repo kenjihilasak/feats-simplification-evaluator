@@ -238,16 +238,36 @@ class AnnotationService:
         self,
         user: AuthenticatedUser,
         *,
+        sources: Sequence[str] = (),
+        agreeing_models: Sequence[str] = (),
         request_id: str | None = None,
         remote_addr: str | None = None,
     ) -> dict[str, Any] | None:
         self.require_reviewer(user)
+        clean_sources, clean_models = self._clean_queue_filters(sources, agreeing_models)
         return self.database.claim_next(
             reviewer_id=user.user_id,
             allowed_languages=user.allowed_languages,
+            sources=clean_sources,
+            agreeing_models=clean_models,
             request_id=request_id,
             remote_addr=remote_addr,
         )
+
+    @staticmethod
+    def _clean_queue_filters(
+        sources: Sequence[str], agreeing_models: Sequence[str]
+    ) -> tuple[tuple[str, ...], tuple[str, ...]]:
+        clean_sources = tuple(
+            sorted({str(value).strip() for value in sources if str(value).strip()})
+        )
+        clean_models = tuple(sorted({str(value).lower() for value in agreeing_models}))
+        unknown_models = set(clean_models) - {"gemma", "qwen", "e5", "xlmr"}
+        if unknown_models:
+            raise ValidationError(f"unknown model filters: {sorted(unknown_models)}")
+        if len(clean_sources) > 20 or len(clean_models) > 4:
+            raise ValidationError("too many queue filters")
+        return clean_sources, clean_models
 
     def get_task(self, task_id: str, user: AuthenticatedUser) -> dict[str, Any]:
         return self.database.get_task(
@@ -255,7 +275,7 @@ class AnnotationService:
             user_id=user.user_id,
             role=user.role,
             allowed_languages=user.allowed_languages,
-            include_model_votes=False,
+            include_model_votes=True,
         )
 
     def save(
@@ -326,9 +346,19 @@ class AnnotationService:
             remote_addr=remote_addr,
         )
 
-    def my_progress(self, user: AuthenticatedUser) -> dict[str, Any]:
+    def my_progress(
+        self,
+        user: AuthenticatedUser,
+        *,
+        sources: Sequence[str] = (),
+        agreeing_models: Sequence[str] = (),
+    ) -> dict[str, Any]:
+        clean_sources, clean_models = self._clean_queue_filters(sources, agreeing_models)
         return self.database.reviewer_progress(
-            user.user_id, allowed_languages=user.allowed_languages
+            user.user_id,
+            allowed_languages=user.allowed_languages,
+            sources=clean_sources,
+            agreeing_models=clean_models,
         )
 
     def admin_progress(self, user: AuthenticatedUser) -> dict[str, Any]:
