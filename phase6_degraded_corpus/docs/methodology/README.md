@@ -7,6 +7,10 @@ Current, selected configurations (2026-09-30). The rationale and evidence are in
 | MEANING | [meaning.md](meaning.md) | Qwen2.5-7B-Instruct bf16, v2.1 | 88% |
 | MOD | [modulation.md](modulation.md) | Gemma-3-12B-it bf16, v2 | 95% |
 | ILLOC | [illocution.md](illocution.md) | Qwen2.5-7B-Instruct bf16, v2 | 90% (question + directive), 95% (hedged) |
+| FLUENCY | [fluency.md](fluency.md) | Deterministic grammar rules | Audit pending |
+| OMIT | [omission.md](omission.md) | Deterministic alignment rule | Audit pending |
+| SYN | [synonymy.md](synonymy.md) | Deterministic alignment + `wordfreq` | Audit pending |
+| EXPL | [explanation.md](explanation.md) | Deterministic alignment rule | Audit pending |
 
 **Shared to all three axes:**
 - **Inputs:** [`../inputs.md`](../inputs.md).
@@ -29,4 +33,4 @@ Current, selected configurations (2026-09-30). The rationale and evidence are in
 - Generator: [`generate_mmi_v2.py`](../../src/generation/generate_mmi_v2.py).
 - Checks: [`score_mmi_candidates.py`](../../src/evaluation/score_mmi_candidates.py).
 
-**Not yet redesigned:** FLUENCY, OMIT, SYN and EXPL. Their v1 pilot methodology and all v1 pages are in [`archive/`](archive/).
+The failed LLM-pilot methodology for FLUENCY, OMIT, SYN and EXPL remains in [`archive/`](archive/).

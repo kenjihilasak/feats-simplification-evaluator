@@ -16,6 +16,7 @@ from wordfreq import zipf_frequency
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
 from phase6_degraded_corpus.src.generation.generate_fose_rules import WORD_RE, alignment, fluency_sites
 from phase6_degraded_corpus.src.selection.select_mmi_pools import ReservedMatcher, corpus_of
+from phase6_degraded_corpus.src.selection.freeze_evaluation_originals import strong_key
 
 AXES = ("FLUENCY", "OMIT", "SYN", "EXPL")
 
@@ -66,6 +67,11 @@ def build_structural(cfg: dict) -> tuple[list[dict], dict]:
     phase3 = {r["canonical_pair_id"]: r for r in read_jsonl(Path(cfg["phase3a_candidate_file"]))}
     reserved = ReservedMatcher(read_jsonl(Path(cfg["reserved_membership_file"])), cfg["near_duplicate_jaccard"])
     audited = {x.strip() for x in Path(cfg["audited_originals_file"]).read_text().splitlines() if x.strip()}
+    audited_texts = {row["original"] for filename in cfg["audited_split_files"] for row in read_jsonl(Path(filename))}
+    audited_matcher = ReservedMatcher(
+        [{"strong_key": strong_key(text), "original": text} for text in audited_texts],
+        cfg["near_duplicate_jaccard"],
+    )
     mmi = {r["canonical_pair_id"] for r in read_jsonl(Path(cfg["mmi_allocation_file"]))}
     nlp = spacy.load("en_core_web_sm", disable=["ner"])
     counters = Counter()
@@ -79,8 +85,10 @@ def build_structural(cfg: dict) -> tuple[list[dict], dict]:
         original, simple = row.get("original", "").strip(), row.get("simple", "").strip()
         if not original or not simple or original.casefold() == simple.casefold():
             counters["empty_or_identical"] += 1; continue
-        if row["canonical_original_id"] in audited:
-            counters["audited_original"] += 1; continue
+        audited_hit = audited_matcher.match(original)
+        if row["canonical_original_id"] in audited or audited_hit:
+            kind = audited_hit["type"] if audited_hit else "id"
+            counters[f"audited_original_{kind}"] += 1; continue
         if reserved.match(original):
             counters["reserved_original"] += 1; continue
         f = structural_features(original, simple)
@@ -125,7 +133,10 @@ def finalize(cfg: dict, rows: list[dict], scores: dict[str, dict]) -> tuple[dict
             if score["nli_probabilities"]["contradiction"] >= cfg["nli_contradiction_threshold"]: drops[axis]["nli_contradiction"] += 1; continue
             pools[axis].append({**row, "target_axis": axis, "clean_acceptability": score["acceptability"],
                                 "clean_nli_probabilities": score["nli_probabilities"]})
-    non_fluency_max = max(len(pools[a]) for a in ("OMIT", "SYN", "EXPL"))
+    non_fluency_max = max(
+        [len(pools[a]) for a in ("OMIT", "SYN", "EXPL")]
+        + list(cfg["existing_axis_pair_counts"].values())
+    )
     if len(pools["FLUENCY"]) > non_fluency_max:
         groups = defaultdict(list)
         for row in pools["FLUENCY"]:

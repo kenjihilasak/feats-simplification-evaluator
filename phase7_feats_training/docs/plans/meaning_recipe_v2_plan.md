@@ -29,7 +29,9 @@ This plan changes the **data**, not the model: graded negatives, harder validati
 
 ## 2. Graded variants per clean pair (Phase 6)
 
-For each eligible clean pair (WikiAutoEN/ASSET; clean-input gates as in MMI), build a **group** of candidates for the same Original, each with a target meaning score:
+**Base pairs:** exactly the **MEANING pairs of the v1 corpus** (`runs/mmi_en_v2_full/corpus/`, `axis == MEANING`), minus Wikipedia-Vikidia: about 6.9k pairs from WikiAutoEN and ASSET. They already passed the clean-input gates and the text-based exclusions. Their clean simplification and their contradiction are reused as they are; only the intermediate levels are new. Using the same pairs keeps the v1 vs v2 comparison clean: only the added candidates differ. Keep the same train/validation split per pair.
+
+For each base pair, build a **group** of candidates for the same Original, each with a target meaning score:
 
 | Level | Target | Construction | Who |
 |---|---|---|---|
