@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from phase6_degraded_corpus.src.evaluation.materialize_mmi_full import materialize
@@ -32,9 +33,10 @@ class MaterializeMmiFullTest(unittest.TestCase):
         self.assertEqual(report["withheld_hedged_pairs"], 1)
         self.assertTrue(instances[0]["strict_single_strategy_candidate"])
 
-    def test_audited_original_is_a_hard_failure(self):
-        with self.assertRaisesRegex(ValueError, "audited original"):
-            materialize([planned("p1", "o1")], [scored("p1")], {"o1"}, 3)
+    def test_audited_original_is_dropped_and_counted(self):
+        instances, _, report = materialize([planned("p1", "o1"), planned("p2", "o2")], [scored("p1"), scored("p2")], {"o1"}, 3)
+        self.assertEqual({row["canonical_original_id"] for row in instances}, {"o2"})
+        self.assertIn("excluded_audited_original", json.dumps(report))
 
     def test_hedged_can_be_included_after_gate(self):
         plan = [planned("p2", "o2", "assertion_to_hedged")]
