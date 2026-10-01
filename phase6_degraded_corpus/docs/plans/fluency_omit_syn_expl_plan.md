@@ -19,6 +19,8 @@ In v2, these axes are generated **by rule**. OMIT, SYN and EXPL can be recovered
 4. Install and pin `wordfreq` in `.venv-phase6-vllm` (not installed yet); record its version. Reuse the MMI checker stack unchanged: NLI and acceptability revisions, τ, δ and scorer utilities from `configs/experiments/mmi_en_v2_pools.json`, and the `.venv-phase6-vllm` venv. No LLM generation.
 5. All outputs go under `runs/fose_en_v1/`. Stop at every **STOP**.
 
+> **Amendment (2026-10-01):** sources are **WikiAutoEN and ASSET only**. Wikipedia-Vikidia is excluded (see `inputs.md`, Rules). Drop its rows from the pools before the audit is built. Every "per source" cell in §4 is now two sources.
+
 ## 2. Source pools
 
 Common gate (as in MMI): Original 8–45 tokens, non-identical, acceptability(clean) ≥ τ, NLI P(contradiction | Original, Simplified) < 0.5. Then, per axis:

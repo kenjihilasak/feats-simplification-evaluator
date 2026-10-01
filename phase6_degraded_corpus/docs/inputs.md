@@ -30,6 +30,8 @@ Phase 6 needs clean positives. `target_simple` applies the stricter Phase 2a fil
 
 ### Rules
 
+- **Wikipedia-Vikidia is excluded from every new synthetic corpus (decision 2026-10-01).** Its pairs are only loosely aligned: 27% pass the structural filters, against 43% for WikiAutoEN. Its rows already in `mmi_en_v2_full` (≈ 94 pairs) are left in place; MEANING v2 removed them. Its audited heldout cases remain a diagnostic only.
+
 - Phase 6 never repairs or rewrites text itself. If a new text defect is found, fix it in a new Phase 2b variant and update this page.
 - Phase 6 never modifies Phase 2b files.
 - **Reserved evaluation originals** are excluded before any selection: Simplicity-DA, Human-Likert, AssetAnn, SimpEval-2022 and the official ASSET test set, frozen by `src/selection/freeze_evaluation_originals.py` (manifest: `runs/mmi_en_v2/pools/evaluation_sources_manifest.json`; 419 distinct sentences). Matching uses the strong key (NFKC, casefold, alphanumerics only) plus near-duplicate exclusion (word Jaccard ≥ 0.8). See §0 item 3 of the [v2 plan](plans/archive/meaning_mod_illoc_v2_plan.md). This applies to every Phase 6 experiment and to any future training set.
