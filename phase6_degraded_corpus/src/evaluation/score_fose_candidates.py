@@ -99,7 +99,7 @@ def score(rows: list[dict], cfg: dict, device: str) -> list[dict]:
 
 def build_review(rows: list[dict], cfg: dict, review: Path, key_path: Path) -> None:
     # Audit the automatic-check survivors; if a cell has fewer than 20, use all survivors.
-    eligible = [r for r in rows if r["valid"]]
+    eligible = [r for r in rows if r["valid"] and r["corpus"] in cfg["corpora"]]
     grouped = defaultdict(list)
     for row in eligible:
         grouped[(row["target_axis"], row["corpus"])].append(row)

@@ -13,7 +13,7 @@
   ],
   "mmi_allocation_file": "phase6_degraded_corpus/runs/mmi_en_v2_full/allocation/all.jsonl",
   "output_dir": "phase6_degraded_corpus/runs/fose_en_v1",
-  "corpora": ["WikiAutoEN", "ASSET", "Wikipedia-Vikidia"],
+  "corpora": ["WikiAutoEN", "ASSET"],
   "original_token_range": [8, 45],
   "near_duplicate_jaccard": 0.8,
   "nli_model": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",

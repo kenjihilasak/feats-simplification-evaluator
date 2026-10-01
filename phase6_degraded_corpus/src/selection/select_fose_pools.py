@@ -126,6 +126,10 @@ def build_structural(cfg: dict) -> tuple[list[dict], dict]:
 def finalize(cfg: dict, rows: list[dict], scores: dict[str, dict]) -> tuple[dict[str, list[dict]], dict]:
     pools = {a: [] for a in AXES}; drops = defaultdict(Counter)
     for row in rows:
+        if row["corpus"] not in cfg["corpora"]:
+            for axis in row["eligible_axes"]:
+                drops[axis]["source_excluded"] += 1
+            continue
         score = scores.get(row["canonical_pair_id"])
         if score is None: raise ValueError(f"missing clean score: {row['canonical_pair_id']}")
         for axis in row["eligible_axes"]:

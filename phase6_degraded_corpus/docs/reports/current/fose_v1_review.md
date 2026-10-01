@@ -48,20 +48,6 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Monaco has an area of , making it the second-smallest country in the world after the Vatican.
-- **Simplified:** Monaco is a tiny country (the second smallest in the world) located in southern Europe.
-- **Degraded:** Monaco are a tiny country (the second smallest in the world) located in southern Europe.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F005
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
 - **Source:** ASSET
 - **Original:** These flies are clothed in black or pale (white or golden) hairs, and are themselves either black or metallic green or blue.
 - **Simplified:** The flies are clothed in black or pale colored hairs. They are either black, metallic green, or metallic blue.
@@ -72,7 +58,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F006
+### Case F005
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -86,7 +72,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F007
+### Case F006
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -100,7 +86,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F008
+### Case F007
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -114,7 +100,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F009
+### Case F008
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -128,7 +114,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F010
+### Case F009
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -142,7 +128,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F011
+### Case F010
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -156,21 +142,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F012
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Gram is also sometimes spelled gramme in English-speaking countries other than the United States, though this older usage is declining.
-- **Simplified:** The word gramme can also be used in British English, but many British people think that this is old-fashioned.
-- **Degraded:** The word gramme can also be used in British English, but many British people think that this are old - fashioned.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F013
+### Case F011
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -184,7 +156,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F014
+### Case F012
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -198,7 +170,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F015
+### Case F013
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -212,7 +184,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F016
+### Case F014
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -226,7 +198,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F017
+### Case F015
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -240,7 +212,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F018
+### Case F016
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -254,7 +226,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F019
+### Case F017
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -268,7 +240,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F020
+### Case F018
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -282,7 +254,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F021
+### Case F019
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -296,7 +268,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F022
+### Case F020
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -310,7 +282,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F023
+### Case F021
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -324,7 +296,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F024
+### Case F022
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -338,7 +310,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F025
+### Case F023
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -352,21 +324,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F026
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Using this metric, Mount Everest is the highest mountain on Earth, at . There are at least 100 mountains with heights of over above sea level, all of which are located in central and southern Asia.
-- **Simplified:** The highest mountain on earth is Mount Everest, located in the Himalayas of Asia, at 29,029 ft (8,848 m) above sea level.
-- **Degraded:** The highest mountain on earth are Mount Everest, located in the Himalayas of Asia, at 29,029 ft (8,848 m) above sea level.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F027
+### Case F024
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -380,21 +338,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F028
-
-- **Axis:** `EXPL`
-- **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Harry Potter is a series of fantasy novels written by British author J. K. Rowling.
-- **Simplified:** Harry Potter is a fantasy series of 7 novels written by British author J.K. Rowling(full name Joanne Kathleen Rowling).
-- **Degraded:** Harry Potter is a fantasy series of 7 novels written by British author J. K. Rowling.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F029
+### Case F025
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -408,7 +352,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F030
+### Case F026
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -422,21 +366,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F031
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** While most of the country is hilly, elevations never exceed - the highest point being the Bălănești Hill.
-- **Simplified:** The country is hilly but contains no mountains - the largest hill is Bălănești Hill at 430 metres.
-- **Degraded:** country is hilly but contains no mountains - the largest hill is Bălănești Hill at 430 metres.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F032
+### Case F027
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -450,7 +380,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F033
+### Case F028
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -464,21 +394,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F034
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** In ballet, a pas de deux (French, literally "step of two") is a dance duet in which two dancers, typically a male and a female, perform ballet steps together.
-- **Simplified:** A pas de deux is a French term meaning "dance for two". The term is used in ballet. It is a dance for a male dancer and a ballerina.
-- **Degraded:** A pas de deux are a French term meaning " dance for two ". The term is used in ballet. It is a dance for a male dancer and a ballerina.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F035
+### Case F029
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -492,21 +408,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F036
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** East Antarctica is a cold region with a ground base above sea level and occupies most of the continent.
-- **Simplified:** Antarctica is a continent located in the southern part of the world.
-- **Degraded:** Antarctica are a continent located in the southern part of the world.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F037
+### Case F030
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -520,7 +422,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F038
+### Case F031
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -534,21 +436,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F039
-
-- **Axis:** `EXPL`
-- **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Italian is also the everyday language used by most of those who work in the state.
-- **Simplified:** Italian is also the everyday language used by most of those who work in the state while Latin is often used in religious ceremonies.
-- **Degraded:** Italian is also the everyday language used by most of those who work in the state.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F040
+### Case F032
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -562,7 +450,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F041
+### Case F033
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -576,21 +464,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F042
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Most nests are in trees, both deciduous and coniferous.
-- **Simplified:** Most nests are in trees, but they can also be found in shrubs, vines, or on buildings and hanging flower pots.
-- **Degraded:** Most nests is in trees, but they can also be found in shrubs, vines, or on buildings and hanging flower pots.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F043
+### Case F034
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -604,7 +478,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F044
+### Case F035
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -618,21 +492,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F045
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The highest peak of Azerbaijan is Mount Bazardüzü (4,466 m), while the lowest point lies in the Caspian Sea (−28 m).
-- **Simplified:** Azerbaijan is located in both Europe and Asia. The highest mountain in the country is Bazardüzü which is 4466 metres above sea level.
-- **Degraded:** Azerbaijan is located in both Europe and Asia. The highest mountain in country is Bazardüzü which is 4466 metres above sea level.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F046
+### Case F036
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -646,7 +506,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F047
+### Case F037
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -660,7 +520,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F048
+### Case F038
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -674,7 +534,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F049
+### Case F039
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -688,35 +548,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F050
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Clovis's wife Clotilde, a Burgundian princess, was a Catholic despite the Arianism that surrounded her at court. Her persistence eventually persuaded Clovis to convert to Catholicism, which he initially resisted.
-- **Simplified:** Clovis converted to Catholicism, as opposed to the ArianChristianity that was common among Germanic peoples, because his wife, the Burgundian Clotilde, was a Catholic.
-- **Degraded:** Clovis converted at Catholicism, as opposed to the ArianChristianity that was common among Germanic peoples, because his wife, the Burgundian Clotilde, was a Catholic.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F051
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The Louvre ( ), or the Louvre Museum ( ), is the world's largest art museum and a historic monument in Paris, France.
-- **Simplified:** The Louvre is a museum in Paris, France.
-- **Degraded:** The Louvre are a museum in Paris, France.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F052
+### Case F040
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -730,7 +562,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F053
+### Case F041
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -744,7 +576,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F054
+### Case F042
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -758,7 +590,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F055
+### Case F043
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -772,7 +604,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F056
+### Case F044
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -786,7 +618,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F057
+### Case F045
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -800,7 +632,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F058
+### Case F046
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -814,7 +646,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F059
+### Case F047
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -828,7 +660,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F060
+### Case F048
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -842,7 +674,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F061
+### Case F049
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -856,21 +688,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F062
-
-- **Axis:** `SYN`
-- **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Ancient Greece consisted of several hundred relatively independent city-states (poleis).
-- **Simplified:** Ancient Greece consisted of several hundred more-or-less independent city states.
-- **Degraded:** Ancient Greece consisted of several hundred relatively independent city states.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F063
+### Case F050
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -884,21 +702,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F064
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Ice skates are metal blades attached underfoot and used to propel the bearer across a sheet of ice while ice skating.
-- **Simplified:** Ice skates are boots with blades attached to the bottom. They are used in ice skating to propel oneself across ice surfaces.
-- **Degraded:** Ice skates is boots with blades attached to the bottom. They are used in ice skating to propel oneself across ice surfaces.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F065
+### Case F051
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -912,7 +716,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F066
+### Case F052
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -926,7 +730,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F067
+### Case F053
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -940,21 +744,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F068
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Henry Ford (July 30, 1863 - April 7, 1947) was an American industrialist and a business magnate, the founder of the Ford Motor Company, and the sponsor of the development of the assembly line technique of mass production.
-- **Simplified:** Henry Ford Henry Ford was an American entrepreneur and the founder of the Ford Motor Company.
-- **Degraded:** Henry Ford Henry Ford were an American entrepreneur and the founder of the Ford Motor Company.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F069
+### Case F054
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -968,7 +758,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F070
+### Case F055
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -982,7 +772,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F071
+### Case F056
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -996,7 +786,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F072
+### Case F057
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1010,7 +800,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F073
+### Case F058
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1024,7 +814,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F074
+### Case F059
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1038,21 +828,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F075
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Shirley Temple Black (April 23, 1928 - February 10, 2014) was an American actress, singer, dancer, businesswoman, and diplomat who was Hollywood's number one box-office draw as a child actress from 1935 to 1938.
-- **Simplified:** Shirley Temple (April 23, 1928 - February 10, 2014) was an American movie and television actress, singer, business woman, dancer and a diplomat.
-- **Degraded:** Shirley Temple (April 23, 1928 - February 10, 2014) were an American movie and television actress, singer, business woman, dancer and a diplomat.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F076
+### Case F060
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1066,7 +842,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F077
+### Case F061
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1080,7 +856,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F078
+### Case F062
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1094,7 +870,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F079
+### Case F063
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1108,7 +884,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F080
+### Case F064
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1122,7 +898,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F081
+### Case F065
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1136,7 +912,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F082
+### Case F066
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1150,21 +926,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F083
-
-- **Axis:** `SYN`
-- **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The deeds that count on Earth are not the ones that count in Heaven.
-- **Simplified:** The things that seem to be important on Earth are not the things that are important in Heaven.
-- **Degraded:** The things that seem to be important on Earth are not the things that count in Heaven.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F084
+### Case F067
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1178,7 +940,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F085
+### Case F068
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1192,35 +954,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F086
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Heidi (; ) is a work of children's fiction published in 1881 by Swiss author Johanna Spyri, originally published in two parts as Heidi:
-- **Simplified:** Heidi is a novel written by Johanna Spyri in 1880.
-- **Degraded:** Heidi is a novel written by Johanna Spyri on 1880.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F087
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The giant panda is among the world's most adored and protected rare animals, and is one of the few in the world whose natural inhabitant status was able to gain a UNESCO World Heritage Site designation.
-- **Simplified:** The giant panda is one of the most endangered species on earth.
-- **Degraded:** The giant panda is one for the most endangered species on earth.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F088
+### Case F069
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1234,7 +968,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F089
+### Case F070
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1248,7 +982,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F090
+### Case F071
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1262,7 +996,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F091
+### Case F072
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1276,7 +1010,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F092
+### Case F073
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1290,7 +1024,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F093
+### Case F074
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1304,7 +1038,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F094
+### Case F075
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1318,21 +1052,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F095
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** He was the fifth of six children of wealthy society doctor and financier Robert Darwin and Susannah Darwin (née Wedgwood). His grandfathers Erasmus Darwin and Josiah Wedgwood were both prominent abolitionists.
-- **Simplified:** He was the grandson of a famous doctor, Erasmus Darwin.
-- **Degraded:** He was the grandson for a famous doctor, Erasmus Darwin.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F096
+### Case F076
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1346,7 +1066,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F097
+### Case F077
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1360,7 +1080,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F098
+### Case F078
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1374,35 +1094,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F099
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** Following the agreement, on 1 September 1939, Germany invaded Poland, marking the beginning of World War II in Europe.
-- **Simplified:** In 1939 the German invasion of Poland, began World War II in Europe.
-- **Degraded:** In 1939 the German invasion of Poland, began World War II on Europe.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F100
-
-- **Axis:** `EXPL`
-- **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
-- **Source:** Wikipedia-Vikidia
-- **Original:** St. Lawrence Island (, ) is located west of mainland Alaska in the Bering Sea, just south of the Bering Strait.
-- **Simplified:** St. Lawrence Island The St. Lawrence Island (Central Siberian Yupik: Sivuqaq) is an island in Alaska that is south of the Bering Strait.
-- **Degraded:** St. Lawrence Island (Central Siberian Yupik: Sivuqaq) is an island in Alaska that is south of the Bering Strait.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F101
+### Case F079
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1416,7 +1108,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F102
+### Case F080
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1430,7 +1122,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F103
+### Case F081
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1444,7 +1136,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F104
+### Case F082
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1458,7 +1150,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F105
+### Case F083
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1472,7 +1164,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F106
+### Case F084
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1486,7 +1178,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F107
+### Case F085
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1500,7 +1192,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F108
+### Case F086
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1514,7 +1206,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F109
+### Case F087
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1528,7 +1220,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F110
+### Case F088
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1542,7 +1234,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F111
+### Case F089
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1556,7 +1248,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F112
+### Case F090
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1570,7 +1262,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F113
+### Case F091
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1584,7 +1276,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F114
+### Case F092
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1598,21 +1290,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F115
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The only primary sources for Atlantis are Plato's dialogues Timaeus and Critias; all other mentions of the island are based on them.
-- **Simplified:** The story of Atlantis first appears in the stories Timaeus and Critias by the GreekphilosopherPlato.
-- **Degraded:** story of Atlantis first appears in the stories Timaeus and Critias by the GreekphilosopherPlato.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F116
+### Case F093
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1626,7 +1304,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F117
+### Case F094
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1640,7 +1318,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F118
+### Case F095
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1654,7 +1332,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F119
+### Case F096
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1668,7 +1346,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F120
+### Case F097
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1682,7 +1360,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F121
+### Case F098
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1696,7 +1374,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F122
+### Case F099
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1710,7 +1388,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F123
+### Case F100
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1724,7 +1402,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F124
+### Case F101
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1738,21 +1416,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F125
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The brown recluse, Loxosceles reclusa, Sicariidae (formerly placed in a family "Loxoscelidae") is a recluse spider with a necrotic venom.
-- **Simplified:** The brown recluse has six eyes (three pairs), unlike most spiders. The scientific name of the spider Loxosceles reclusa comes from words that mean "slanted leg recluse".
-- **Degraded:** The brown recluse have six eyes (three pairs), unlike most spiders. The scientific name of the spider Loxosceles reclusa comes from words that mean " slanted leg recluse ".
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F126
+### Case F102
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1766,7 +1430,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F127
+### Case F103
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1780,7 +1444,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F128
+### Case F104
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1794,7 +1458,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F129
+### Case F105
 
 - **Axis:** `SYN`
 - **Required change and validity criterion:** Restore one harder Original word or phrase with the same meaning as the simple wording.
@@ -1808,7 +1472,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F130
+### Case F106
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1822,7 +1486,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F131
+### Case F107
 
 - **Axis:** `OMIT`
 - **Required change and validity criterion:** Restore one detail that was usefully omitted; it must be unnecessary or too hard for the target reader.
@@ -1836,7 +1500,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F132
+### Case F108
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1850,7 +1514,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F133
+### Case F109
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1864,7 +1528,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F134
+### Case F110
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1878,21 +1542,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F135
-
-- **Axis:** `FLUENCY`
-- **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
-- **Source:** Wikipedia-Vikidia
-- **Original:** The Mona Lisa is also one of the most valuable paintings in the world.
-- **Simplified:** The Mona Lisa is an oil painting by Leonardo da Vinci.
-- **Degraded:** The Mona Lisa are an oil painting by Leonardo da Vinci.
-
-- [ ] Valid
-- [ ] Invalid
-- [ ] Unsure
-- **Note:**
-
-### Case F136
+### Case F111
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1906,7 +1556,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F137
+### Case F112
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1920,7 +1570,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F138
+### Case F113
 
 - **Axis:** `EXPL`
 - **Required change and validity criterion:** Remove one explanation or definition that genuinely helped understanding, changing nothing else.
@@ -1934,7 +1584,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F139
+### Case F114
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1948,7 +1598,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F140
+### Case F115
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
@@ -1962,7 +1612,7 @@ Mark exactly one box per case. **Unsure counts as valid.** Valid means the state
 - [ ] Unsure
 - **Note:**
 
-### Case F141
+### Case F116
 
 - **Axis:** `FLUENCY`
 - **Required change and validity criterion:** Introduce one obvious local grammar error while preserving the meaning and every other quality.
