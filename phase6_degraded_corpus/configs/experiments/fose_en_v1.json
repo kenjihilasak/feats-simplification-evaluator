@@ -1,0 +1,31 @@
+{
+  "experiment_id": "fose_en_v1",
+  "seed": 20260930,
+  "validation_fraction": 0.1,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-29_target_simple_textrepair_v1/data/en/feats_consolidated.jsonl",
+  "phase3a_candidate_file": "phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/data/en/single_strategy_candidates.jsonl",
+  "phase3a_validation_file": "phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/reports/validation.json",
+  "reserved_membership_file": "phase6_degraded_corpus/runs/mmi_en_v2/pools/reserved_original_membership.jsonl",
+  "audited_originals_file": "phase6_degraded_corpus/runs/mmi_en_v2_full/allocation/excluded_audited_originals.txt",
+  "audited_split_files": [
+    "phase6_degraded_corpus/runs/mmi_en_v2/splits/heldout.jsonl",
+    "phase6_degraded_corpus/runs/mmi_en_v2/splits/heldout_meaning_v21.jsonl"
+  ],
+  "mmi_allocation_file": "phase6_degraded_corpus/runs/mmi_en_v2_full/allocation/all.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/fose_en_v1",
+  "corpora": ["WikiAutoEN", "ASSET", "Wikipedia-Vikidia"],
+  "original_token_range": [8, 45],
+  "near_duplicate_jaccard": 0.8,
+  "nli_model": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+  "nli_revision": "b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7",
+  "nli_entailment_threshold": 0.5,
+  "nli_contradiction_threshold": 0.5,
+  "acceptability_model": "cointegrated/roberta-large-cola-krishna2020",
+  "acceptability_revision": "efffc0dbebedfdb84747a32b30ec0c3df15812b1",
+  "tau_accept": 0.94626032,
+  "delta": 0.04240996,
+  "cache_dir": "cache/huggingface",
+  "checker_batch_size": 64,
+  "wordfreq_version": "3.1.1",
+  "existing_axis_pair_counts": {"MEANING": 6974, "MOD": 3569, "ILLOC": 7990}
+}

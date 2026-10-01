@@ -177,7 +177,8 @@ def main():
         report["input_sha256"] = {k: hashlib.sha256(Path(cfg[k]).read_bytes()).hexdigest() for k in ("phase2b_file", "phase3a_candidate_file")}
         (out / "pool_report.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
         (out / "pools/pool_report.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
-    print(json.dumps(report.get("axis_totals", {"structural_union": report["structural_union"]}), indent=2))
+    summary = report["axis_totals"] if "axis_totals" in report else {"structural_union": report["structural_union"]}
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__": main()
