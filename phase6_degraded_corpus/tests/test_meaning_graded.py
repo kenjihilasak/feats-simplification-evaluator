@@ -16,6 +16,9 @@ class GradedRuleTests(unittest.TestCase):
     def test_neutral_trims(self):
         self.assertIn("The Firebird is a ballet.", self.texts(neutral_trims("The Firebird ( ; ) is a ballet."), "empty_or_pronunciation_parenthetical"))
         self.assertIn("It is known as CAF.", self.texts(neutral_trims("It is also known as CAF."), "adverb_also"))
+        self.assertFalse(neutral_trims("It is just below the circle."))
+        text = "They won, but lost later. They won, but lost later."
+        self.assertFalse(major_losses(NLP(text), text))
 
     def test_mild_appositive_and_adjective(self):
         doc = NLP("Great Musgrave is a village in Cumbria, England.")

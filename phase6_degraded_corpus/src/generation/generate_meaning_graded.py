@@ -21,7 +21,8 @@ from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles
 
 TARGETS = {"original_copy": 1.0, "clean": 1.0, "neutral_trim": 1.0, "mild_loss": 0.67, "major_loss": 0.33, "contradiction": 0.0}
 # v2.1 mapping from the human review (2026-10-01): "very"/"really" lose meaning -> mild.
-NEUTRAL_WORDS = {"also", "just"}
+# Confirmation review (2026-10-01): "just" judged "Some" (2/2) -> mild; "also" 21/22 "None".
+NEUTRAL_WORDS = {"also"}
 NON_CONTENT_ADV = {"not", "never", "also", "very", "really", "just", "only", "even", "then", "so", "too", "however", "n't"}
 CONTENT_POS = {"NOUN", "PROPN", "ADJ", "NUM", "VERB", "ADV"}
 WORD = re.compile(r"\w+(?:[-’']\w+)*")
@@ -48,7 +49,7 @@ def neutral_trims(text: str) -> list[dict]:
     out = []
     for m in re.finditer(r"\s*\((?:\s*[;,]\s*)*\)|\s*\(\s*/[^)]*/\s*\)", text):
         out.append({"rule": "empty_or_pronunciation_parenthetical", "text": tidy(text[:m.start()] + text[m.end():])})
-    for m in re.finditer(r"\b(also|just)\b\s*", text, re.I):
+    for m in re.finditer(r"\b(also)\b\s*", text, re.I):
         if m.group(1).lower() in NEUTRAL_WORDS:
             out.append({"rule": f"adverb_{m.group(1).lower()}", "text": tidy(text[:m.start()] + text[m.end():])})
     return out
@@ -65,7 +66,7 @@ def has_content(span) -> bool:
 
 def mild_losses(doc) -> list[dict]:
     text, out = doc.text, []
-    for m in re.finditer(r"\b(very|really)\b\s*", text, re.I):
+    for m in re.finditer(r"\b(very|really|just)\b\s*", text, re.I):
         out.append({"rule": f"intensifier_{m.group(1).lower()}", "removed": m.group(1), "text": tidy(text[:m.start()] + text[m.end():])})
     out += [c for c in clause_and_year_losses(doc, text)]
     for tok in doc:
@@ -126,8 +127,9 @@ def major_losses(doc, text: str) -> list[dict]:
     """Only whole-sentence deletion reached the 'A lot' threshold in the review (v2.1).
     Number generalization was removed (decimal bug, 'about many')."""
     sentences = split_sentences(text)
+    # Never drop a sentence that duplicates another one: nothing would be lost (review case G025).
     return [{"rule": "drop_sentence", "removed": s, "text": tidy(" ".join(sentences[:i] + sentences[i + 1:]))}
-            for i, s in enumerate(sentences[1:], 1)]
+            for i, s in enumerate(sentences[1:], 1) if sentences.count(s) == 1]
 
 
 def balanced(candidate: str, clean: str) -> bool:
