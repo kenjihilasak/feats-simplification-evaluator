@@ -4,6 +4,7 @@ One model per FEATS axis, trained on the Phase 6 corpora and evaluated on held-o
 
 - [Phase 7a — axis-model validation](docs/plans/axis_models_validation_v1_plan.md) ([result](docs/reports/axis_validation_v1.md): MEANING Q1 fails)
 - [MEANING recipe v2 — graded meaning loss](docs/plans/meaning_recipe_v2_plan.md) ([result](docs/reports/meaning_v2.md): beats NLI on Simplicity-DA, system r 0.97; Q1 inconclusive on Human-Likert)
+- FLUENCY v2 (graded) — [result](docs/reports/fluency_v2.md): does not beat CoLA (0.71 vs 0.76); graded = binary
 - Current report: [axis_validation_v1](docs/reports/axis_validation_v1.md)
 
 ## Reproduce the pre-training gate

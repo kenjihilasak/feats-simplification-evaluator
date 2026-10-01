@@ -125,7 +125,8 @@ def evaluate(reps: int) -> None:
             rows = [dict(r, human_score=float(r["human_score"])) for r in read_jsonl(RUN / f"data/evaluation/{name}.jsonl")]
             for r, s in zip(rows, score(rows)):
                 r["model"] = s
-                r.update(baselines.get(r["evaluation_id"], {}))
+                # Baselines were stored with the older Human-Likert id (no text hash) = aggregation_id.
+                r.update(baselines.get(r["evaluation_id"]) or baselines.get(r.get("aggregation_id"), {}))
             arm_scores[(arm, name)] = rows
         held = list(read_jsonl(RUN / "data/evaluation/heldout_fose.jsonl"))
         c = score([{"original": r["original"], "candidate": r["clean"]} for r in held])
