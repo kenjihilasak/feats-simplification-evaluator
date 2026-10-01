@@ -20,7 +20,14 @@ from contracts import atomic_json, read_jsonl
 
 BASELINES = ("nli_bidirectional_entailment", "length_ratio", "inverse_length_ratio", "acceptability",
              "lens_salsa_score", "referee_score")
-SHORTCUTS = ("length_ratio", "inverse_length_ratio", "acceptability")
+SHORTCUTS = ("length_ratio", "inverse_length_ratio", "acceptability", "sentence_count", "no_question_mark")
+
+
+def structural(text: str) -> dict:
+    """Surface cues that alone could separate MOD / ILLOC degradations (more sentences; no '?')."""
+    import re
+    return {"sentence_count": float(len([s for s in re.split(r"(?<=[.!?])\s+(?=[A-Z\"“(])", text.strip()) if s])),
+            "no_question_mark": float(not text.rstrip().rstrip('"”').endswith("?"))}
 RATING_SETS = ("simplicity_da", "human_likert", "simpeval_2022")
 MARGIN = -0.05
 
@@ -139,7 +146,7 @@ def main() -> None:
             vals = {}
             for v in ("clean", "degraded"):
                 key = f'{c["evaluation_id"]}:{v}'
-                vals[v] = {"model": scores[key], **baselines.get(key, {})}
+                vals[v] = {"model": scores[key], **baselines.get(key, {}), **structural(c[v])}
             for f in fields:
                 if f in vals["clean"] and f in vals["degraded"]:
                     wins[f].append(vals["clean"][f] > vals["degraded"][f])
@@ -155,7 +162,13 @@ def main() -> None:
         by_pair = defaultdict(dict)
         for r, s in zip(synth, s_scores):
             by_pair[r["canonical_pair_id"]][r["provenance"]["variant"]] = {"model": s, **baselines.get(r["canonical_pair_id"], {})}
-        out["synthetic_validation_pairwise"] = {"n": len(by_pair), "model": float(np.mean([p["simplified"]["model"] > p["degraded"]["model"] for p in by_pair.values()]))}
+        synth_out = {"n": len(by_pair), "model": float(np.mean([p["simplified"]["model"] > p["degraded"]["model"] for p in by_pair.values()]))}
+        texts = {(r["canonical_pair_id"], r["provenance"]["variant"]): r for r in synth}
+        for f in ("sentence_count", "no_question_mark"):
+            wins = [structural(texts[(pid, "simplified")]["candidate_simplification"])[f] > structural(texts[(pid, "degraded")]["candidate_simplification"])[f]
+                    for pid in by_pair]
+            synth_out[f"shortcut_{f}"] = float(np.mean(wins))
+        out["synthetic_validation_pairwise"] = synth_out
         # --- pre-registered verdicts ---
         if axis == "MEANING":
             verdict = {}

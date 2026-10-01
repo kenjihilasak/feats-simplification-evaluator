@@ -67,3 +67,19 @@ Do **not** scale the same recipe to more axes before changing it. For MEANING, i
 
 - **Code:** `src/run_evaluation.py` (selection, prediction, Q1–Q3); training fixes in `src/train_axis_model.py` and `jobs/train_axis_validation_v1_gpu.sh`.
 - **Results:** `runs/axis_validation_v1/evaluation/MEANING/results.json` and the scored items per set (Git-ignored).
+
+
+## Addendum (2026-10-01): MOD and ILLOC (Q3)
+
+Trained afterwards on the same corpus (DeBERTa-v3-base only, 2 learning rates × 3 seeds). Synthetic validation pairwise accuracy is **100%** for every run on both axes: saturated, as MEANING v1 was.
+
+| Axis | Model on human-audited pairs | Best single shortcut | Pre-registered Q3 | Reading |
+|---|---|---|---|---|
+| MOD (n = 88) | 100% | **sentence count: 100%** (99.5% on synthetic) | ❌ fail (margin 0) | Indistinguishable from "more sentences = better". |
+| ILLOC (n = 54, question + directive) | 100% | inverse length: 80% (`?` alone 33%) | ✅ pass | **Hollow:** the combined trivial rule "degraded ends with `?` or is longer" also scores **54/54 (100%)**. |
+
+Context only (construct mismatch): MOD vs human meaning ratings ρ = −0.19 (Simplicity-DA); ILLOC ρ = 0.54 (Simplicity-DA). The ILLOC model largely acts as a generic "unchanged sentence" detector.
+
+**Conclusion:** neither axis shows evidence that the model learned the construct rather than a surface cue. Binary injection data cannot separate the two, and there is no human-rated data for these axes. **Next:**
+1. Build controls that break the cues: MOD negatives with the *same* sentence count (clauses reordered so the information order is worse, or misattached), and positives with fewer sentences; ILLOC negatives without `?` and not longer (e.g. a question rewritten as a statement-shaped request), and positives that are longer (neutral additions).
+2. Build a small human-rated MOD test set (annotation spec pending). ILLOC stays unverifiable with natural data.
