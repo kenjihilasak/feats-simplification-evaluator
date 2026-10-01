@@ -133,3 +133,42 @@ Output: **one corpus per axis**, `runs/fose_en_v1/corpus/{axis}/{train,validatio
 2. Once Phase 3a is validated: OMIT, SYN and EXPL pools → pool report.
 3. Rules and checks for all four axes on a sample; build the review. **STOP for the human audit.**
 4. Score it; full generation for the axes that pass; materialize; combined manifest; report; commit.
+
+## 9. Amendment v2 (2026-10-01): graded levels and length controls
+
+**Why:** MEANING showed that binary data (clean = 1, one degradation = 0) saturates (99.6–100% synthetic validation) and fails against human ratings. Graded data fixed it: Spearman 0.64 → 0.74, system-level 0.02 → 0.97 ([report](../../../phase7_feats_training/docs/reports/meaning_v2.md)). MOD and ILLOC trained on binary data also saturate (100%). FOSE must not repeat this.
+
+**Keep everything in §1–§5** (rules, checks, the current one-edit audit). The audit already validates the *one-edit* level. Add graded groups on top, built from the **same rules applied more times**:
+
+| Axis | 1.0 | 0.67 | 0.33 | 0.0 |
+|---|---|---|---|---|
+| FLUENCY | clean; Original copy (fluent, longer); `also`-trim | one **minor** error (`determiner_drop`, `preposition_swap`) | one **major** error (`agreement`, `word_order`) or two minor | three or more errors |
+| OMIT | clean | one omitted span restored | two or more spans restored | Original copy, **only** for pure-omission pairs (the Original differs from the clean text by deletions only) |
+| SYN | clean | one complex word restored | two or more restored | — |
+| EXPL | clean | — | one of ≥ 2 added explanations removed (target 0.5 in this case) | all added explanations removed |
+
+Rules:
+- A level exists for a pair only if the pair has enough sites. Groups need at least 3 members.
+- Each member passes the same checks as §3. Multi-edit levels need all their edits to be valid.
+- Level targets are fixed **before** the review.
+
+**Human gate for the levels** (in addition to the §4 one-edit review):
+- A blinded review of 15 members per level per axis (WikiAutoEN + ASSET pooled).
+- Question: *"Compared with Clean, how much worse is the Variant on this axis?"*, answered **not / somewhat / much / broken**.
+- Pass: the level's modal answer matches in ≥ 80% (≥ 90% for the 1.0 controls).
+- A level that fails is dropped. If the failure is concentrated in one rule (as `very` / `just` were for MEANING), re-map that rule and confirm the new mapping on a fresh sample of unseen pairs.
+
+**Shortcut diagnostic (before any training):** within-group pairwise accuracy of the length ratio and of acceptability on validation groups.
+- **FLUENCY:** acceptability *is* the construct, so it is the baseline to beat, not a gate. Gate only on length (STOP if ≥ 0.80).
+- **OMIT / SYN / EXPL:** length moves with the target by construction (restoring makes text longer, removing explanations makes it shorter). Report it; do not gate; add any controls that are natural for the axis.
+
+**Training and validation:**
+- **FLUENCY only for now:** it is the one FOSE axis with human ratings (Simplicity-DA and Human-Likert *fluency*). Train it with the MEANING v2 code (`phase7_feats_training/src/meaning_v2.py`, generalised to an `--axis` argument) and evaluate it once against the fluency ratings. Baselines: CoLA acceptability (key), NLI, LENS-SALSA, REFEREE, length.
+- **OMIT / SYN / EXPL:** build and review the graded groups, but **do not train** until a human-rated test set exists for them (same situation as MOD / ILLOC).
+
+**Order:**
+1. Finish the current one-edit audit (§4) as planned.
+2. Build the graded groups.
+3. Graded-level review. **STOP for the human audit.**
+4. Shortcut diagnostic.
+5. FLUENCY training and evaluation; report.
