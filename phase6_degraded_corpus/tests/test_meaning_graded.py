@@ -25,14 +25,13 @@ class GradedRuleTests(unittest.TestCase):
 
     def test_major_relative_clause_and_sentence(self):
         text = "Dark Horse Comics is an American company that creates comic books."
-        self.assertIn("Dark Horse Comics is an American company.", self.texts(major_losses(NLP(text), text), "drop_relative_clause"))
+        self.assertIn("Dark Horse Comics is an American company.", self.texts(mild_losses(NLP(text)), "drop_relative_clause"))
         text = "M83 is a French band. They formed in 2001."
         self.assertIn("M83 is a French band.", self.texts(major_losses(NLP(text), text), "drop_sentence"))
-        self.assertIn("M83 is a French band. They formed in the 21st century.", self.texts(major_losses(NLP(text), text), "generalize_year"))
-
-    def test_no_generalization_inside_unit_conversion(self):
-        text = "The airport covers 43 acres (170,000 m2)."
-        self.assertFalse(self.texts(major_losses(NLP(text), text), "generalize_number"))
+        self.assertIn("M83 is a French band. They formed in the 21st century.", self.texts(mild_losses(NLP(text)), "generalize_year"))
+        self.assertEqual({c["rule"] for c in major_losses(NLP(text), text)}, {"drop_sentence"})
+        self.assertFalse(self.texts(neutral_trims("It is very old."), "adverb_very"))
+        self.assertIn("It is old.", self.texts(mild_losses(NLP("It is very old.")), "intensifier_very"))
 
     def test_helpers(self):
         self.assertEqual(century(1867), "the 19th century")

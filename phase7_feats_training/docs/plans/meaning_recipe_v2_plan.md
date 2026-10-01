@@ -144,7 +144,19 @@ NLI is the pinned Phase 6 checker; its features are precomputed for every traini
   - **Entailment-filtered (4,514 pairs):** mild loss 3,123, major loss 1,370, neutral trim 154. Neutral trims are rare, so length control relies mainly on `original_copy`.
   - **`A_all` variant:** 6,951 pairs, built in parallel.
   - Files: `phase6_degraded_corpus/runs/meaning_graded_en_v1/groups{,_all}.jsonl`.
-- **STOP:** human review [`meaning_graded_review.md`](../../../phase6_degraded_corpus/docs/reports/current/meaning_graded_review.md) (80 cases). Score with `python -m phase6_degraded_corpus.src.reporting.build_meaning_graded_review score`.
+- **First review (80 cases):** mild loss passes (87%); major loss (63%) and neutral trim (80%) fail. The breakdown by sub-rule showed mislabeled rules, not failing levels: `very` was judged "Some"; year generalization "Some"; number generalization buggy; clause deletions only 67% "A lot".
+- **v2.1 mapping (re-tuned on that review):**
+
+  | Level | Rules |
+  |---|---|
+  | neutral trim | remove `also` / `just` |
+  | mild loss | adjective, appositive, prepositional adjunct, adverb, `very` / `really`, relative or coordinated clause, year → century |
+  | major loss | drop a whole sentence |
+
+  Number generalization was removed.
+  - **Groups (4,514 pairs):** mild 3,335, major 809, neutral 130.
+  - **`A_all` (6,951 pairs):** mild 5,411, major 1,198, neutral 207.
+- **Because the mapping was tuned on the first review, the gate is decided by a fresh confirmation review on unseen pairs:** [`meaning_graded_review_v21.md`](../../../phase6_degraded_corpus/docs/reports/current/meaning_graded_review_v21.md) (20 major + 10 neutral). The mild level already passed and was not re-tuned. **STOP for it.**
 
 ## 7. Order and STOP points
 

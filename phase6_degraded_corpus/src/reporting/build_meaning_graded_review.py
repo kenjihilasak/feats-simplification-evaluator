@@ -22,13 +22,24 @@ OPTIONS = ("None", "Some", "A lot", "Contradiction", "Broken")
 
 
 def build(args) -> None:
-    groups = [g for g in read_jsonl(args.groups) if g["corpus"] in {"WikiAutoEN", "ASSET"}]
+    excluded = set()
+    for path in args.exclude_key or []:
+        excluded |= {v["canonical_pair_id"] for v in json.loads(Path(path).read_text()).values()}
+    groups = [g for g in read_jsonl(args.groups)
+              if g["corpus"] in {"WikiAutoEN", "ASSET"} and g["canonical_pair_id"] not in excluded]
     picked = []
-    for level in LEVELS:
-        for corpus in ("WikiAutoEN", "ASSET"):
-            pool = [(g, m) for g in groups if g["corpus"] == corpus for m in g["members"] if m["level"] == level]
+    if args.counts:  # confirmation review: fixed counts per level, sources pooled
+        for item in args.counts.split(","):
+            level, n = item.split("=")
+            pool = [(g, m) for g in groups for m in g["members"] if m["level"] == level]
             pool.sort(key=lambda gm: stable_key(args.seed, f'{gm[0]["canonical_pair_id"]}:{level}'))
-            picked += [(g, m) for g, m in pool[: args.per_cell]]
+            picked += pool[: int(n)]
+    else:
+        for level in LEVELS:
+            for corpus in ("WikiAutoEN", "ASSET"):
+                pool = [(g, m) for g in groups if g["corpus"] == corpus for m in g["members"] if m["level"] == level]
+                pool.sort(key=lambda gm: stable_key(args.seed, f'{gm[0]["canonical_pair_id"]}:{level}'))
+                picked += [(g, m) for g, m in pool[: args.per_cell]]
     picked.sort(key=lambda gm: stable_key(args.seed, gm[0]["canonical_pair_id"] + gm[1]["text"]))
     clean_of = lambda g: next(m["text"] for m in g["members"] if m["level"] == "clean")
     lines = ["# MEANING graded levels: blinded review", "",
@@ -75,6 +86,8 @@ def main() -> None:
     parser.add_argument("--key", type=Path, default=Path("phase6_degraded_corpus/runs/meaning_graded_en_v1/review_key.json"))
     parser.add_argument("--results", type=Path, default=Path("phase6_degraded_corpus/runs/meaning_graded_en_v1/review_results.json"))
     parser.add_argument("--per-cell", type=int, default=15)
+    parser.add_argument("--counts", help="e.g. major_loss=20,neutral_trim=10 (pooled sources)")
+    parser.add_argument("--exclude-key", nargs="*", help="review keys whose pairs must not be reused")
     parser.add_argument("--seed", type=int, default=20261001)
     args = parser.parse_args()
     build(args) if args.command == "build" else score(args)

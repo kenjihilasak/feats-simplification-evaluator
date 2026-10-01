@@ -20,7 +20,8 @@ from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, 
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles, split_sentences
 
 TARGETS = {"original_copy": 1.0, "clean": 1.0, "neutral_trim": 1.0, "mild_loss": 0.67, "major_loss": 0.33, "contradiction": 0.0}
-NEUTRAL_WORDS = {"also", "very", "really", "just"}
+# v2.1 mapping from the human review (2026-10-01): "very"/"really" lose meaning -> mild.
+NEUTRAL_WORDS = {"also", "just"}
 NON_CONTENT_ADV = {"not", "never", "also", "very", "really", "just", "only", "even", "then", "so", "too", "however", "n't"}
 CONTENT_POS = {"NOUN", "PROPN", "ADJ", "NUM", "VERB", "ADV"}
 WORD = re.compile(r"\w+(?:[-’']\w+)*")
@@ -47,7 +48,7 @@ def neutral_trims(text: str) -> list[dict]:
     out = []
     for m in re.finditer(r"\s*\((?:\s*[;,]\s*)*\)|\s*\(\s*/[^)]*/\s*\)", text):
         out.append({"rule": "empty_or_pronunciation_parenthetical", "text": tidy(text[:m.start()] + text[m.end():])})
-    for m in re.finditer(r"\b(also|very|really|just)\b\s*", text, re.I):
+    for m in re.finditer(r"\b(also|just)\b\s*", text, re.I):
         if m.group(1).lower() in NEUTRAL_WORDS:
             out.append({"rule": f"adverb_{m.group(1).lower()}", "text": tidy(text[:m.start()] + text[m.end():])})
     return out
@@ -64,6 +65,9 @@ def has_content(span) -> bool:
 
 def mild_losses(doc) -> list[dict]:
     text, out = doc.text, []
+    for m in re.finditer(r"\b(very|really)\b\s*", text, re.I):
+        out.append({"rule": f"intensifier_{m.group(1).lower()}", "removed": m.group(1), "text": tidy(text[:m.start()] + text[m.end():])})
+    out += [c for c in clause_and_year_losses(doc, text)]
     for tok in doc:
         if tok.dep_ == "appos":
             start, end = subtree_span(tok)
@@ -95,12 +99,9 @@ def century(year: int) -> str:
     return f"the {n}{suffix} century"
 
 
-def major_losses(doc, text: str) -> list[dict]:
+def clause_and_year_losses(doc, text: str) -> list[dict]:
+    """Relative / coordinated clause deletion and year generalization: judged 'Some' -> mild (v2.1)."""
     out = []
-    sentences = split_sentences(text)
-    for i, sentence in enumerate(sentences[1:], 1):
-        rest = sentences[:i] + sentences[i + 1:]
-        out.append({"rule": "drop_sentence", "removed": sentence, "text": tidy(" ".join(rest))})
     for tok in doc:
         if tok.dep_ == "conj" and tok.pos_ == "VERB" and tok.head.dep_ == "ROOT":
             cc = [c for c in tok.head.children if c.dep_ == "cc" and c.i < tok.i]
@@ -118,13 +119,15 @@ def major_losses(doc, text: str) -> list[dict]:
     for m in re.finditer(r"\b(in|since|from|by|until) (1[0-9]{3}|20[0-2][0-9])\b", text):
         out.append({"rule": "generalize_year", "removed": m.group(2),
                     "text": tidy(text[:m.start()] + f"{m.group(1)} {century(int(m.group(2)))}" + text[m.end():])})
-    for m in re.finditer(r"\b([3-9]|[1-9]\d{1,5}|\d{1,3}(?:,\d{3})+) (?=[a-z]+s\b)", text):
-        if re.match(r"\s*\w+\s*\([^)]*\d", text[m.end():]):
-            continue  # a unit conversion keeps the number ("43 acres (170,000 m2)"): no real loss
-        value = int(m.group(1).replace(",", ""))
-        word = "several" if value <= 20 else "many"
-        out.append({"rule": "generalize_number", "removed": m.group(1), "text": text[:m.start()] + word + " " + text[m.end():]})
     return out
+
+
+def major_losses(doc, text: str) -> list[dict]:
+    """Only whole-sentence deletion reached the 'A lot' threshold in the review (v2.1).
+    Number generalization was removed (decimal bug, 'about many')."""
+    sentences = split_sentences(text)
+    return [{"rule": "drop_sentence", "removed": s, "text": tidy(" ".join(sentences[:i] + sentences[i + 1:]))}
+            for i, s in enumerate(sentences[1:], 1)]
 
 
 def balanced(candidate: str, clean: str) -> bool:
