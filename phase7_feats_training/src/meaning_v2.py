@@ -169,7 +169,8 @@ def predict_rows(model, tokenizer, rows, feats, use_nli, device, batch_size=64) 
 def validation_score(rows, preds) -> dict:
     from scipy.stats import spearmanr
     rho = float(spearmanr(preds, [r["target"] for r in rows]).statistic)
-    order = {"clean": 3, "original_copy": 3, "neutral_trim": 3, "mild_loss": 2, "major_loss": 1, "contradiction": 0}
+    order = {"clean": 3, "original_copy": 3, "neutral_trim": 3, "mild_loss": 2, "major_loss": 1, "contradiction": 0,
+             "also_trim": 3, "minor": 2, "major": 1, "severe": 0}  # FLUENCY levels (fluency_v2.py)
     groups = defaultdict(list)
     for r, p in zip(rows, preds):
         groups[r["group_id"]].append((order[r["level"]], p))

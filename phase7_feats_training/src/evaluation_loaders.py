@@ -13,22 +13,22 @@ from typing import Any
 from contracts import strong_key
 
 
-def load_simplicity_da(path: Path) -> list[dict[str, Any]]:
+def load_simplicity_da(path: Path, aspect: str = "meaning") -> list[dict[str, Any]]:
     with path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     return [{
         "evaluation_id": f"simplicity_da:{row['sent_id']}:{row['sys_name']}",
         "dataset": "simplicity_da", "original_id": f"simplicity_da:{row['sent_id']}",
         "original": row["orig_sent"], "candidate": row["simp_sent"], "system": row["sys_name"],
-        "human_score": float(row["meaning_zscore"]), "human_scale": "meaning_zscore",
+        "human_score": float(row[f"{aspect}_zscore"]), "human_scale": f"{aspect}_zscore",
     } for row in rows]
 
 
-def load_human_likert(path: Path) -> list[dict[str, Any]]:
+def load_human_likert(path: Path, aspect: str = "meaning") -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str, str], list[dict[str, str]]] = defaultdict(list)
     with path.open(newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
-            if row["aspect"].strip().casefold() == "meaning":
+            if row["aspect"].strip().casefold() == aspect:
                 grouped[(row["sentence_id"], row["system_name"], row["simplification"])].append(row)
     result = []
     for (sentence_id, system, candidate), rows in grouped.items():
@@ -40,7 +40,7 @@ def load_human_likert(path: Path) -> list[dict[str, Any]]:
             "aggregation_id": f"human_likert:{sentence_id}:{system}",
             "original_id": f"human_likert:{sentence_id}", "original": next(iter(originals.values())),
             "candidate": candidate, "system": system,
-            "human_score": mean(float(row["rating"]) for row in rows), "human_scale": "meaning_likert_mean",
+            "human_score": mean(float(row["rating"]) for row in rows), "human_scale": f"{aspect}_likert_mean",
             "rating_count": len(rows),
         })
     return sorted(result, key=lambda row: row["evaluation_id"])
