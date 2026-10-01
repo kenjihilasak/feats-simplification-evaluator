@@ -29,7 +29,11 @@ This plan changes the **data**, not the model: graded negatives, harder validati
 
 ## 2. Graded variants per clean pair (Phase 6)
 
-**Base pairs:** exactly the **MEANING pairs of the v1 corpus** (`runs/mmi_en_v2_full/corpus/`, `axis == MEANING`), minus Wikipedia-Vikidia: about 6.9k pairs from WikiAutoEN and ASSET. They already passed the clean-input gates and the text-based exclusions. Their clean simplification and their contradiction are reused as they are; only the intermediate levels are new. Using the same pairs keeps the v1 vs v2 comparison clean: only the added candidates differ. Keep the same train/validation split per pair.
+**Base pairs (decision 2026-10-01):** the **MEANING pairs of the v1 corpus** (`runs/mmi_en_v2_full/corpus/`, `axis == MEANING`), minus Wikipedia-Vikidia (6,951 pairs), **restricted to pairs whose clean simplification preserves meaning**: NLI P(entailment | Original → Simplified) ≥ 0.5 from `clean_quality_scores.jsonl`, which leaves **4,514 pairs**. The clean text gets target 1.0 ("meaning fully preserved"), so it must actually be entailed. NLI selects only these *positives*; the negatives are still defined by rules, so v1's circularity does not return. Phase 3a single-strategy is **not** used for MEANING, because it says nothing about meaning quality.
+
+- **Ablation:** arm A is also trained on all 6,951 pairs (`A_all`), to measure what the entailment filter contributes.
+- The clean simplification and the contradiction of each pair are reused as they are; only the intermediate levels are new.
+- The train/validation split per pair is unchanged.
 
 For each base pair, build a **group** of candidates for the same Original, each with a target meaning score:
 
@@ -82,6 +86,7 @@ Same backbones, grid and seeds as Phase 7a: `deberta_v3_base` and `xlm_roberta_l
 |---|---|---|
 | **A: graded** | `original </s> candidate` | The main test of the new data. |
 | **B: graded + NLI** | Same, plus the 3 NLI probabilities (original → candidate) concatenated to the pooled representation before the head | "Use NLI instead of competing with it." |
+| **A_all: graded, no entailment filter** | As A, on all 6,951 base pairs | Value of the entailment filter. |
 | **C: v1 data + NLI** | The Phase 7a contradiction-only data, with B's architecture | Separates "better data" from "NLI input". |
 
 NLI is the pinned Phase 6 checker; its features are precomputed for every training and evaluation item.
@@ -132,6 +137,14 @@ NLI is the pinned Phase 6 checker; its features are precomputed for every traini
   - the NLI-feature head;
   - `docs/reports/meaning_v2.md` with v1 vs A/B/C tables and the answers to Q1/Q2/Q4.
 - Local commits. **No push.**
+
+## Execution status (2026-10-01)
+
+- Step 1 done: graded groups built with rules only. The LLM entity generalization was deferred; year and number generalization are done by rule.
+  - **Entailment-filtered (4,514 pairs):** mild loss 3,123, major loss 1,370, neutral trim 154. Neutral trims are rare, so length control relies mainly on `original_copy`.
+  - **`A_all` variant:** 6,951 pairs, built in parallel.
+  - Files: `phase6_degraded_corpus/runs/meaning_graded_en_v1/groups{,_all}.jsonl`.
+- **STOP:** human review [`meaning_graded_review.md`](../../../phase6_degraded_corpus/docs/reports/current/meaning_graded_review.md) (80 cases). Score with `python -m phase6_degraded_corpus.src.reporting.build_meaning_graded_review score`.
 
 ## 7. Order and STOP points
 
