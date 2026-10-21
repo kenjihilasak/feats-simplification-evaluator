@@ -1423,3 +1423,19 @@ textarea {
   background: #fff3f1;
   border-color: #efaaa2;
 }
+
+
+/* Two-project selector: blue Phase 4a and green Phase 6. */
+.project-tabs { display: flex; align-self: stretch; align-items: stretch; gap: .35rem; }
+.project-tab { position: relative; display: flex; align-items: center; gap: .65rem; min-width: 15.5rem; padding: .45rem .75rem; border: 1px solid transparent; border-radius: .55rem; color: #dce8f2; text-decoration: none; opacity: .72; transition: opacity .15s ease, background .15s ease, border-color .15s ease; }
+.project-tab:hover, .project-tab:focus-visible { opacity: 1; color: #fff; outline: 2px solid rgba(255,255,255,.48); outline-offset: -2px; }
+.project-tab.is-current { opacity: 1; cursor: default; box-shadow: inset 0 -3px 0 rgba(255,255,255,.9); }
+.project-tab-phase4 { background: #123d68; }
+.project-tab-phase4.is-current { background: #174f83; border-color: #7198bb; }
+.project-tab-phase6 { background: #155340; }
+.project-tab-phase6.is-current { background: #176a4c; border-color: #69a98e; }
+.project-tab-mark { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; flex: 0 0 auto; border-radius: .55rem; background: rgba(255,255,255,.9); color: #123554; font-size: 1.05rem; font-weight: 800; }
+.project-tab-phase6 .project-tab-mark { color: #155340; }
+.project-tab small { display: block; margin-bottom: .18rem; color: #b9cad9; font-size: .7rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.project-tab strong { display: block; white-space: nowrap; font-size: .92rem; font-weight: 680; }
+@media (max-width: 1180px) { .project-tab { min-width: auto; } .project-tab:not(.is-current) strong { font-size: 0; } .project-tab:not(.is-current) strong::after { content: "Open"; font-size: .82rem; } }

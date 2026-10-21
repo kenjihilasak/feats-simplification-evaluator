@@ -20,7 +20,7 @@ from pathlib import Path
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles, splice
 
-PROMPT_FILES = {"MEANING": "meaning_span_v2.json", "MOD": "mod_merge_v2.json", "ILLOC": "illoc_inject_v2.json"}
+PROMPT_FILES = {"MEANING": "meaning_span_v2.json", "MOD": "mod_same_count_v3.json", "ILLOC": "illoc_inject_v3.json"}
 
 
 def sha(text: str) -> str:
@@ -44,10 +44,13 @@ def build_messages(row: dict, prompt: dict) -> list[dict]:
             meaning_type=kind, span=row["target_span"]["text"], type_guidance=guidance,
         )
     elif axis == "MOD":
-        for a, b, merged in prompt["examples"]:
-            shots.append((prompt["user_template"].format(sentence_a=a, sentence_b=b), json.dumps({"merged_sentence": merged})))
-        i = row["merge_index"]
-        request = prompt["user_template"].format(sentence_a=row["sentences"][i], sentence_b=row["sentences"][i + 1])
+        op = row["operation"]
+        guidance = prompt["operation_guidance"][op]
+        for clean, degraded in prompt["examples"][op]:
+            shots.append((prompt["user_template"].format(clean_simplification=clean, operation=op, operation_guidance=guidance), json.dumps({"degraded": degraded})))
+        target = row.get("target_sentence_index")
+        text = row["sentences"][target] if target is not None else row["clean_simplification"]
+        request = prompt["user_template"].format(clean_simplification=text, operation=op, operation_guidance=guidance)
     else:
         op = row["operation"]
         guidance = prompt["operation_guidance"][op]
@@ -83,8 +86,12 @@ def degraded_from(row: dict, parsed: dict | None) -> str | None:
         span = row["target_span"]
         return fix_articles(splice(row["clean_simplification"], span["start"], span["end"], parsed["replacement"].strip()))
     if axis == "MOD":
-        i, sentences = row["merge_index"], row["sentences"]
-        return " ".join(sentences[:i] + [parsed["merged_sentence"].strip()] + sentences[i + 2 :])
+        target = row.get("target_sentence_index")
+        if target is None:
+            return parsed["degraded"].strip()
+        sentences = list(row["sentences"])
+        sentences[target] = parsed["degraded"].strip()
+        return " ".join(sentences)
     return parsed["degraded"].strip()
 
 
@@ -116,7 +123,8 @@ def main() -> None:
     cfg = experiment["configs"][args.config_id]
     seed = experiment["seed"]
     prompt_dir = Path(experiment["prompt_dir"])
-    prompts = {axis: json.loads((prompt_dir / name).read_text(encoding="utf-8")) for axis, name in PROMPT_FILES.items()}
+    prompts = {axis: json.loads((prompt_dir / name).read_text(encoding="utf-8")) for axis, name in PROMPT_FILES.items()
+               if (prompt_dir / name).exists()}  # language prompt sets cover only the axes they generate
     rows = [row for row in read_jsonl(args.plan) if row.get("plan_status") == "ready"]
     if args.limit:
         rows = rows[: args.limit]
@@ -172,7 +180,7 @@ def main() -> None:
             "schema": "feats-phase6-mmi-generation-v2",
             **{k: row[k] for k in (
                 "canonical_pair_id", "canonical_original_id", "corpus", "target_axis", "operation",
-                "original", "clean_simplification", "clean_acceptability", "split",
+                "original", "clean_simplification", "clean_acceptability", "clean_nli_probabilities", "clean_entailment", "split", "language",
             ) if k in row},
             "meaning_type": row.get("meaning_type"), "generator_kind": row.get("generator_kind"),
             "target_span": row.get("target_span"), "merge_index": row.get("merge_index"), "sentences": row.get("sentences"),

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light">
     <title>FEATS Linguistic Review</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css?v=20261004d">
   </head>
   <body>
     <main id="login-view" class="login-view" aria-labelledby="login-heading">
@@ -41,13 +41,16 @@
     <a class="skip-link" href="#annotation-workspace">Skip to annotation</a>
 
     <header class="app-header" hidden>
-      <div class="brand-lockup">
-        <span class="brand-mark" aria-hidden="true">F</span>
-        <div>
-          <p class="eyebrow">FEATS · Phase 4a</p>
-          <h1>Gold-standard linguistic review</h1>
-        </div>
-      </div>
+      <nav class="project-tabs" aria-label="Annotation project">
+        <a class="project-tab project-tab-phase4 is-current" href="/" aria-current="page">
+          <span class="project-tab-mark" aria-hidden="true">F</span>
+          <span><small>FEATS · Phase 4a</small><strong>Gold-standard linguistic review</strong></span>
+        </a>
+        <a id="s1-project-link" class="project-tab project-tab-phase6" href="/s1" hidden>
+          <span class="project-tab-mark" aria-hidden="true">F</span>
+          <span><small>FEATS · Phase 6</small><strong>Degradation Validation</strong></span>
+        </a>
+      </nav>
       <div class="header-status" aria-label="Session status">
         <span id="language-badge" class="language-badge">—</span>
         <span id="save-status" class="save-status" role="status" aria-live="polite">Ready</span>
@@ -313,6 +316,6 @@
     </dialog>
 
     <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
-    <script type="module" src="/static/app.js"></script>
+    <script type="module" src="/static/app.js?v=20261004d"></script>
   </body>
 </html>

@@ -15,6 +15,7 @@ import re
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
+from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_subject
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import split_sentences
 
 WORD = re.compile(r"\d+(?:[.,]\d+)*|\w+(?:[-’']\w+)*|[^\w\s]")
@@ -40,6 +41,8 @@ HEDGE_LEXICON = {
     "to", "have", "has", "had", "be", "been", "reportedly", "some", "people", "say", "according",
     "apparently", "presumably", "supposedly", "would", "can", ",",
 }
+MODAL_HEDGES = {"may", "might", "could", "probably", "possibly", "perhaps", "likely", "maybe"}
+APPROXIMATORS = {"about", "around", "approximately", "roughly", "nearly", "almost", "some"}
 AUXILIARIES = {"is", "are", "was", "were", "be", "been", "has", "have", "had", "do", "does", "did", "will", "can"}
 
 
@@ -61,27 +64,40 @@ def overlap(a: str, b: str) -> float:
 
 
 class Checkers:
-    """NLI, acceptability and spaCy, loaded once."""
+    """NLI, acceptability and spaCy, loaded once.
+
+    Acceptability is the CoLA acceptable-class probability in English (`acceptability_kind: classifier`). No
+    Spanish or French CoLA classifier exists, so those languages use SLOR (`acceptability_kind: slor`): the
+    causal-LM log-probability minus the unigram log-probability, per word (Lau et al., 2017). Both are used only
+    relative to the clean text and to thresholds calibrated on the same scale.
+    """
 
     def __init__(self, pools_config: dict, device: str):
         import spacy
         import torch
-        from transformers import AutoModelForSequenceClassification, AutoTokenizer
+        from transformers import AutoModelForCausalLM, AutoModelForSequenceClassification, AutoTokenizer
 
         self.torch = torch
         self.device = torch.device(device)
+        self.lang = pools_config.get("language", "en")
+        self.res = language(self.lang)
+        self.kind = pools_config.get("acceptability_kind", "classifier")
         cache = Path(pools_config["cache_dir"]) / "hub"
 
-        def load(model_id: str, revision: str):
-            path = cache / f"models--{model_id.replace('/', '--')}" / "snapshots" / revision
+        def load(model_id: str, revision: str, causal: bool = False, path: str | None = None):
+            path = Path(path) if path else cache / f"models--{model_id.replace('/', '--')}" / "snapshots" / revision
             tok = AutoTokenizer.from_pretrained(path, local_files_only=True)
-            model = AutoModelForSequenceClassification.from_pretrained(path, local_files_only=True).to(self.device).eval()
-            return tok, model
+            if causal:
+                model = AutoModelForCausalLM.from_pretrained(path, local_files_only=True, torch_dtype=torch.bfloat16)
+            else:
+                model = AutoModelForSequenceClassification.from_pretrained(path, local_files_only=True)
+            return tok, model.to(self.device).eval()
 
         self.nli_tok, self.nli = load(pools_config["nli_model"], pools_config["nli_revision"])
         self.nli_ids = {k: int(self.nli.config.label2id[k]) for k in ("entailment", "neutral", "contradiction")}
-        self.cola_tok, self.cola = load(pools_config["acceptability_model"], pools_config["acceptability_revision"])
-        self.nlp = spacy.load("en_core_web_sm")
+        self.cola_tok, self.cola = load(pools_config["acceptability_model"], pools_config["acceptability_revision"],
+                                        causal=self.kind == "slor", path=pools_config.get("acceptability_path"))
+        self.nlp = spacy.load(self.res.spacy_model)
         self.batch = pools_config.get("checker_batch_size", 64)
 
     def nli_probs(self, premises: list[str], hypotheses: list[str]) -> list[dict]:
@@ -95,6 +111,8 @@ class Checkers:
         return out
 
     def acceptability(self, texts: list[str]) -> list[float]:
+        if self.kind == "slor":
+            return self.slor(texts)
         out = []
         with self.torch.inference_mode():
             for i in range(0, len(texts), self.batch):
@@ -103,10 +121,34 @@ class Checkers:
                 out += self.cola(**enc).logits.softmax(-1)[:, 0].float().cpu().tolist()
         return out
 
+    def slor(self, texts: list[str]) -> list[float]:
+        from wordfreq import word_frequency
+        import math
+
+        tok, lm = self.cola_tok, self.cola
+        start = tok.eos_token_id if tok.bos_token_id is None else tok.bos_token_id
+        out = []
+        with self.torch.inference_mode():
+            for i in range(0, len(texts), self.batch):
+                chunk = texts[i:i + self.batch]
+                ids = [[start] + tok(t, add_special_tokens=False)["input_ids"][:510] for t in chunk]
+                width = max(map(len, ids))
+                pad = tok.pad_token_id if tok.pad_token_id is not None else start
+                batch = self.torch.tensor([x + [pad] * (width - len(x)) for x in ids], device=self.device)
+                mask = self.torch.tensor([[1] * len(x) + [0] * (width - len(x)) for x in ids], device=self.device)
+                logp = lm(input_ids=batch, attention_mask=mask).logits[:, :-1].float().log_softmax(-1)
+                target = logp.gather(-1, batch[:, 1:].unsqueeze(-1)).squeeze(-1) * mask[:, 1:]
+                for text, total in zip(chunk, target.sum(-1).cpu().tolist()):
+                    words = [w.casefold() for w in re.findall(r"[^\W\d_]+(?:[-’'][^\W\d_]+)*", text)] or [text]
+                    unigram = sum(math.log(max(word_frequency(w, self.lang), 1e-8)) for w in words)
+                    out.append((total - unigram) / len(words))
+        return out
+
     def content_lemmas(self, text: str) -> set[str]:
+        connectives = CONNECTIVES if self.lang == "en" else self.res.connectives
         return {
             t.lemma_.casefold() for t in self.nlp(text)
-            if t.is_alpha and not t.is_stop and t.lemma_.casefold() not in CONNECTIVES and t.pos_ != "PRON"
+            if t.is_alpha and not t.is_stop and t.lemma_.casefold() not in connectives and t.pos_ != "PRON"
         }
 
     def proper_nouns(self, text: str) -> set[str]:
@@ -131,18 +173,48 @@ def check_mod(row, cand, feats, cfg, ck: Checkers) -> dict:
     clean = row["clean_simplification"]
     lem_c, lem_d = ck.content_lemmas(clean), ck.content_lemmas(cand)
     original_only = ck.content_lemmas(row["original"]) - lem_c
+    same_count = row.get("operation", "").startswith("mod_")
+    n_cand, n_clean = len(split_sentences(cand, ck.lang)), len(split_sentences(clean, ck.lang))
+    negation = NEGATION if ck.lang == "en" else ck.res.negation
     return {
-        "sentence_count_minus_one": len(split_sentences(cand)) == len(split_sentences(clean)) - 1,
+        "sentence_count_expected": n_cand == n_clean if same_count else n_cand == n_clean - 1,
         "content_lemmas_within_2": len(lem_c ^ lem_d) <= 2,
         "numbers_identical": sorted(NUMBER.findall(cand)) == sorted(NUMBER.findall(clean)),
-        "negation_identical": len(NEGATION.findall(cand)) == len(NEGATION.findall(clean)),
-        # Text containment, not POS-set equality: spaCy tags proper nouns inconsistently across rewrites.
-        "proper_nouns_kept": all(p in cand.casefold() for p in ck.proper_nouns(clean))
-                             and all(p in clean.casefold() for p in ck.proper_nouns(cand)),
+        "negation_identical": len(negation.findall(cand)) == len(negation.findall(clean)),
+        "proper_nouns_kept": all(p in cand.casefold() for p in ck.proper_nouns(clean)) and all(p in clean.casefold() for p in ck.proper_nouns(cand)),
         "no_original_leak": not (lem_d - lem_c) & original_only,
         "entails_both_ways": min(feats["nli_clean_degraded"]["entailment"], feats["nli_degraded_clean"]["entailment"]) >= 0.5,
         "acceptable": acceptable_enough(row, feats, cfg),
+        **mod_movement(row.get("operation", ""), clean, cand, ck),
     }
+
+
+def mod_movement(op: str, clean: str, cand: str, ck) -> dict:
+    """The requested reordering must actually happen, not a trivial shift of one or two words."""
+    if op == "mod_front_heavy":
+        for before, after in zip(split_sentences(clean, ck.lang), split_sentences(cand, ck.lang)):
+            if before != after:
+                subject = [t for t in ck.nlp(before) if is_subject(t.dep_)]
+                first = subject[0].text.casefold() if subject else tokens(before)[0].casefold()
+                moved = [t.casefold() for t in tokens(after)]
+                words = [t for t in ck.nlp(after) if not t.is_punct]
+                # "..., it was." / "..., he is best known.": fronting the complement strands the verb.
+                stranded = bool(words) and words[-1].pos_ in {"AUX", "VERB"}
+                return {"fronted_phrase_ge_4_tokens": first in moved and moved.index(first) >= 4, "verb_not_stranded": not stranded}
+        return {"fronted_phrase_ge_4_tokens": False}
+    if op == "mod_bury_topic":
+        for before, after in zip(split_sentences(clean, ck.lang), split_sentences(cand, ck.lang)):
+            if before != after:
+                subject = [t for t in ck.nlp(before) if is_subject(t.dep_)]
+                if not subject:
+                    return {"topic_moved_to_end": False}
+                head = subject[0].text.casefold()
+                doc = ck.nlp(after)
+                root = next((t.i for t in doc if t.dep_ == "ROOT"), None)
+                where = next((t.i for t in doc if t.text.casefold() == head), None)
+                return {"topic_moved_to_end": root is not None and where is not None and where > root}
+        return {"topic_moved_to_end": False}
+    return {}
 
 
 def acceptable_enough(row: dict, feats: dict, cfg: dict) -> bool:
@@ -153,25 +225,47 @@ def acceptable_enough(row: dict, feats: dict, cfg: dict) -> bool:
 def check_illoc(op: str, row, cand, feats, cfg, ck: Checkers) -> dict:
     clean = row["clean_simplification"]
     blocks = diff_blocks(tokens(clean), tokens(cand))
+    token_delta = abs(len(tokens(cand)) - len(tokens(clean)))
+    if op.startswith("illoc_"):
+        lem_c, lem_d = ck.content_lemmas(clean), ck.content_lemmas(cand)
+        if op == "illoc_imperative_swap":
+            # An instruction drops the subject and its modal; it may lose up to two content words but add none.
+            lexical = {"token_delta_le_4": token_delta <= 4, "no_new_content": len(lem_d - lem_c) <= 1, "content_removed_le_2": len(lem_c - lem_d) <= 2}
+        else:
+            lexical = {"token_delta_le_2": token_delta <= 2, "content_lemmas_within_1": len(lem_c ^ lem_d) <= 1}
+        checks = {
+            "edit_present": bool(blocks),
+            **lexical,
+            "acceptable": acceptable_enough(row, feats, cfg),
+        }
+        question = any(q in cand for q in ck.res.question_marks)
+        if op == "illoc_question_to_statement":
+            checks.update({"clean_is_question": clean.rstrip().endswith("?"), "degraded_not_question": not question})
+        else:
+            checks["no_question_mark"] = not question
+        checks["no_exclamation"] = "!" not in cand and "¡" not in cand
+        inserted = {t.casefold() for _, _, new in blocks for t in new}
+        hedges, approximators = (MODAL_HEDGES, APPROXIMATORS) if ck.lang == "en" else (ck.res.modal_hedges, ck.res.approximators)
+        if op == "illoc_hedge_swap":
+            checks["inserted_modal_hedge"] = bool(inserted & hedges)
+            checks["no_approximator"] = not inserted & approximators
+            checks["numbers_identical"] = sorted(NUMBER.findall(cand)) == sorted(NUMBER.findall(clean))
+        if op == "illoc_imperative_swap":
+            parsed = ck.nlp(cand if ck.lang == "en" else cand[:1].lower() + cand[1:])
+            checks["imperative_root"] = is_imperative_root(parsed, ck.lang)
+            if ck.lang != "en":
+                checks["modal_removed"] = not ck.res.imperative_cue.search(cand)
+        return checks
     inserted = [t for _, _, new in blocks for t in new]
     deleted = [t for _, old, _ in blocks for t in old]
     acceptable = acceptable_enough(row, feats, cfg)
     if op == "assertion_to_question":
         first = tokens(cand)[:1]
-        return {
-            "ends_with_question_mark": cand.rstrip().rstrip('"”').endswith("?"),
-            "question_opening": bool(first) and first[0] in QUESTION_START,
-            "content_lemmas_within_1": len(ck.content_lemmas(clean) ^ ck.content_lemmas(cand)) <= 1,
-            "acceptable": acceptable,
-        }
+        return {"ends_with_question_mark": cand.rstrip().rstrip('"”').endswith("?"), "question_opening": bool(first) and first[0] in QUESTION_START,
+                "content_lemmas_within_1": len(ck.content_lemmas(clean) ^ ck.content_lemmas(cand)) <= 1, "acceptable": acceptable}
     lexicon = DIRECTIVE_LEXICON if op == "assertion_to_directive" else HEDGE_LEXICON
-    return {
-        "edit_blocks_le_2": 1 <= len(blocks) <= 2,
-        "inserted_in_lexicon": bool(inserted) and set(inserted) <= lexicon,
-        "deleted_only_auxiliaries_or_final_punct": set(deleted) <= AUXILIARIES | {".", ","},
-        "not_question": not cand.rstrip().endswith("?"),
-        "acceptable": acceptable,
-    }
+    return {"edit_blocks_le_2": 1 <= len(blocks) <= 2, "inserted_in_lexicon": bool(inserted) and set(inserted) <= lexicon,
+            "deleted_only_auxiliaries_or_final_punct": set(deleted) <= AUXILIARIES | {".", ","}, "not_question": not cand.rstrip().endswith("?"), "acceptable": acceptable}
 
 
 def c0_records(path_meaning: Path, path_other: Path, plan: dict[str, dict]) -> list[dict]:
@@ -267,7 +361,7 @@ def _single_edit(row: dict) -> bool | None:
     if not cand or not cand["degraded"]:
         return None
     if row["target_axis"] == "MOD":
-        return cand["checks"].get("sentence_count_minus_one")
+        return cand["checks"].get("sentence_count_expected")
     return len(diff_blocks(tokens(row["clean_simplification"]), tokens(cand["degraded"]))) == 1
 
 

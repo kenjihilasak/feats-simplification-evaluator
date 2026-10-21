@@ -1,0 +1,144 @@
+{
+  "prompt_id": "meaning_span_v2",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. You make exactly the one edit you are asked for and nothing else. Return only a JSON object that matches the requested schema.",
+  "user_template": "Original: {original}\nSimplified: {clean_simplification}\nCorruption type: {meaning_type}\nTarget span (in Simplified): \"{span}\"\n\nGive a replacement for the target span only. After replacing it, the Simplified sentence must stay fluent and must state a fact that CONTRADICTS the Original. Guidance for this type: {type_guidance}\nDo not rewrite anything outside the span. Return {{\"replacement\": ..., \"rationale\": ...}}.",
+  "type_guidance": {
+    "entity": "use a different real entity of the same kind (person, place, organization) that is NOT mentioned in the Original.",
+    "negation": "flip the polarity: if the span is a negation word (not, never, no) return an empty string to delete it; if it is a verb or auxiliary, return it with 'not' added (e.g. 'was' -> 'was not').",
+    "event": "use a different event with an incompatible meaning (born -> died, won -> lost, founded -> closed). The span may include its auxiliary ('was born'); return a grammatical replacement for the whole span (e.g. 'was born' -> 'died').",
+    "property": "use the opposite or an incompatible property (north -> south, large -> small, first -> last).",
+    "relation": "change the relation so the statement becomes false, keeping grammar (e.g. 'is' -> 'is not', 'was the son of' -> 'was the father of')."
+  },
+  "schema": {
+    "type": "object",
+    "properties": {
+      "replacement": {
+        "type": "string"
+      },
+      "rationale": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "replacement",
+      "rationale"
+    ]
+  },
+  "examples": {
+    "entity": [
+      [
+        "Clara Schumann was a German pianist born in Leipzig.",
+        "Clara Schumann was a German pianist. She was born in Leipzig.",
+        "Leipzig",
+        "Munich",
+        "The Original says Leipzig; Munich is another German city."
+      ],
+      [
+        "The Danube flows into the Black Sea after passing through Vienna and Budapest.",
+        "The Danube flows into the Black Sea.",
+        "Black Sea",
+        "Baltic Sea",
+        "The Original names the Black Sea."
+      ],
+      [
+        "The novel was published by Penguin Books in London.",
+        "Penguin Books published the novel.",
+        "Penguin Books",
+        "HarperCollins",
+        "A different publisher contradicts the Original."
+      ]
+    ],
+    "negation": [
+      [
+        "The bridge was never completed because the company went bankrupt.",
+        "The bridge was never completed.",
+        "never",
+        "",
+        "Deleting 'never' states the bridge was completed."
+      ],
+      [
+        "The species is found only on the island of Madagascar.",
+        "The species is found only in Madagascar.",
+        "is",
+        "is not",
+        "The Original says it is found there."
+      ],
+      [
+        "He did not return to the club after the 1998 season.",
+        "He did not return to the club after 1998.",
+        "not",
+        "",
+        "Deleting 'not' says he returned."
+      ]
+    ],
+    "event": [
+      [
+        "Marie Curie was born in Warsaw in 1867.",
+        "Marie Curie was born in Warsaw.",
+        "was born",
+        "died",
+        "She was born, not died, in Warsaw."
+      ],
+      [
+        "The team won the national championship in 2004.",
+        "The team won the championship in 2004.",
+        "won",
+        "lost",
+        "The Original says they won."
+      ],
+      [
+        "The museum opened to the public in 1931.",
+        "The museum opened in 1931.",
+        "opened",
+        "closed",
+        "The Original says it opened."
+      ]
+    ],
+    "property": [
+      [
+        "The town is located in the northern part of the province.",
+        "The town is in the north of the province.",
+        "north",
+        "south",
+        "The Original says northern."
+      ],
+      [
+        "It is the largest lake in the country.",
+        "It is the largest lake in the country.",
+        "largest",
+        "smallest",
+        "The Original says largest."
+      ],
+      [
+        "She was the first woman elected to the council.",
+        "She was the first woman on the council.",
+        "first",
+        "last",
+        "The Original says first."
+      ]
+    ],
+    "relation": [
+      [
+        "John Adams was the father of John Quincy Adams.",
+        "John Adams was the father of John Quincy Adams.",
+        "was the father of",
+        "was the son of",
+        "The relation is reversed."
+      ],
+      [
+        "The company is owned by the city government.",
+        "The city owns the company.",
+        "owns",
+        "does not own",
+        "The Original says the city owns it."
+      ],
+      [
+        "Lima is the capital of Peru.",
+        "Lima is the capital of Peru.",
+        "is",
+        "is not",
+        "The Original says Lima is the capital."
+      ]
+    ]
+  }
+}

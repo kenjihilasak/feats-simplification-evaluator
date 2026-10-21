@@ -110,6 +110,7 @@ const elements = {
   loginButton: byId("login-button"),
   loginError: byId("login-error"),
   logoutButton: byId("logout-button"),
+  s1ProjectLink: byId("s1-project-link"),
   appHeader: document.querySelector(".app-header"),
   workspace: byId("annotation-workspace"),
   globalAlert: byId("global-alert"),
@@ -1591,6 +1592,7 @@ function activateTask(rawTask, status = "Draft loaded") {
 
 async function completeLogin(payload) {
   state.user = payload?.user ?? payload?.data?.user ?? payload;
+  elements.s1ProjectLink.hidden = !(state.user?.role === "admin" || ["en", "es", "fr"].some((code) => state.user?.allowed_languages?.includes(code)));
   showAuthenticated(true);
   elements.reviewerName.textContent =
     state.user?.display_name || state.user?.username || "Reviewer";

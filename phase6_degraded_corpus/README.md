@@ -12,6 +12,11 @@ The active experiment is **MMI v2** (MEANING, MOD, ILLOC; English). Its model co
 - [Current MMI configs](configs/experiments/)
 - [Current MMI prompts](prompts/v2/)
 
+## S1 degradation validation
+
+- English round: `runs/annotation_v1/` (300 items + 30 controls).
+- Spanish (iDEM) and French (WikiLargeFR, CLEAR) rounds: `runs/annotation_es_v1/` (95 + 10) and `runs/annotation_fr_v1/` (300 + 30). See [S1 ES/FR generation](docs/reports/current/s1_es_fr_generation.md).
+
 ## Archived experiments
 
 The frozen Meaning pilot and the multi-axis v1 pilot are retained for provenance only. Their reports, prompts, jobs, configs, and run products live under archive directories. They are not the operational workflow.

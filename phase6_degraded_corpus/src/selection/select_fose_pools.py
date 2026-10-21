@@ -10,19 +10,22 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import spacy
-from spacy.lang.en.stop_words import STOP_WORDS
 from wordfreq import zipf_frequency
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
-from phase6_degraded_corpus.src.generation.generate_fose_rules import WORD_RE, alignment, fluency_sites
+from phase6_degraded_corpus.src.common.languages import get as language, stop_words
+from phase6_degraded_corpus.src.generation.generate_fose_rules import (
+    WORD_RE, alignment, detokenize, explanatory_pattern, fluency_sites, span_is_balanced,
+)
 from phase6_degraded_corpus.src.selection.select_mmi_pools import ReservedMatcher, corpus_of
 from phase6_degraded_corpus.src.selection.freeze_evaluation_originals import strong_key
 
 AXES = ("FLUENCY", "OMIT", "SYN", "EXPL")
 
 
-def content(tokens: list[str]) -> list[str]:
-    return [t for t in tokens if WORD_RE.match(t) and t.casefold() not in STOP_WORDS]
+def content(tokens: list[str], lang: str = "en") -> list[str]:
+    stops = stop_words(lang)
+    return [t for t in tokens if WORD_RE.match(t) and t.casefold() not in stops]
 
 
 def structural_features(original: str, simple: str) -> dict:
@@ -32,24 +35,54 @@ def structural_features(original: str, simple: str) -> dict:
             "len_ratio": len(right) / max(1, len(left)), "edit_blocks": len(edits)}
 
 
-def eligible_rule_sites(axis: str, feats: dict) -> list:
-    if not (feats["overlap"] >= .4 and .5 <= feats["len_ratio"] <= 1.6 and feats["edit_blocks"] <= 4):
+def _analysed(items: list[str], nlp, lang: str = "en") -> list:
+    return list(nlp(detokenize(items, lang)))
+
+
+def _content(doc) -> list:
+    return [t for t in doc if t.pos_ in {"NOUN", "VERB", "ADJ", "ADV"} and not t.is_stop]
+
+
+def eligible_rule_sites(axis: str, feats: dict, nlp=None, lang: str = "en") -> list:
+    max_edit_blocks = 8 if axis == "EXPL" else 4
+    if not (feats["overlap"] >= .4 and .5 <= feats["len_ratio"] <= 1.6 and feats["edit_blocks"] <= max_edit_blocks):
         return []
     sites = []
     for tag, i1, i2, j1, j2 in feats["ops"]:
         old, new = feats["left"][i1:i2], feats["right"][j1:j2]
         site = (i1, i2, j1, j2)
-        if axis == "OMIT" and tag == "delete" and content(old):
-            sites.append(site)
-        elif axis == "SYN" and tag == "replace" and 1 <= len(old) <= 4 and 1 <= len(new) <= 3 and all(WORD_RE.match(x) for x in old + new):
-            old_content, new_content = content(old), content(new)
-            if old_content and new_content:
-                old_zipf = sum(zipf_frequency(x, "en") for x in old_content) / len(old_content)
-                new_zipf = sum(zipf_frequency(x, "en") for x in new_content) / len(new_content)
+        old_doc = _analysed(old, nlp, lang) if nlp is not None else None
+        new_doc = _analysed(new, nlp, lang) if nlp is not None else None
+        if axis == "OMIT" and tag == "delete" and 2 <= len(old) <= 12 and span_is_balanced(old):
+            old_content = _content(old_doc) if old_doc is not None else content(old, lang)
+            simple_lemmas = ({t.lemma_.casefold() for t in _analysed(feats["right"], nlp, lang) if WORD_RE.match(t.text)}
+                             if nlp is not None else {t.casefold() for t in feats["right"] if WORD_RE.match(t)})
+            if any((t.lemma_.casefold() if old_doc is not None else t.casefold()) not in simple_lemmas for t in old_content):
+                sites.append(site)
+        elif axis == "SYN" and tag == "replace" and 1 <= len(old) <= 2 and 1 <= len(new) <= 3 and all(WORD_RE.match(x) for x in old + new):
+            old_content = _content(old_doc) if old_doc is not None else content(old, lang)
+            new_content = _content(new_doc) if new_doc is not None else content(new, lang)
+            proper_or_number = (any(t.pos_ == "PROPN" or t.like_num for t in old_doc + new_doc)
+                                if old_doc is not None else any(any(ch.isdigit() for ch in x) for x in old + new))
+            old_lemmas = {t.lemma_.casefold() for t in old_content} if old_doc is not None else {t.casefold() for t in old_content}
+            new_lemmas = {t.lemma_.casefold() for t in new_content} if new_doc is not None else {t.casefold() for t in new_content}
+            if len(old_content) == 1 and new_content and not proper_or_number and old_lemmas.isdisjoint(new_lemmas):
+                old_zipf = sum(zipf_frequency(t.text if old_doc is not None else t, lang) for t in old_content) / len(old_content)
+                new_zipf = sum(zipf_frequency(t.text if new_doc is not None else t, lang) for t in new_content) / len(new_content)
                 if old_zipf <= new_zipf - .5:
                     sites.append(site)
-        elif axis == "EXPL" and tag == "insert" and len(new) >= 2 and content(new):
-            sites.append(site)
+        elif axis == "EXPL" and tag == "insert" and len(new) >= 2 and content(new, lang):
+            pattern = explanatory_pattern(feats["right"][:j1], new, feats["right"][j2:], lang)
+            original_cf = {x.casefold() for x in feats["left"] if WORD_RE.match(x)}
+            gloss_cf = {x.casefold() for x in content(new, lang)}
+            term = next((x.casefold() for x in reversed(feats["right"][:j1]) if WORD_RE.match(x)), None)
+            factual = any(any(ch.isdigit() for ch in x) for x in new)
+            if nlp is not None:
+                # Spanish/French spaCy has no numeric entity types; digits cover them above.
+                factual = factual or any(t.ent_type_ in language(lang).entity_types_factual
+                                         or (t.ent_type_ and t.text.casefold() not in original_cf) for t in new_doc)
+            if pattern and term in original_cf and not gloss_cf.issubset(original_cf) and not factual:
+                sites.append(site)
     if axis == "OMIT" and any(tag == "insert" for tag, *_ in feats["ops"]):
         return []
     return sites
@@ -103,7 +136,7 @@ def build_structural(cfg: dict) -> tuple[list[dict], dict]:
         if p3:
             axis = p3["candidate_strategy_code"]
             if axis in {"OMIT", "SYN", "EXPL"}:
-                found = eligible_rule_sites(axis, f)
+                found = eligible_rule_sites(axis, f, nlp)
                 if found:
                     axes.append(axis); sites[axis] = found
         if not axes:

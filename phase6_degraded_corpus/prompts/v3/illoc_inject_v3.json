@@ -1,0 +1,61 @@
+{
+ "prompt_id": "illoc_inject_v3",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON.",
+ "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep every fact and all other words unchanged. Do not use a question mark unless the operation asks for it. Add or remove at most two words. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "illoc_imperative_swap": "Turn the statement into a direct instruction addressed to the reader: replace the subject and its modal verb (should, can, must, need to) with the bare verb. Only do this if it gives a natural instruction.",
+  "illoc_hedge_swap": "Make the claim uncertain by changing its verb with a modal hedge (may, might, could, probably). Do not change any number, date, name or quantity, and do not use approximations like 'about' or 'around'.",
+  "illoc_question_to_statement": "Turn the existing question into a statement expressing the same proposition."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "illoc_imperative_swap": [
+   [
+    "Visitors should book their tickets in advance.",
+    "Book your tickets in advance."
+   ],
+   [
+    "People can find the museum near the river.",
+    "Find the museum near the river."
+   ],
+   [
+    "Players must wear a helmet during the game.",
+    "Wear a helmet during the game."
+   ]
+  ],
+  "illoc_hedge_swap": [
+   [
+    "The route is dangerous in winter.",
+    "The route may be dangerous in winter."
+   ],
+   [
+    "The castle was built in 1205.",
+    "The castle was probably built in 1205."
+   ],
+   [
+    "The river flows into the Baltic Sea.",
+    "The river probably flows into the Baltic Sea."
+   ]
+  ],
+  "illoc_question_to_statement": [
+   [
+    "Is the museum open today?",
+    "The museum is open today."
+   ],
+   [
+    "Did Marie write the book?",
+    "Marie wrote the book."
+   ]
+  ]
+ }
+}

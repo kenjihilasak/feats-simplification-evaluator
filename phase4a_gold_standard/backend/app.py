@@ -21,6 +21,7 @@ from .errors import (
 )
 from .security import AuthenticatedUser, sign_cookie, unsign_cookie
 from .service import AnnotationService, ServiceSettings
+from .s1_service import S1Service
 
 
 class LoginBody(BaseModel):
@@ -52,12 +53,19 @@ class UserBody(BaseModel):
     active: bool = True
 
 
+class S1AnnotationBody(BaseModel):
+    answer: dict[str, Any] = Field(default_factory=dict)
+    expected_version: int = Field(ge=0)
+
+
 def create_app(
     settings: ServiceSettings | None = None,
     *,
     service: AnnotationService | None = None,
+    s1_service: S1Service | None = None,
 ) -> FastAPI:
     service = service or AnnotationService(settings)
+    s1_service = s1_service or S1Service()
     settings = service.settings
     application = FastAPI(
         title="FEATS Phase 4a Review API",
@@ -67,6 +75,7 @@ def create_app(
         openapi_url="/api/openapi.json",
     )
     application.state.annotation_service = service
+    application.state.s1_service = s1_service
 
     @application.exception_handler(BackendError)
     async def backend_error_handler(
@@ -380,6 +389,42 @@ def create_app(
             "events": service.audit(user, task_id=task_id, limit=limit)
         }
 
+    @application.get("/s1/api/progress")
+    def s1_progress(user: AuthenticatedUser = Depends(current_user)) -> dict[str, Any]:
+        s1_service.require_access(user)
+        username = None if user.role == "admin" else user.username
+        return s1_service.database.progress(username)
+
+    @application.get("/s1/api/items")
+    def s1_items(user: AuthenticatedUser = Depends(current_user)) -> dict[str, Any]:
+        s1_service.require_access(user)
+        return {"items": s1_service.database.list_items(user.username)}
+
+    @application.get("/s1/api/tasks/next")
+    def s1_next(user: AuthenticatedUser = Depends(current_user)) -> dict[str, Any]:
+        return {"task": s1_service.next(user)}
+
+    @application.get("/s1/api/tasks/{case_id}")
+    def s1_task(case_id: str, user: AuthenticatedUser = Depends(current_user)) -> dict[str, Any]:
+        return {"task": s1_service.task(case_id, user)}
+
+    @application.patch("/s1/api/tasks/{case_id}/draft")
+    def s1_draft(case_id: str, body: S1AnnotationBody, user: AuthenticatedUser = Depends(csrf_user)) -> dict[str, Any]:
+        return {"annotation": s1_service.save(case_id, user, body.answer, body.expected_version, False)}
+
+    @application.post("/s1/api/tasks/{case_id}/submit")
+    def s1_submit(case_id: str, body: S1AnnotationBody, user: AuthenticatedUser = Depends(csrf_user)) -> dict[str, Any]:
+        return {"annotation": s1_service.save(case_id, user, body.answer, body.expected_version, True)}
+
+    @application.post("/s1/api/finish")
+    def s1_finish(user: AuthenticatedUser = Depends(csrf_user)) -> dict[str, bool]:
+        s1_service.require_access(user)
+        try:
+            s1_service.database.finish(user.username)
+        except ValueError as error:
+            raise ValidationError(str(error)) from error
+        return {"ok": True}
+
     web_root = Path(__file__).resolve().parents[1] / "web"
     static_root = web_root / "static"
     template_root = web_root / "templates"
@@ -393,6 +438,23 @@ def create_app(
             return templates.TemplateResponse(
                 request=request,
                 name="index.html",
+                context={"request": request},
+            )
+
+        @application.get("/s1", response_class=HTMLResponse, include_in_schema=False)
+        def s1_index(request: Request) -> Any:
+            return templates.TemplateResponse(
+                request=request,
+                name="s1.html",
+                context={"request": request},
+            )
+
+        @application.get("/s1/guidelines", response_class=HTMLResponse, include_in_schema=False)
+        def s1_guidelines(request: Request, lang: str = "en") -> Any:
+            names = {"en": "s1_guidelines.html", "es": "s1_guidelines_es.html", "fr": "s1_guidelines_fr.html"}
+            return templates.TemplateResponse(
+                request=request,
+                name=names.get(lang, names["en"]),
                 context={"request": request},
             )
 

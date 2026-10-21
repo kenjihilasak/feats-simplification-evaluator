@@ -43,6 +43,7 @@ In the Railway dashboard:
 
 ```text
 PHASE4A_DATABASE=/data/gemma_anchored_strict_v2.sqlite3
+S1_DATABASE=/data/s1_validation_v1.sqlite3
 PHASE4A_CAMPAIGN_ID=gemma-anchored-strict-v2
 PHASE4A_SESSION_SECRET=<at-least-32-random-characters>
 PHASE4A_COOKIE_SECURE=1
@@ -217,3 +218,55 @@ forwarding.
 - Review Railway usage, logs, and backups daily during the campaign.
 - Stop public access after the review window and retain the final backup in
   approved institutional storage.
+
+
+## S1 degradation-validation module
+
+S1 shares this service, login and existing accounts, but uses its own database at `/data/s1_validation_v1.sqlite3`. Its code never opens the Phase 4a database. An English reviewer sees the **S1 validation** project link because access is derived from the existing `allowed_languages`; reviewers without `en` receive HTTP 403. Administrators can inspect aggregate progress. Do not create another reviewer or permission migration.
+
+Before the first S1 deployment, back up the live Phase 4a campaign:
+
+```bash
+phase4a_gold_standard/deploy/railway/backup.sh phase4a_gold_standard/backups/pre-s1
+```
+
+Then deploy the reviewed commit through Railway and verify `/api/health`. Build controls locally, and load the frozen 300 items plus 30 controls into the existing English username (replace `reviewer-en` if production uses another name):
+
+```bash
+python -m phase6_degraded_corpus.src.annotation.package_s1
+phase4a_gold_standard/deploy/railway/upload_s1.sh \
+  phase6_degraded_corpus/runs/annotation_v1/s1_items.jsonl \
+  phase6_degraded_corpus/runs/annotation_v1/s1_controls.jsonl \
+  reviewer-en \
+  phase6_degraded_corpus/runs/annotation_v1/s1_gemini_3p8_flash.jsonl
+```
+
+The hidden `s1_key.json` and `s1_controls_key.json` must never be uploaded. In private browser windows, confirm that the English reviewer can choose Phase 4a or S1 and sees 330 S1 items, while a French/non-English reviewer gets no S1 access. Confirm Phase 4a still shows its existing submitted reviews.
+
+During annotation, inspect progress without accessing Phase 4a SQLite:
+
+```bash
+railway ssh -- python -m phase4a_gold_standard.backend.s1_cli progress
+```
+
+Download an independent S1 SQLite backup and JSONL export:
+
+```bash
+phase4a_gold_standard/deploy/railway/backup_s1.sh
+python -m phase6_degraded_corpus.src.annotation.ingest_annotations \
+  phase6_degraded_corpus/runs/annotation_v1/exports/<timestamp>/annotations.jsonl
+```
+
+### Spanish and French rounds
+
+S1 also serves Spanish and French rounds (`phase6_degraded_corpus/runs/annotation_es_v1` and `annotation_fr_v1`). Access follows each reviewer's `allowed_languages`, and an item is shown only to a reviewer allowed its `language`. The interface and the guidelines (`/s1/guidelines?lang=es|fr`) switch to the item language. Case ids carry the language (`ES-S001`, `FR-C001`), so all rounds share one S1 database. Load each round into its own reviewer, with all controls marked as identical pairs:
+
+```bash
+railway service files --service phase4a-review upload --overwrite phase6_degraded_corpus/runs/annotation_fr_v1/s1_items.jsonl /tmp/s1_fr_items.jsonl
+railway service files --service phase4a-review upload --overwrite phase6_degraded_corpus/runs/annotation_fr_v1/s1_controls.jsonl /tmp/s1_fr_controls.jsonl
+railway ssh --service phase4a-review -- python -m phase4a_gold_standard.backend.s1_cli load /tmp/s1_fr_items.jsonl /tmp/s1_fr_controls.jsonl --reviewer reviewer-fr --identical-controls 999
+```
+
+One reviewer holds one round: queue ranks are unique per reviewer. Ingest with `--language es|fr`; the export contains every round and each ingest keeps its own cases.
+
+The ingest step joins hidden keys only on AIRE and writes the results and adjudication queue locally. The team performs all Railway deployment and production data operations.

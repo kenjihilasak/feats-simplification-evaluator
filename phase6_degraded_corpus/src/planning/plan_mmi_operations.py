@@ -17,12 +17,15 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
+from phase6_degraded_corpus.src.common.languages import get as language
 from phase6_degraded_corpus.src.planning.multi_axis import detect_illocution
 from phase6_degraded_corpus.src.planning.plan_meaning_corruptions import detect
 
 MEANING_TYPES = ("number", "date", "entity", "negation", "event", "property", "relation")
 RULE_TYPES = {"number", "date", "negation"}
-ILLOC_OPERATIONS = ("assertion_to_question", "assertion_to_directive", "assertion_to_hedged")
+ILLOC_OPERATIONS = ("illoc_imperative_swap", "illoc_hedge_swap")
+# Statements an instruction can be made from without inventing content: a modal addressed to people.
+IMPERATIVE_CUE = re.compile(r"\b(?:should|must|need to|needs to|have to|has to|had better)\b", re.I)
 MONTHS = (
     "January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December",
@@ -39,8 +42,23 @@ V1_CORRUPTION = {
 }
 
 
-def split_sentences(text: str) -> list[str]:
-    return [part for part in SENTENCE_BOUNDARY.split(text.strip()) if part]
+UPPER = "A-ZÀ-ÖØ-ÞÑÇ"
+
+
+def _boundary(lang: str) -> re.Pattern:
+    """English keeps its v2 pattern; elsewhere accented capitals, ¿/¡ and the language's abbreviations."""
+    if lang == "en":
+        return SENTENCE_BOUNDARY
+    guards = "".join(f"(?<!\\b{re.escape(abbr)})" for abbr in language(lang).abbreviations if " " not in abbr)
+    return re.compile(rf"(?<!\b[{UPPER}]\.){guards}(?<=[.!?…])[\"”»)]?\s+(?=[\"“«(¿¡]?\s?[{UPPER}0-9])")
+
+
+_BOUNDARIES: dict[str, re.Pattern] = {}
+
+
+def split_sentences(text: str, lang: str = "en") -> list[str]:
+    pattern = _BOUNDARIES.setdefault(lang, _boundary(lang))
+    return [part for part in pattern.split(text.strip()) if part]
 
 
 def _hash_int(seed: int, value: str) -> int:
@@ -239,36 +257,57 @@ def plan_meaning(rows: list[dict], seed: int) -> list[dict]:
     return planned
 
 
-def plan_mod(rows: list[dict], seed: int) -> list[dict]:
+def _dependent_second(first: str, second: str, lang: str = "en") -> bool:
+    """Conservative signal that sentence two depends on sentence one."""
+    word = r"[A-Za-z][\w'-]*" if lang == "en" else r"[^\W\d_][\w'’-]*"
+    first_words = {w.casefold() for w in re.findall(word, first)}
+    words = [w.casefold() for w in re.findall(word, second)]
+    if not words:
+        return False
+    res = language(lang)
+    if words[0] in res.anaphors:
+        return True
+    if lang == "fr" and words[0].startswith(("l'", "l’")):  # "L'organisation …" after "… une organisation."
+        words = ["la", words[0][2:]] + words[1:]
+    return words[0] in res.definite_articles and any(w in first_words for w in words[1:4])
+
+
+def plan_mod(rows: list[dict], seed: int, lang: str = "en") -> list[dict]:
+    operations = ("mod_front_heavy", "mod_bury_topic", "mod_sentence_reorder")
     planned = []
-    for row in rows:
-        sentences = split_sentences(row["clean_simplification"])
-        if len(sentences) < 2:
-            planned.append({**row, "operation": None, "plan_status": "fewer_than_two_sentences"})
-            continue
-        index = min(range(len(sentences) - 1), key=lambda i: stable_key(seed, f'{row["canonical_pair_id"]}:{i}'))
-        planned.append({
-            **row,
-            "operation": "recombine_split",
-            "generator_kind": "llm",
-            "sentences": sentences,
-            "merge_index": index,
-            "plan_status": "ready",
-        })
+    for position, row in enumerate(sorted(rows, key=lambda r: stable_key(seed, r["canonical_pair_id"]))):
+        sentences = split_sentences(row["clean_simplification"], lang)
+        reorder = [i for i in range(len(sentences) - 1) if _dependent_second(sentences[i], sentences[i + 1], lang)]
+        available = list(operations[:2]) + (["mod_sentence_reorder"] if reorder else [])
+        op = min(available, key=lambda x: (sum(r.get("operation") == x for r in planned), stable_key(seed, row["canonical_pair_id"] + x)))
+        rule_output = None
+        if op != "mod_sentence_reorder":
+            # The LLM sees one sentence only; it merged sentences when given the whole text.
+            row = {**row, "target_sentence_index": max(range(len(sentences)), key=lambda i: len(sentences[i].split()))}
+        if op == "mod_sentence_reorder":
+            index = min(reorder, key=lambda i: stable_key(seed, f'{row["canonical_pair_id"]}:{i}'))
+            changed = list(sentences); changed[index:index + 2] = reversed(changed[index:index + 2])
+            rule_output = {"degraded": " ".join(changed)}
+        planned.append({**row, "operation": op, "generator_kind": "rule" if rule_output else "llm",
+                        "sentences": sentences, "rule_output": rule_output, "plan_status": "ready"})
     return planned
 
 
-def plan_illoc(rows: list[dict], seed: int) -> list[dict]:
+def plan_illoc(rows: list[dict], seed: int, lang: str = "en") -> list[dict]:
     ordered = sorted(rows, key=lambda r: stable_key(seed, r["canonical_pair_id"]))
-    return [
-        {
-            **row,
-            "operation": ILLOC_OPERATIONS[position % len(ILLOC_OPERATIONS)],
-            "generator_kind": "llm",
-            "plan_status": "ready",
-        }
-        for position, row in enumerate(ordered)
-    ]
+    output = []
+    position = 0
+    for row in ordered:
+        is_question = row["clean_simplification"].rstrip().endswith("?")
+        if is_question:
+            op = "illoc_question_to_statement"
+        elif language(lang).imperative_cue.search(row["clean_simplification"]):
+            op = ILLOC_OPERATIONS[position % len(ILLOC_OPERATIONS)]
+            position += 1
+        else:
+            op = "illoc_hedge_swap"
+        output.append({**row, "operation": op, "generator_kind": "llm", "plan_status": "ready"})
+    return output
 
 
 def v1_manifests(planned: list[dict]) -> tuple[list[dict], list[dict]]:

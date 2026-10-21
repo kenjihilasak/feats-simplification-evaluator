@@ -1,0 +1,61 @@
+{
+  "prompt_id": "illoc_inject_v3_fr",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON. The text is in French; write the edited text in French.",
+  "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep every fact and all other words unchanged. Do not use a question mark unless the operation asks for it. Add or remove at most two words. Return {{\"degraded\": ...}}.",
+  "operation_guidance": {
+    "illoc_imperative_swap": "Turn the statement into a direct instruction addressed to the reader: replace the subject and its modal verb (doit, doivent, il faut, peut) with the imperative (vous form). Only do this if it gives a natural instruction. Write in French.",
+    "illoc_hedge_swap": "Make the claim uncertain with a modal hedge (peut-être, probablement, pourrait, sans doute). Do not change any number, date, name or quantity, and do not use approximations like 'environ', 'près de' or 'presque'. Write in French.",
+    "illoc_question_to_statement": "Turn the existing question into a statement expressing the same proposition. Write in French."
+  },
+  "schema": {
+    "type": "object",
+    "properties": {
+      "degraded": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "degraded"
+    ]
+  },
+  "examples": {
+    "illoc_imperative_swap": [
+      [
+        "Les visiteurs doivent réserver leurs billets à l'avance.",
+        "Réservez vos billets à l'avance."
+      ],
+      [
+        "Les joueurs doivent porter un casque pendant le match.",
+        "Portez un casque pendant le match."
+      ],
+      [
+        "On peut trouver le musée près de la rivière.",
+        "Trouvez le musée près de la rivière."
+      ]
+    ],
+    "illoc_hedge_swap": [
+      [
+        "La route est dangereuse en hiver.",
+        "La route est peut-être dangereuse en hiver."
+      ],
+      [
+        "Le château a été construit en 1205.",
+        "Le château a probablement été construit en 1205."
+      ],
+      [
+        "La rivière se jette dans la mer Baltique.",
+        "La rivière pourrait se jeter dans la mer Baltique."
+      ]
+    ],
+    "illoc_question_to_statement": [
+      [
+        "Le musée est-il ouvert aujourd'hui ?",
+        "Le musée est ouvert aujourd'hui."
+      ],
+      [
+        "Marie a-t-elle écrit ce livre ?",
+        "Marie a écrit ce livre."
+      ]
+    ]
+  }
+}

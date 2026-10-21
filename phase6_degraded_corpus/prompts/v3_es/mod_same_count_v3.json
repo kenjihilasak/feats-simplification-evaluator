@@ -1,0 +1,42 @@
+{
+  "prompt_id": "mod_same_count_v3_es",
+  "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON. The text is in Spanish; write the edited text in Spanish.",
+  "user_template": "Text: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep the same number of sentences and the same content words; only joining words and word order may change. Return {{\"degraded\": ...}}.",
+  "operation_guidance": {
+    "mod_front_heavy": "In one sentence, move a long phrase or clause of at least four words (a time, place, reason or condition phrase) to the very beginning, so the reader must wait for the subject and main verb. Write in Spanish.",
+    "mod_bury_topic": "In one sentence, rewrite it in the passive voice (ser + participio … por …) or reorder it so that the original subject, the main topic, ends up at the very end of the sentence. Write in Spanish."
+  },
+  "schema": {
+    "type": "object",
+    "properties": {
+      "degraded": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "degraded"
+    ]
+  },
+  "examples": {
+    "mod_front_heavy": [
+      [
+        "El museo abrió una nueva sala después de muchos años de trabajo.",
+        "Después de muchos años de trabajo, el museo abrió una nueva sala."
+      ],
+      [
+        "El equipo ganó el partido a pesar de la lluvia de toda la tarde.",
+        "A pesar de la lluvia de toda la tarde, el equipo ganó el partido."
+      ]
+    ],
+    "mod_bury_topic": [
+      [
+        "Marie Curie descubrió el radio en 1898.",
+        "En 1898, el radio fue descubierto por Marie Curie."
+      ],
+      [
+        "El ayuntamiento aprobó el nuevo puente el martes.",
+        "El martes, el nuevo puente fue aprobado por el ayuntamiento."
+      ]
+    ]
+  }
+}

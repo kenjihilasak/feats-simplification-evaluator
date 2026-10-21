@@ -1,0 +1,46 @@
+{
+  "experiment_id": "mmi_en_v3",
+  "seed": 20260930,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-29_target_simple_textrepair_v1/data/en/feats_consolidated.jsonl",
+  "phase3a_prediction_files": {
+    "gemma3_12b_pairwise_qlora": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/gemma3_12b_pairwise_qlora/predictions/en/feats_consolidated.jsonl",
+    "multilingual_e5_large_bce": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/multilingual_e5_large_bce/predictions/en/feats_consolidated.jsonl",
+    "qwen2p5_7b_pairwise_qlora": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/qwen2p5_7b_pairwise_qlora/predictions/en/feats_consolidated.jsonl",
+    "xlmr_large_focal": "phase3a_strategy_detection/runs/2026-08-20_three_models_phase2b_full_v1/models/xlmr_large_focal/predictions/en/feats_consolidated.jsonl"
+  },
+  "gemma_alias": "gemma3_12b_pairwise_qlora",
+  "strict_candidate_file": "phase3a_strategy_detection/gold_candidates/2026-08-31_single_strategy_gemma_anchored_strict_v1/data/en/single_strategy_candidates.jsonl",
+  "reserved_membership_file": "phase6_degraded_corpus/runs/mmi_en_v2/pools/reserved_original_membership.jsonl",
+  "output_dir": "phase6_degraded_corpus/runs/mmi_en_v3/pools",
+  "split_output_dir": "phase6_degraded_corpus/runs/mmi_en_v3/splits",
+  "quality_scores_file": "phase6_degraded_corpus/runs/mmi_en_v2/pools/clean_quality_scores.jsonl",
+  "corpora": [
+    "WikiAutoEN",
+    "ASSET",
+    "Wikipedia-Vikidia"
+  ],
+  "original_token_range": [
+    8,
+    45
+  ],
+  "near_duplicate_jaccard": 0.8,
+  "split_quota": 60,
+  "dev_size": 40,
+  "heldout_size": 20,
+  "nli_model": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+  "nli_revision": "b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7",
+  "nli_entailment_threshold": 0.5,
+  "acceptability_model": "cointegrated/roberta-large-cola-krishna2020",
+  "acceptability_revision": "efffc0dbebedfdb84747a32b30ec0c3df15812b1",
+  "tau_accept": 0.94626032,
+  "delta": 0.04240996,
+  "cache_dir": "cache/huggingface",
+  "checker_batch_size": 64,
+  "nli_gate": "non_contradiction",
+  "nli_contradiction_threshold": 0.5,
+  "audited_split_files": [
+    "phase6_degraded_corpus/runs/mmi_en_v2/splits/heldout.jsonl",
+    "phase6_degraded_corpus/runs/mmi_en_v2/splits/heldout_meaning_v21.jsonl",
+    "phase6_degraded_corpus/runs/fose_en_v1/audit/sample.jsonl"
+  ]
+}

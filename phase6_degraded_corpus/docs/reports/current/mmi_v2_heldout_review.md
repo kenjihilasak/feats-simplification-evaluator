@@ -1,7 +1,3 @@
-Aquí tienes la revisión completa de todos los casos, evaluados con rigor según los criterios de cada eje (`ILLOC`, `MEANING`, `MOD`) y con la casilla correspondiente marcada junto con una nota explicativa en cada caso que presenta alguna alteración indebida, fallo gramatical o no conformidad:
-
----
-
 # MMI v2 heldout review (blinded)
 
 Mark exactly one box per case. **Valid** = the Degraded text makes exactly the requested change and nothing else (facts, fluency and wording otherwise preserved). The generating configuration is hidden and cases are shuffled.
