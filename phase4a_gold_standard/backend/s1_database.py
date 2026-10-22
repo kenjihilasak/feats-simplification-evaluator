@@ -75,6 +75,12 @@ class S1Database:
                 );
                 CREATE INDEX IF NOT EXISTS idx_s1_queue
                     ON items(reviewer_username, queue_rank);
+                -- Shown to annotators: the dataset always, the human version only after submission.
+                CREATE TABLE IF NOT EXISTS item_meta (
+                    case_id TEXT PRIMARY KEY REFERENCES items(case_id),
+                    dataset TEXT NOT NULL,
+                    human_versions_json TEXT NOT NULL
+                );
                 """
             )
 
@@ -121,10 +127,31 @@ class S1Database:
                 loaded += 1
         return {"loaded": loaded}
 
+    def import_meta(self, rows: Iterable[Mapping[str, Any]]) -> dict[str, int]:
+        loaded = 0
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            for row in rows:
+                case_id = str(row["case_id"])
+                if not db.execute("SELECT 1 FROM items WHERE case_id=?", (case_id,)).fetchone():
+                    raise ValueError(f"unknown S1 case_id in metadata: {case_id}")
+                db.execute(
+                    "INSERT INTO item_meta(case_id,dataset,human_versions_json) VALUES(?,?,?) "
+                    "ON CONFLICT(case_id) DO UPDATE SET dataset=excluded.dataset,human_versions_json=excluded.human_versions_json",
+                    (case_id, str(row["dataset"]), _json(sorted(row["human_versions"]))),
+                )
+                loaded += 1
+        return {"loaded": loaded}
+
     def _task(self, row: sqlite3.Row, username: str) -> dict[str, Any]:
         payload = json.loads(row["payload_json"])
         answer = json.loads(row["answer_json"] or "{}")
         suggestion = json.loads(row["llm_suggestion_json"]) if row["llm_suggestion_json"] else None
+        submitted = row["state"] == "submitted"
+        if row["dataset"] is not None:
+            payload["dataset"] = row["dataset"]
+            # The human version is revealed only once the answer is submitted, and the answer is then locked.
+            payload["reveal"] = {"human_versions": json.loads(row["human_versions_json"])} if submitted else None
         return payload | {
             "queue_rank": row["queue_rank"],
             "llm_suggestion": suggestion,
@@ -135,8 +162,8 @@ class S1Database:
     def get(self, case_id: str, username: str) -> dict[str, Any]:
         with self.connect() as db:
             row = db.execute(
-                """SELECT i.*, a.answer_json, a.state, a.version FROM items i
-                   LEFT JOIN annotations a ON a.case_id=i.case_id
+                """SELECT i.*, a.answer_json, a.state, a.version, m.dataset, m.human_versions_json FROM items i
+                   LEFT JOIN annotations a ON a.case_id=i.case_id LEFT JOIN item_meta m ON m.case_id=i.case_id
                    WHERE i.case_id=? AND i.reviewer_username=?""",
                 (case_id, username),
             ).fetchone()
@@ -147,8 +174,8 @@ class S1Database:
     def next(self, username: str) -> dict[str, Any] | None:
         with self.connect() as db:
             row = db.execute(
-                """SELECT i.*, a.answer_json, a.state, a.version FROM items i
-                   LEFT JOIN annotations a ON a.case_id=i.case_id
+                """SELECT i.*, a.answer_json, a.state, a.version, m.dataset, m.human_versions_json FROM items i
+                   LEFT JOIN annotations a ON a.case_id=i.case_id LEFT JOIN item_meta m ON m.case_id=i.case_id
                    WHERE i.reviewer_username=? AND COALESCE(a.state,'draft')!='submitted'
                    ORDER BY i.queue_rank LIMIT 1""",
                 (username,),
@@ -176,6 +203,9 @@ class S1Database:
             if batch and batch["finished_at"]:
                 raise ValueError("the S1 batch is finished and can no longer be changed")
             old = db.execute("SELECT * FROM annotations WHERE case_id=?", (case_id,)).fetchone()
+            revealed = db.execute("SELECT 1 FROM item_meta WHERE case_id=?", (case_id,)).fetchone()
+            if old and old["state"] == "submitted" and revealed:
+                raise ValueError("this answer is locked: the human version was shown after submission")
             old_version = int(old["version"]) if old else 0
             if old_version != expected_version:
                 raise ValueError(f"stale S1 version: expected {expected_version}, current {old_version}")

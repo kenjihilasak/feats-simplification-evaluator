@@ -47,3 +47,11 @@ def test_ingest_keeps_only_its_language_round(tmp_path):
     rows=[{"case_id":"FR-S001","state":"submitted","human_final":answer},{"case_id":"S001","state":"submitted","human_final":answer},{"case_id":"ES-S001","state":"submitted","human_final":answer}]
     export=tmp_path/"export.jsonl"; export.write_text("".join(json.dumps(x)+"\n" for x in rows))
     result,_=analyze(export,tmp_path/"key.json",tmp_path/"controls.json","fr"); assert result["submitted_noncontrol"]==1
+def test_human_version_shown_after_submit_and_answer_locked(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
+    service.database.import_meta([{"case_id":"S001","dataset":"MultiSim · ASSET","human_versions":["X"]}])
+    before=service.next(user()); assert before["dataset"]=="MultiSim · ASSET" and before["reveal"] is None
+    final={"choice":"X","side_effect":"none","side_effect_version":None,"note":"","uncertain":False}
+    service.save("S001",user(),final,0,True)
+    after=service.task("S001",user()); assert after["reveal"]=={"human_versions":["X"]}
+    with pytest.raises(ValidationError,match="locked"): service.save("S001",user(),final|{"choice":"Y"},1,True)
