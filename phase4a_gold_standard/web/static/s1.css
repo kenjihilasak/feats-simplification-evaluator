@@ -38,3 +38,4 @@
 .g-page header h1{margin:.2rem 0}.g-langs a{margin-left:.6rem;color:#1f6845;font-weight:650}
 @media(max-width:600px){.g-example{grid-template-columns:1fr}.guide-drawer{border-radius:0}}
 .axis-guide .g-axis{margin:0;padding:.2rem 0 0;border:0}
+.version-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.5rem}.version-head strong{margin:0}.version-control{flex:0 0 auto}.version-pick{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .7rem;border:1px solid #9fbfac;border-radius:999px;cursor:pointer;font-weight:600;color:#1f6845}.version-pick:has(input:checked){background:#e6f4ea}.version:has(input[name=choice]:checked){border-color:#1f6845;box-shadow:0 0 0 2px #1f684533}
