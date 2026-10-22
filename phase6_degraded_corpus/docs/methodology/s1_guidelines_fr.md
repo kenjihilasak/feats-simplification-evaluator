@@ -2,7 +2,7 @@
 
 Jugez uniquement l’axe indiqué. X, Y et Z sont des étiquettes neutres dans un ordre aléatoire. Pour une paire, choisissez la meilleure version ou **Identiques**. Pour trois versions, attribuez le **rang 1 à la meilleure**, le **rang 2 à l’intermédiaire** et le **rang 3 à la moins bonne** sur l’axe affiché. Un rang plus bas est meilleur ; des rangs égaux indiquent une égalité. Signalez séparément tout changement de sens, de fluidité ou autre. En cas de doute, expliquez brièvement dans la note.
 
-La suggestion facultative de Gemini est une aide, pas un corrigé. Lisez d’abord les textes et corrigez-la chaque fois que nécessaire.
+La suggestion facultative d’IA est une aide, pas un corrigé. Lisez d’abord les textes et corrigez-la chaque fois que nécessaire.
 
 ## OMIT — détails inutiles
 

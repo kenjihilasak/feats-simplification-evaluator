@@ -2,7 +2,7 @@
 
 Juzga solo el eje indicado. X, Y y Z son etiquetas neutras en orden aleatorio. En un par, elige la versión mejor o **Igual**. Con tres versiones, asigna el **rango 1 a la mejor**, el **rango 2 a la intermedia** y el **rango 3 a la peor** en el eje mostrado. Un rango más bajo es mejor; rangos iguales indican un empate. Indica aparte cualquier cambio de significado, de fluidez o de otro tipo. Si dudas, explícalo brevemente en la nota.
 
-La sugerencia opcional de Gemini es una ayuda, no la respuesta correcta. Lee primero los textos y corrígela siempre que haga falta.
+La sugerencia opcional de IA es una ayuda, no la respuesta correcta. Lee primero los textos y corrígela siempre que haga falta.
 
 ## OMIT — detalles innecesarios
 
