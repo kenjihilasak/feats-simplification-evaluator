@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261021a">
+  <link rel="stylesheet" href="/static/s1.css?v=20261023a">
 </head>
 <body>
   <header class="topbar">
@@ -18,7 +18,7 @@
         <span><small>FEATS · Phase 6</small><strong data-i18n="s1Title">Degradation Validation</strong></span>
       </a>
     </nav>
-    <nav><a id="guidelines-link" href="/s1/guidelines" target="_blank" data-i18n="guidelines">Guidelines</a></nav>
+    <nav><button id="guide-open" class="guide-open" type="button" aria-haspopup="dialog" aria-controls="guide-drawer" data-i18n="guidelines">Guidelines</button></nav>
   </header>
   <main>
     <div id="notice" class="notice" hidden></div>
@@ -28,6 +28,7 @@
       <article class="card">
         <div class="axis-row"><span id="axis" class="axis">—</span><span id="case-id"></span></div>
         <p id="definition" class="definition"></p>
+        <details id="axis-guide" class="axis-guide"><summary id="axis-guide-title">How to judge</summary><div id="axis-guide-body"></div></details>
         <h2 data-i18n="original">Original</h2><p id="original" class="text-block"></p>
         <h2 id="question"></h2>
         <div id="versions"></div>
@@ -60,6 +61,14 @@
       <button id="finish" type="button" data-i18n="finish">Mark completed batch as finished</button>
     </section>
   </main>
-  <script type="module" src="/static/s1.js?v=20261022a"></script>
+  <dialog id="guide-drawer" class="guide-drawer" aria-labelledby="guide-title">
+    <div class="guide-head">
+      <h2 id="guide-title">Guidelines</h2>
+      <a id="guide-page" href="/s1/guidelines" target="_blank" rel="noopener">↗</a>
+      <button id="guide-close" type="button">Close</button>
+    </div>
+    <div id="guide-body" class="guide-body"></div>
+  </dialog>
+  <script type="module" src="/static/s1.js?v=20261023a"></script>
 </body>
 </html>

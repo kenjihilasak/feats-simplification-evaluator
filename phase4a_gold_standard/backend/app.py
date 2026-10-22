@@ -450,11 +450,11 @@ def create_app(
             )
 
         @application.get("/s1/guidelines", response_class=HTMLResponse, include_in_schema=False)
-        def s1_guidelines(request: Request, lang: str = "en") -> Any:
-            names = {"en": "s1_guidelines.html", "es": "s1_guidelines_es.html", "fr": "s1_guidelines_fr.html"}
+        def s1_guidelines(request: Request) -> Any:
+            # One page for every language: static/s1_guidelines.js renders the ?lang= version.
             return templates.TemplateResponse(
                 request=request,
-                name=names.get(lang, names["en"]),
+                name="s1_guidelines.html",
                 context={"request": request},
             )
 
