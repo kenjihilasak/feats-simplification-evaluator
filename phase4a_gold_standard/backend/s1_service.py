@@ -104,6 +104,8 @@ class S1Service:
     def _validate_answer(task: Mapping[str, Any], answer: Mapping[str, Any], submit: bool) -> None:
         if len(str(answer.get("note", ""))) > 4000:
             raise ValidationError("S1 note is too long")
+        if len(str(answer.get("rationale", ""))) > 4000:
+            raise ValidationError("S1 rationale is too long")
         if not submit:
             return
         if task["format"] == "pair" and answer.get("choice") not in {"X", "Y", "Same"}:
