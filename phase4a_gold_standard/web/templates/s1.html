@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261023e">
+  <link rel="stylesheet" href="/static/s1.css?v=20261023f">
 </head>
 <body>
   <header class="topbar">
@@ -36,13 +36,12 @@
         <div id="answer"></div>
         <fieldset>
           <legend data-i18n="sideQuestion">Apart from this axis, does any version differ in something else?</legend>
-          <label><input type="radio" name="side" value="none"> <span data-i18n="sideNone">No</span></label>
-          <label><input type="radio" name="side" value="meaning"> <span data-i18n="sideMeaning">Yes: meaning</span></label>
-          <label><input type="radio" name="side" value="fluency"> <span data-i18n="sideFluency">Yes: fluency</span></label>
-          <label><input type="radio" name="side" value="other"> <span data-i18n="sideOther">Yes: other</span></label>
-          <label id="side-version-wrap"><span data-i18n="whichVersion">Which version?</span>
-            <select id="side-version"><option value="">Choose…</option></select>
-          </label>
+          <label><input type="checkbox" name="side" value="none"> <span data-i18n="sideNone">No</span></label>
+          <label><input type="checkbox" name="side" value="meaning"> <span data-i18n="sideMeaning">Yes: meaning</span></label>
+          <label><input type="checkbox" name="side" value="fluency"> <span data-i18n="sideFluency">Yes: fluency</span></label>
+          <div class="side-other"><label><input type="checkbox" name="side" value="other"> <span data-i18n="sideOther">Yes: other</span></label>
+            <input id="side-other-text" type="text" maxlength="500" hidden></div>
+          <div id="side-version-wrap" class="side-versions" hidden><span data-i18n="whichVersion">Which version(s)?</span><span id="side-versions"></span></div>
         </fieldset>
         <details id="suggestion-wrap" hidden>
           <summary data-i18n="suggestion">AI suggestion — check it independently</summary>
@@ -71,6 +70,6 @@
     </div>
     <div id="guide-body" class="guide-body"></div>
   </dialog>
-  <script type="module" src="/static/s1.js?v=20261023e"></script>
+  <script type="module" src="/static/s1.js?v=20261023f"></script>
 </body>
 </html>

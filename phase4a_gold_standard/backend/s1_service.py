@@ -112,6 +112,18 @@ class S1Service:
             ranks = answer.get("ranks")
             if not isinstance(ranks, dict) or set(ranks) != {"X", "Y", "Z"} or any(ranks[x] not in {1, 2, 3} for x in ranks):
                 raise ValidationError("assign rank 1, 2, or 3 to X, Y, and Z; equal ranks indicate ties")
+        if "side_effects" in answer:
+            effects, versions = answer.get("side_effects"), answer.get("side_effect_versions")
+            if not isinstance(effects, list) or not effects or not (effects == ["none"] or set(effects) <= {"meaning", "fluency", "other"}):
+                raise ValidationError("answer the side-effect question: No, or one or more side effects")
+            if effects != ["none"]:
+                if not isinstance(versions, list) or not versions or not set(versions) <= set(task["versions"]):
+                    raise ValidationError("identify which version or versions have the side effect")
+                if "other" in effects and not str(answer.get("side_effect_other", "")).strip():
+                    raise ValidationError("describe the other side effect")
+            if len(str(answer.get("side_effect_other", ""))) > 500:
+                raise ValidationError("the side-effect description is too long")
+            return
         if answer.get("side_effect") not in {"none", "meaning", "fluency", "other"}:
             raise ValidationError("answer the side-effect question")
         if answer.get("side_effect") != "none" and answer.get("side_effect_version") not in set(task["versions"]):

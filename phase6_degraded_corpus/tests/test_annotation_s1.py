@@ -61,3 +61,11 @@ def test_prioritize_moves_items_first_and_keeps_the_rest(tmp_path):
     service.database.prioritize("reviewer-en",["S004","S002"])
     assert [x["case_id"] for x in service.database.list_items("reviewer-en")]==["S004","S002","S001","S003"]
     with pytest.raises(ValueError): service.database.prioritize("reviewer-en",["S999"])
+def test_multiple_side_effects_need_versions_and_other_text(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
+    base={"choice":"X","note":"","uncertain":False}
+    with pytest.raises(ValidationError,match="version"): service.save("S001",user(),base|{"side_effects":["meaning","other"],"side_effect_versions":[],"side_effect_other":"tone"},0,True)
+    with pytest.raises(ValidationError,match="describe"): service.save("S001",user(),base|{"side_effects":["other"],"side_effect_versions":["Y"],"side_effect_other":" "},0,True)
+    with pytest.raises(ValidationError): service.save("S001",user(),base|{"side_effects":["none","meaning"],"side_effect_versions":["Y"]},0,True)
+    ok=service.save("S001",user(),base|{"side_effects":["meaning","other"],"side_effect_versions":["X","Y"],"side_effect_other":"register changed","side_effect":"multiple"},0,True)
+    assert ok["state"]=="submitted"
