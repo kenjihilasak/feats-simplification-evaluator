@@ -1,5 +1,5 @@
 // Degradation Validation guidelines: one source for the in-page panel and the guidelines page.
-const AXES = ["OMIT", "SYN", "EXPL", "MOD", "ILLOC"];
+const AXES = ["OMIT", "SYN", "EXPL", "MOD", "ILLOC", "COMP", "SYNT"];
 
 export const GUIDE = {
   en: {
@@ -30,6 +30,12 @@ export const GUIDE = {
         examples: [["Marie Curie was a scientist. She discovered radium.", "She discovered radium. Marie Curie was a scientist.", "“She” comes before we know who she is."],
                    ["The museum opened a gallery after years of planning.", "After many long years of careful planning, the museum opened a gallery.", "The reader waits for the main point."]],
         tip: "With three versions: clear order first, one confusing change second, both changes third." },
+      COMP: { name: "Compression — compact constructions", rule: "The simplified text should say the same thing with shorter, simpler grammatical constructions.", worse: "A longer or more complex construction is back, with the same meaning.",
+        examples: [["Fewer people travelled by plane after COVID.", "Air travel saw a dramatic reduction in passenger numbers after COVID.", ""]],
+        tip: "A change of meaning is not a COMP problem: report it as a side effect." },
+      SYNT: { name: "Syntactic change — easy sentence structure", rule: "The simplified text should use a sentence structure that is easy to follow.", worse: "A harder structure is back (for example a nominalisation), with the same meaning.",
+        examples: [["The project was delayed because the money arrived late.", "The late arrival of the money caused a delay of the project.", ""]],
+        tip: "A change of meaning is not a SYNT problem: report it as a side effect." },
       ILLOC: { name: "Illocution — type of statement and certainty", rule: "Keep the kind of utterance (statement, instruction, question) and how certain it is.", worse: "A statement became an instruction, or was made uncertain.",
         examples: [["Water boils at 100 °C.", "Water might boil at 100 °C.", "The source is certain."], ["The museum opens at nine.", "Remember that the museum opens at nine.", "A plain statement became an instruction."]],
         tip: "Choose Same if the type of statement and the certainty are equivalent." },
@@ -63,6 +69,12 @@ export const GUIDE = {
         examples: [["Marie Curie fue una científica. Ella descubrió el radio.", "Ella descubrió el radio. Marie Curie fue una científica.", "«Ella» aparece antes de saber quién es."],
                    ["El museo abrió una sala tras años de trabajo.", "Tras muchos y largos años de trabajo cuidadoso, el museo abrió una sala.", "El lector espera demasiado a la idea principal."]],
         tip: "Con tres versiones: primero el orden claro, después un cambio confuso y al final los dos cambios." },
+      COMP: { name: "Compresión — construcciones breves", rule: "El texto simplificado debe decir lo mismo con construcciones gramaticales más breves y sencillas.", worse: "Ha vuelto una construcción más larga o compleja, con el mismo significado.",
+        examples: [["Menos gente viajó en avión después del COVID.", "El transporte aéreo experimentó una drástica reducción del número de pasajeros tras el COVID.", ""]],
+        tip: "Un cambio de significado no es un problema de COMP: indícalo como efecto secundario." },
+      SYNT: { name: "Cambio sintáctico — estructura de oración fácil", rule: "El texto simplificado debe usar una estructura de oración fácil de seguir.", worse: "Ha vuelto una estructura más difícil (por ejemplo, una nominalización), con el mismo significado.",
+        examples: [["El proyecto se retrasó porque el dinero llegó tarde.", "La llegada tardía del dinero provocó el retraso del proyecto.", ""]],
+        tip: "Un cambio de significado no es un problema de SYNT: indícalo como efecto secundario." },
       ILLOC: { name: "Ilocución — tipo de enunciado y certeza", rule: "Mantén el tipo de enunciado (afirmación, instrucción, pregunta) y su grado de certeza.", worse: "Una afirmación se ha convertido en instrucción o se ha vuelto incierta.",
         examples: [["El agua hierve a 100 °C.", "El agua quizás hierve a 100 °C.", "El original es seguro."], ["El museo abre a las nueve.", "Recuerde que el museo abre a las nueve.", "Una afirmación pasó a ser una instrucción."]],
         tip: "Elige Igual si el tipo de enunciado y la certeza son equivalentes." },
@@ -96,6 +108,12 @@ export const GUIDE = {
         examples: [["Marie Curie était une scientifique. Elle a découvert le radium.", "Elle a découvert le radium. Marie Curie était une scientifique.", "« Elle » apparaît avant qu’on sache de qui il s’agit."],
                    ["Le musée a ouvert une galerie après des années de préparation.", "Après de longues années de préparation minutieuse, le musée a ouvert une galerie.", "Le lecteur attend trop l’idée principale."]],
         tip: "Pour trois versions : d’abord l’ordre clair, puis un changement confus, puis les deux changements." },
+      COMP: { name: "Compression — constructions courtes", rule: "Le texte simplifié doit dire la même chose avec des constructions grammaticales plus courtes et plus simples.", worse: "Une construction plus longue ou plus complexe est revenue, avec le même sens.",
+        examples: [["Moins de gens ont pris l’avion après le COVID.", "Le transport aérien a connu une baisse spectaculaire du nombre de passagers après le COVID.", ""]],
+        tip: "Un changement de sens n’est pas un problème de COMP : signalez-le comme effet secondaire." },
+      SYNT: { name: "Changement syntaxique — structure de phrase facile", rule: "Le texte simplifié doit employer une structure de phrase facile à suivre.", worse: "Une structure plus difficile est revenue (par exemple une nominalisation), avec le même sens.",
+        examples: [["Le projet a pris du retard parce que l’argent est arrivé tard.", "L’arrivée tardive de l’argent a provoqué le retard du projet.", ""]],
+        tip: "Un changement de sens n’est pas un problème de SYNT : signalez-le comme effet secondaire." },
       ILLOC: { name: "Illocution — type d’énoncé et certitude", rule: "Gardez le type d’énoncé (affirmation, consigne, question) et son degré de certitude.", worse: "Une affirmation est devenue une consigne ou a été rendue incertaine.",
         examples: [["L’eau bout à 100 °C.", "L’eau bout peut-être à 100 °C.", "La source est certaine."], ["Le musée ouvre à neuf heures.", "Retenez que le musée ouvre à neuf heures.", "Une simple affirmation est devenue une consigne."]],
         tip: "Choisissez Identiques si le type d’énoncé et la certitude sont équivalents." },

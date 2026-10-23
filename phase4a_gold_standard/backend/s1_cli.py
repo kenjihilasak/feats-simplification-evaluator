@@ -13,7 +13,7 @@ def main(argv=None) -> int:
     parser=argparse.ArgumentParser(prog="phase4a-s1")
     parser.add_argument("--database",type=Path)
     sub=parser.add_subparsers(dest="command",required=True)
-    load=sub.add_parser("load"); load.add_argument("items",type=Path); load.add_argument("controls",type=Path); load.add_argument("--reviewer",required=True); load.add_argument("--seed",type=int,default=4107); load.add_argument("--identical-controls",type=int,default=15,help="leading controls that are identical pairs (all of them outside English)")
+    load=sub.add_parser("load"); load.add_argument("items",type=Path); load.add_argument("controls",type=Path); load.add_argument("--reviewer",required=True); load.add_argument("--seed",type=int,default=4107); load.add_argument("--identical-controls",type=int,default=15,help="leading controls that are identical pairs (all of them outside English)"); load.add_argument("--rank-offset",type=int,default=0,help="first queue rank, to append to an existing queue")
     sug=sub.add_parser("load-suggestions"); sug.add_argument("input",type=Path)
     pri=sub.add_parser("prioritize",help="show these case ids first, in this order"); pri.add_argument("--reviewer",required=True); pri.add_argument("case_ids",nargs="+")
     meta=sub.add_parser("load-meta",help="dataset and human version per item (shown after submission)"); meta.add_argument("input",type=Path)
@@ -25,7 +25,7 @@ def main(argv=None) -> int:
         values=list(rows(args.items)); controls=list(rows(args.controls))
         for index,item in enumerate(controls): item["_is_control"]=True; item["_control_kind"]="identical" if index<args.identical_controls else "known_valid"
         values.extend(controls); random.Random(args.seed).shuffle(values)
-        for index,item in enumerate(values): item["_queue_rank"]=index
+        for index,item in enumerate(values): item["_queue_rank"]=args.rank_offset+index
         print(json.dumps(service.import_items(values,args.reviewer),sort_keys=True))
     elif args.command=="load-suggestions": print(json.dumps(service.database.import_suggestions(rows(args.input)),sort_keys=True))
     elif args.command=="prioritize": print(json.dumps(service.database.prioritize(args.reviewer,args.case_ids),sort_keys=True))

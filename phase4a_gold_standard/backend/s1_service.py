@@ -12,7 +12,7 @@ from .security import AuthenticatedUser
 from .s1_database import S1Database
 
 FORBIDDEN_PUBLIC_FIELDS = {"level", "levels", "operation", "operations", "generator", "pair_id", "canonical_pair_id"}
-AXES = {"MOD", "OMIT", "SYN", "EXPL", "ILLOC"}
+AXES = {"MOD", "OMIT", "SYN", "EXPL", "ILLOC", "COMP", "SYNT"}
 LANGUAGES = {"en", "es", "fr"}
 
 
