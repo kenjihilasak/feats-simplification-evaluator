@@ -127,6 +127,22 @@ class S1Database:
                 loaded += 1
         return {"loaded": loaded}
 
+    def prioritize(self, username: str, case_ids: list[str]) -> dict[str, Any]:
+        """Move these items to the front of the reviewer's queue, in this order; the rest keep their order."""
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            queue = [r["case_id"] for r in db.execute(
+                "SELECT case_id FROM items WHERE reviewer_username=? ORDER BY queue_rank", (username,))]
+            missing = [c for c in case_ids if c not in queue]
+            if missing or len(set(case_ids)) != len(case_ids):
+                raise ValueError(f"not in {username}'s queue or repeated: {missing or case_ids}")
+            order = list(case_ids) + [c for c in queue if c not in set(case_ids)]
+            offset = len(queue) + 1  # leave UNIQUE(reviewer, queue_rank) free while renumbering
+            db.execute("UPDATE items SET queue_rank=queue_rank+? WHERE reviewer_username=?", (offset * 2, username))
+            for rank, case_id in enumerate(order):
+                db.execute("UPDATE items SET queue_rank=? WHERE case_id=?", (rank, case_id))
+        return {"reviewer": username, "first": order[: len(case_ids)], "total": len(order)}
+
     def import_meta(self, rows: Iterable[Mapping[str, Any]]) -> dict[str, int]:
         loaded = 0
         with self.connect() as db:

@@ -55,3 +55,9 @@ def test_human_version_shown_after_submit_and_answer_locked(tmp_path):
     service.save("S001",user(),final,0,True)
     after=service.task("S001",user()); assert after["reveal"]=={"human_versions":["X"]}
     with pytest.raises(ValidationError,match="locked"): service.save("S001",user(),final|{"choice":"Y"},1,True)
+def test_prioritize_moves_items_first_and_keeps_the_rest(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3"))
+    service.import_items([item(f"S00{i}")|{"_queue_rank":i} for i in range(1,5)],"reviewer-en")
+    service.database.prioritize("reviewer-en",["S004","S002"])
+    assert [x["case_id"] for x in service.database.list_items("reviewer-en")]==["S004","S002","S001","S003"]
+    with pytest.raises(ValueError): service.database.prioritize("reviewer-en",["S999"])
