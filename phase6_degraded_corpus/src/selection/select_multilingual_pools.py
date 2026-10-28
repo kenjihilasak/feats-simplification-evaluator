@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Spanish/French S1 pools: rule sites, checker scores and one task per original.
+"""Build a language's Phase 6 pools: rule sites, checker scores and one task per original.
 
 `prepare` (CPU) reads the language's Phase 2b file and records, per pair, the OMIT/SYN/EXPL rule sites and
 whether it can host a MOD or ILLOC edit. `score` (GPU) scores every clean simplification with the language's
@@ -8,22 +8,28 @@ clean texts, δ = median − τ), writing `checker_config.json` for every later 
 clean-quality gates and gives each original at most one task, scarcest task first, so no original appears in two
 S1 items.
 
-Tasks mirror the English S1 round: OMIT and SYN graded groups (two rule sites), SYN and EXPL pairs, MOD graded
-groups (a long sentence for LLM fronting plus a dependent sentence pair for the reorder rule) and ILLOC pairs.
-OMIT also has pairs, because two OMIT sites in one pair are rare outside English. Any clean statement can host an
-ILLOC edit, so pairs that serve no other task enter scoring only through a fixed sample (`illoc_only_sample`).
+Tasks: OMIT and SYN graded groups (two rule sites), SYN, OMIT and EXPL pairs, MOD graded groups (a long sentence
+for LLM fronting plus a dependent sentence pair for the reorder rule) and ILLOC pairs.
+
+ILLOC v4 (28 Oct 2026): Illocution is how directly a sentence expresses its communicative purpose, so the
+degradation keeps the purpose and makes it less direct. Only a sentence that already performs a direct act on the
+reader can host it: an instruction, a question to the reader, or a statement that addresses the reader ("you").
+Encyclopedic statements have no such act and host no ILLOC item. The v3 operations (statement -> imperative, which
+reviewers judged an improvement, and hedging, which changes meaning) are retired.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 import json
 import platform
 from collections import Counter, defaultdict
+from itertools import zip_longest
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
-from phase6_degraded_corpus.src.common.languages import get as language
+from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_second_person, load_nlp
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import _dependent_second, split_sentences
 from phase6_degraded_corpus.src.selection.freeze_evaluation_originals import strong_key
 from phase6_degraded_corpus.src.selection.select_fose_pools import check_validated, eligible_rule_sites, structural_features
@@ -31,7 +37,10 @@ from phase6_degraded_corpus.src.selection.select_mmi_pools import ReservedMatche
 
 RULE_AXES = ("OMIT", "SYN", "EXPL")
 # Scarcest first: an original goes to the first task it can serve.
-TASK_ORDER = ("EXPL_pair", "SYN_graded", "OMIT_graded", "SYN_pair", "OMIT_pair", "MOD_graded", "ILLOC_pair")
+TASK_ORDER = ("ILLOC_pair", "EXPL_pair", "SYN_graded", "OMIT_graded", "SYN_pair", "OMIT_pair", "MOD_graded")
+ILLOC_OPERATIONS = {"directive": "illoc_directive_to_impersonal", "question": "illoc_question_to_indirect",
+                    "address": "illoc_address_to_impersonal"}
+QUOTED = re.compile(r'"[^"]*"|“[^”]*”|«[^»]*»|„[^“”]*[“”]')
 
 
 def quantile(values: list[float], probability: float) -> float:
@@ -54,12 +63,37 @@ def mod_host(simple: str, lang: str) -> dict | None:
     return {"sentences": sentences, "reorder": reorder, "target_sentence_index": target}
 
 
-def prepare(cfg: dict) -> tuple[list[dict], dict]:
-    import spacy
+def illoc_host(simple: str, lang: str, nlp) -> dict | None:
+    """The first sentence that performs a direct act on the reader, outside quotations and titles.
 
+    Directive: an imperative root. Question: a sentence of four or more words ending in a question mark.
+    Address: a statement with a second-person word. Quoted text is blanked first, so "Curb Your Enthusiasm" or a
+    cited slogan does not count.
+    """
+    sentences = split_sentences(simple, lang)
+    addresses_reader = bool(language(lang).second_person.search(QUOTED.sub(" ", simple)))
+    found = []
+    for i, sentence in enumerate(sentences):
+        bare = QUOTED.sub(lambda m: " " * len(m.group(0)), sentence).strip()
+        if len(bare.split()) < 4:
+            continue
+        doc = nlp(bare if lang in {"en", "ru", "ar"} else bare[:1].lower() + bare[1:])
+        if bare.rstrip().endswith(tuple(language(lang).question_marks)):
+            found.append(("question", i))
+        elif is_imperative_root(doc, lang, addresses_reader):
+            found.append(("directive", i))
+        elif is_second_person(doc, bare, lang):
+            found.append(("address", i))
+    if not found:
+        return None
+    kind, index = found[0]
+    return {"kind": kind, "sentences": sentences, "target_sentence_index": index}
+
+
+def prepare(cfg: dict) -> tuple[list[dict], dict]:
     lang = cfg["language"]
     res = language(lang)
-    nlp = spacy.load(res.spacy_model, disable=["ner"])  # as in English pool selection
+    nlp = load_nlp(lang, disable=("ner",))  # as in English pool selection
     check_validated(Path(cfg["phase3a_validation_file"]))
     phase3 = {r["canonical_pair_id"]: r for r in read_jsonl(Path(cfg["phase3a_candidate_file"]))}
     excluded = ReservedMatcher(
@@ -91,8 +125,8 @@ def prepare(cfg: dict) -> tuple[list[dict], dict]:
                 if found:
                     sites[axis] = found
         mod = mod_host(simple, lang)
-        question = simple.rstrip().endswith("?")
-        illoc = None if question else {"imperative_cue": bool(res.imperative_cue.search(simple))}
+        # In narrative corpora a second person or a question is a character speaking, not the text addressing its reader.
+        illoc = None if corpus in cfg.get("illoc_excluded_corpora", ()) else illoc_host(simple, lang, nlp)
         if not sites and not mod and not illoc:
             counters["no_task"] += 1; continue
         counters["kept"] += 1
@@ -103,25 +137,12 @@ def prepare(cfg: dict) -> tuple[list[dict], dict]:
             "corpus": corpus, "eligible_sites": sites, "mod_host": mod, "illoc_host": illoc,
             "phase3a_strategy": strategy, "selection_features": {k: feats[k] for k in ("overlap", "len_ratio", "edit_blocks")},
         })
-    rows, illoc_only = sample_illoc_only(rows, cfg)
-    counters["illoc_only_not_sampled"] = illoc_only
     report = {"stage": "prepare", "filters": dict(sorted(counters.items())), "rows": len(rows),
               "rule_sites": dict(Counter(a for r in rows for a in r["eligible_sites"])),
               "graded_sites": dict(Counter(a for r in rows for a, s in r["eligible_sites"].items() if len(s) >= 2)),
-              "mod_hosts": sum(bool(r["mod_host"]) for r in rows), "illoc_hosts": sum(bool(r["illoc_host"]) for r in rows),
-              "illoc_imperative_hosts": sum(bool(r["illoc_host"] and r["illoc_host"]["imperative_cue"]) for r in rows)}
+              "mod_hosts": sum(bool(r["mod_host"]) for r in rows),
+              "illoc_hosts": dict(Counter(r["illoc_host"]["kind"] for r in rows if r["illoc_host"]))}
     return rows, report
-
-
-def sample_illoc_only(rows: list[dict], cfg: dict) -> tuple[list[dict], int]:
-    """Keep every pair with a rule site or a MOD host, and a fixed sample of the rest, deontic-modal hosts first."""
-    other = [r for r in rows if r["eligible_sites"] or r["mod_host"]]
-    only = pick([r for r in rows if not (r["eligible_sites"] or r["mod_host"])], cfg["seed"], "illoc_only")
-    limit = cfg["illoc_only_sample"]
-    modal = [r for r in only if r["illoc_host"]["imperative_cue"]][: limit // 2]
-    plain = [r for r in only if not r["illoc_host"]["imperative_cue"]][: limit - len(modal)]
-    kept = sorted(other + modal + plain, key=lambda r: r["canonical_pair_id"])
-    return kept, len(rows) - len(kept)
 
 
 def score(cfg: dict, rows: list[dict], device: str) -> tuple[list[dict], dict]:
@@ -172,9 +193,9 @@ def allocate(cfg: dict, rows: list[dict], scores: dict[str, dict]) -> tuple[dict
     for task in TASK_ORDER:
         ordered = pick([r for r in gated if eligible(task, r)], seed, task)
         if task == "ILLOC_pair":
-            # Deontic modals are rare and are the only hosts for an instruction: up to a third of ILLOC, as in English.
-            modal = [r for r in ordered if r["illoc_host"]["imperative_cue"]][: quota[task] // 3]
-            ordered = modal + [r for r in ordered if r not in modal and not r["illoc_host"]["imperative_cue"]]
+            # Interleave the three kinds so the rarer acts (directives, questions) are not crowded out by "you".
+            by_kind = {k: [r for r in ordered if r["illoc_host"]["kind"] == k] for k in ILLOC_OPERATIONS}
+            ordered = [r for group in zip_longest(*by_kind.values()) for r in group if r is not None]
         for row in ordered:
             if len(tasks[task]) >= quota[task]:
                 break
@@ -204,8 +225,10 @@ def shape(task: str, row: dict, seed: int) -> dict:
                 "target_sentence_index": host["target_sentence_index"], "reorder_index": index, "rule_output": None,
                 "plan_status": "ready", "plan_schema": "feats-phase6-mod-graded-plan-v1"}
     if axis == "ILLOC":
-        op = "illoc_imperative_swap" if row["illoc_host"]["imperative_cue"] else "illoc_hedge_swap"  # see allocate
-        return {**base, "operation": op, "generator_kind": "llm", "plan_status": "ready", "plan_schema": "feats-phase6-mmi-plan-v3"}
+        host = row["illoc_host"]
+        return {**base, "operation": ILLOC_OPERATIONS[host["kind"]], "generator_kind": "llm", "sentences": host["sentences"],
+                "target_sentence_index": host["target_sentence_index"], "plan_status": "ready",
+                "plan_schema": "feats-phase6-mmi-plan-v4"}
     return base
 
 

@@ -5,8 +5,8 @@ Current, selected configurations (2026-09-30). The rationale and evidence are in
 | Axis | Page | Generator | Human valid (heldout) |
 |---|---|---|---|
 | MEANING | [meaning.md](meaning.md) | Qwen2.5-7B-Instruct bf16, v2.1 | 88% |
-| MOD | [modulation.md](modulation.md) | Gemma-3-12B-it bf16, v2 | 95% |
-| ILLOC | [illocution.md](illocution.md) | Qwen2.5-7B-Instruct bf16, v2 | 90% (question + directive), 95% (hedged) |
+| MOD | [modulation.md](modulation.md) | Gemma-3-12B-it bf16; graded v4 (28 Oct 2026) | 95% (v2 merge) |
+| ILLOC | [illocution.md](illocution.md) | Qwen2.5-7B-Instruct bf16, v4 (28 Oct 2026): a direct act made indirect | v2: 90% (question + directive), 95% (hedged); v2/v3 operations retired |
 | FLUENCY | [fluency.md](fluency.md) | Deterministic grammar rules | Audit pending |
 | OMIT | [omission.md](omission.md) | Deterministic alignment rule | Audit pending |
 | SYN | [synonymy.md](synonymy.md) | Deterministic alignment + `wordfreq` | Audit pending |

@@ -1,0 +1,53 @@
+{
+ "prompt_id": "illoc_indirect_v4_ca",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON. The text is in Catalan; write the edited text in Catalan.",
+ "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep the purpose of the sentence and every fact. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "illoc_directive_to_impersonal": "The sentence tells the reader to do something. Keep that purpose but express it indirectly: rewrite it as an impersonal statement that does not address the reader (no imperative, no second person, no question), so the reader has to infer what to do. Keep every fact and the same certainty; do not add may, might or probably. Change as few words as possible. Write in Catalan.",
+  "illoc_question_to_indirect": "The sentence asks the reader a direct question. Keep that purpose but express it indirectly: embed the whole question as an indirect question introduced by an impersonal verb of asking or by 'the question is' (for example 'It is asked whether ...', 'The question is how ...'), with no question mark, no second person and no instruction. Keep every fact and every part of the question. Change as few words as possible. Write in Catalan.",
+  "illoc_address_to_impersonal": "The sentence addresses the reader directly. Rewrite it impersonally (passive voice, an impersonal construction or a general subject) so it no longer addresses the reader. Keep every fact and the same certainty; do not add may, might or probably. No question and no instruction. Change as few words as possible. Write in Catalan."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "illoc_directive_to_impersonal": [
+   [
+    "Porteu el document a la cita.",
+    "A la cita es requereix el document."
+   ],
+   [
+    "Truqueu al 112 si us trobeu pitjor.",
+    "Trobar-se pitjor és un motiu per trucar al 112."
+   ]
+  ],
+  "illoc_question_to_indirect": [
+   [
+    "Heu utilitzat aquests serveis l'últim any?",
+    "Es pregunta si aquests serveis s'han utilitzat l'últim any."
+   ],
+   [
+    "Com farà la Comissió el seguiment de les idees?",
+    "La qüestió és com farà la Comissió el seguiment de les idees."
+   ]
+  ],
+  "illoc_address_to_impersonal": [
+   [
+    "Podeu aplicar aquestes deduccions a la vostra declaració.",
+    "Aquestes deduccions es poden aplicar a la declaració."
+   ],
+   [
+    "Amb aquest tràmit també podeu descarregar el formulari.",
+    "Amb aquest tràmit també es pot descarregar el formulari."
+   ]
+  ]
+ }
+}

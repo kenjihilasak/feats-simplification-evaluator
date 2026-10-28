@@ -3,13 +3,18 @@
 
 `prepare` writes rule candidates for B (reorder of the clean text) and AB (reorder of the fronted text) in the
 generation format, so `score_mmi_candidates` checks them like any other MOD candidate. `finalize` keeps groups
-where A, B and AB are all valid."""
+where A and AB are valid.
+
+v4 (28 Oct 2026): the mild version is always A (secondary information moved before the main idea) and the strong
+one AB (that, plus the logical order of two sentences reversed). In v3 the mild version was A or B at random; the
+first English review tied mild and strong, and a reorder alone can be as disruptive as both edits. B is still
+generated and recorded, but no longer used."""
 from __future__ import annotations
 import argparse
 import json
 from collections import Counter
 from pathlib import Path
-from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
+from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import split_sentences
 
 
@@ -55,8 +60,8 @@ def finalize(fronting: list[dict], reorders: list[dict], seed: int) -> list[dict
                     "AB": {"degraded": ab["candidates"][0]["degraded"], "operation": "both", "features": ab["candidates"][0].get("features"), "valid": ab["yield"]}}
         groups.append({k: row[k] for k in ("canonical_pair_id", "canonical_original_id", "corpus", "original", "clean_simplification",
                                             "clean_acceptability", "clean_nli_probabilities")} | {
-            "target_axis": "MOD", "versions": versions, "valid": all(v["valid"] for v in versions.values()),
-            "mild_version": "A" if int(stable_key(seed, f"mild:{pid}"), 16) % 2 == 0 else "B"})
+            "target_axis": "MOD", "versions": versions, "valid": versions["A"]["valid"] and versions["AB"]["valid"],
+            "mild_version": "A", "strong_version": "AB", "mod_scheme": "v4"})
     return groups
 
 

@@ -1,0 +1,26 @@
+{
+  "experiment_id": "s1_ru_v2",
+  "seed": 20260930,
+  "prompt_dir": "phase6_degraded_corpus/prompts/v4_ru",
+  "configs": {
+    "MOD_C2": {
+      "model_id": "google/gemma-3-12b-it",
+      "model_revision": "96b6f1eccf38110c56df3a15bffe176da04bfd80",
+      "model_path": "/scratch/pjbd103/feats-simplification-evaluator/cache/huggingface/models--google--gemma-3-12b-it/snapshots/96b6f1eccf38110c56df3a15bffe176da04bfd80",
+      "merge_system": true,
+      "n": 4,
+      "temperature": 0.7,
+      "top_p": 0.95,
+      "max_tokens": 160
+    },
+    "ILLOC_C1": {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "model_path": "/scratch/pjbd103/feats-simplification-evaluator/cache/huggingface/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
+      "n": 4,
+      "temperature": 0.7,
+      "top_p": 0.95,
+      "max_tokens": 160
+    }
+  }
+}

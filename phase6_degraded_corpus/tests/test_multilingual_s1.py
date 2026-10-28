@@ -60,10 +60,63 @@ class AllocationTests(unittest.TestCase):
 
     def test_shape_gives_generators_their_fields(self):
         row = {"canonical_pair_id": "p", "eligible_sites": {"SYN": [(1, 2, 1, 2), (4, 5, 4, 5)]}, "mod_host": None,
-               "illoc_host": {"imperative_cue": True}}
+               "illoc_host": {"kind": "directive", "sentences": ["A.", "Bring it."], "target_sentence_index": 1}}
         self.assertEqual(set(shape("SYN_graded", row, 1)["sites"]), {"A", "B"})
-        self.assertEqual(shape("ILLOC_pair", row, 1)["operation"], "illoc_imperative_swap")
-        self.assertEqual(TASK_ORDER[0], "EXPL_pair")
+        illoc = shape("ILLOC_pair", row, 1)
+        self.assertEqual((illoc["operation"], illoc["target_sentence_index"]), ("illoc_directive_to_impersonal", 1))
+        self.assertEqual(TASK_ORDER[0], "ILLOC_pair")  # direct acts are the scarcest hosts
+
+
+class IllocV4Tests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from phase6_degraded_corpus.src.common.languages import load_nlp
+        cls.nlp = {lang: load_nlp(lang) for lang in ("en", "ca")}
+
+    def host(self, text, lang="en"):
+        from phase6_degraded_corpus.src.selection.select_multilingual_pools import illoc_host
+        found = illoc_host(text, lang, self.nlp[lang])
+        return found and (found["kind"], found["target_sentence_index"])
+
+    def test_direct_acts_on_the_reader(self):
+        self.assertEqual(self.host("Bring your ID to the appointment."), ("directive", 0))
+        self.assertEqual(self.host("The shop is small. Have you used these services before?"), ("question", 1))
+        self.assertEqual(self.host("You can only find it on Christmas Island."), ("address", 0))
+        self.assertEqual(self.host("Envieu la sol·licitud per internet abans del dia 9.", "ca"), ("directive", 0))
+
+    def test_statements_titles_and_quotes_host_nothing(self):
+        self.assertIsNone(self.host("The city was founded in 1820 by Smith."))
+        self.assertIsNone(self.host("There can also be several articles on the same topic."))
+        self.assertIsNone(self.host("In other words, z should be a multiple of a number m."))
+        self.assertEqual(self.host("If you need to pick a font size, use a relative size."), ("directive", 0))
+        self.assertIsNone(self.host("Bring Me the Horizon are a British metalcore band."))
+        self.assertIsNone(self.host('Susie Essman plays Susie Greene in "Curb Your Enthusiasm".'))
+        self.assertNotEqual((self.host("Tindreu una resposta en sis mesos com a màxim.", "ca") or ("none",))[0], "directive")
+
+
+class RuleFixTests(unittest.TestCase):
+    def test_article_before_numbers(self):
+        self.assertEqual(detokenize(tokens("It is a 1843 story , an 1920 film and an 8 year plan .")),
+                         "It is an 1843 story, a 1920 film and an 8 year plan.")
+
+    def test_article_before_consonant_sounding_vowels(self):
+        self.assertEqual(detokenize(tokens("He was an United States general , an hour ago , in a apple farm .")),
+                         "He was a United States general, an hour ago, in an apple farm.")
+
+    def test_restored_span_before_final_punctuation_keeps_its_space(self):
+        # FR v1 round: 21 of 60 OMIT items had "sentieret", "1979en"…
+        self.assertEqual(generate_omit("Ils ont commencé à sortir un par un.", "Ils ont commencé à sortir.", "p", 1, lang="fr")["degraded"],
+                         "Ils ont commencé à sortir un par un.")
+
+    def test_no_rule_site_in_a_quoted_title(self):
+        from phase6_degraded_corpus.src.selection.select_fose_pools import eligible_rule_sites, structural_features
+        feats = structural_features('In " Oedipus Rex " , Oedipus is the protagonist .',
+                                    'In " Oedipus the King " , Oedipus is the main character .')
+        self.assertEqual(eligible_rule_sites("SYN", feats), [])
+
+    def test_russian_and_arabic_sentences(self):
+        self.assertEqual(split_sentences("Город большой. Вы там были?", "ru"), ["Город большой.", "Вы там были?"])
+        self.assertEqual(split_sentences("ذهب الولد إلى المدرسة. هل تعرفه؟", "ar"), ["ذهب الولد إلى المدرسة.", "هل تعرفه؟"])
 
 
 if __name__ == "__main__":

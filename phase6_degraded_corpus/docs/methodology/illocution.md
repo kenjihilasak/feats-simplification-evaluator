@@ -1,37 +1,47 @@
-# ILLOC degradation (v2)
+# ILLOC degradation (v4)
 
 [Methodology index](README.md)
 
-**Goal:** change **only the communicative force** of a declarative Simplified sentence; the proposition and all facts stay the same.
+**Definition (28 Oct 2026):** Illocution is how directly a sentence expresses its communicative purpose (informing, instructing, asking, warning). A good Easy-to-Read text keeps the purpose of the original and makes it explicit: the reader knows at once what is stated, asked or required. A change of the purpose itself (a warning becoming a suggestion) is a fidelity error, not a simplification. Changes in the strength of a claim ("is" → "might be") are scored under MEANING.
 
-**Generator:** Qwen/Qwen2.5-7B-Instruct @ `a09a35458c702b33eeacc393d103063234e8bc28`, bf16. Prompt: [`illoc_inject_v2.json`](../../prompts/v2/illoc_inject_v2.json).
+**Goal:** keep the act and its content, and express it **less directly**, so the reader has to infer the purpose.
+
+**Generator:** Qwen/Qwen2.5-7B-Instruct @ `a09a35458c702b33eeacc393d103063234e8bc28`, bf16. Prompts: `prompts/v4_<lang>/illoc_indirect_v4.json` (en, es, fr, it, ca, ru, ar). Only the host sentence is sent and replaced.
+
+## Hosts
+
+Only a sentence that already performs a direct act on the reader can host the degradation ([`illoc_host`](../../src/selection/select_multilingual_pools.py)):
+
+| Kind | Detected by | Operation |
+|---|---|---|
+| Directive | imperative root without a subject | `illoc_directive_to_impersonal` |
+| Question | four or more words, ends with a question mark | `illoc_question_to_indirect` |
+| Address | a second-person word, or a parsed `Person=2` | `illoc_address_to_impersonal` |
+
+Quoted spans are blanked before detection, so titles ("Curb Your Enthusiasm") and cited slogans do not count. Narrative corpora (Saaq al-Bambuu, Terence, RuAdaptFairytales) are excluded: there a question or "you" is a character speaking, not the text addressing its reader. Encyclopedic statements have no direct act and host no ILLOC item.
 
 ## Operations
 
-The three operations are balanced within each source.
+| Operation | Example (clean → degraded) |
+|---|---|
+| `illoc_directive_to_impersonal` | "Bring your ID to the appointment." → "Identification is required at the appointment." |
+| `illoc_question_to_indirect` | "Have you used these NHS services in the last year?" → "Use of these NHS services in the last year is the subject of this question." |
+| `illoc_address_to_impersonal` | "You can only find it on Christmas Island." → "It is only found on Christmas Island." |
 
-| Operation | Example | Checks |
-|---|---|---|
-| `assertion_to_question` | "Was the tower built in 1889?" | Ends with `?`; question opening; content lemmas within 1. |
-| `assertion_to_directive` | "Note that the tower was built in 1889." | ≤ 2 edit blocks; added words from the directive lexicon; only auxiliaries deleted. |
-| `assertion_to_hedged` | "The tower was probably built in 1889." | ≤ 2 edit blocks; added words from the hedge lexicon; only auxiliaries deleted. |
+## Automatic checks
 
-All operations also require: acceptability ≥ min(τ, clean − δ), not a no-op, not a copy of the Original.
+A candidate is kept only if it passes all of these ([`check_illoc_v4`](../../src/evaluation/score_mmi_candidates.py)):
+- exactly one sentence changed;
+- the edited sentence asks no question, is not an imperative, does not address the reader and has no exclamation;
+- no hedge added; numbers identical; negation kept;
+- at most two content lemmas added and two removed; at most five tokens longer or shorter (length is a shortcut a scorer could learn);
+- no NLI contradiction in either direction (clean ↔ degraded);
+- acceptability ≥ min(τ, clean − δ); not a copy of the Original.
 
-**Why injection instead of reversal (v1):** real illocution changes almost never occur in the source data (16 question-mark differences in 73,586 pairs).
+## Why the earlier operations were retired
 
-## Workflow
+In the first English review (Carlo, 27 Oct 2026) the v3 operations failed as degradations:
+- **Statement → imperative** (`illoc_imperative_swap`): the reviewer preferred the imperative in both items; a direct instruction is an improvement in Easy-to-Read practice.
+- **Hedge** (`illoc_hedge_swap`, "X is Y" → "X might be Y"): changes what the reader takes to be true, which is MEANING (team decision).
 
-1. Start from a clean declarative Simplified sentence.
-2. Select one operation: question, directive, or hedged assertion.
-3. Ask Qwen to change the communicative force while retaining the proposition.
-4. Reject outputs that add factual content, copy the Original, make no change, or fail the operation-specific form checks.
-5. Keep the first fluent candidate that passes all checks.
-
-**Decision (2026-09-30):** hedging counts as **ILLOC**, not MEANING. It changes the force (certain → uncertain) while keeping the proposition; MEANING is reserved for contradictions.
-
-## Evidence
-
-- **Dev (automatic):** v1 pipeline 32%, v2 88%. By operation: question 93%, directive 84%, hedged 84%.
-- **Heldout (human, question + directive):** **Qwen 90%** vs Gemma 89% (tie). Qwen wins the tie-break: smaller model, and much better at `hedged` (Gemma 29%).
-- **Hedged (human, 40 full-run outputs):** **95%** valid (38/40). Included in the corpus.
+v2 and v3 injected acts into encyclopedic statements because natural acts are rare. v4 accepts that scarcity: about 2% of the English pool (237 of 14,142 pairs) contains a direct act on the reader, and most of these are generic "you" (see [the v2 multilingual report](../reports/current/phase6_v2_multilingual.md)).

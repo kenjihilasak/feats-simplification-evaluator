@@ -1,0 +1,31 @@
+{
+ "prompt_id": "mod_same_count_v4_ru",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON. The text is in Russian; write the edited text in Russian.",
+ "user_template": "Text: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep the same number of sentences and the same content words; only joining words and word order may change. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "mod_front_heavy": "In one sentence, move a long phrase or clause of at least four words (a time, place, reason or condition phrase) to the very beginning, so the reader must wait for the subject and main verb. Write in Russian."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "mod_front_heavy": [
+   [
+    "Музей открыл новую галерею после многих лет подготовки.",
+    "После многих лет подготовки музей открыл новую галерею."
+   ],
+   [
+    "Команда выиграла матч несмотря на сильный дождь весь день.",
+    "Несмотря на сильный дождь весь день, команда выиграла матч."
+   ]
+  ]
+ }
+}

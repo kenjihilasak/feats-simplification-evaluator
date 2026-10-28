@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
-from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_subject
+from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_second_person, is_subject, load_nlp
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import split_sentences
 
 WORD = re.compile(r"\d+(?:[.,]\d+)*|\w+(?:[-’']\w+)*|[^\w\s]")
@@ -73,7 +73,6 @@ class Checkers:
     """
 
     def __init__(self, pools_config: dict, device: str):
-        import spacy
         import torch
         from transformers import AutoModelForCausalLM, AutoModelForSequenceClassification, AutoTokenizer
 
@@ -97,7 +96,7 @@ class Checkers:
         self.nli_ids = {k: int(self.nli.config.label2id[k]) for k in ("entailment", "neutral", "contradiction")}
         self.cola_tok, self.cola = load(pools_config["acceptability_model"], pools_config["acceptability_revision"],
                                         causal=self.kind == "slor", path=pools_config.get("acceptability_path"))
-        self.nlp = spacy.load(self.res.spacy_model)
+        self.nlp = load_nlp(self.lang)
         self.batch = pools_config.get("checker_batch_size", 64)
 
     def nli_probs(self, premises: list[str], hypotheses: list[str]) -> list[dict]:
@@ -222,10 +221,105 @@ def acceptable_enough(row: dict, feats: dict, cfg: dict) -> bool:
     return feats["acceptability"] >= min(cfg["tau_accept"], row["clean_acceptability"] - cfg["delta"])
 
 
+ILLOC_V4 = {"illoc_directive_to_impersonal", "illoc_question_to_indirect", "illoc_address_to_impersonal"}
+# An indirect question must embed the question under a verb of asking or "the question is", then if/whether or a
+# wh-word. Without that, the model has answered the question ("Does any subset sum to zero?" -> "A subset sums to
+# zero.") or used it as a subject ("Si può trovare una soluzione è una questione.").
+_WH = {
+    "en": r"whether|if|what|how|why|where|when|who|which",
+    "es": r"si|qué|cómo|por qué|dónde|cuándo|quién|quiénes|cuál|cuáles|cuánto|cuántos|cuántas",
+    "fr": r"si|s['’]|ce que|ce qui|comment|pourquoi|où|quand|qui|quel|quelle|quels|quelles|combien",
+    "it": r"se|come|quale|quali|qual|cosa|che cosa|perché|dove|quando|chi|quanto|quanti|quante",
+    "ca": r"si|què|com|per què|on|quan|qui|quin|quina|quins|quines|quant|quants",
+    "ru": r"ли|что|как|почему|где|когда|кто|какой|какая|какое|какие|сколько|зачем",
+    "ar": r"إذا|هل|ماذا|كيف|لماذا|أين|متى|من|ما",
+}
+_ASK = {
+    "en": r"asks?|asked|asking|wonders?|question (?:is|of|as to)|to know",
+    "es": r"se pregunta|se preguntará|se preguntaba|se consulta|pregunta es|cuestión es|se desea saber|saber",
+    "fr": r"demande|demandé|demandée|question est|question de|savoir",
+    "it": r"chiede|chiesto|domanda|domanda è|questione è|sapere",
+    "ca": r"demana|pregunta|preguntava|qüestió és|saber",
+    "ru": r"спрашива\w*|вопрос в том|вопрос о том|узнать|интересует",
+    "ar": r"يسأل|يُسأل|يتساءل|السؤال|معرفة",
+}
+INDIRECT_MARKERS = {lang: rf"(?:^|\W)(?:{_ASK[lang]})(?:\W.*?)?(?:^|\W)(?:{_WH[lang]})(?=\W|$)" for lang in _WH}
+QUOTE_CHARS = "\"'“”«»„‘’"
+
+
+CATALAN_ELISION = re.compile(r"\b(?:es|se)\s+(?=h?[aeiouàèéíòóú])", re.I)  # "es utilitzen" -> "s'utilitzen"
+
+
+def known_words(cand: str, sources: str, lang: str) -> bool:
+    """Every word the model added exists in the language (wordfreq) or in the source texts; Catalan also elides."""
+    from wordfreq import zipf_frequency
+
+    seen = {w.casefold() for w in re.findall(r"\w+", sources)}
+    new = {w.casefold() for w in re.findall(r"\w+", cand)} - seen
+    if lang == "ca" and len(CATALAN_ELISION.findall(cand)) > len(CATALAN_ELISION.findall(sources)):
+        return False
+    return all(w.isdigit() or zipf_frequency(w, lang) > 0 for w in new)
+
+
+def unaccent(word: str) -> str:
+    import unicodedata
+    return "".join(ch for ch in unicodedata.normalize("NFD", word) if not unicodedata.combining(ch))
+
+
+def check_illoc_v4(op: str, row, cand, feats, cfg, ck: Checkers) -> dict:
+    """The same act, made less direct: the edited sentence no longer addresses the reader, gives no instruction and
+    asks no question; facts, numbers, negation and certainty stay; no other sentence changes."""
+    clean = row["clean_simplification"]
+    before, after = split_sentences(clean, ck.lang), split_sentences(cand, ck.lang)
+    changed = [(b, a) for b, a in zip(before, after) if b != a]
+    edited = changed[0][1] if len(before) == len(after) and len(changed) == 1 else cand
+    parsed = ck.nlp(edited if ck.lang in {"en", "ru", "ar"} else edited[:1].lower() + edited[1:])
+    lem_c, lem_d = ck.content_lemmas(clean), ck.content_lemmas(cand)
+    hedges = MODAL_HEDGES if ck.lang == "en" else ck.res.modal_hedges
+    negation = NEGATION if ck.lang == "en" else ck.res.negation
+    inserted = {t.casefold() for _, _, new in diff_blocks(tokens(clean), tokens(cand)) for t in new}
+    contradiction = max(feats["nli_clean_degraded"]["contradiction"], feats["nli_degraded_clean"]["contradiction"])
+    host = changed[0][0] if changed else clean
+    host_doc = ck.nlp(host if ck.lang in {"en", "ru", "ar"} else host[:1].lower() + host[1:])
+    act = {"illoc_question_to_indirect": host.rstrip().endswith(tuple(ck.res.question_marks)),
+           "illoc_directive_to_impersonal": is_imperative_root(host_doc, ck.lang),
+           "illoc_address_to_impersonal": is_second_person(host_doc, host, ck.lang)}[op]
+    return {
+        # The checkers' own parse must find the act the operation removes, or the "degradation" is another edit.
+        "act_in_clean": act,
+        "one_sentence_changed": len(before) == len(after) and len(changed) == 1,
+        "not_question": not any(q in edited for q in ck.res.question_marks),
+        "not_imperative": not is_imperative_root(parsed, ck.lang),
+        "no_reader_address": not is_second_person(parsed, edited, ck.lang),
+        "no_exclamation": "!" not in edited and "¡" not in edited,
+        "no_hedge_added": not inserted & hedges,
+        "numbers_identical": sorted(NUMBER.findall(cand)) == sorted(NUMBER.findall(clean)),
+        "proper_nouns_kept": all(n in cand.casefold() for n in ck.proper_nouns(clean)),
+        "negation_kept": bool(negation.search(cand)) == bool(negation.search(clean)),
+        "content_added_le_2": len(lem_d - lem_c) <= 2,
+        "content_removed_le_2": len(lem_c - lem_d) <= 2,
+        # Length is a shortcut a scorer could learn; an impersonal rewrite needs a few words, not a paraphrase.
+        "token_delta_le_5": abs(len(tokens(cand)) - len(tokens(clean))) <= 5,
+        "no_contradiction": contradiction < 0.5,
+        "acceptable": acceptable_enough(row, feats, cfg),
+        # SLOR misses broken words from a weak model ("es demdement", "heuen" in Catalan).
+        "known_words": known_words(cand, clean + " " + row["original"], ck.lang),
+        # The model sometimes corrects the clean text ("esta" -> "está"); the degraded version must not be a repair.
+        "no_spelling_fix": not any(len(o) == len(n) and any(unaccent(a) == unaccent(b) and a != b for a, b in zip(o, n))
+                                   for _, o, n in diff_blocks(tokens(clean), tokens(cand))),
+        # The model sometimes rewrites every " as '; a typographic change across the text is a cue, not an edit.
+        "quotes_kept": all(cand.count(q) == clean.count(q) for q in QUOTE_CHARS),
+        **({"indirect_marker": bool(re.search(INDIRECT_MARKERS[ck.lang], edited, re.I))}
+           if op == "illoc_question_to_indirect" else {}),
+    }
+
+
 def check_illoc(op: str, row, cand, feats, cfg, ck: Checkers) -> dict:
     clean = row["clean_simplification"]
     blocks = diff_blocks(tokens(clean), tokens(cand))
     token_delta = abs(len(tokens(cand)) - len(tokens(clean)))
+    if op in ILLOC_V4:
+        return check_illoc_v4(op, row, cand, feats, cfg, ck)
     if op.startswith("illoc_"):
         lem_c, lem_d = ck.content_lemmas(clean), ck.content_lemmas(cand)
         if op == "illoc_imperative_swap":

@@ -14,7 +14,7 @@ import spacy
 from wordfreq import zipf_frequency
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
-from phase6_degraded_corpus.src.common.languages import get as language
+from phase6_degraded_corpus.src.common.languages import get as language, load_nlp
 from phase6_degraded_corpus.src.evaluation.score_mmi_candidates import Checkers
 from phase6_degraded_corpus.src.generation.generate_fose_rules import (
     TOKEN_RE, WORD_RE, generate_expl, generate_fluency, generate_omit, generate_syn, tokens,
@@ -45,7 +45,7 @@ def sample_rows(cfg: dict, per_cell: int = 60) -> list[dict]:
 
 def generate(rows: list[dict], cfg: dict) -> list[dict]:
     lang = cfg.get("language", "en")
-    nlp = spacy.load(language(lang).spacy_model)
+    nlp = load_nlp(lang)
     out = []
     for row in rows:
         axis = row["target_axis"]

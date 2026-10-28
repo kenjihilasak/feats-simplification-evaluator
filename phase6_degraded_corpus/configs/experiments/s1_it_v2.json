@@ -1,0 +1,60 @@
+{
+  "experiment_id": "s1_it_v2",
+  "language": "it",
+  "seed": 20261021,
+  "phase2b_file": "phase2b_consolidation/runs/2026-09-29_base_textrepair_v1/data/it/feats_consolidated.jsonl",
+  "phase3a_candidate_file": "phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/data/it/single_strategy_candidates.jsonl",
+  "phase3a_validation_file": "phase3a_strategy_detection/gold_candidates/2026-09-30_single_strategy_gemma_anchored_strict_textrepair_v1/reports/validation.json",
+  "require_strategy": true,
+  "corpora": [
+    "PaCCSS-IT",
+    "iDEM",
+    "Terence",
+    "Teacher",
+    "SimpitikiWiki",
+    "AdminIt"
+  ],
+  "original_token_range": [
+    8,
+    45
+  ],
+  "near_duplicate_jaccard": 0.8,
+  "exclude_files": [],
+  "nli_model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+  "nli_revision": "b5113eb38ab63efdd7f280f8c144ea8b13f978ce",
+  "nli_entailment_threshold": 0.5,
+  "nli_contradiction_threshold": 0.5,
+  "acceptability_kind": "slor",
+  "acceptability_model": "Qwen/Qwen2.5-7B-Instruct",
+  "acceptability_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+  "cache_dir": "cache/huggingface",
+  "checker_batch_size": 32,
+  "wordfreq_version": "3.1.1",
+  "output_dir": "phase6_degraded_corpus/runs/s1_it_v2",
+  "allocation_quota": {
+    "EXPL_pair": 200,
+    "SYN_graded": 150,
+    "OMIT_graded": 150,
+    "SYN_pair": 150,
+    "OMIT_pair": 200,
+    "MOD_graded": 300,
+    "ILLOC_pair": 240
+  },
+  "round_counts": {
+    "OMIT": 60,
+    "SYN": 60,
+    "EXPL": 60,
+    "MOD": 60,
+    "ILLOC": 60
+  },
+  "notes": "Italian uses every corpus except Wikipedia-Vikidia. v2 (28 Oct 2026): ILLOC v4 (a direct act made indirect), MOD v4 (mild = fronting, strong = fronting + reorder), no rule site in quoted spans, SYN skips capitalised names.",
+  "graded_share": {
+    "OMIT": 1.0,
+    "SYN": 0.5,
+    "MOD": 1.0
+  },
+  "acceptability_path": "cache/huggingface/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
+  "illoc_excluded_corpora": [
+    "Terence"
+  ]
+}

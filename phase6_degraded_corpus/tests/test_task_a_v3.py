@@ -88,6 +88,7 @@ class _Spacy:
     def __init__(self):
         import spacy
         self.nlp = spacy.load("en_core_web_sm")
+        self.lang = "en"
 
 
 def test_mod_movement_requires_real_reordering():

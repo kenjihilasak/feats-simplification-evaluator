@@ -1,0 +1,42 @@
+{
+ "prompt_id": "mod_same_count_v3",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON.",
+ "user_template": "Text: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep the same number of sentences and the same content words; only joining words and word order may change. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "mod_front_heavy": "In one sentence, move a long phrase or clause of at least four words (a time, place, reason or condition phrase) to the very beginning, so the reader must wait for the subject and main verb.",
+  "mod_bury_topic": "In one sentence, rewrite it in the passive voice (or reorder it) so that the original subject, the main topic, ends up at the very end of the sentence."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "mod_front_heavy": [
+   [
+    "The museum opened a new gallery after many years of planning.",
+    "After many years of planning, the museum opened a new gallery."
+   ],
+   [
+    "The team won the match despite heavy rain throughout the afternoon.",
+    "Despite heavy rain throughout the afternoon, the team won the match."
+   ]
+  ],
+  "mod_bury_topic": [
+   [
+    "Marie Curie discovered radium in 1898.",
+    "In 1898, radium was discovered by Marie Curie."
+   ],
+   [
+    "The city council approved the new bridge on Tuesday.",
+    "On Tuesday, the new bridge was approved by the city council."
+   ]
+  ]
+ }
+}

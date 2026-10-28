@@ -20,7 +20,9 @@ from pathlib import Path
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles, splice
 
-PROMPT_FILES = {"MEANING": "meaning_span_v2.json", "MOD": "mod_same_count_v3.json", "ILLOC": "illoc_inject_v3.json"}
+# Per axis, the newest prompt file a prompt directory has wins (v4 ILLOC makes a direct act indirect).
+PROMPT_FILES = {"MEANING": ("meaning_span_v2.json",), "MOD": ("mod_same_count_v4.json", "mod_same_count_v3.json"),
+                "ILLOC": ("illoc_indirect_v4.json", "illoc_inject_v3.json")}
 
 
 def sha(text: str) -> str:
@@ -47,7 +49,9 @@ def build_messages(row: dict, prompt: dict) -> list[dict]:
         op = row["operation"]
         guidance = prompt["operation_guidance"][op]
         for clean, degraded in prompt["examples"][op]:
-            shots.append((prompt["user_template"].format(clean_simplification=clean, operation=op, operation_guidance=guidance), json.dumps({"degraded": degraded})))
+            # Plain Unicode: with \\u escapes in the shots the model escapes too, and Cyrillic outruns max_tokens.
+            shots.append((prompt["user_template"].format(clean_simplification=clean, operation=op, operation_guidance=guidance),
+                          json.dumps({"degraded": degraded}, ensure_ascii=False)))
         target = row.get("target_sentence_index")
         text = row["sentences"][target] if target is not None else row["clean_simplification"]
         request = prompt["user_template"].format(clean_simplification=text, operation=op, operation_guidance=guidance)
@@ -57,11 +61,11 @@ def build_messages(row: dict, prompt: dict) -> list[dict]:
         for sentence, degraded in prompt["examples"][op]:
             shots.append((
                 prompt["user_template"].format(clean_simplification=sentence, operation=op, operation_guidance=guidance),
-                json.dumps({"degraded": degraded}),
+                json.dumps({"degraded": degraded}, ensure_ascii=False),
             ))
-        request = prompt["user_template"].format(
-            clean_simplification=row["clean_simplification"], operation=op, operation_guidance=guidance
-        )
+        target = row.get("target_sentence_index")
+        text = row["sentences"][target] if target is not None else row["clean_simplification"]
+        request = prompt["user_template"].format(clean_simplification=text, operation=op, operation_guidance=guidance)
     messages = [{"role": "system", "content": prompt["system"]}]
     for user, assistant in shots:
         messages += [{"role": "user", "content": user}, {"role": "assistant", "content": assistant}]
@@ -85,7 +89,7 @@ def degraded_from(row: dict, parsed: dict | None) -> str | None:
     if axis == "MEANING":
         span = row["target_span"]
         return fix_articles(splice(row["clean_simplification"], span["start"], span["end"], parsed["replacement"].strip()))
-    if axis == "MOD":
+    if axis in {"MOD", "ILLOC"}:
         target = row.get("target_sentence_index")
         if target is None:
             return parsed["degraded"].strip()
@@ -123,8 +127,11 @@ def main() -> None:
     cfg = experiment["configs"][args.config_id]
     seed = experiment["seed"]
     prompt_dir = Path(experiment["prompt_dir"])
-    prompts = {axis: json.loads((prompt_dir / name).read_text(encoding="utf-8")) for axis, name in PROMPT_FILES.items()
-               if (prompt_dir / name).exists()}  # language prompt sets cover only the axes they generate
+    prompts = {}
+    for axis, names in PROMPT_FILES.items():  # language prompt sets cover only the axes they generate
+        name = next((n for n in names if (prompt_dir / n).exists()), None)
+        if name:
+            prompts[axis] = json.loads((prompt_dir / name).read_text(encoding="utf-8"))
     rows = [row for row in read_jsonl(args.plan) if row.get("plan_status") == "ready"]
     if args.limit:
         rows = rows[: args.limit]
@@ -184,6 +191,7 @@ def main() -> None:
             ) if k in row},
             "meaning_type": row.get("meaning_type"), "generator_kind": row.get("generator_kind"),
             "target_span": row.get("target_span"), "merge_index": row.get("merge_index"), "sentences": row.get("sentences"),
+            "target_sentence_index": row.get("target_sentence_index"),
             "candidates": candidates,
             "prompt_id": prompt["prompt_id"], "prompt_sha256": sha(json.dumps(prompt, sort_keys=True)),
             **provenance,

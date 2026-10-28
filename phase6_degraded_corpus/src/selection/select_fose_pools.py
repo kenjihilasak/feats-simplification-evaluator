@@ -43,9 +43,40 @@ def _content(doc) -> list:
     return [t for t in doc if t.pos_ in {"NOUN", "VERB", "ADJ", "ADV"} and not t.is_stop]
 
 
+QUOTES = {'"', "“", "”", "«", "»", "„", "``", "''"}
+SENTENCE_START = {".", "!", "?", ":", ";", "¿", "¡", "«", '"', "“", "؟"}
+
+
+def quoted_mask(items: list[str]) -> list[bool]:
+    """True for tokens inside (or forming) quotation marks: titles and cited names."""
+    inside, mask = False, []
+    for item in items:
+        if item in QUOTES:
+            inside = not inside
+            mask.append(True)
+        else:
+            mask.append(inside)
+    return mask
+
+
+def name_like(items: list[str], i: int) -> bool:
+    """A capitalised word that does not open a sentence: part of a name or title."""
+    return items[i][:1].isupper() and i > 0 and items[i - 1] not in SENTENCE_START
+
+
+def touches_quotes(feats: dict) -> bool:
+    """S019 (Carlo, 27 Oct 2026): the pair also changed a quoted title ("Oedipus Rex" -> "Oedipus the King"), so
+    every version differed from the Original in a name the reviewer read as the degradation. Such pairs serve no
+    rule axis."""
+    left, right = quoted_mask(feats["left"]), quoted_mask(feats["right"])
+    return any(any(left[i1:i2]) or any(right[j1:j2]) for _, i1, i2, j1, j2 in feats["ops"])
+
+
 def eligible_rule_sites(axis: str, feats: dict, nlp=None, lang: str = "en") -> list:
     max_edit_blocks = 8 if axis == "EXPL" else 4
     if not (feats["overlap"] >= .4 and .5 <= feats["len_ratio"] <= 1.6 and feats["edit_blocks"] <= max_edit_blocks):
+        return []
+    if touches_quotes(feats):
         return []
     sites = []
     for tag, i1, i2, j1, j2 in feats["ops"]:
@@ -66,6 +97,9 @@ def eligible_rule_sites(axis: str, feats: dict, nlp=None, lang: str = "en") -> l
                                 if old_doc is not None else any(any(ch.isdigit() for ch in x) for x in old + new))
             old_lemmas = {t.lemma_.casefold() for t in old_content} if old_doc is not None else {t.casefold() for t in old_content}
             new_lemmas = {t.lemma_.casefold() for t in new_content} if new_doc is not None else {t.casefold() for t in new_content}
+            # Parsed alone, a span loses its context; capitalisation inside the sentence still marks a name.
+            proper_or_number = (proper_or_number or any(name_like(feats["left"], i) for i in range(i1, i2))
+                                or any(name_like(feats["right"], j) for j in range(j1, j2)))
             if len(old_content) == 1 and new_content and not proper_or_number and old_lemmas.isdisjoint(new_lemmas):
                 old_zipf = sum(zipf_frequency(t.text if old_doc is not None else t, lang) for t in old_content) / len(old_content)
                 new_zipf = sum(zipf_frequency(t.text if new_doc is not None else t, lang) for t in new_content) / len(new_content)

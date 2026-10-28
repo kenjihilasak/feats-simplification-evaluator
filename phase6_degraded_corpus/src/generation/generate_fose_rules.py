@@ -29,11 +29,23 @@ def detokenize(items: list[str], lang: str = "en", references: tuple[str, ...] =
     text = re.sub(r'"\s*([^"]*?)\s*"', r'"\1"', text)  # straight double quotes come in pairs
     text = re.sub(r"\s+", " ", text).strip()
     if lang == "en":
-        text = re.sub(r"\b([Aa])\s+([aeiouAEIOU])", lambda m: ("An" if m.group(1) == "A" else "an") + " " + m.group(2), text)
-        text = re.sub(r"\b([Aa])n\s+([^aeiouAEIOU\W])", lambda m: m.group(1) + " " + m.group(2), text)
-        return text
+        # "a university", "a European", "a one-off": a vowel letter with a consonant sound (as in fix_articles).
+        consonant_sound = r"(?=(?:[Uu]ni|[Uu]s[eu]|[Uu]ti|[Ee]u|[Oo]ne\b|[Oo]nce)\w*)"
+        text = re.sub(rf"\b([Aa])\s+(?!{consonant_sound[3:-1]})([aeiouAEIOU])", lambda m: ("An" if m.group(1) == "A" else "an") + " " + m.group(2), text)
+        text = re.sub(r"\b([Aa])n\s+(?!(?:[Hh]our|[Hh]onest|[Hh]onou?r|[Hh]eir))([^aeiouAEIOU\W\d])",
+                      lambda m: m.group(1) + " " + m.group(2), text)
+        text = re.sub(rf"\b([Aa])n\s+{consonant_sound}", lambda m: m.group(1) + " ", text)
+        return re.sub(r"\b([Aa])n?\s+(\d[\d,.]*)", _number_article, text)
     text = re.sub(r"([¿¡])\s+", r"\1", text)
     return match_spacing(text, references)
+
+
+def _number_article(m: re.Match) -> str:
+    """"an 1843", "an 8", "an 11", "a 1920": the article follows how the number is read aloud."""
+    digits = re.sub(r"\D", "", m.group(2).split(".")[0])
+    vowel = digits.startswith("8") or re.fullmatch(r"(?:11|18)(?:\d{2})?|(?:11|18)\d{3}", digits) is not None
+    article = "an" if vowel else "a"
+    return (article.capitalize() if m.group(1) == "A" else article) + " " + m.group(2)
 
 
 def match_spacing(text: str, references: tuple[str, ...]) -> str:
@@ -71,7 +83,9 @@ def splice(original: str, simple: str, edits: list[tuple[str, tuple[int, int, in
             else:
                 if not gap and text[at:at + 1].isalnum():
                     gap = " "
-                text = text[:at] + segment + gap + text[at:]
+                # Restored before final punctuation ("…à sortir." + "un par un"), the span needs its own leading space.
+                lead = " " if at and text[at - 1].isalnum() and segment[:1].isalnum() else ""
+                text = text[:at] + lead + segment + gap + text[at:]
         elif kind == "replace":
             text = text[:start(j1)] + segment + text[ss[j2 - 1][1]:]
         elif j1:  # drop the span with the space before it, keep the one after
@@ -222,7 +236,9 @@ def generate_expl(original: str, simple: str, pair_id: str, seed: int, sites=Non
         degraded = splice(original, simple, [("delete", site)])
         degraded = re.sub(r",(\s*),", r",", degraded)  # the gloss sat between two commas
     degraded = re.sub(r"\(\s*\)", "", degraded)
-    dangling = {"en": r"which|a", "es": r"que|el|la|un|una", "fr": r"qui|que|le|la|un|une"}[lang]
+    dangling = {"en": r"which|a", "es": r"que|el|la|un|una", "fr": r"qui|que|le|la|un|une",
+                "it": r"che|il|la|lo|un|una|uno", "ca": r"que|el|la|un|una", "ru": r"который|которая|которое|которые",
+                "ar": r"الذي|التي"}[lang]
     degraded = re.sub(rf",\s*(?:{dangling})\s*([,.;])", r"\1", degraded, flags=re.I)
     pattern = explanatory_pattern(right[:j1], removed, right[j2:], lang)
     if pattern is None:

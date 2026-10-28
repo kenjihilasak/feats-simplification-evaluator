@@ -1,0 +1,53 @@
+{
+ "prompt_id": "illoc_indirect_v4_it",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit, preserve every fact, and return only strict JSON. The text is in Italian; write the edited text in Italian.",
+ "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nKeep the purpose of the sentence and every fact. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "illoc_directive_to_impersonal": "The sentence tells the reader to do something. Keep that purpose but express it indirectly: rewrite it as an impersonal statement that does not address the reader (no imperative, no second person, no question), so the reader has to infer what to do. Keep every fact and the same certainty; do not add may, might or probably. Change as few words as possible. Write in Italian.",
+  "illoc_question_to_indirect": "The sentence asks the reader a direct question. Keep that purpose but express it indirectly: embed the whole question as an indirect question introduced by an impersonal verb of asking or by 'the question is' (for example 'It is asked whether ...', 'The question is how ...'), with no question mark, no second person and no instruction. Keep every fact and every part of the question. Change as few words as possible. Write in Italian.",
+  "illoc_address_to_impersonal": "The sentence addresses the reader directly. Rewrite it impersonally (passive voice, an impersonal construction or a general subject) so it no longer addresses the reader. Keep every fact and the same certainty; do not add may, might or probably. No question and no instruction. Change as few words as possible. Write in Italian."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "illoc_directive_to_impersonal": [
+   [
+    "Porta il documento all'appuntamento.",
+    "All'appuntamento è richiesto il documento."
+   ],
+   [
+    "Chiama il 112 se ti senti peggio.",
+    "Sentirsi peggio è un motivo per chiamare il 112."
+   ]
+  ],
+  "illoc_question_to_indirect": [
+   [
+    "Hai usato questi servizi nell'ultimo anno?",
+    "Si chiede se questi servizi sono stati usati nell'ultimo anno."
+   ],
+   [
+    "Come seguirà la Commissione le idee raccolte?",
+    "La domanda è come la Commissione seguirà le idee raccolte."
+   ]
+  ],
+  "illoc_address_to_impersonal": [
+   [
+    "Puoi trovarlo solo sull'isola di Natale.",
+    "Si trova solo sull'isola di Natale."
+   ],
+   [
+    "Potete chiedere l'aiuto in comune.",
+    "L'aiuto si può chiedere in comune."
+   ]
+  ]
+ }
+}

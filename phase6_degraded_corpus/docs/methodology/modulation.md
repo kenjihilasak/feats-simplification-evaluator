@@ -1,6 +1,18 @@
-# MOD degradation (v2)
+# MOD degradation (v2, graded v4)
 
 [Methodology index](README.md)
+
+**Graded groups v4 (28 Oct 2026):** a clean simplification gets two degraded versions of increasing severity.
+
+| Level | Version | Operation |
+|---|---|---|
+| 1.0 | clean | the human simplification |
+| 0.5 (mild) | A | `mod_front_heavy`: a phrase of four or more words is moved before the subject and main verb, so secondary information comes before the main idea (LLM, only that sentence is sent) |
+| 0.0 (strong) | AB | A plus `mod_sentence_reorder`: two adjacent sentences where the second depends on the first are swapped, reversing the logical order (rule) |
+
+In v3 the mild version was A or B (reorder alone) at random. The first English review tied mild and strong; a reorder alone can be as disruptive as both edits, so v4 always uses A as the mild version. B is still generated and recorded but not used ([`combine_mod_graded.py`](../../src/generation/combine_mod_graded.py)). Prompts: `prompts/v4_<lang>/` (the English, Spanish and French fronting prompts are unchanged from v3).
+
+The rest of this page describes the earlier v2 pair operation (merge two sentences).
 
 **Goal:** undo one helpful split: **merge two adjacent Simplified sentences into one**, with no change of facts or wording beyond joining words.
 

@@ -50,7 +50,9 @@ def _boundary(lang: str) -> re.Pattern:
     if lang == "en":
         return SENTENCE_BOUNDARY
     guards = "".join(f"(?<!\\b{re.escape(abbr)})" for abbr in language(lang).abbreviations if " " not in abbr)
-    return re.compile(rf"(?<!\b[{UPPER}]\.){guards}(?<=[.!?…])[\"”»)]?\s+(?=[\"“«(¿¡]?\s?[{UPPER}0-9])")
+    # Russian sentences open with a Cyrillic capital; Arabic has no case, so any Arabic letter can open one.
+    opener = UPPER + "А-ЯЁ" + ("\u0621-\u064A" if lang == "ar" else "")
+    return re.compile(rf"(?<!\b[{UPPER}А-ЯЁ]\.){guards}(?<=[.!?…؟])[\"”»)]?\s+(?=[\"“«(¿¡]?\s?[{opener}0-9])")
 
 
 _BOUNDARIES: dict[str, re.Pattern] = {}

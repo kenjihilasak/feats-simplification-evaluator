@@ -7,16 +7,18 @@
 #SBATCH --time=06:00:00
 #SBATCH --output=phase6_degraded_corpus/logs/s1_ml_%j.out
 #SBATCH --error=phase6_degraded_corpus/logs/s1_ml_%j.err
-# Spanish/French S1 candidates: pools, checker calibration, rules, MOD and ILLOC generation, scoring.
-# Usage (from the project root): sbatch phase6_degraded_corpus/jobs/submit_s1_multilingual_gpu.sh es|fr
+# Phase 6 candidates for one language: pools, checker calibration, rules, MOD and ILLOC generation, scoring.
+# Usage (from the project root): sbatch phase6_degraded_corpus/jobs/submit_s1_multilingual_gpu.sh LANG [VERSION]
+# LANG is en|es|fr|it|ca|ru|ar; VERSION defaults to v1 (Spanish/French S1 round). v2 uses ILLOC v4 and MOD v4.
 # Every step is skipped when its output exists, so a resubmission resumes.
 set -euo pipefail
 project_root=/scratch/pjbd103/feats-simplification-evaluator
 cd "$project_root"
-lang=${1:?usage: submit_s1_multilingual_gpu.sh es|fr}
-cfg=phase6_degraded_corpus/configs/experiments/s1_${lang}_v1.json
-gen=phase6_degraded_corpus/configs/experiments/s1_${lang}_v1_generation.json
-run=phase6_degraded_corpus/runs/s1_${lang}_v1
+lang=${1:?usage: submit_s1_multilingual_gpu.sh LANG [VERSION]}
+ver=${2:-v1}
+cfg=phase6_degraded_corpus/configs/experiments/s1_${lang}_${ver}.json
+gen=phase6_degraded_corpus/configs/experiments/s1_${lang}_${ver}_generation.json
+run=phase6_degraded_corpus/runs/s1_${lang}_${ver}
 py=.venv-phase6-vllm/bin/python
 export HF_HOME="$project_root/cache/huggingface" HF_HUB_OFFLINE=1 TOKENIZERS_PARALLELISM=false VLLM_WORKER_MULTIPROC_METHOD=spawn
 mkdir -p "$run/generations" "$run/scored" "$run/plans"
@@ -29,7 +31,7 @@ checkers="$run/checker_config.json"
 
 [[ -s "$run/scored/fose_groups.jsonl" ]] || { step rules; $py -m phase6_degraded_corpus.src.generation.generate_s1_rules --run-dir "$run" --device cuda; }
 
-# MOD: LLM fronting (A), then rule reorder of the clean text (B) and of the fronted text (AB), as in English.
+# MOD: LLM fronting (A), then rule reorder of the clean text (B) and of the fronted text (AB).
 if [[ -s "$run/allocation/mod_graded.jsonl" ]]; then
   [[ -s "$run/generations/mod_fronting.jsonl" ]] || { step mod-generate; $py -m phase6_degraded_corpus.src.generation.generate_mmi_v2 \
     --plan "$run/allocation/mod_graded.jsonl" --config "$gen" --config-id MOD_C2 --output "$run/generations/mod_fronting.jsonl"; }
