@@ -21,12 +21,12 @@ Valid items per language and axis. Files: `runs/s1_<lang>_v2/final/phase6_corpus
 
 | Language | Corpora | MEANING | FLUENCY | OMIT | SYN | EXPL | MOD | ILLOC | Total |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| English | WikiAutoEN, ASSET | 4,514 | 7,813 | 137 | 98 | 65 | 147 | 105 | 12,879 |
-| French | WikiLargeFR, CLEAR | 575 | 489 | 149 | 98 | 152 | 150 | 61 | 1,674 |
+| English | WikiAutoEN, ASSET | 4,514 | 7,813 | 137 | 98 | 65 | 86 | 83 | 12,796 |
+| French | WikiLargeFR, CLEAR | 567 | 491 | 149 | 98 | 152 | 149 | 61 | 1,667 |
 | Russian | RuWikiLarge, RSSE, RuAdapt | 591 | 369 | 145 | 107 | 59 | 159 | 165 | 1,595 |
-| Italian | PaCCSS-IT, iDEM, Terence, Teacher, AdminIt… | 430 | 478 | 57 | 56 | 0 | 25 | 146 | 1,192 |
-| Catalan | iDEM | 116 | 103 | 0 | 3 | 0 | 19 | 32 | 273 |
-| Spanish | iDEM | 53 | 48 | 4 | 4 | 1 | 19 | 4 | 133 |
+| Italian | PaCCSS-IT, iDEM, Terence, Teacher, AdminIt… | 429 | 478 | 57 | 56 | 0 | 13 | 126 | 1,159 |
+| Catalan | iDEM | 116 | 103 | 0 | 3 | 0 | 9 | 27 | 258 |
+| Spanish | iDEM | 53 | 48 | 4 | 4 | 1 | 16 | 4 | 130 |
 | Arabic | Saaq al-Bambuu | 41 | 32 | 25 | 6 | 0 | 0 | 0 | 104 |
 
 These are pilot-scale allocations (MEANING and FLUENCY: 600 pairs per language; at most 300 MOD and 240 ILLOC candidates, as in v1); larger quotas in `configs/experiments/s1_<lang>_v2.json` and `--size` scale English, French, Russian and Italian. Zero cells mean the corpus has no eligible pair, not a failure: EXPL needs an inserted gloss, MOD a dependent sentence pair, ILLOC a direct act on the reader.
@@ -51,11 +51,11 @@ A cross-validated logistic model predicts which of two versions scores higher fr
 | Cue | Axes | Before | After | Action |
 |---|---|---|---|---|
 | Comma | MOD | 0.71–0.87 | 0.52–0.64 | Fronting added a comma after the fronted phrase; the surplus comma is removed at export (optional after a fronted adverbial in every v2 language). Fronted relative clauses are dropped. |
-| Rewording / length | ILLOC | 0.70–0.94 | EN 0.68, RU 0.82, FR 0.85, IT 0.92 | A control version (score 1.0) rewords the sentence but keeps the act direct ("Note that…" → "Remember that…"); 373 of 513 ILLOC items have one. Question marks remain a cue by definition: a direct question *is* the direct act. |
+| Rewording / length | ILLOC | 0.70–0.94 | EN 0.79, RU 0.82, FR 0.85, IT 0.94 | A control version (score 1.0) rewords the sentence but keeps the act direct ("Note that…" → "Remember that…"); 373 of 513 ILLOC items have one. Question marks remain a cue by definition: a direct question *is* the direct act. |
 | Commas | OMIT | 0.77–0.98 (gate without length) | unchanged | Mostly definitional: the omitted details are usually comma-delimited appositives and asides, so restoring one restores its commas. |
 | Overlap with the Original | MEANING, FLUENCY, SYN, OMIT | 0.72–1.0 | unchanged | Definitional: losing content or adding errors lowers overlap, and SYN/OMIT degradations move back toward the Original. English MEANING, built the same way, beat NLI against human ratings. |
 
-ILLOC therefore still carries a lexical cue in French, Italian and Russian; a scorer trained on it should be checked against the controls before use.
+ILLOC therefore still carries a lexical cue in every language (English rose from 0.68 to 0.79 after the review below removed false hosts and faulty controls); a scorer trained on it should be checked against the controls before use.
 
 ## Illocution examples
 
@@ -85,6 +85,31 @@ Direct acts are rare in encyclopedic text: about 2% of the English pool (237 of 
 | Few-shot examples serialised with `\u` escapes | Russian MOD output ran out of tokens (1 group of 300) | plain Unicode; Russian MOD now 164 groups |
 | OMIT restored a span before the final period without a space ("sentieret", "1979en") | glued words in the degraded text | `splice` adds the leading space |
 | English "an United", "an university", "an 1843" → "a 1843" | article errors in the degraded text | article rule follows the spoken sound |
+
+## Review for the examples round (29 October 2026)
+
+Every LLM-generated version (ILLOC, MOD, MEANING contradictions) in the English, Italian, Spanish and Catalan example
+files was read, and the rule outputs were screened automatically (unknown words, spacing, articles). Systematic
+faults were fixed in the code; one-off model errors are listed with their reason in `runs/annotation_v2/excluded_<lang>.json`
+and removed from both the example files and `final/phase6_corpus.jsonl` (`--exclude`). Errors already in the corpus
+(Original or human simplification, e.g. "an Belgian") are kept.
+
+| Fault | Example | Fix |
+|---|---|---|
+| FLUENCY edited half a contraction (spaCy splits Catalan "del" into "d" + "el") | "dprojecte", "abbonamentodell '" | only stand-alone words are edited |
+| Number contradictions broke dates, ranges, decades and codes | "entre 32 y 25 años", "al 93/12/2017", "anys 270", "Model 7210" | these numbers are left alone |
+| ILLOC hosts that are titles or names | "Let It Bleed", "Rise Against", "Mad About You" | a capitalised function word after the verb, or a capitalised "You" mid-sentence, marks a title |
+| MOD: in the strong version the comma fix removed a list comma | "da formación aconseja y apoya" | the surplus comma is found per sentence |
+| The LLM repaired accents of the clean text (MOD, ILLOC, contradictions) | "paises" → "países" | the clean spelling is restored |
+| MOD fronted a relative clause or a bare life-date range | "Where the mouth of a river…", "December 25, 1928 – February 1, 2002 Nellie…" | dropped at export |
+| Arabic FLUENCY crashed on the Stanza adapter | | `_Doc.text` |
+
+Excluded one-off errors: English 78 (mostly MOD fronting that changes the meaning or breaks the grammar, e.g. "As a family
+of frogs, the toads are the Pelobatidae"), Italian 88 (ILLOC and its paraphrase from the 7B model, odd contradictions such
+as "Il punto falso"), Catalan 27 (calques such as "Es deu adjuntar", "Les guanys"), Spanish 6. Italian and Catalan MOD keep
+only 13 and 9 groups. Example files: `runs/annotation_v2/s1_<lang>_examples_2026-10-29.csv`, all seven axes, up to 60
+cases per axis, one row per version, same columns as the v1 file plus `version`
+([`export_examples_csv.py`](../../../src/annotation/export_examples_csv.py)).
 
 ## Affects the live v1 rounds
 

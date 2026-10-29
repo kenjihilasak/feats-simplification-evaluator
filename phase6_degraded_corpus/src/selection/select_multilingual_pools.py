@@ -29,7 +29,7 @@ from itertools import zip_longest
 from pathlib import Path
 
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, stable_key, write_jsonl
-from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_second_person, load_nlp
+from phase6_degraded_corpus.src.common.languages import get as language, is_imperative_root, is_second_person, load_nlp, stop_words
 from phase6_degraded_corpus.src.planning.plan_mmi_operations import _dependent_second, split_sentences
 from phase6_degraded_corpus.src.selection.freeze_evaluation_originals import strong_key
 from phase6_degraded_corpus.src.selection.select_fose_pools import check_validated, eligible_rule_sites, structural_features
@@ -63,6 +63,23 @@ def mod_host(simple: str, lang: str) -> dict | None:
     return {"sentences": sentences, "reorder": reorder, "target_sentence_index": target}
 
 
+def title_like(sentence: str, kind: str, lang: str) -> bool:
+    """The act word belongs to a capitalised name or title, not to the text: "Let It Bleed is a 1969 album",
+    "Rise Against formed in 1999", "Mad About You is an American situation comedy" (English v2 examples). A
+    capitalised function word after the verb marks a title; a name ("Visit London") does not."""
+    words = re.findall(r"\w+(?:['’]\w+)?", sentence)
+    if len(words) < 2:
+        return False
+    capital = lambda w: w[:1].isupper() and w != "I"
+    if kind == "directive":
+        return capital(words[1]) and words[1].lower() in stop_words(lang)
+    if kind == "address" and lang == "en":
+        for i, w in enumerate(words):
+            if language(lang).second_person.fullmatch(w):
+                return (i == 0 and capital(words[1])) or (i > 0 and capital(w))
+    return False
+
+
 def illoc_host(simple: str, lang: str, nlp) -> dict | None:
     """The first sentence that performs a direct act on the reader, outside quotations and titles.
 
@@ -80,9 +97,9 @@ def illoc_host(simple: str, lang: str, nlp) -> dict | None:
         doc = nlp(bare if lang in {"en", "ru", "ar"} else bare[:1].lower() + bare[1:])
         if bare.rstrip().endswith(tuple(language(lang).question_marks)):
             found.append(("question", i))
-        elif is_imperative_root(doc, lang, addresses_reader):
+        elif is_imperative_root(doc, lang, addresses_reader) and not title_like(bare, "directive", lang):
             found.append(("directive", i))
-        elif is_second_person(doc, bare, lang):
+        elif is_second_person(doc, bare, lang) and not title_like(bare, "address", lang):
             found.append(("address", i))
     if not found:
         return None

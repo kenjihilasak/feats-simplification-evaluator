@@ -312,7 +312,7 @@ class _Token:
 
 
 class _Doc(list):
-    pass
+    text = ""
 
 
 class StanzaNLP:
@@ -326,6 +326,7 @@ class StanzaNLP:
 
     def __call__(self, text: str) -> _Doc:
         doc = _Doc()
+        doc.text = text
         for sentence in self.pipeline(text).sentences:
             offset = len(doc)
             for word in sentence.words:

@@ -19,12 +19,19 @@ from pathlib import Path
 from phase6_degraded_corpus.src.annotation.build_s1_multilingual import uniform_spacing
 from phase6_degraded_corpus.src.common.contracts import read_jsonl, write_jsonl
 from phase6_degraded_corpus.src.common.languages import get as language
+from phase6_degraded_corpus.src.evaluation.score_mmi_candidates import unaccent
+from phase6_degraded_corpus.src.planning.plan_mmi_operations import split_sentences
+from phase6_degraded_corpus.src.selection.select_multilingual_pools import ILLOC_OPERATIONS, title_like
 
 KEEP = ("canonical_pair_id", "canonical_original_id", "language", "corpus", "original")
 
 
 def read(path: Path) -> list[dict]:
     return read_jsonl(path) if path.exists() else []
+
+
+RELATIVE_ADVERBS = {"en": {"where"}, "es": {"donde"}, "it": {"dove"}, "fr": {"où"}, "ca": {"on"}, "ru": {"где"}}
+FRONTED_DATES = re.compile(r"\(?\s*(?:[A-Z][a-z]+ \d{1,2}, \d{3,4}|\d{1,2} [A-Z][a-z]+ \d{3,4}|\d{3,4})\s*[–-]")
 
 
 def drop_added_commas(clean: str, text: str) -> str:
@@ -45,6 +52,31 @@ def drop_added_commas(clean: str, text: str) -> str:
     for m in sorted(drop[-surplus:], key=lambda m: m.start(), reverse=True):  # the last one closes the fronted phrase
         text = text[:m.start()] + text[m.end():]
     return re.sub(r"\s{2,}", " ", text).strip()
+
+
+def drop_added_commas_by_sentence(clean: str, text: str, lang: str) -> str:
+    """`drop_added_commas` per sentence: in the strong version the sentences are reordered, and a whole-text alignment
+    can take a list comma for the added one ("da formación aconseja y apoya", ES v2)."""
+    words = lambda s: set(re.findall(r"\w+", s.casefold()))
+    source = split_sentences(clean, lang)
+    out = []
+    for sentence in split_sentences(text, lang):
+        match = max(source, key=lambda c: len(words(c) & words(sentence)) / max(1, len(words(c) | words(sentence))))
+        out.append(drop_added_commas(match, sentence))
+    return " ".join(out)
+
+
+def keep_spelling(clean: str, text: str) -> str:
+    """The LLM repairs accents of the clean text ("paises" -> "países", "busqueda" -> "búsqueda"); a repair tells
+    the degraded version apart, so the clean spelling is restored."""
+    present = set(re.findall(r"\w+", clean))
+    forms = {unaccent(w).casefold(): w for w in present if len(w) >= 5}  # short pairs are words of their own: "esta"/"está", "es"/"és"
+
+    def restore(m):
+        w = m.group(0)
+        c = forms.get(unaccent(w).casefold())
+        return c if c and w not in present and c.casefold() != w.casefold() else w
+    return re.sub(r"\w+", restore, text)
 
 
 def member_groups(path: Path, axis: str | None = None) -> list[dict]:
@@ -74,28 +106,43 @@ def records(run: Path) -> list[dict]:
                         "versions": {"clean": g["clean_simplification"], "mild": g["versions"][mild]["degraded"],
                                      "strong": g["versions"]["AB"]["degraded"]},
                         "scores": {"clean": 1.0, "mild": 0.5, "strong": 0.0}})
-    relative = language(run.name.split("_")[1]).relative_pronouns
+    lang = run.name.split("_")[1]
+    relative = language(lang).relative_pronouns
     for g in read(run / "scored/mod_groups.jsonl"):
         fronted = next((a for b, a in zip(g["clean_simplification"].split(". "), g["versions"]["A"]["degraded"].split(". ")) if b != a), "")
-        if g["valid"] and not (re.findall(r"\w+", fronted.casefold())[:1] and re.findall(r"\w+", fronted.casefold())[0] in relative):
-            # A fronted relative clause ("Который поддерживал бы…") is ungrammatical, not a mild degradation.
+        first = re.findall(r"\w+", fronted.casefold())[:1]
+        if g["valid"] and not (first and first[0] in relative | RELATIVE_ADVERBS.get(lang, set())) and not FRONTED_DATES.match(fronted):
+            # A fronted relative clause ("Который поддерживал бы…", "Where the mouth of a river flows…") or a bare
+            # life-date range ("December 25, 1928 – February 1, 2002 Nellie…") is ungrammatical, not a mild degradation.
             clean = g["clean_simplification"]
             out.append({**{k: g.get(k) for k in KEEP}, "language": run.name.split("_")[1], "axis": "MOD", "format": "graded",
                         "operation": "mod_front_heavy+mod_sentence_reorder",
-                        "versions": {"clean": clean, "mild": drop_added_commas(clean, g["versions"]["A"]["degraded"]),
-                                     "strong": drop_added_commas(clean, g["versions"]["AB"]["degraded"])},
+                        "versions": {"clean": clean,
+                                     "mild": keep_spelling(clean, drop_added_commas_by_sentence(clean, g["versions"]["A"]["degraded"], lang)),
+                                     "strong": keep_spelling(clean, drop_added_commas_by_sentence(clean, g["versions"]["AB"]["degraded"], lang))},
                         "scores": {"clean": 1.0, "mild": 0.5, "strong": 0.0}})
     controls = {r["canonical_pair_id"]: r["candidates"][r["selected_index"]]["degraded"]
                 for r in read(run / "scored/illoc_paraphrase.jsonl") if r["yield"]}
+    kinds = {v: k for k, v in ILLOC_OPERATIONS.items()}
     for r in read(run / "scored/illoc.jsonl"):
-        if r["yield"]:
-            versions = {"clean": r["clean_simplification"], "degraded": r["candidates"][r["selected_index"]]["degraded"]}
+        # Hosts found before the title rule: "Let It Bleed", "Mad About You" are names, not acts on the reader.
+        if r["yield"] and not title_like(r["sentences"][r["target_sentence_index"]], kinds[r["operation"]], lang):
+            clean = r["clean_simplification"]
+            versions = {"clean": clean, "degraded": keep_spelling(clean, r["candidates"][r["selected_index"]]["degraded"])}
             scores = {"clean": 1.0, "degraded": 0.0}
             if r["canonical_pair_id"] in controls:  # a direct paraphrase, scored like the clean text
-                versions["paraphrase"], scores["paraphrase"] = controls[r["canonical_pair_id"]], 1.0
+                versions["paraphrase"], scores["paraphrase"] = keep_spelling(clean, controls[r["canonical_pair_id"]]), 1.0
             out.append({**{k: r.get(k) for k in KEEP}, "axis": "ILLOC", "format": "pair", "operation": r["operation"],
                         "versions": versions, "scores": scores})
     return out
+
+
+def reviewed(record: dict, excluded: set[str]) -> dict | None:
+    key = f'{record["axis"]}|{record["canonical_pair_id"]}'
+    if key in excluded:
+        return None
+    versions = {k: v for k, v in record["versions"].items() if f"{key}|{k}" not in excluded}
+    return {**record, "versions": versions, "scores": {k: record["scores"][k] for k in versions}}
 
 
 def spaced(record: dict) -> dict | None:
@@ -118,14 +165,17 @@ def main() -> None:
     p.add_argument("--output-name", default="phase6_corpus.jsonl")
     p.add_argument("--extra-groups", nargs=3, action="append", default=[], metavar=("RUN_NAME", "AXIS", "PATH"),
                    help="add MEANING/FLUENCY groups built elsewhere (English) to one run's export")
+    p.add_argument("--exclude", type=Path, action="append", default=[],
+                   help='faulty degradations found in review: {"AXIS|pair_id": reason} or {"AXIS|pair_id|version": reason}')
     args = p.parse_args()
+    excluded = {k for path in args.exclude if path.exists() for k in json.loads(path.read_text(encoding="utf-8"))}
     summary = {}
     for run in args.run_dir:
         raw = records(run)
         for name, axis, path in args.extra_groups:
             if name == run.name:
                 raw += [{**r, "language": r.get("language") or name.split("_")[1]} for r in member_groups(Path(path), axis)]
-        kept = [s for s in map(spaced, raw) if s]
+        kept = [s for s in map(spaced, filter(None, (reviewed(r, excluded) for r in raw))) if s]
         write_jsonl(run / "final" / args.output_name, kept)
         summary[run.name] = {"records": len(kept), "dropped_after_spacing": len(raw) - len(kept),
                              "by_axis_format": dict(sorted(Counter(f'{r["axis"]}:{r["format"]}' for r in kept).items()))}

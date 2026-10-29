@@ -17,24 +17,24 @@
         "passed": false
       },
       "ILLOC": {
-        "comparisons": 183,
-        "auc_all_features": 0.6805667532622652,
-        "auc_gate": 0.6805667532622652,
-        "largest_feature": "delta_question",
-        "passed": true
+        "comparisons": 145,
+        "auc_all_features": 0.7919857312722949,
+        "auc_gate": 0.7919857312722949,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
       },
       "MEANING": {
-        "comparisons": 22328,
-        "auc_all_features": 0.9394389503482236,
-        "auc_gate": 0.9394389503482236,
+        "comparisons": 22323,
+        "auc_all_features": 0.9394853615162188,
+        "auc_gate": 0.9394853615162188,
         "largest_feature": "delta_overlap_original",
         "passed": false
       },
       "MOD": {
-        "comparisons": 441,
-        "auc_all_features": 0.6283827211912731,
-        "auc_gate": 0.6283827211912731,
-        "largest_feature": "delta_tokens",
+        "comparisons": 258,
+        "auc_all_features": 0.6148068024758128,
+        "auc_gate": 0.6148068024758128,
+        "largest_feature": "delta_overlap_original",
         "passed": true
       },
       "OMIT": {
@@ -52,57 +52,6 @@
         "passed": false
       }
     },
-    "es": {
-      "EXPL": {
-        "comparisons": 1,
-        "auc_all_features": null,
-        "auc_gate": null,
-        "largest_feature": "delta_commas",
-        "passed": false
-      },
-      "FLUENCY": {
-        "comparisons": 394,
-        "auc_all_features": 0.9099886624236646,
-        "auc_gate": 0.9099886624236646,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "ILLOC": {
-        "comparisons": 7,
-        "auc_all_features": 1.0,
-        "auc_gate": 1.0,
-        "largest_feature": "delta_question",
-        "passed": false
-      },
-      "MEANING": {
-        "comparisons": 370,
-        "auc_all_features": 0.8777428780131483,
-        "auc_gate": 0.8777428780131483,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "MOD": {
-        "comparisons": 57,
-        "auc_all_features": 0.5547860880270853,
-        "auc_gate": 0.5547860880270853,
-        "largest_feature": "delta_overlap_original",
-        "passed": true
-      },
-      "OMIT": {
-        "comparisons": 4,
-        "auc_all_features": 1.0,
-        "auc_gate": 0.5,
-        "largest_feature": "delta_sentences",
-        "passed": true
-      },
-      "SYN": {
-        "comparisons": 4,
-        "auc_all_features": 1.0,
-        "auc_gate": 1.0,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      }
-    },
     "fr": {
       "EXPL": {
         "comparisons": 152,
@@ -112,9 +61,9 @@
         "passed": true
       },
       "FLUENCY": {
-        "comparisons": 3623,
-        "auc_all_features": 0.9468941300211204,
-        "auc_gate": 0.9468941300211204,
+        "comparisons": 3604,
+        "auc_all_features": 0.9440750411738837,
+        "auc_gate": 0.9440750411738837,
         "largest_feature": "delta_overlap_original",
         "passed": false
       },
@@ -126,16 +75,16 @@
         "passed": false
       },
       "MEANING": {
-        "comparisons": 2780,
-        "auc_all_features": 0.916045688628953,
-        "auc_gate": 0.916045688628953,
+        "comparisons": 2724,
+        "auc_all_features": 0.9173597769109519,
+        "auc_gate": 0.9173597769109519,
         "largest_feature": "delta_overlap_original",
         "passed": false
       },
       "MOD": {
-        "comparisons": 450,
-        "auc_all_features": 0.5693851851851852,
-        "auc_gate": 0.5693851851851852,
+        "comparisons": 447,
+        "auc_all_features": 0.5682852123778208,
+        "auc_gate": 0.5682852123778208,
         "largest_feature": "delta_characters",
         "passed": true
       },
@@ -150,87 +99,6 @@
         "comparisons": 150,
         "auc_all_features": 1.0,
         "auc_gate": 1.0,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      }
-    },
-    "it": {
-      "FLUENCY": {
-        "comparisons": 2164,
-        "auc_all_features": 0.9683629531811084,
-        "auc_gate": 0.9683629531811084,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "ILLOC": {
-        "comparisons": 256,
-        "auc_all_features": 0.9240264892578125,
-        "auc_gate": 0.9240264892578125,
-        "largest_feature": "delta_question",
-        "passed": false
-      },
-      "MEANING": {
-        "comparisons": 1413,
-        "auc_all_features": 0.9583440391992463,
-        "auc_gate": 0.9583440391992463,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "MOD": {
-        "comparisons": 75,
-        "auc_all_features": 0.5204444444444445,
-        "auc_gate": 0.5204444444444445,
-        "largest_feature": "delta_overlap_original",
-        "passed": true
-      },
-      "OMIT": {
-        "comparisons": 61,
-        "auc_all_features": 1.0,
-        "auc_gate": 0.9754098360655737,
-        "largest_feature": "delta_commas",
-        "passed": false
-      },
-      "SYN": {
-        "comparisons": 58,
-        "auc_all_features": 1.0,
-        "auc_gate": 1.0,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      }
-    },
-    "ca": {
-      "FLUENCY": {
-        "comparisons": 752,
-        "auc_all_features": 0.921476240663196,
-        "auc_gate": 0.921476240663196,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "ILLOC": {
-        "comparisons": 49,
-        "auc_all_features": 0.973344439816743,
-        "auc_gate": 0.973344439816743,
-        "largest_feature": "delta_tokens",
-        "passed": false
-      },
-      "MEANING": {
-        "comparisons": 793,
-        "auc_all_features": 0.8748173249858074,
-        "auc_gate": 0.8748173249858074,
-        "largest_feature": "delta_overlap_original",
-        "passed": false
-      },
-      "MOD": {
-        "comparisons": 57,
-        "auc_all_features": 0.6121883656509696,
-        "auc_gate": 0.6121883656509696,
-        "largest_feature": "delta_tokens",
-        "passed": true
-      },
-      "SYN": {
-        "comparisons": 3,
-        "auc_all_features": 0.8888888888888888,
-        "auc_gate": 0.8888888888888888,
         "largest_feature": "delta_overlap_original",
         "passed": false
       }
@@ -258,9 +126,9 @@
         "passed": false
       },
       "MEANING": {
-        "comparisons": 4008,
-        "auc_all_features": 0.8893333903550185,
-        "auc_gate": 0.8893333903550185,
+        "comparisons": 3997,
+        "auc_all_features": 0.8900072289643802,
+        "auc_gate": 0.8900072289643802,
         "largest_feature": "delta_overlap_original",
         "passed": false
       },
@@ -280,6 +148,138 @@
       },
       "SYN": {
         "comparisons": 131,
+        "auc_all_features": 1.0,
+        "auc_gate": 1.0,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      }
+    },
+    "it": {
+      "FLUENCY": {
+        "comparisons": 2161,
+        "auc_all_features": 0.9687681012162732,
+        "auc_gate": 0.9687681012162732,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "ILLOC": {
+        "comparisons": 192,
+        "auc_all_features": 0.9440375434027778,
+        "auc_gate": 0.9440375434027778,
+        "largest_feature": "delta_question",
+        "passed": false
+      },
+      "MEANING": {
+        "comparisons": 1327,
+        "auc_all_features": 0.9592419683019588,
+        "auc_gate": 0.9592419683019588,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "MOD": {
+        "comparisons": 39,
+        "auc_all_features": 0.6975673898750822,
+        "auc_gate": 0.6975673898750822,
+        "largest_feature": "delta_characters",
+        "passed": true
+      },
+      "OMIT": {
+        "comparisons": 61,
+        "auc_all_features": 1.0,
+        "auc_gate": 0.9754098360655737,
+        "largest_feature": "delta_commas",
+        "passed": false
+      },
+      "SYN": {
+        "comparisons": 58,
+        "auc_all_features": 1.0,
+        "auc_gate": 1.0,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      }
+    },
+    "ca": {
+      "FLUENCY": {
+        "comparisons": 749,
+        "auc_all_features": 0.9076810914775553,
+        "auc_gate": 0.9076810914775553,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "ILLOC": {
+        "comparisons": 35,
+        "auc_all_features": 0.9518367346938775,
+        "auc_gate": 0.9518367346938775,
+        "largest_feature": "delta_tokens",
+        "passed": false
+      },
+      "MEANING": {
+        "comparisons": 758,
+        "auc_all_features": 0.8801743582960296,
+        "auc_gate": 0.8801743582960296,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "MOD": {
+        "comparisons": 27,
+        "auc_all_features": 0.5987654320987654,
+        "auc_gate": 0.5987654320987654,
+        "largest_feature": "delta_characters",
+        "passed": true
+      },
+      "SYN": {
+        "comparisons": 3,
+        "auc_all_features": 0.8888888888888888,
+        "auc_gate": 0.8888888888888888,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      }
+    },
+    "es": {
+      "EXPL": {
+        "comparisons": 1,
+        "auc_all_features": null,
+        "auc_gate": null,
+        "largest_feature": "delta_commas",
+        "passed": false
+      },
+      "FLUENCY": {
+        "comparisons": 394,
+        "auc_all_features": 0.9099886624236646,
+        "auc_gate": 0.9099886624236646,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "ILLOC": {
+        "comparisons": 7,
+        "auc_all_features": 1.0,
+        "auc_gate": 1.0,
+        "largest_feature": "delta_question",
+        "passed": false
+      },
+      "MEANING": {
+        "comparisons": 364,
+        "auc_all_features": 0.8724414321941795,
+        "auc_gate": 0.8724414321941795,
+        "largest_feature": "delta_overlap_original",
+        "passed": false
+      },
+      "MOD": {
+        "comparisons": 48,
+        "auc_all_features": 0.5247395833333334,
+        "auc_gate": 0.5247395833333334,
+        "largest_feature": "delta_characters",
+        "passed": true
+      },
+      "OMIT": {
+        "comparisons": 4,
+        "auc_all_features": 1.0,
+        "auc_gate": 0.5,
+        "largest_feature": "delta_sentences",
+        "passed": true
+      },
+      "SYN": {
+        "comparisons": 4,
         "auc_all_features": 1.0,
         "auc_gate": 1.0,
         "largest_feature": "delta_overlap_original",

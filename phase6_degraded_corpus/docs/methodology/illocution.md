@@ -18,7 +18,7 @@ Only a sentence that already performs a direct act on the reader can host the de
 | Question | four or more words, ends with a question mark | `illoc_question_to_indirect` |
 | Address | a second-person word, or a parsed `Person=2` | `illoc_address_to_impersonal` |
 
-Quoted spans are blanked before detection, so titles ("Curb Your Enthusiasm") and cited slogans do not count. Narrative corpora (Saaq al-Bambuu, Terence, RuAdaptFairytales) are excluded: there a question or "you" is a character speaking, not the text addressing its reader. Encyclopedic statements have no direct act and host no ILLOC item.
+Quoted spans are blanked before detection, so titles ("Curb Your Enthusiasm") and cited slogans do not count. Unquoted titles and names do not count either: a capitalised function word after the verb ("Let It Bleed", "Rise Against") or a capitalised "You" inside a sentence ("Mad About You") marks a title. Narrative corpora (Saaq al-Bambuu, Terence, RuAdaptFairytales) are excluded: there a question or "you" is a character speaking, not the text addressing its reader. Encyclopedic statements have no direct act and host no ILLOC item.
 
 ## Operations
 

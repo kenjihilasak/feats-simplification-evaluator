@@ -151,3 +151,54 @@ class MeaningFluencyTests(unittest.TestCase):
         self.assertEqual(agreement, "El ciudad tiene un museo en el centro.")
         swap = apply_errors(text, doc, [("preposition_swap", sites["preposition_swap"][0])], "es")
         self.assertEqual(swap, "La ciudad tiene un museo de el centro.")
+
+
+class ContractionTests(unittest.TestCase):
+    def test_fluency_rules_do_not_edit_parts_of_a_contraction(self):
+        # CA/IT v2 examples: "del projecte" -> "dprojecte", "dell'abbonamento" -> "abbonamentodell '"
+        from phase6_degraded_corpus.src.common.languages import load_nlp
+        from phase6_degraded_corpus.src.generation.generate_meaning_fluency_ml import apply_errors, fluency_sites
+        for lang, text in (("ca", "Adjunteu el document de descripció del projecte."),
+                           ("it", "Ti inviamo i moduli dell'abbonamento.")):
+            doc = load_nlp(lang)(text)
+            sites = fluency_sites(doc, lang)
+            for kind, found in sites.items():
+                for site in found:
+                    out = apply_errors(text, doc, [(kind, site)], lang)
+                    self.assertNotRegex(out, r"\bdprojecte|abbonamentodell|\bd projecte", (kind, out))
+
+
+class ExampleFixTests(unittest.TestCase):
+    def test_titles_and_names_are_not_acts(self):
+        from phase6_degraded_corpus.src.selection.select_multilingual_pools import title_like
+        self.assertTrue(title_like("Let It Bleed is a 1969 album by The Rolling Stones.", "directive", "en"))
+        self.assertTrue(title_like("Rise Against formed in 1999.", "directive", "en"))
+        self.assertTrue(title_like("Mad About You is an American situation comedy.", "address", "en"))
+        self.assertTrue(title_like("You Don't Mess with the Zohan is a 2008 movie.", "address", "en"))
+        self.assertFalse(title_like("Visit London in the spring.", "directive", "en"))
+        self.assertFalse(title_like("You can only find it on Christmas Island.", "address", "en"))
+
+    def test_strong_mod_keeps_list_commas(self):
+        from phase6_degraded_corpus.src.generation.export_phase6_corpus import drop_added_commas_by_sentence
+        clean = "Un equipo acompaña a cada participante. El equipo da formación, aconseja y apoya durante toda su busqueda."
+        strong = "Durante toda su busqueda, el equipo da formación, aconseja y apoya. Un equipo acompaña a cada participante."
+        self.assertEqual(drop_added_commas_by_sentence(clean, strong, "es"),
+                         "Durante toda su busqueda el equipo da formación, aconseja y apoya. Un equipo acompaña a cada participante.")
+
+    def test_accent_repairs_are_undone(self):
+        from phase6_degraded_corpus.src.generation.export_phase6_corpus import keep_spelling
+        self.assertEqual(keep_spelling("Juntan a ciudadanos de los 27 paises.", "Para debatir, juntan a ciudadanos de los 27 países."),
+                         "Para debatir, juntan a ciudadanos de los 27 paises.")
+        self.assertEqual(keep_spelling("Esta casa es nueva.", "Está claro que la casa es nueva."), "Está claro que la casa es nueva.")
+
+
+class NumberContradictionTests(unittest.TestCase):
+    def test_dates_ranges_decades_and_codes_are_not_changed(self):
+        # ES/CA/IT v2 examples: "entre 32 y 25 años", "desde 2038 hasta 2027", "93/12/2017", "60 de juny", "anys 270"
+        from phase6_degraded_corpus.src.generation.generate_meaning_fluency_ml import number_contradictions
+        for text in ("Tienen entre 16 y 25 años.", "Va desde el año 2021 hasta el año 2027.", "Del 01/01/2015 al 31/12/2017.",
+                     "Des del 30 de juny.", "Als anys 90 les ciutats creixien.", "El telèfon és el 900 922 357.",
+                     "O el Model 721 si teniu criptomonedes."):
+            self.assertEqual(number_contradictions(text, text, 1, "p"), [], text)
+        self.assertTrue(number_contradictions("La ley cancela más de 300 reglas.", "", 1, "p"))
+        self.assertTrue(number_contradictions("Se creó en 1922.", "", 1, "p"))

@@ -77,6 +77,15 @@ def whole(token) -> bool:
     return getattr(token, "whole", True)
 
 
+def standalone(token, text: str) -> bool:
+    """The token is a word of its own in the text: spaCy splits Catalan "del" into "d" + "el", and Italian "dell'" is
+    glued to its noun; editing either breaks the word ("dprojecte", "abbonamentodell '")."""
+    s, e = token.idx, token.idx + len(token.text)
+    glued = lambda c: c.isalnum() or c in "'’"
+    return (whole(token) and text[s:e] == token.text and token.text[-1:] not in {"'", "’"}
+            and not (s > 0 and glued(text[s - 1])) and not (e < len(text) and glued(text[e])))
+
+
 def subtree(doc, token) -> list:
     """Tokens whose head chain reaches `token` (spaCy's subtree, also for the Stanza adapter)."""
     out = []
@@ -119,6 +128,9 @@ def mild_losses(doc, text: str, lang: str) -> list[dict]:
 
     def cut(rule: str, tokens: list, start: int | None = None, end: int | None = None):
         if not all(whole(t) for t in tokens):
+            return
+        edges = sorted(tokens, key=lambda t: t.idx)
+        if not (standalone(edges[0], text) or edges[0].is_punct) or not (standalone(edges[-1], text) or edges[-1].is_punct):
             return
         s, e = char_span(tokens)
         s, e = (start if start is not None else s), (end if end is not None else e)
@@ -169,15 +181,45 @@ def major_losses(text: str, lang: str) -> list[dict]:
             for i, s in enumerate(sentences[1:], 1) if sentences.count(s) == 1]
 
 
+MONTH_NAMES = re.compile(
+    r"(?:de\s+|d['’]\s*)?(?:january|february|march|april|may|june|july|august|september|october|november|december|"
+    r"enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|"
+    r"gener|febrer|març|maig|juny|juliol|setembre|desembre|gennaio|febbraio|aprile|maggio|giugno|luglio|"
+    r"settembre|ottobre|dicembre|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|"
+    r"décembre|января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\b", re.I)
+RANGE_WORD = r"(?:y|i|e|and|to|a|al|hasta|fins|à|au|et|до|и|–|-)"
+RANGE_FILL = r"(?:(?:el|la|les|los|il|the|año|años|any|anys|anno|anni|year|years|de|del|l['’]|d['’])\s*){0,3}"
+
+
+def changeable(text: str, start: int, end: int) -> bool:
+    """A number whose change is a clean contradiction. Not: a date part ("01/12/2017", "30 de juny"), one end of a
+    range ("entre 16 y 25 años", "desde 2021 hasta 2027": a changed end can invert it), a decade ("anys 90"), part of a
+    digit group or code ("900 922 357", "Model 721")."""
+    before, after = text[:start], text[end:]
+    if re.search(r"[/\-–:]\s*$", before) or re.match(r"\s*[/\-–:]\s*\d", after):
+        return False
+    if re.search(r"\d\s+$", before) or re.match(r"\s+\d", after) or MONTH_NAMES.match(after.lstrip()):
+        return False
+    if re.search(rf"\d\S*\s+{RANGE_FILL}{RANGE_WORD}\s+{RANGE_FILL}$", before) or \
+            re.match(rf"\s+{RANGE_WORD}\s+{RANGE_FILL}\d", after):
+        return False
+    if re.search(r"(?:anys|años|anni|années|years|ans)\s+$", before, re.I) or re.match(r"s\b", after):
+        return False
+    word = re.search(r"(\w+)\s+$", before)
+    return not (word and word.group(1)[:1].isupper() and not re.search(r"(?:^|[.!?]\s+)\w+\s+$", before))
+
+
 def number_contradictions(text: str, original: str, seed: int, pid: str) -> list[dict]:
     out = []
     for m in YEAR.finditer(text):
+        if not changeable(text, m.start(), m.end()):
+            continue
         shift = 3 + int(stable_key(seed, f"{pid}:year:{m.start()}")[:4], 16) % 28
         new = str(int(m.group(1)) + shift)
         if new not in original:
             out.append({"rule": "year_changed", "removed": m.group(1), "text": text[:m.start()] + new + text[m.end():]})
     for m in NUMBER.finditer(text):
-        if YEAR.fullmatch(m.group(0)):
+        if YEAR.fullmatch(m.group(0)) or not changeable(text, m.start(), m.end()):
             continue
         new = corrupt_number(m.group(0), original, seed, f"{pid}:{m.start()}")
         if new:
@@ -191,20 +233,21 @@ def fluency_sites(doc, lang: str) -> dict[str, list]:
     res = language(lang)
     sites = {k: [] for k in (*MINOR, *MAJOR)}
     preps, swaps = PREPOSITIONS.get(lang, {}), ARTICLE_SWAP.get(lang, {})
-    tokens = list(doc)
+    tokens, text = list(doc), doc.text
     for i, tok in enumerate(tokens):
-        if not whole(tok):
+        if not standalone(tok, text):
             continue
         nxt = tokens[i + 1] if i + 1 < len(tokens) else None
+        nxt = nxt if nxt is not None and standalone(nxt, text) else None
         low = tok.lower_
-        article = tok.pos_ == "DET" and low in res.articles and not low.endswith(("'", "’"))
-        if article and nxt is not None and nxt.pos_ == "NOUN" and whole(nxt):
+        article = tok.pos_ == "DET" and low in res.articles
+        if article and nxt is not None and nxt.pos_ == "NOUN":
             sites["determiner_drop"].append(i)
             if low in swaps:
                 sites["agreement"].append(i)
         if tok.pos_ == "ADP" and low in preps:
             sites["preposition_swap"].append(i)
-        if nxt is not None and whole(nxt) and not (tok.like_num or nxt.like_num):
+        if nxt is not None and not (tok.like_num or nxt.like_num):
             if tok.pos_ == "AUX" and nxt.pos_ == "VERB":
                 sites["word_order"].append((i, i + 1))
             elif tok.pos_ == "ADP" and nxt.pos_ in {"NOUN", "PROPN"} and tok.head.i == nxt.i:  # "en Madrid" -> "Madrid en"
@@ -322,6 +365,7 @@ def candidates(run: Path, size: int) -> tuple[list[dict], list[dict], list[dict]
 
 def score(run: Path, device: str) -> None:
     from phase6_degraded_corpus.src.evaluation.score_mmi_candidates import Checkers
+    from phase6_degraded_corpus.src.generation.export_phase6_corpus import keep_spelling
 
     cfg = json.loads((run / "checker_config.json").read_text(encoding="utf-8"))
     meaning = read_jsonl(run / "meaning_fluency/meaning_candidates.jsonl")
@@ -331,7 +375,9 @@ def score(run: Path, device: str) -> None:
         g = llm.get(r["canonical_pair_id"])
         for c in (g or {}).get("candidates", []):
             if c.get("degraded") and c["degraded"] != r["clean"]:
-                r["candidates"].append({"level": "contradiction", "generator": "llm", "rule": "llm_contradict", "text": c["degraded"]})
+                # The LLM also repairs accents ("busqueda" -> "búsqueda"), a cue unrelated to the contradiction.
+                r["candidates"].append({"level": "contradiction", "generator": "llm", "rule": "llm_contradict",
+                                        "text": keep_spelling(r["clean"], c["degraded"])})
     fluency = read_jsonl(run / "meaning_fluency/fluency_candidates.jsonl")
     ck = Checkers(cfg, device)
     flat = [(r["clean"], c) for r in meaning for c in r["candidates"]]
