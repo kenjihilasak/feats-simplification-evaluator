@@ -178,7 +178,7 @@ def main() -> None:
     picked = sample(cases, args.per_axis, args.seed, excluded)
     rows = csv_rows(picked, lang)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w", encoding="utf-8", newline="") as f:
+    with args.output.open("w", encoding="utf-8-sig", newline="") as f:  # the BOM makes Excel/Outlook read UTF-8 ("l’aiuto", not "lâ€™aiuto")
         w = csv.DictWriter(f, fieldnames=COLUMNS)
         w.writeheader()
         w.writerows(rows)
