@@ -1,0 +1,31 @@
+{
+ "prompt_id": "meaning_contradict_v4_ca",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit and return only strict JSON. The text is in Catalan; write the edited text in Catalan.",
+ "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nChange at most two words and keep everything else identical. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "meaning_contradict": "Make the sentence state something false that contradicts it: add or remove a negation on one verb, or replace one word with its opposite. The result must stay fluent and natural. Write in Catalan."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "meaning_contradict": [
+   [
+    "El museu va obrir el 1990 i rep molts visitants.",
+    "El museu va obrir el 1990 i no rep molts visitants."
+   ],
+   [
+    "La ciutat és petita i tranquil·la.",
+    "La ciutat és gran i tranquil·la."
+   ]
+  ]
+ }
+}

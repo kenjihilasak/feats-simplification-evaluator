@@ -33,4 +33,6 @@ Current, selected configurations (2026-09-30). The rationale and evidence are in
 - Generator: [`generate_mmi_v2.py`](../../src/generation/generate_mmi_v2.py).
 - Checks: [`score_mmi_candidates.py`](../../src/evaluation/score_mmi_candidates.py).
 
+**Other languages (v2, 28–29 Oct 2026):** Spanish, French, Italian, Catalan, Russian and Arabic use the same axes through [`select_multilingual_pools.py`](../../src/selection/select_multilingual_pools.py) (pools, rules, MOD, ILLOC) and [`generate_meaning_fluency_ml.py`](../../src/generation/generate_meaning_fluency_ml.py) (MEANING, FLUENCY); outputs, checks and the shortcut audit are in [the v2 report](../reports/current/phase6_v2_multilingual.md).
+
 The failed LLM-pilot methodology for FLUENCY, OMIT, SYN and EXPL remains in [`archive/`](archive/).

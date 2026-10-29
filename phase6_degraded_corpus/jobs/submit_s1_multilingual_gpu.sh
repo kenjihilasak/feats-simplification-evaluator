@@ -53,5 +53,15 @@ if [[ -s "$run/allocation/illoc_pair.jsonl" ]]; then
   [[ -s "$run/scored/illoc.jsonl" ]] || { step illoc-score; $py -m phase6_degraded_corpus.src.evaluation.score_mmi_candidates \
     --generations "$run/generations/illoc.jsonl" --plan "$run/allocation/illoc_pair.jsonl" --pools-config "$checkers" \
     --output "$run/scored/illoc.jsonl" --device cuda; }
+  # Control (v2): a direct paraphrase scored like the clean text, so rewording alone does not predict the score.
+  if grep -q illoc_direct_paraphrase "$(python3 -c "import json;print(json.load(open('$gen'))['prompt_dir'])")/illoc_indirect_v4.json" 2>/dev/null; then
+    $py -m phase6_degraded_corpus.src.generation.plan_illoc_controls --allocation "$run/allocation/illoc_pair.jsonl" \
+      --output "$run/plans/illoc_paraphrase_plan.jsonl"
+    [[ -s "$run/generations/illoc_paraphrase.jsonl" ]] || { step illoc-paraphrase; $py -m phase6_degraded_corpus.src.generation.generate_mmi_v2 \
+      --plan "$run/plans/illoc_paraphrase_plan.jsonl" --config "$gen" --config-id ILLOC_C1 --output "$run/generations/illoc_paraphrase.jsonl"; }
+    [[ -s "$run/scored/illoc_paraphrase.jsonl" ]] || { step illoc-paraphrase-score; $py -m phase6_degraded_corpus.src.evaluation.score_mmi_candidates \
+      --generations "$run/generations/illoc_paraphrase.jsonl" --plan "$run/plans/illoc_paraphrase_plan.jsonl" --pools-config "$checkers" \
+      --output "$run/scored/illoc_paraphrase.jsonl" --device cuda; }
+  fi
 fi
 step done

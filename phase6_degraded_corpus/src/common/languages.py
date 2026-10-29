@@ -299,6 +299,7 @@ class _Token:
         self.like_num = self.pos_ == "NUM" or any(ch.isdigit() for ch in word.text)
         self.ent_type_ = ""
         self.whitespace_ = " "
+        self.whole = word.parent is None or len(word.parent.words) == 1  # not one of several clitic words
         self._head = word.head - 1  # Stanza heads are 1-based within the sentence; 0 is the root
 
     @property

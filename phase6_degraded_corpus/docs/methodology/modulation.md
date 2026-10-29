@@ -12,6 +12,8 @@
 
 In v3 the mild version was A or B (reorder alone) at random. The first English review tied mild and strong; a reorder alone can be as disruptive as both edits, so v4 always uses A as the mild version. B is still generated and recorded but not used ([`combine_mod_graded.py`](../../src/generation/combine_mod_graded.py)). Prompts: `prompts/v4_<lang>/` (the English, Spanish and French fronting prompts are unchanged from v3).
 
+At export, a comma the fronting added after the fronted phrase is removed, because that comma alone predicted the lower score (shortcut audit AUC 0.71–0.87, 0.52–0.64 after); groups whose mild version fronts a relative clause are dropped as ungrammatical.
+
 The rest of this page describes the earlier v2 pair operation (merge two sentences).
 
 **Goal:** undo one helpful split: **merge two adjacent Simplified sentences into one**, with no change of facts or wording beyond joining words.

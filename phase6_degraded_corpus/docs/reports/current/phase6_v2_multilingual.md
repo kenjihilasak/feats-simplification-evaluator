@@ -1,6 +1,6 @@
 # Phase 6 v2: degradations for seven languages
 
-**Date:** 28 October 2026 · **Scope:** the five strategy axes (OMIT, SYN, EXPL, MOD, ILLOC) in English, Spanish, French, Italian, Catalan, Russian and Arabic. MEANING and FLUENCY are unchanged (English only).
+**Date:** 28–29 October 2026 · **Scope:** all seven FEATS axes (MEANING, FLUENCY, OMIT, SYN, EXPL, MOD, ILLOC) in English, Spanish, French, Italian, Catalan, Russian and Arabic. English MEANING and FLUENCY are the validated v2 groups; the other languages get them from [`generate_meaning_fluency_ml.py`](../../../src/generation/generate_meaning_fluency_ml.py).
 
 ## What changed from v1
 
@@ -17,19 +17,45 @@ Why:
 
 ## Output
 
-Valid items per language and axis. Files: `runs/s1_<lang>_v2/final/phase6_corpus.jsonl`, one record per original with a target score per version (pairs: clean 1.0, degraded 0.0; graded: clean 1.0, mild 0.5, strong 0.0).
+Valid items per language and axis. Files: `runs/s1_<lang>_v2/final/phase6_corpus.jsonl`, one record per original with a target score per version (pairs: clean 1.0, degraded 0.0; MOD and graded rule groups: clean 1.0, mild 0.5, strong 0.0; MEANING and FLUENCY: 1.0 / 0.67 / 0.33 / 0.0 as in English v2).
 
-| Language | Corpora | OMIT | SYN | EXPL | MOD | ILLOC | Total |
-|---|---|---:|---:|---:|---:|---:|---:|
-| English | WikiAutoEN, ASSET | 137 | 98 | 65 | 147 | 105 | 552 |
-| French | WikiLargeFR, CLEAR | 149 | 98 | 152 | 161 | 61 | 621 |
-| Russian | RuWikiLarge, RSSE, RuAdapt | 145 | 107 | 59 | 164 | 165 | 640 |
-| Italian | PaCCSS-IT, iDEM, Terence, Teacher, AdminIt… | 57 | 56 | 0 | 25 | 146 | 284 |
-| Catalan | iDEM | 0 | 3 | 0 | 22 | 32 | 57 |
-| Spanish | iDEM | 4 | 4 | 1 | 25 | 4 | 38 |
-| Arabic | Saaq al-Bambuu | 25 | 6 | 0 | 0 | 0 | 31 |
+| Language | Corpora | MEANING | FLUENCY | OMIT | SYN | EXPL | MOD | ILLOC | Total |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| English | WikiAutoEN, ASSET | 4,514 | 7,813 | 137 | 98 | 65 | 147 | 105 | 12,879 |
+| French | WikiLargeFR, CLEAR | 575 | 489 | 149 | 98 | 152 | 150 | 61 | 1,674 |
+| Russian | RuWikiLarge, RSSE, RuAdapt | 591 | 369 | 145 | 107 | 59 | 159 | 165 | 1,595 |
+| Italian | PaCCSS-IT, iDEM, Terence, Teacher, AdminIt… | 430 | 478 | 57 | 56 | 0 | 25 | 146 | 1,192 |
+| Catalan | iDEM | 116 | 103 | 0 | 3 | 0 | 19 | 32 | 273 |
+| Spanish | iDEM | 53 | 48 | 4 | 4 | 1 | 19 | 4 | 133 |
+| Arabic | Saaq al-Bambuu | 41 | 32 | 25 | 6 | 0 | 0 | 0 | 104 |
 
-These are pilot-scale allocations (at most 300 MOD and 240 ILLOC candidates per language, as in v1); larger quotas in `configs/experiments/s1_<lang>_v2.json` scale English, French, Russian and Italian.
+These are pilot-scale allocations (MEANING and FLUENCY: 600 pairs per language; at most 300 MOD and 240 ILLOC candidates, as in v1); larger quotas in `configs/experiments/s1_<lang>_v2.json` and `--size` scale English, French, Russian and Italian. Zero cells mean the corpus has no eligible pair, not a failure: EXPL needs an inserted gloss, MOD a dependent sentence pair, ILLOC a direct act on the reader.
+
+## MEANING and FLUENCY outside English
+
+The English recipes, rebuilt on Universal Dependencies labels and per-language tables ([`generate_meaning_fluency_ml.py`](../../../src/generation/generate_meaning_fluency_ml.py)):
+
+| Level | MEANING | FLUENCY |
+|---|---|---|
+| 1.0 | clean; original copy; neutral trim ("también", "aussi", "anche", "также"…, an empty parenthetical) | clean; original copy |
+| 0.67 | mild loss: an adjective, appositive, adverb, short peripheral oblique, relative clause, final coordinated clause or intensifier deleted | minor: an article dropped or a preposition swapped (es "de"→"en", ru "в"→"на", ar "في"→"على") |
+| 0.33 | major loss: a non-first sentence deleted | major: article agreement broken ("les problemes"), auxiliary+verb or preposition+noun swapped, or two minor errors |
+| 0.0 | contradiction: a number or year changed by rule, or a negation/antonym from Qwen ("лучше" → "хуже"), NLI contradiction ≥ 0.5 | severe: three errors |
+
+As in English, MEANING candidates must not contradict (except at 0.0) and must remove content; FLUENCY errors are not selected with the acceptability model (the baseline its scorer must beat), and NLI must confirm the meaning is kept. Russian and Arabic have no articles, so their FLUENCY errors are preposition swaps and word order.
+
+## Shortcut audit
+
+A cross-validated logistic model predicts which of two versions scores higher from shallow differences only (length, sentences, question mark, commas, overlap with the Original); AUC above 0.70 means a scorer could rank without reading ([`audit_phase6_corpus.py`](../../../src/evaluation/audit_phase6_corpus.py), results in [`phase6_v2_shortcut_audit.json`](phase6_v2_shortcut_audit.json)).
+
+| Cue | Axes | Before | After | Action |
+|---|---|---|---|---|
+| Comma | MOD | 0.71–0.87 | 0.52–0.64 | Fronting added a comma after the fronted phrase; the surplus comma is removed at export (optional after a fronted adverbial in every v2 language). Fronted relative clauses are dropped. |
+| Rewording / length | ILLOC | 0.70–0.94 | EN 0.68, RU 0.82, FR 0.85, IT 0.92 | A control version (score 1.0) rewords the sentence but keeps the act direct ("Note that…" → "Remember that…"); 373 of 513 ILLOC items have one. Question marks remain a cue by definition: a direct question *is* the direct act. |
+| Commas | OMIT | 0.77–0.98 (gate without length) | unchanged | Mostly definitional: the omitted details are usually comma-delimited appositives and asides, so restoring one restores its commas. |
+| Overlap with the Original | MEANING, FLUENCY, SYN, OMIT | 0.72–1.0 | unchanged | Definitional: losing content or adding errors lowers overlap, and SYN/OMIT degradations move back toward the Original. English MEANING, built the same way, beat NLI against human ratings. |
+
+ILLOC therefore still carries a lexical cue in French, Italian and Russian; a scorer trained on it should be checked against the controls before use.
 
 ## Illocution examples
 
@@ -62,14 +88,14 @@ Direct acts are rare in encyclopedic text: about 2% of the English pool (237 of 
 
 ## Affects the live v1 rounds
 
-The glued-word bug is in the **French S1 round already in the interface**: 21 of the 60 French OMIT items have one degraded version with a glued word (for example FR-S015 "sentieret", FR-S016 "1979en", FR-S008 "reliefou"), and one Spanish item (ES-S086 "directasde"). A reviewer can spot the degraded version from the typo alone, so those answers measure fluency, not omission. Recommended: replace those 22 items with the v2 outputs before they are annotated, or exclude them from analysis.
+The glued-word bug is in the **French S1 round already in the interface**: 21 of the 60 French OMIT items have one degraded version with a glued word (for example FR-S015 "sentieret", FR-S016 "1979en", FR-S008 "reliefou"), and one Spanish item (ES-S086 "directasde"). A reviewer can spot the degraded version from the typo alone, so those answers measure fluency, not omission. The live interface is left unchanged (replacing items under a reviewer would change what earlier answers refer to); instead the 22 case ids are listed in `runs/annotation_{fr,es}_v1/excluded_glued_items.json`, and `ingest_annotations.py` skips them in every analysis.
 
 ## Limits
 
 - **No human validation of v2.** Every item passed the automatic checks; in spot checks most ILLOC and MOD items are correct, but some Russian and Catalan outputs stay awkward ("Во-время не приходящую менструацию следует…"), and some MOD fronting drops a connective ("но"). Earlier human audits found 85–95% validity for comparable checked LLM edits in English.
 - **Small languages:** Spanish (iDEM, 285 pairs), Catalan (337) and Arabic (231) are too small to train scorers; they serve validation only. Arabic has no MOD (no dependent sentence pairs were found) and no ILLOC (narrative text).
 - **Recall over precision:** imperative detection rejects some real imperatives that the small parsers tag as indicative ("Llame…", "Compili…") unless the text addresses the reader elsewhere.
-- **MEANING and FLUENCY** are generated for English only.
+- **MEANING and FLUENCY outside English** follow the English recipe, but its level mapping (which deletions count as "Some" vs "A lot") was set by English human reviews only.
 
 ## Reproduce
 

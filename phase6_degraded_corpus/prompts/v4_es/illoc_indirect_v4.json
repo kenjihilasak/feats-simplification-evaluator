@@ -5,7 +5,8 @@
  "operation_guidance": {
   "illoc_directive_to_impersonal": "The sentence tells the reader to do something. Keep that purpose but express it indirectly: rewrite it as an impersonal statement that does not address the reader (no imperative, no second person, no question), so the reader has to infer what to do. Keep every fact and the same certainty; do not add may, might or probably. Change as few words as possible. Write in Spanish.",
   "illoc_question_to_indirect": "The sentence asks the reader a direct question. Keep that purpose but express it indirectly: embed the whole question as an indirect question introduced by an impersonal verb of asking or by 'the question is' (for example 'It is asked whether ...', 'The question is how ...'), with no question mark, no second person and no instruction. Keep every fact and every part of the question. Change as few words as possible. Write in Spanish.",
-  "illoc_address_to_impersonal": "The sentence addresses the reader directly. Rewrite it impersonally (passive voice, an impersonal construction or a general subject) so it no longer addresses the reader. Keep every fact and the same certainty; do not add may, might or probably. No question and no instruction. Change as few words as possible. Write in Spanish."
+  "illoc_address_to_impersonal": "The sentence addresses the reader directly. Rewrite it impersonally (passive voice, an impersonal construction or a general subject) so it no longer addresses the reader. Keep every fact and the same certainty; do not add may, might or probably. No question and no instruction. Change as few words as possible. Write in Spanish.",
+  "illoc_direct_paraphrase": "Reword the sentence with a few different words but keep it exactly as direct: the same kind of act (an instruction stays an instruction, a question stays a question, a sentence addressed to the reader stays addressed to the reader), the same facts and the same certainty. Change a few words, not the structure. Write in Spanish."
  },
  "schema": {
   "type": "object",
@@ -47,6 +48,20 @@
    [
     "Usted puede pedir la ayuda en el ayuntamiento.",
     "La ayuda se puede pedir en el ayuntamiento."
+   ]
+  ],
+  "illoc_direct_paraphrase": [
+   [
+    "Traiga su DNI a la cita.",
+    "Lleve su DNI a la cita."
+   ],
+   [
+    "¿Ha usado estos servicios en el último año?",
+    "¿Ha utilizado estos servicios durante el último año?"
+   ],
+   [
+    "Puede encontrarlo solo en la isla de Navidad.",
+    "Solo puede encontrarlo en la isla de Navidad."
    ]
   ]
  }

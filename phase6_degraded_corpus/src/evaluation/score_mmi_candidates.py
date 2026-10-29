@@ -314,10 +314,43 @@ def check_illoc_v4(op: str, row, cand, feats, cfg, ck: Checkers) -> dict:
     }
 
 
+def check_illoc_paraphrase(row, cand, feats, cfg, ck: Checkers) -> dict:
+    """The control keeps the act: the reworded sentence still asks, instructs or addresses the reader, says the same
+    (NLI both ways) and passes the same surface checks as a degradation."""
+    clean = row["clean_simplification"]
+    before, after = split_sentences(clean, ck.lang), split_sentences(cand, ck.lang)
+    changed = [(b, a) for b, a in zip(before, after) if b != a]
+    edited = changed[0][1] if len(before) == len(after) and len(changed) == 1 else cand
+    parsed = ck.nlp(edited if ck.lang in {"en", "ru", "ar"} else edited[:1].lower() + edited[1:])
+    act = {"illoc_question_to_indirect": edited.rstrip().endswith(tuple(ck.res.question_marks)),
+           "illoc_directive_to_impersonal": is_imperative_root(parsed, ck.lang) or is_second_person(parsed, edited, ck.lang),
+           "illoc_address_to_impersonal": is_second_person(parsed, edited, ck.lang)}[row["host_operation"]]
+    hedges = MODAL_HEDGES if ck.lang == "en" else ck.res.modal_hedges
+    negation = NEGATION if ck.lang == "en" else ck.res.negation
+    inserted = {t.casefold() for _, _, new in diff_blocks(tokens(clean), tokens(cand)) for t in new}
+    return {
+        "act_kept": act,
+        "one_sentence_changed": len(before) == len(after) and len(changed) == 1,
+        "entails_both_ways": min(feats["nli_clean_degraded"]["entailment"], feats["nli_degraded_clean"]["entailment"]) >= 0.5,
+        "no_hedge_added": not inserted & hedges,
+        "numbers_identical": sorted(NUMBER.findall(cand)) == sorted(NUMBER.findall(clean)),
+        "proper_nouns_kept": all(n in cand.casefold() for n in ck.proper_nouns(clean)),
+        "negation_kept": bool(negation.search(cand)) == bool(negation.search(clean)),
+        "token_delta_le_5": abs(len(tokens(cand)) - len(tokens(clean))) <= 5,
+        "known_words": known_words(cand, clean + " " + row["original"], ck.lang),
+        "no_spelling_fix": not any(len(o) == len(n) and any(unaccent(x) == unaccent(y) and x != y for x, y in zip(o, n))
+                                   for _, o, n in diff_blocks(tokens(clean), tokens(cand))),
+        "quotes_kept": all(cand.count(q) == clean.count(q) for q in QUOTE_CHARS),
+        "acceptable": acceptable_enough(row, feats, cfg),
+    }
+
+
 def check_illoc(op: str, row, cand, feats, cfg, ck: Checkers) -> dict:
     clean = row["clean_simplification"]
     blocks = diff_blocks(tokens(clean), tokens(cand))
     token_delta = abs(len(tokens(cand)) - len(tokens(clean)))
+    if op == "illoc_direct_paraphrase":
+        return check_illoc_paraphrase(row, cand, feats, cfg, ck)
     if op in ILLOC_V4:
         return check_illoc_v4(op, row, cand, feats, cfg, ck)
     if op.startswith("illoc_"):

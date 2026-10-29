@@ -121,3 +121,33 @@ class RuleFixTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MeaningFluencyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from phase6_degraded_corpus.src.common.languages import load_nlp
+        cls.nlp = load_nlp("es")
+
+    def test_contradiction_rules_change_a_year_or_number(self):
+        from phase6_degraded_corpus.src.generation.generate_meaning_fluency_ml import number_contradictions
+        out = number_contradictions("El museo abrió en 1990 y tiene 12 salas.", "El museo abrió en 1990.", 1, "p")
+        rules = {c["rule"] for c in out}
+        self.assertEqual(rules, {"year_changed", "number_changed"})
+        self.assertTrue(all("1990" not in c["text"] or "12" not in c["text"] for c in out))
+
+    def test_neutral_trim_removes_only_the_listed_adverb(self):
+        from phase6_degraded_corpus.src.generation.generate_meaning_fluency_ml import neutral_trims
+        self.assertIn("El museo abre los lunes.", {c["text"] for c in neutral_trims("El museo también abre los lunes.", "es")})
+
+    def test_fluency_errors_edit_only_their_span(self):
+        from phase6_degraded_corpus.src.generation.generate_meaning_fluency_ml import apply_errors, fluency_sites
+        text = "La ciudad tiene un museo en el centro."
+        doc = self.nlp(text)
+        sites = fluency_sites(doc, "es")
+        drop = apply_errors(text, doc, [("determiner_drop", sites["determiner_drop"][0])], "es")
+        self.assertEqual(drop, "Ciudad tiene un museo en el centro.")
+        agreement = apply_errors(text, doc, [("agreement", sites["agreement"][0])], "es")
+        self.assertEqual(agreement, "El ciudad tiene un museo en el centro.")
+        swap = apply_errors(text, doc, [("preposition_swap", sites["preposition_swap"][0])], "es")
+        self.assertEqual(swap, "La ciudad tiene un museo de el centro.")

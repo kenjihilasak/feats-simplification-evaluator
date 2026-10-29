@@ -1,0 +1,31 @@
+{
+ "prompt_id": "meaning_contradict_v4_fr",
+ "system": "You create controlled negative examples for a text-simplification quality dataset. Make exactly the requested edit and return only strict JSON. The text is in French; write the edited text in French.",
+ "user_template": "Sentence: {clean_simplification}\nOperation: {operation}\nInstruction: {operation_guidance}\n\nChange at most two words and keep everything else identical. Return {{\"degraded\": ...}}.",
+ "operation_guidance": {
+  "meaning_contradict": "Make the sentence state something false that contradicts it: add or remove a negation on one verb, or replace one word with its opposite. The result must stay fluent and natural. Write in French."
+ },
+ "schema": {
+  "type": "object",
+  "properties": {
+   "degraded": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "degraded"
+  ]
+ },
+ "examples": {
+  "meaning_contradict": [
+   [
+    "Le musée a ouvert en 1990 et reçoit beaucoup de visiteurs.",
+    "Le musée a ouvert en 1990 et ne reçoit pas beaucoup de visiteurs."
+   ],
+   [
+    "La ville est petite et calme.",
+    "La ville est grande et calme."
+   ]
+  ]
+ }
+}

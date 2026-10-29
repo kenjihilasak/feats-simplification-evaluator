@@ -31,12 +31,19 @@ Quoted spans are blanked before detection, so titles ("Curb Your Enthusiasm") an
 ## Automatic checks
 
 A candidate is kept only if it passes all of these ([`check_illoc_v4`](../../src/evaluation/score_mmi_candidates.py)):
+- the checkers' own parse finds the act in the clean sentence (filters false hosts such as titles and names);
 - exactly one sentence changed;
 - the edited sentence asks no question, is not an imperative, does not address the reader and has no exclamation;
-- no hedge added; numbers identical; negation kept;
+- an indirect question embeds the whole question under a verb of asking or "the question is" + if/wh-word;
+- no hedge added; numbers identical; every proper noun kept; negation kept;
 - at most two content lemmas added and two removed; at most five tokens longer or shorter (length is a shortcut a scorer could learn);
 - no NLI contradiction in either direction (clean ↔ degraded);
+- every new word exists in the language (wordfreq), Catalan elides "es"/"se" before a vowel, no accent-only repair, quotation marks unchanged;
 - acceptability ≥ min(τ, clean − δ); not a copy of the Original.
+
+## Control version
+
+Every ILLOC degradation rewords its sentence, so without a control "reworded and longer" alone predicts the lower score. Each item therefore also gets, where the checks pass, a **direct paraphrase** scored 1.0 (`illoc_direct_paraphrase`, same prompt file): a few words change but the act stays ("Note that a suicide pact is different…" → "Remember that a suicide pact is distinct…"). Checks: the act is kept, NLI entailment ≥ 0.5 both ways, and the same surface checks as a degradation ([`check_illoc_paraphrase`](../../src/evaluation/score_mmi_candidates.py)).
 
 ## Why the earlier operations were retired
 

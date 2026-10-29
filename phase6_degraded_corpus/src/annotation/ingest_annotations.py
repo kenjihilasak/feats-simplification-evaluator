@@ -29,9 +29,12 @@ def in_round(case,language):
     return "-" not in case if language=="en" else case.startswith(f"{language.upper()}-")
 def analyze(export,key_path=RUN/"s1_key.json",controls_path=RUN/"s1_controls_key.json",language="en"):
     key={x["case_id"]:x for x in json.loads(key_path.read_text())}; controls={x["case_id"]:x for x in json.loads(controls_path.read_text())}
+    # Items whose degraded version has a glued word (OMIT spacing bug, fixed 28 Oct 2026) measure fluency, not the axis.
+    excluded_path=key_path.parent/"excluded_glued_items.json"
+    excluded={x["case_id"] for x in json.loads(excluded_path.read_text())["items"]} if excluded_path.exists() else set()
     groups=defaultdict(list); operation_groups=defaultdict(list); rank_parts=defaultdict(lambda: {"clean_over_half": [], "half_over_zero": []}); taus=defaultdict(list); changes=defaultdict(list); adjudication=[]; control_scores=[]; records=[]
     for row in read_jsonl(export):
-        if row.get("state")!="submitted" or not in_round(row["case_id"],language): continue
+        if row.get("state")!="submitted" or not in_round(row["case_id"],language) or row["case_id"] in excluded: continue
         answer=row.get("human_final") or {}; case=row["case_id"]
         if case in controls:
             expected=controls[case]["expected"]; correct=answer.get("choice")==expected and answer.get("side_effect")=="none"; control_scores.append(correct); records.append({"case_id":case,"control":True,"valid":correct}); continue

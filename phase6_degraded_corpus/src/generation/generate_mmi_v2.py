@@ -22,7 +22,7 @@ from phase6_degraded_corpus.src.planning.plan_mmi_operations import fix_articles
 
 # Per axis, the newest prompt file a prompt directory has wins (v4 ILLOC makes a direct act indirect).
 PROMPT_FILES = {"MEANING": ("meaning_span_v2.json",), "MOD": ("mod_same_count_v4.json", "mod_same_count_v3.json"),
-                "ILLOC": ("illoc_indirect_v4.json", "illoc_inject_v3.json")}
+                "ILLOC": ("illoc_indirect_v4.json", "illoc_inject_v3.json"), "CONTRA": ("meaning_contradict_v4.json",)}
 
 
 def sha(text: str) -> str:
@@ -89,7 +89,7 @@ def degraded_from(row: dict, parsed: dict | None) -> str | None:
     if axis == "MEANING":
         span = row["target_span"]
         return fix_articles(splice(row["clean_simplification"], span["start"], span["end"], parsed["replacement"].strip()))
-    if axis in {"MOD", "ILLOC"}:
+    if axis in {"MOD", "ILLOC", "CONTRA"}:
         target = row.get("target_sentence_index")
         if target is None:
             return parsed["degraded"].strip()
@@ -187,7 +187,7 @@ def main() -> None:
             "schema": "feats-phase6-mmi-generation-v2",
             **{k: row[k] for k in (
                 "canonical_pair_id", "canonical_original_id", "corpus", "target_axis", "operation",
-                "original", "clean_simplification", "clean_acceptability", "clean_nli_probabilities", "clean_entailment", "split", "language",
+                "original", "clean_simplification", "clean_acceptability", "clean_nli_probabilities", "clean_entailment", "split", "language", "host_operation",
             ) if k in row},
             "meaning_type": row.get("meaning_type"), "generator_kind": row.get("generator_kind"),
             "target_span": row.get("target_span"), "merge_index": row.get("merge_index"), "sentences": row.get("sentences"),
