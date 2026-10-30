@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261030a">
+  <link rel="stylesheet" href="/static/s1.css?v=20261030b">
 </head>
 <body>
   <header class="topbar">
@@ -22,6 +22,20 @@
   </header>
   <main>
     <div id="notice" class="notice" hidden></div>
+    <section id="s1-login" class="card s1-login" aria-labelledby="s1-login-heading" hidden>
+      <div class="login-brand" aria-hidden="true">F</div>
+      <p class="login-eyebrow">FEATS · Phase 6</p>
+      <h1 id="s1-login-heading">Degradation Validation sign in</h1>
+      <p>Use the reviewer username and password assigned to you.</p>
+      <form id="s1-login-form">
+        <label for="s1-login-username">Username</label>
+        <input id="s1-login-username" name="username" type="text" autocomplete="username" autocapitalize="none" required>
+        <label for="s1-login-password">Password</label>
+        <input id="s1-login-password" name="password" type="password" autocomplete="current-password" required>
+        <p id="s1-login-error" class="login-error" role="alert" hidden></p>
+        <button id="s1-login-button" class="primary" type="submit">Sign in to Degradation Validation</button>
+      </form>
+    </section>
     <section id="loading" class="card"><p data-i18n="loading">Loading S1…</p></section>
     <section id="workspace" hidden>
       <div class="progress-row"><span id="reviewer">Reviewer</span><strong id="progress">0 / 0</strong></div>
