@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261030b">
+  <link rel="stylesheet" href="/static/s1.css?v=20261030c">
 </head>
 <body>
   <header class="topbar">
@@ -18,7 +18,11 @@
         <span><small>FEATS · Phase 6</small><strong data-i18n="s1Title">Degradation Validation</strong></span>
       </a>
     </nav>
-    <nav><button id="guide-open" class="guide-open" type="button" aria-haspopup="dialog" aria-controls="guide-drawer" data-i18n="guidelines">Guidelines</button></nav>
+    <nav class="session-actions">
+      <button id="guide-open" class="guide-open" type="button" aria-haspopup="dialog" aria-controls="guide-drawer" data-i18n="guidelines">Guidelines</button>
+      <span id="s1-language-badge" class="s1-language-badge" aria-label="Session language" hidden>—</span>
+      <button id="s1-logout" class="s1-logout" type="button" hidden>Sign out</button>
+    </nav>
   </header>
   <main>
     <div id="notice" class="notice" hidden></div>
@@ -92,6 +96,6 @@
     </div>
     <div id="guide-body" class="guide-body"></div>
   </dialog>
-  <script type="module" src="/static/s1.js?v=20261030a"></script>
+  <script type="module" src="/static/s1.js?v=20261030c"></script>
 </body>
 </html>
