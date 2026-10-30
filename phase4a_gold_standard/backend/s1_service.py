@@ -130,8 +130,8 @@ class S1Service:
             if index >= len(words) or words[index] != (start, end, text):
                 raise ValidationError("selected original word does not match its token index")
             seen.add(index)
-        if task["format"] == "pair" and answer.get("choice") not in {"X", "Y", "Same"}:
-            raise ValidationError("choose X, Y, or Same")
+        if task["format"] == "pair" and answer.get("choice") not in {"X", "Y", "Same", "SameBad"}:
+            raise ValidationError("choose X, Y, Same (equally good), or SameBad (equally bad)")
         if task["format"] == "rank3":
             ranks = answer.get("ranks")
             if not isinstance(ranks, dict) or set(ranks) != {"X", "Y", "Z"} or any(ranks[x] not in {1, 2, 3} for x in ranks):

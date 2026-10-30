@@ -82,3 +82,13 @@ def test_selected_original_words_are_required_and_match_original(tmp_path):
     with pytest.raises(ValidationError,match="positions are invalid"):
         service.save("S001",user(),base|{"selected_original_words":[selected()[0],selected()[0]]},0,True)
     saved=service.save("S001",user(),base|{"selected_original_words":selected()},0,True)
+    assert saved["answer"]["selected_original_words"]==selected()
+
+def test_pair_accepts_equally_bad_as_a_distinct_choice(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
+    answer={"choice":"SameBad","side_effect":"none","selected_original_words":selected(),"note":"","uncertain":False}
+    saved=service.save("S001",user(),answer,0,True)
+    assert saved["answer"]["choice"]=="SameBad"
+
+    with service.database.connect() as db:
+        assert json.loads(db.execute("SELECT answer_json FROM annotations").fetchone()[0])["choice"]=="SameBad"
