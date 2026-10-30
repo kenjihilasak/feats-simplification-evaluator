@@ -1,4 +1,4 @@
-"""Policy and validation for the S1 degradation-validation module (English, Spanish and French)."""
+"""Policy and validation for the S1 degradation-validation module (English, Spanish, French and Italian)."""
 
 from __future__ import annotations
 
@@ -13,8 +13,8 @@ from .security import AuthenticatedUser
 from .s1_database import S1Database
 
 FORBIDDEN_PUBLIC_FIELDS = {"level", "levels", "operation", "operations", "generator", "pair_id", "canonical_pair_id"}
-AXES = {"MOD", "OMIT", "SYN", "EXPL", "ILLOC", "COMP", "SYNT"}
-LANGUAGES = {"en", "es", "fr"}
+AXES = {"MEANING", "FLUENCY", "MOD", "OMIT", "SYN", "EXPL", "ILLOC", "COMP", "SYNT"}
+LANGUAGES = {"en", "es", "fr", "it"}
 
 
 @dataclass(frozen=True)

@@ -11,14 +11,14 @@
     <article class="card">
       <header>
         <h1 id="g-title">Degradation Validation guidelines</h1>
-        <nav class="g-langs" aria-label="Language"><a href="?lang=en">EN</a><a href="?lang=es">ES</a><a href="?lang=fr">FR</a></nav>
+        <nav class="g-langs" aria-label="Language"><a href="?lang=en">EN</a><a href="?lang=es">ES</a><a href="?lang=fr">FR</a><a href="?lang=it">IT</a></nav>
       </header>
       <div id="g-content"></div>
       <p><a id="g-back" href="/s1">Back to the task</a></p>
     </article>
   </main>
   <script type="module">
-    import {fullHtml, guide} from "/static/s1_guidelines.js?v=20261030g";
+    import {fullHtml, guide} from "/static/s1_guidelines.js?v=20261030h";
     const lang = new URLSearchParams(location.search).get("lang") || "en";
     const g = guide(lang);
     document.documentElement.lang = g === guide("en") ? "en" : lang;
