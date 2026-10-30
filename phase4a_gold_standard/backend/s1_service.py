@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import os
 from dataclasses import dataclass
 from pathlib import Path
@@ -108,6 +109,27 @@ class S1Service:
             raise ValidationError("S1 rationale is too long")
         if not submit:
             return
+        selected = answer.get("selected_original_words")
+        if not isinstance(selected, list) or not selected:
+            raise ValidationError("select at least one affected word in the original sentence")
+        if len(selected) > 500:
+            raise ValidationError("too many selected original words")
+        original = str(task["original"])
+        words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[^\W_]+(?:['’\-][^\W_]+)*", original, re.UNICODE)]
+        seen: set[int] = set()
+        for word in selected:
+            if not isinstance(word, dict) or set(word) != {"index", "start", "end", "text"}:
+                raise ValidationError("selected original words have an invalid shape")
+            index, start, end, text = word["index"], word["start"], word["end"], word["text"]
+            if any(isinstance(value, bool) or not isinstance(value, int) for value in (index, start, end)):
+                raise ValidationError("selected original word positions must be integers")
+            if index < 0 or index in seen or start < 0 or end <= start or end > len(original):
+                raise ValidationError("selected original word positions are invalid")
+            if not isinstance(text, str) or original[start:end] != text or not text.strip():
+                raise ValidationError("selected original word text does not match the sentence")
+            if index >= len(words) or words[index] != (start, end, text):
+                raise ValidationError("selected original word does not match its token index")
+            seen.add(index)
         if task["format"] == "pair" and answer.get("choice") not in {"X", "Y", "Same"}:
             raise ValidationError("choose X, Y, or Same")
         if task["format"] == "rank3":

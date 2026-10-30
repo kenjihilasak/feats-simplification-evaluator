@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261023f">
+  <link rel="stylesheet" href="/static/s1.css?v=20261030a">
 </head>
 <body>
   <header class="topbar">
@@ -29,7 +29,12 @@
         <div class="axis-row"><span id="axis" class="axis">—</span><span class="case-meta"><span id="dataset" class="dataset" hidden></span><span id="case-id"></span></span></div>
         <p id="definition" class="definition"></p>
         <details id="axis-guide" class="axis-guide"><summary id="axis-guide-title">How to judge</summary><div id="axis-guide-body"></div></details>
-        <h2 data-i18n="original">Original</h2><p id="original" class="text-block"></p>
+        <div class="original-head">
+          <div><h2 data-i18n="original">Original</h2><p id="word-instruction" class="word-instruction"></p></div>
+          <label class="select-all"><input id="select-all-words" type="checkbox"> <span data-i18n="selectAllWords">Select all words</span></label>
+        </div>
+        <p id="original" class="text-block selectable-original" aria-describedby="word-instruction"></p>
+        <p id="word-count" class="word-count" aria-live="polite"></p>
         <h2 id="question"></h2>
         <div id="reveal" class="reveal" role="status" hidden></div>
         <div id="versions"></div>
@@ -73,6 +78,6 @@
     </div>
     <div id="guide-body" class="guide-body"></div>
   </dialog>
-  <script type="module" src="/static/s1.js?v=20261023g"></script>
+  <script type="module" src="/static/s1.js?v=20261030a"></script>
 </body>
 </html>

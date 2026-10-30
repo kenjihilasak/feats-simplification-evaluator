@@ -12,6 +12,8 @@ def user(name="reviewer-en",languages=("en",)):
     return AuthenticatedUser(1,name,name,"reviewer",languages,"csrf")
 def item(case="S001"):
     return {"case_id":case,"axis":"SYN","format":"pair","original":"An arduous task.","versions":{"X":"A hard task.","Y":"An arduous task."}}
+def selected():
+    return [{"index":1,"start":3,"end":10,"text":"arduous"}]
 def test_s1_language_access_and_audit(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); assert service.import_items([item()],"reviewer-en")=={"inserted":1,"unchanged":0}
     assert service.next(user("reviewer-fr",("fr",))) is None  # French reviewers have S1 access but only their own items
@@ -19,7 +21,7 @@ def test_s1_language_access_and_audit(tmp_path):
     with pytest.raises(PermissionDeniedError): service.next(user("reviewer-de",("de",)))
     task=service.next(user()); assert task["case_id"]=="S001" and task["annotation"]["version"]==0
     draft=service.save("S001",user(),{"choice":"X"},0,False); assert draft["version"]==1
-    final=service.save("S001",user(),{"choice":"X","side_effect":"none","side_effect_version":None,"note":"","uncertain":False},1,True); assert final["state"]=="submitted"
+    final=service.save("S001",user(),{"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"","uncertain":False},1,True); assert final["state"]=="submitted"
     with service.database.connect() as db: assert db.execute("select count(*) from revisions").fetchone()[0]==2
 def test_public_payload_rejects_hidden_key(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3"))
@@ -51,7 +53,7 @@ def test_human_version_shown_after_submit_and_answer_locked(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
     service.database.import_meta([{"case_id":"S001","dataset":"MultiSim · ASSET","human_versions":["X"]}])
     before=service.next(user()); assert before["dataset"]=="MultiSim · ASSET" and before["reveal"] is None
-    final={"choice":"X","side_effect":"none","side_effect_version":None,"note":"","uncertain":False}
+    final={"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"","uncertain":False}
     service.save("S001",user(),final,0,True)
     after=service.task("S001",user()); assert after["reveal"]=={"human_versions":["X"]}
     with pytest.raises(ValidationError,match="locked"): service.save("S001",user(),final|{"choice":"Y"},1,True)
@@ -63,9 +65,20 @@ def test_prioritize_moves_items_first_and_keeps_the_rest(tmp_path):
     with pytest.raises(ValueError): service.database.prioritize("reviewer-en",["S999"])
 def test_multiple_side_effects_need_versions_and_other_text(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
-    base={"choice":"X","note":"","uncertain":False}
+    base={"choice":"X","selected_original_words":selected(),"note":"","uncertain":False}
     with pytest.raises(ValidationError,match="version"): service.save("S001",user(),base|{"side_effects":["meaning","other"],"side_effect_versions":[],"side_effect_other":"tone"},0,True)
     with pytest.raises(ValidationError,match="describe"): service.save("S001",user(),base|{"side_effects":["other"],"side_effect_versions":["Y"],"side_effect_other":" "},0,True)
     with pytest.raises(ValidationError): service.save("S001",user(),base|{"side_effects":["none","meaning"],"side_effect_versions":["Y"]},0,True)
     ok=service.save("S001",user(),base|{"side_effects":["meaning","other"],"side_effect_versions":["X","Y"],"side_effect_other":"register changed","side_effect":"multiple"},0,True)
     assert ok["state"]=="submitted"
+
+def test_selected_original_words_are_required_and_match_original(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
+    base={"choice":"X","side_effect":"none","note":"","uncertain":False}
+    with pytest.raises(ValidationError,match="select at least one"):
+        service.save("S001",user(),base,0,True)
+    with pytest.raises(ValidationError,match="does not match"):
+        service.save("S001",user(),base|{"selected_original_words":[{"index":1,"start":3,"end":10,"text":"easy"}]},0,True)
+    with pytest.raises(ValidationError,match="positions are invalid"):
+        service.save("S001",user(),base|{"selected_original_words":[selected()[0],selected()[0]]},0,True)
+    saved=service.save("S001",user(),base|{"selected_original_words":selected()},0,True)
