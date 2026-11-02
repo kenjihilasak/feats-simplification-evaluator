@@ -28,9 +28,10 @@
 .g-code{padding:.2rem .5rem;border-radius:.35rem;background:#173d2c;color:#fff;font-size:.8rem;letter-spacing:.03em}
 .g-rule{margin:.3rem 0;font-weight:600}.g-worse-means{margin:.3rem 0 .7rem;color:#5b3a2e}
 .g-example{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.6rem 0}
-.g-better,.g-worse{padding:.6rem .7rem;border-radius:8px;line-height:1.45}
+.g-original,.g-better,.g-worse{padding:.6rem .7rem;border-radius:8px;line-height:1.45}
 .g-better{background:#e6f4ea;border:1px solid #b7dcc3}.g-worse{background:#fbeceb;border:1px solid #efc4bf}
-.g-better span,.g-worse span{display:block;margin-bottom:.2rem;font-size:.72rem;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
+.g-original{background:#f3f4f6;border:1px solid #d9dce1}
+.g-original span,.g-better span,.g-worse span{display:block;margin-bottom:.2rem;font-size:.72rem;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
 .g-better span{color:#1f6845}.g-worse span{color:#9b3a2f}
 .g-why{grid-column:1/-1;margin:0;color:#4a5a50;font-size:.92rem}
 .g-tip{margin:.6rem 0 0;padding:.5rem .7rem;border-left:3px solid #d8b13a;background:#fff8e3;font-size:.93rem}
@@ -48,3 +49,6 @@
 .s1-login{max-width:440px;margin:4rem auto;padding:2rem}.s1-login h1{margin:.25rem 0 .5rem}.login-brand{display:grid;place-items:center;width:3rem;height:3rem;border-radius:.7rem;background:#173d2c;color:#fff;font-size:1.35rem;font-weight:800}.login-eyebrow{margin:1rem 0 .2rem;color:#1f6845;font-size:.78rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.s1-login form{display:grid;gap:.55rem;margin-top:1.4rem}.s1-login input{width:100%;padding:.7rem;border:1px solid #aebdb3;border-radius:7px;font:inherit}.s1-login button{margin-top:.6rem}.login-error{margin:.25rem 0 0;color:#a12e24;font-weight:650}
 .s1-login[hidden]{display:none}
 .session-actions{display:flex;align-items:center;gap:.6rem}.s1-language-badge{display:inline-flex;align-items:center;justify-content:center;min-width:2.35rem;padding:.35rem .55rem;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-size:.78rem;font-weight:800;letter-spacing:.08em}.s1-logout{padding:.5rem .8rem;border-color:rgba(255,255,255,.65);background:#fff;color:#173d2c;font-weight:650}.s1-language-badge[hidden],.s1-logout[hidden]{display:none}@media(max-width:760px){.session-actions{justify-content:flex-end;flex-wrap:wrap}}
+
+.skip{background:transparent;border:1px solid #c9ccd2;color:#4b5563}
+.progress-row .position{margin-left:.6rem;font-weight:500;color:#5b6270}

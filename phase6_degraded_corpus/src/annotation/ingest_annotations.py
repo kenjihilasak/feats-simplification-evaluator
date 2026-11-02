@@ -36,6 +36,7 @@ def analyze(export,key_path=RUN/"s1_key.json",controls_path=RUN/"s1_controls_key
     for row in read_jsonl(export):
         if row.get("state")!="submitted" or not in_round(row["case_id"],language) or row["case_id"] in excluded: continue
         answer=row.get("human_final") or {}; case=row["case_id"]
+        if answer.get("skipped"): records.append({"case_id":case,"skipped":True,"note":answer.get("note","")}); continue  # not understood: no judgement
         if case in controls:
             expected=controls[case]["expected"]; correct=answer.get("choice")==expected and answer.get("side_effect")=="none"; control_scores.append(correct); records.append({"case_id":case,"control":True,"valid":correct}); continue
         hidden=key.get(case)

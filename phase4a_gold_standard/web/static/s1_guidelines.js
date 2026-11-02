@@ -6,50 +6,48 @@ export const GUIDE = {
   en: {
     title: "Degradation Validation guidelines",
     open: "Guidelines", close: "Close", axisGuide: "How to judge", better: "Better", worse: "Worse", howTitle: "How to answer",
-    contents: "Contents", backToTask: "Back to the task",
+    contents: "Contents", backToTask: "Back to the task", originalLabel: "Original",
     intro: [
-      "Judge only the axis shown on the item. X, Y and Z are neutral labels in random order.",
-      "The optional AI suggestion is help, not an answer key. Read the texts first and correct it whenever needed.",
+      "Judge only the strategy shown on the item. X, Y and Z are neutral labels in random order; one of the versions is the human simplification.",
+      "The texts come from existing simplification corpora; only the degraded versions are generated automatically.",
+      "The optional AI suggestion is help, not an answer key.",
     ],
     how: [
-      "Two versions: choose the better one, or <b>Same</b> if they are equally good on the axis.",
+      "Two versions: choose the better one for the strategy, or <b>Same</b> if they are equally good (or equally bad).",
       "Three versions: give <b>1 to the best</b>, <b>2 to the middle</b> and <b>3 to the worst</b>. Equal numbers mean a tie.",
-      "Report separately any other change (meaning, fluency or something else) and say which version has it.",
-      "If you are unsure, tick “I am uncertain” and explain briefly in the note.",
+      "In the original, select the word or words affected by the strategy.",
+      "Report separately any other difference (for example in meaning or grammar) and say which version has it.",
+      "If you cannot understand the sentence, use <b>Skip</b>. If you are unsure, tick the box to flag the item for a second reviewer and explain in the note.",
     ],
     axes: {
-      MEANING: { name: "Meaning — faithful content", rule: "The simplified text should say what the Original says.", worse: "Content is lost, or a fact now contradicts the Original.",
-        examples: [["Coventry is a city in England. It is also a metropolitan borough.", "Coventry is a city in England.", "Content of the Original is lost."],
-                   ["The elections are held every 5 years.", "The elections are held every 15 years.", "A fact contradicts the Original."]],
-        tip: "Removing a redundant word such as “also” loses nothing: choose Same. A change in certainty (“is” → “might be”) is a Meaning change." },
-      FLUENCY: { name: "Fluency — grammar", rule: "The text should be grammatical and read naturally.", worse: "It has more, or more serious, grammar errors; the meaning is the same.",
-        examples: [["People already in a band.", "People already on band.", "A wrong preposition and a missing article."],
-                   ["A side project is another project.", "A side project are another project.", "Broken agreement."]],
-        tip: "A missing article or a wrong preposition is minor; broken agreement or swapped words is major; several errors together are worst." },
-      OMIT: { name: "Omission — unnecessary detail", rule: "The simplified text should leave out details the reader does not need.", worse: "An unnecessary detail is back.",
-        examples: [["Ada was a mathematician.", "Ada, born on 10 December, was a mathematician.", "The date is not needed."]],
-        tip: "With three versions: a focused sentence ranks first, one restored detail second, two restored details third." },
-      SYN: { name: "Synonymy — simple words", rule: "The simplified text should use simple, common words.", worse: "A harder word is back, with the same meaning.",
-        examples: [["Use a helpful method.", "Utilize a helpful method.", ""], ["Use a helpful method.", "Utilize a beneficial methodology.", "Two harder words: worse still."]],
-        tip: "A change of meaning is not a SYN problem: report it as a side effect. Names and titles are not judged as words." },
-      EXPL: { name: "Explanation — difficult terms explained", rule: "Difficult terms should be explained for the reader.", worse: "A useful explanation was removed.",
-        examples: [["Tachycardia (a fast heartbeat) is common.", "Tachycardia is common.", ""]],
-        tip: "Choose Same if both versions explain the term equally well." },
-      MOD: { name: "Modulation — order of information", rule: "Information should come in the order that is easiest to follow: the main point first, and each sentence after the one it depends on.", worse: "Secondary information comes first, or a sentence comes before the one it depends on.",
-        examples: [["He served as President of the European Parliament from 2017 to 2019.", "From 2017 to 2019 he served as President of the European Parliament.", "The main point comes later."],
-                   ["Marie Curie was a scientist. She discovered radium.", "She discovered radium. Marie Curie was a scientist.", "“She” comes before we know who she is."]],
-        tip: "With three versions: the clean order first; secondary information moved to the front second; moved to the front and the sentences swapped third. Splitting a sentence is not judged here." },
+      MEANING: { name: "Meaning preservation", rule: "The simplified text keeps the content of the original: no information is distorted or contradicted.", worse: "Content of the original is lost, or a fact is changed so that it contradicts the original.",
+        examples: [["Niccolò Machiavelli wrote “The Prince”. He also wrote about the execution that he had seen.", "Niccolò Machiavelli wrote “The Prince”. He also wrote about the execution that he had not seen.", "The worse version contradicts the original: he witnessed the execution.", "Niccolò Machiavelli, author of The Prince, also witnessed and wrote about the execution."]],
+        tip: "A change in certainty (“is” → “might be”) is also a change in meaning. Removing a redundant word such as “also” loses nothing: choose Same." },
+      FLUENCY: { name: "Fluency", rule: "The simplified text is grammatical and reads naturally.", worse: "It contains more, or more serious, grammar errors; the meaning is the same.",
+        examples: [["Kabsa is the national dish of Saudi Arabia. Kabsa is often a dish for a group of people.", "Kabsa is the national dish of Saudi Arabia. Kabsa is often a dish of a group of people.", "A wrong preposition. A missing article or broken agreement (“a dish are”) is also a fluency error; several errors together are worse.", "Kabsa is a mixed rice dish that originates from Saudi Arabia but is commonly regarded as a national dish in many Arab states of the Persian Gulf."]],
+        tip: "Judge only grammar and naturalness, not how simple the text is." },
+      OMIT: { name: "Omission", rule: "Source information that the reader does not need is removed and is not represented elsewhere in the simplified text.", worse: "An unnecessary detail of the original is back.",
+        examples: [["Taye Ismaila Taiwo (born 16 April 1985) is a Nigerian professional footballer.", "Taye Ismaila Taiwo (born 16 April 1985) is a Nigerian professional footballer who plays as a defender for RoPS.", "The club and position are not needed.", "Taye Ismaila Taiwo (born 16 April 1985) is a Nigerian professional footballer who plays as a defender for RoPS."]],
+        tip: "With three versions: rank first the text without the detail, second the one with one detail back, third the one with two details back. If the detail is needed to understand the text, say so in the note." },
+      SYN: { name: "Synonymy", rule: "A simpler, semantically equivalent word or expression replaces the wording of the original.", worse: "A harder word of the original is back, with the same meaning.",
+        examples: [["There are many legends about the start of boxing in Greece.", "There are many legends about the origins of boxing in Greece.", "“origins” is harder than “start”.", "There are numerous legends about the origins of boxing in Greece."]],
+        tip: "Names and titles are not judged as words. A change of meaning is not a Synonymy problem: report it in the side question." },
+      EXPL: { name: "Explanation", rule: "Information is added to make a difficult concept, reference or relation explicit for the reader.", worse: "A useful explanation was removed.",
+        examples: [["The basin is 3000 m deep in places and is estimated to contain 64900 km3 of groundwater (water in the soil, below ground level).", "The basin is 3000 m deep in places and is estimated to contain 64900 km3 of groundwater.", "“groundwater” is no longer explained.", "The basin is 3000 m deep in places and is estimated to contain 64900 km3 of groundwater."]],
+        tip: "Choose Same if both versions explain the term equally well. New facts that are not in the original are not an explanation." },
+      MOD: { name: "Modulation", rule: "The same content is reorganised so that the information flows in a logical or chronological order, one idea at a time.", worse: "The information is in a less logical or chronological order, or an idea is embedded inside another sentence.",
+        examples: [["Marie Curie was a scientist. Marie Curie discovered radium.", "Marie Curie, who discovered radium, was a scientist.", "Correct, but not easy to read: one idea is embedded inside another.", "Marie Curie, who discovered radium, was a scientist."],
+                   ["He studied medicine in Paris. Then he worked as a doctor in Lyon.", "He worked as a doctor in Lyon. Before that, he studied medicine in Paris.", "The events are no longer in chronological order.", "After studying medicine in Paris, he worked as a doctor in Lyon."]],
+        tip: "Word order that is natural in the language is not a Modulation problem: in many languages a time or place at the start of the sentence sets the scene. Splitting a sentence into two is not judged here." },
+      ILLOC: { name: "Illocution", rule: "The purpose of the original (informing, instructing, asking) is kept and expressed directly, so the reader knows at once what is stated, asked or required.", worse: "The same purpose is expressed indirectly: an instruction became impersonal, a question became indirect, or the reader is no longer addressed.",
+        examples: [["Use soap and warm (running, if available) water.", "Soap and warm (running, if available) water should be used.", "The instruction became impersonal.", "One must use soap and warm running water if possible and wash all the skin and nails thoroughly."]],
+        tip: "A reworded version that keeps the purpose direct is as good: choose Same. Turning a plain statement into an instruction does not make it better or worse here, and a change in certainty belongs to Meaning preservation." },
       COMP: { name: "Compression — compact constructions", rule: "The simplified text should say the same thing with shorter, simpler grammatical constructions.", worse: "A longer or more complex construction is back, with the same meaning.",
         examples: [["Fewer people travelled by plane after COVID.", "Air travel saw a dramatic reduction in passenger numbers after COVID.", ""]],
         tip: "A change of meaning is not a COMP problem: report it as a side effect." },
       SYNT: { name: "Syntactic change — easy sentence structure", rule: "The simplified text should use a sentence structure that is easy to follow.", worse: "A harder structure is back (for example a nominalisation), with the same meaning.",
         examples: [["The project was delayed because the money arrived late.", "The late arrival of the money caused a delay of the project.", ""]],
         tip: "A change of meaning is not a SYNT problem: report it as a side effect." },
-      ILLOC: { name: "Illocution — directness of the act", rule: "Keep the purpose of the Original (informing, instructing, asking) and express it directly, so the reader knows at once what is stated, asked or required.", worse: "The same act is expressed indirectly.",
-        examples: [["Use soap and warm water.", "Soap and warm water should be used.", "The instruction became impersonal."],
-                   ["Where did the name “foxtrot” come from?", "The question is where the name “foxtrot” came from.", "The question became indirect."],
-                   ["You can only find it on Christmas Island.", "It is only found on Christmas Island.", "The reader is no longer addressed."]],
-        tip: "A reworded version that keeps the act direct is as good: choose Same. Turning a statement into an instruction is not worse on this axis, and a change in certainty belongs to Meaning." },
     },
   },
   es: {
@@ -208,15 +206,16 @@ function esc(text) {
 export function axisHtml(lang, axis, heading = true) {
   const g = guide(lang), a = g.axes[axis];
   if (!a) return "";
-  const examples = a.examples.map(([better, worse, why]) => `
+  const examples = a.examples.map(([better, worse, why, original]) => `
     <div class="g-example">
+      ${original ? `<div class="g-original"><span>${g.originalLabel || "Original"}</span>${esc(original)}</div>` : ""}
       <div class="g-better"><span>${g.better}</span>${esc(better)}</div>
       <div class="g-worse"><span>${g.worse}</span>${esc(worse)}</div>
       ${why ? `<p class="g-why">${esc(why)}</p>` : ""}
     </div>`).join("");
   return `<section class="g-axis" id="axis-${axis}" data-axis="${axis}">
     ${heading ? `<h2><span class="g-code">${axis}</span> ${esc(a.name)}</h2>` : ""}
-    <p class="g-rule">${esc(a.rule)}</p>
+    ${heading ? `<p class="g-rule">${esc(a.rule)}</p>` : ""}
     <p class="g-worse-means"><b>${g.worse}:</b> ${esc(a.worse)}</p>
     ${examples}
     <p class="g-tip">${esc(a.tip)}</p>

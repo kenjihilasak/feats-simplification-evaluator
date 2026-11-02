@@ -109,6 +109,10 @@ class S1Service:
             raise ValidationError("S1 rationale is too long")
         if not submit:
             return
+        if answer.get("skipped") is True:  # "I cannot understand this sentence": submitted without a judgement
+            if set(answer) - {"skipped", "note"}:
+                raise ValidationError("a skipped S1 item carries only a note")
+            return
         selected = answer.get("selected_original_words")
         if not isinstance(selected, list) or not selected:
             raise ValidationError("select at least one affected word in the original sentence")

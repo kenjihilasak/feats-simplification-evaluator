@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FEATS · S1 validation</title>
-  <link rel="stylesheet" href="/static/s1.css?v=20261030c">
+  <link rel="stylesheet" href="/static/s1.css?v=20261102a">
 </head>
 <body>
   <header class="topbar">
@@ -58,7 +58,7 @@
         <div id="versions"></div>
         <div id="answer"></div>
         <fieldset>
-          <legend data-i18n="sideQuestion">Apart from this axis, does any version differ in something else?</legend>
+          <legend data-i18n="sideQuestion">Apart from this strategy, does any version differ in something else (for example in meaning or grammar)?</legend>
           <label><input type="checkbox" name="side" value="none"> <span data-i18n="sideNone">No</span></label>
           <label><input type="checkbox" name="side" value="meaning"> <span data-i18n="sideMeaning">Yes: meaning</span></label>
           <label><input type="checkbox" name="side" value="fluency"> <span data-i18n="sideFluency">Yes: fluency</span></label>
@@ -70,8 +70,8 @@
           <summary data-i18n="suggestion">AI suggestion — check it independently</summary>
           <pre id="suggestion"></pre>
         </details>
-        <label><input id="uncertain" type="checkbox"> <span data-i18n="uncertain">I am uncertain; send this case to adjudication</span></label>
-        <label class="note"><span data-i18n="note">Note or uncertainty (optional)</span>
+        <label><input id="uncertain" type="checkbox"> <span data-i18n="uncertain">I am unsure: flag this item for a second reviewer</span></label>
+        <label class="note"><span data-i18n="note">Note (optional)</span>
           <textarea id="note" maxlength="4000" rows="3"></textarea>
         </label>
         <label class="note"><span data-i18n="rationale">Pattern or rationale used (optional)</span>
@@ -81,6 +81,7 @@
           <button id="save" type="button" data-i18n="save">Save draft</button>
           <button id="submit" class="primary" type="button" data-i18n="submit">Submit and next</button>
           <button id="next" class="primary" type="button" data-i18n="next" hidden>Next item</button>
+          <button id="skip" class="skip" type="button" data-i18n="skip">Skip: I cannot understand this sentence</button>
         </div>
         <p id="save-state" role="status"></p>
       </article>
@@ -96,6 +97,6 @@
     </div>
     <div id="guide-body" class="guide-body"></div>
   </dialog>
-  <script type="module" src="/static/s1.js?v=20261030h"></script>
+  <script type="module" src="/static/s1.js?v=20261102a"></script>
 </body>
 </html>
