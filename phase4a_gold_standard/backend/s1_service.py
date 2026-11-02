@@ -142,7 +142,7 @@ class S1Service:
                 raise ValidationError("assign rank 1, 2, or 3 to X, Y, and Z; equal ranks indicate ties")
         if "side_effects" in answer:
             effects, versions = answer.get("side_effects"), answer.get("side_effect_versions")
-            if not isinstance(effects, list) or not effects or not (effects == ["none"] or set(effects) <= {"meaning", "fluency", "other"}):
+            if not isinstance(effects, list) or not effects or not (effects == ["none"] or set(effects) <= {"meaning", "fluency", "strategy_poor", "other"}):
                 raise ValidationError("answer the side-effect question: No, or one or more side effects")
             if effects != ["none"]:
                 if not isinstance(versions, list) or not versions or not set(versions) <= set(task["versions"]):

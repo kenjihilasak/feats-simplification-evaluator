@@ -58,10 +58,11 @@
         <div id="versions"></div>
         <div id="answer"></div>
         <fieldset>
-          <legend data-i18n="sideQuestion">Apart from this strategy, does any version differ in something else (for example in meaning or grammar)?</legend>
+          <legend data-i18n="sideQuestion">Anything else to report about the versions?</legend>
           <label><input type="checkbox" name="side" value="none"> <span data-i18n="sideNone">No</span></label>
-          <label><input type="checkbox" name="side" value="meaning"> <span data-i18n="sideMeaning">Yes: meaning</span></label>
-          <label><input type="checkbox" name="side" value="fluency"> <span data-i18n="sideFluency">Yes: fluency</span></label>
+          <label><input type="checkbox" name="side" value="meaning"> <span data-i18n="sideMeaning">Yes: a meaning issue</span></label>
+          <label><input type="checkbox" name="side" value="fluency"> <span data-i18n="sideFluency">Yes: a grammar issue</span></label>
+          <label><input type="checkbox" name="side" value="strategy_poor"> <span data-i18n="sideStrategy">Yes: the strategy is not well applied, but the simplification is good</span></label>
           <div class="side-other"><label><input type="checkbox" name="side" value="other"> <span data-i18n="sideOther">Yes: other</span></label>
             <input id="side-other-text" type="text" maxlength="500" hidden></div>
           <div id="side-version-wrap" class="side-versions" hidden><span data-i18n="whichVersion">Which version(s)?</span><span id="side-versions"></span></div>
@@ -81,7 +82,7 @@
           <button id="save" type="button" data-i18n="save">Save draft</button>
           <button id="submit" class="primary" type="button" data-i18n="submit">Submit and next</button>
           <button id="next" class="primary" type="button" data-i18n="next" hidden>Next item</button>
-          <button id="skip" class="skip" type="button" data-i18n="skip">Skip: I cannot understand this sentence</button>
+          <button id="skip" class="skip" type="button" data-i18n="skip">Skip: the original sentence is wrong or does not make sense</button>
         </div>
         <p id="save-state" role="status"></p>
       </article>
@@ -97,6 +98,6 @@
     </div>
     <div id="guide-body" class="guide-body"></div>
   </dialog>
-  <script type="module" src="/static/s1.js?v=20261102a"></script>
+  <script type="module" src="/static/s1.js?v=20261102b"></script>
 </body>
 </html>

@@ -16,8 +16,8 @@ export const GUIDE = {
       "Two versions: choose the better one for the strategy, or <b>Same</b> if they are equally good (or equally bad).",
       "Three versions: give <b>1 to the best</b>, <b>2 to the middle</b> and <b>3 to the worst</b>. Equal numbers mean a tie.",
       "In the original, select the word or words affected by the strategy.",
-      "Report separately any other difference (for example in meaning or grammar) and say which version has it.",
-      "If you cannot understand the sentence, use <b>Skip</b>. If you are unsure, tick the box to flag the item for a second reviewer and explain in the note.",
+      "Report separately, and say which version: a meaning issue, a grammar issue, or a version where the strategy is not well applied but the simplification is good.",
+      "If the original sentence is wrong or does not make sense, use <b>Skip</b>. If the original is fine but a simplification is not, judge it as worse. If you are unsure, tick the box to flag the item for a second reviewer and explain in the note.",
     ],
     axes: {
       MEANING: { name: "Meaning preservation", rule: "The simplified text keeps the content of the original: no information is distorted or contradicted.", worse: "Content of the original is lost, or a fact is changed so that it contradicts the original.",
