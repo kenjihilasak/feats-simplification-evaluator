@@ -107,10 +107,12 @@ class S1Service:
             raise ValidationError("S1 note is too long")
         if len(str(answer.get("rationale", ""))) > 4000:
             raise ValidationError("S1 rationale is too long")
+        if len(str(answer.get("ideal_simplification", ""))) > 4000:
+            raise ValidationError("the ideal simplification is too long")
         if not submit:
             return
         if answer.get("skipped") is True:  # "I cannot understand this sentence": submitted without a judgement
-            if set(answer) - {"skipped", "note"}:
+            if set(answer) - {"skipped", "note", "ideal_simplification"}:
                 raise ValidationError("a skipped S1 item carries only a note")
             return
         selected = answer.get("selected_original_words")

@@ -23,3 +23,13 @@ class StrategyPoorTests(unittest.TestCase):
         words = [{"index": 0, "start": 0, "end": 2, "text": "Il"}]
         answer = {"choice": "X", "selected_original_words": words, "side_effects": ["strategy_poor"], "side_effect_versions": ["Y"]}
         S1Service._validate_answer({"original": "Il gioco non valeva la candela.", "format": "pair", "versions": {"X": "a", "Y": "b"}}, answer, submit=True)
+
+
+class IdealSimplificationTests(unittest.TestCase):
+    def test_a_skipped_item_may_carry_an_ideal_version(self):
+        S1Service._validate_answer({"original": "x", "format": "pair"},
+                                   {"skipped": True, "note": "", "ideal_simplification": "Il gioco non valeva la pena."}, submit=True)
+
+    def test_the_ideal_version_has_a_length_limit(self):
+        with self.assertRaises(ValidationError):
+            S1Service._validate_answer({"original": "x", "format": "pair"}, {"ideal_simplification": "a" * 4001}, submit=False)
