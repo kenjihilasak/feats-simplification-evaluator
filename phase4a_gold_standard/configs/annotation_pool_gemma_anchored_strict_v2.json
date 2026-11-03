@@ -1,0 +1,40 @@
+{
+  "schema": "feats-phase4a-annotation-pool-config-v1",
+  "pool_id": "2026-08-31_gemma_anchored_strict_v2",
+  "pool_type": "primary_single_strategy_gemma_anchored_strict",
+  "output_root": "phase4a_gold_standard/data",
+  "candidate_root": "phase3a_strategy_detection/gold_candidates/2026-08-31_single_strategy_gemma_anchored_strict_v1",
+  "alignment_root": "phase3b_word_alignment/runs/2026-08-23_simalign_xlmr_large_itermax_full_v2",
+  "languages": [
+    "ar",
+    "ca",
+    "de",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "pt-BR",
+    "ru",
+    "sl",
+    "ur"
+  ],
+  "expected_counts": {
+    "ar": 20,
+    "ca": 149,
+    "de": 48,
+    "en": 66768,
+    "es": 375,
+    "fr": 35404,
+    "it": 26771,
+    "ja": 20181,
+    "pt-BR": 250,
+    "ru": 17050,
+    "sl": 18,
+    "ur": 204
+  },
+  "expected_total": 167238,
+  "require_12_languages": true,
+  "queue_seed": "feats-phase4a-gemma-anchored-strict-v2",
+  "spreadsheet_safe_export": true
+}

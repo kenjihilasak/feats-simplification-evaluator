@@ -151,17 +151,17 @@ class S1Service:
         if "side_effects" in answer:
             effects, versions = answer.get("side_effects"), answer.get("side_effect_versions")
             if not isinstance(effects, list) or not effects or not (effects == ["none"] or set(effects) <= {"meaning", "fluency", "strategy_poor", "other"}):
-                raise ValidationError("answer the side-effect question: No, or one or more side effects")
+                raise ValidationError("answer 'Any other problem in the versions?' (No, or the problem)")
             if effects != ["none"]:
                 if not isinstance(versions, list) or not versions or not set(versions) <= set(task["versions"]):
-                    raise ValidationError("identify which version or versions have the side effect")
+                    raise ValidationError("select which version has the problem")
                 if "other" in effects and not str(answer.get("side_effect_other", "")).strip():
-                    raise ValidationError("describe the other side effect")
+                    raise ValidationError("describe the other problem")
             if len(str(answer.get("side_effect_other", ""))) > 500:
-                raise ValidationError("the side-effect description is too long")
+                raise ValidationError("the description of the other problem is too long")
             return
         if answer.get("side_effect") not in {"none", "meaning", "fluency", "other"}:
-            raise ValidationError("answer the side-effect question")
+            raise ValidationError("answer 'Any other problem in the versions?' (No, or the problem)")
         if answer.get("side_effect") != "none" and answer.get("side_effect_version") not in set(task["versions"]):
-            raise ValidationError("identify which version has the side effect")
+            raise ValidationError("select which version has the problem")
 
