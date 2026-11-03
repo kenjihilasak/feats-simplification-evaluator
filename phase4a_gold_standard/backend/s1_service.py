@@ -115,6 +115,12 @@ class S1Service:
             if set(answer) - {"skipped", "note", "ideal_simplification"}:
                 raise ValidationError("a skipped S1 item carries only a note")
             return
+        # Required since 3 Nov 2026 (Carlo): "note" holds the rationale for the choice, "ideal_simplification" the
+        # reviewer's own Easy-to-Read version; "rationale" is now free "other comments".
+        if not str(answer.get("note", "")).strip():
+            raise ValidationError("give the rationale used to select the best version")
+        if not str(answer.get("ideal_simplification", "")).strip():
+            raise ValidationError("write your ideal Easy-to-Read version of the original")
         selected = answer.get("selected_original_words")
         if not isinstance(selected, list) or not selected:
             raise ValidationError("select at least one affected word in the original sentence")

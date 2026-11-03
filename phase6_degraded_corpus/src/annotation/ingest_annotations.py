@@ -56,7 +56,8 @@ def analyze(export,key_path=RUN/"s1_key.json",controls_path=RUN/"s1_controls_key
         groups[(hidden["axis"],hidden["format"])].append(valid)
         for operation in sorted(set(hidden.get("operations",{}).values())-{"clean"}): operation_groups[(hidden["axis"],operation)].append(valid)
         if row.get("llm_suggestion") is not None: changes[hidden["axis"]].append(bool(row.get("changed")))
-        concern=bool(answer.get("uncertain") or answer.get("side_effect") not in {None,"none"} or str(answer.get("note","")).strip())
+        comment=answer.get("rationale","") if "ideal_simplification" in answer else answer.get("note","")  # since 3 Nov 2026 "note" is the required rationale; free comments are in "rationale"
+        concern=bool(answer.get("uncertain") or answer.get("side_effect") not in {None,"none"} or str(comment).strip())
         record={"case_id":case,"axis":hidden["axis"],"format":hidden["format"],"valid":valid,"binary_clean_over_half":binary,"level_half_over_zero":level_check,"kendall_tau":tau,"changed":row.get("changed")}
         records.append(record)
         if concern: adjudication.append(record|{"human_final":answer})
