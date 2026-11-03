@@ -45,10 +45,10 @@ export const GUIDE = {
         tip: "A reworded version that keeps the purpose direct is as good: choose Same. Turning a plain statement into an instruction does not make it better or worse here, and a change in certainty belongs to Meaning preservation." },
       COMP: { name: "Compression — compact constructions", rule: "The simplified text should say the same thing with shorter, simpler grammatical constructions.", worse: "A longer or more complex construction is back, with the same meaning.",
         examples: [["Fewer people travelled by plane after COVID.", "Air travel saw a dramatic reduction in passenger numbers after COVID.", ""]],
-        tip: "A change of meaning is not a COMP problem: report it under "Any other problem in the versions?"." },
+        tip: "A change of meaning is not a COMP problem: report it under ‘Any other problem in the versions?’." },
       SYNT: { name: "Syntactic change — easy sentence structure", rule: "The simplified text should use a sentence structure that is easy to follow.", worse: "A harder structure is back (for example a nominalisation), with the same meaning.",
         examples: [["The project was delayed because the money arrived late.", "The late arrival of the money caused a delay of the project.", ""]],
-        tip: "A change of meaning is not a SYNT problem: report it under "Any other problem in the versions?"." },
+        tip: "A change of meaning is not a SYNT problem: report it under ‘Any other problem in the versions?’." },
     },
   },
   es: {
