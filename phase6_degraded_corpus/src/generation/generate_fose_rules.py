@@ -85,7 +85,13 @@ def splice(original: str, simple: str, edits: list[tuple[str, tuple[int, int, in
                     gap = " "
                 # Restored before final punctuation ("…à sortir." + "un par un"), the span needs its own leading space.
                 lead = " " if at and text[at - 1].isalnum() and segment[:1].isalnum() else ""
-                text = text[:at] + lead + segment + gap + text[at:]
+                rest = text[at:]
+                # Restored at the start ("Las sabanas" + "Se encuentran…"), the next word takes its case in the original.
+                if at == 0 and i2 < len(so) and j1 < len(ss):
+                    word, orig_word = simple[ss[j1][0]:ss[j1][1]], original[so[i2][0]:so[i2][1]]
+                    if word != orig_word and word.casefold() == orig_word.casefold():
+                        rest = orig_word + rest[len(word):]
+                text = text[:at] + lead + segment + gap + rest
         elif kind == "replace":
             text = text[:start(j1)] + segment + text[ss[j2 - 1][1]:]
         elif j1:  # drop the span with the space before it, keep the one after

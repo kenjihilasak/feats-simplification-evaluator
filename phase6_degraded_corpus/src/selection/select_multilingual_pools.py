@@ -113,6 +113,9 @@ def prepare(cfg: dict) -> tuple[list[dict], dict]:
     nlp = load_nlp(lang, disable=("ner",))  # as in English pool selection
     check_validated(Path(cfg["phase3a_validation_file"]))
     phase3 = {r["canonical_pair_id"]: r for r in read_jsonl(Path(cfg["phase3a_candidate_file"]))}
+    # Optional: strategies confirmed by >= 2 of the 4 classifiers (several per pair), instead of the single-strategy candidate.
+    consensus = ({r["canonical_pair_id"]: r["consensus_codes"] for r in read_jsonl(Path(cfg["phase3a_consensus_file"]))}
+                 if cfg.get("phase3a_consensus_file") else None)
     excluded = ReservedMatcher(
         [{"strong_key": strong_key(t), "original": t}
          for f in cfg.get("exclude_files", []) for t in {r["original"] for r in read_jsonl(Path(f))}],
@@ -131,11 +134,21 @@ def prepare(cfg: dict) -> tuple[list[dict], dict]:
         feats = structural_features(original, simple)
         if not cfg["original_token_range"][0] <= len(feats["left"]) <= cfg["original_token_range"][1]:
             counters["original_length"] += 1; continue
+        # Loosely aligned corpora (Wikipedia-Vikidia) keep only closely aligned pairs: the strict tier of the English MMI pools.
+        strict = cfg.get("strict_alignment_corpora", {}).get(corpus)
+        if strict and not (feats["overlap"] >= strict["min_overlap"] and strict["len_ratio"][0] <= feats["len_ratio"] <= strict["len_ratio"][1]):
+            counters["loose_alignment"] += 1; continue
         p3 = phase3.get(row["canonical_pair_id"])
         strategy = p3["candidate_strategy_code"] if p3 else None
-        # With `require_strategy` (as in English) a rule only undoes the single strategy Phase 3a detected.
-        axes = [strategy] if cfg["require_strategy"] else list(RULE_AXES)
+        if consensus is not None:
+            strategy = consensus.get(row["canonical_pair_id"], [])
+        # With `require_strategy` (as in English) a rule only undoes a strategy Phase 3a detected.
+        axes = (strategy if isinstance(strategy, list) else [strategy]) if cfg["require_strategy"] else list(RULE_AXES)
         sites = {}
+        # The rules restore aligned words from the original, so loosely aligned corpora need a closer alignment for them.
+        rule_bar = cfg.get("rule_alignment_corpora", {}).get(corpus)
+        if rule_bar and not (feats["overlap"] >= rule_bar["min_overlap"] and rule_bar["len_ratio"][0] <= feats["len_ratio"] <= rule_bar["len_ratio"][1]):
+            axes = []
         for axis in axes:
             if axis in RULE_AXES:
                 found = eligible_rule_sites(axis, feats, nlp, lang)

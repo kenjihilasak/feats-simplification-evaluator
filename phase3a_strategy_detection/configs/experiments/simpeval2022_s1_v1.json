@@ -1,0 +1,21 @@
+{
+  "schema": "feats-phase3-experiment-v2",
+  "experiment_id": "2026-11-05_simpeval2022_s1_v1",
+  "input_schema": "feats-phase2b-consolidated",
+  "input_root": "phase6_degraded_corpus/runs/simpeval2022_s1_v1/phase3a_input",
+  "expected_pairs": 180,
+  "runs_root": "phase3a_strategy_detection/runs",
+  "cache_root": "cache/huggingface",
+  "models": {
+    "xlmr_large_focal": "phase3a_strategy_detection/configs/models/xlmr_large_focal.json",
+    "multilingual_e5_large_bce": "phase3a_strategy_detection/configs/models/multilingual_e5_large_bce.json",
+    "qwen2p5_7b_pairwise_qlora": "phase3a_strategy_detection/configs/models/qwen2p5_7b_pairwise_qlora.json",
+    "gemma3_12b_pairwise_qlora": "phase3a_strategy_detection/configs/models/gemma3_12b_pairwise_qlora.json"
+  },
+  "selection": {
+    "files": [
+      "en/feats_consolidated.jsonl"
+    ],
+    "limit_per_file": null
+  }
+}

@@ -127,6 +127,42 @@ class S1Database:
                 loaded += 1
         return {"loaded": loaded}
 
+    def archive(self, username: str, label: str) -> dict[str, Any]:
+        """Retire a reviewer's round without deleting it: items, answers, revisions and meta move to
+        `archive-<label>-<username>` with case ids prefixed `<label>:`, so a new round can reuse the case ids."""
+        target, prefix = f"archive-{label}-{username}", f"{label}:"
+        connection = sqlite3.connect(self.path)
+        try:
+            connection.execute("PRAGMA foreign_keys=OFF")  # case ids change in every table within one transaction
+            connection.execute("BEGIN IMMEDIATE")
+            ids = [r[0] for r in connection.execute("SELECT case_id FROM items WHERE reviewer_username=?", (username,))]
+            clash = connection.execute(
+                f"SELECT COUNT(*) FROM items WHERE case_id IN ({','.join('?' * len(ids))})", [prefix + i for i in ids]).fetchone()[0] if ids else 0
+            if clash:
+                raise ValueError(f"archive label {label!r} already used for some of {username}'s items")
+            submitted = connection.execute(
+                "SELECT COUNT(*) FROM annotations a JOIN items i ON i.case_id=a.case_id WHERE i.reviewer_username=? AND a.state='submitted'",
+                (username,)).fetchone()[0]
+            for table in ("annotations", "revisions"):
+                connection.execute(f"UPDATE {table} SET case_id=?||case_id, reviewer_username=? WHERE case_id IN "
+                                   "(SELECT case_id FROM items WHERE reviewer_username=?)", (prefix, target, username))
+            connection.execute("UPDATE item_meta SET case_id=?||case_id WHERE case_id IN "
+                               "(SELECT case_id FROM items WHERE reviewer_username=?)", (prefix, username))
+            connection.execute("UPDATE items SET case_id=?||case_id, reviewer_username=? WHERE reviewer_username=?",
+                               (prefix, target, username))
+            connection.execute("DELETE FROM batches WHERE reviewer_username=?", (username,))
+            connection.execute("INSERT OR IGNORE INTO batches(reviewer_username) VALUES(?)", (target,))
+            problems = connection.execute("PRAGMA foreign_key_check").fetchall()
+            if problems:
+                raise ValueError(f"archive would break references: {problems[:3]}")
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            connection.close()
+        return {"archived_items": len(ids), "submitted_answers": submitted, "archived_as": target}
+
     def prioritize(self, username: str, case_ids: list[str]) -> dict[str, Any]:
         """Move these items to the front of the reviewer's queue, in this order; the rest keep their order."""
         with self.connect() as db:

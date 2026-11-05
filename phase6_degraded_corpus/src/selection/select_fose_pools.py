@@ -72,6 +72,9 @@ def touches_quotes(feats: dict) -> bool:
     return any(any(left[i1:i2]) or any(right[j1:j2]) for _, i1, i2, j1, j2 in feats["ops"])
 
 
+MARKUP = {"*", "#", "|", "=", "•", "_", "~"}  # list or wiki markup kept by some corpora (Vikidia "* El filòleg…")
+
+
 def eligible_rule_sites(axis: str, feats: dict, nlp=None, lang: str = "en") -> list:
     max_edit_blocks = 8 if axis == "EXPL" else 4
     if not (feats["overlap"] >= .4 and .5 <= feats["len_ratio"] <= 1.6 and feats["edit_blocks"] <= max_edit_blocks):
@@ -84,7 +87,7 @@ def eligible_rule_sites(axis: str, feats: dict, nlp=None, lang: str = "en") -> l
         site = (i1, i2, j1, j2)
         old_doc = _analysed(old, nlp, lang) if nlp is not None else None
         new_doc = _analysed(new, nlp, lang) if nlp is not None else None
-        if axis == "OMIT" and tag == "delete" and 2 <= len(old) <= 12 and span_is_balanced(old):
+        if axis == "OMIT" and tag == "delete" and 2 <= len(old) <= 12 and span_is_balanced(old) and not MARKUP & set(old):
             old_content = _content(old_doc) if old_doc is not None else content(old, lang)
             simple_lemmas = ({t.lemma_.casefold() for t in _analysed(feats["right"], nlp, lang) if WORD_RE.match(t.text)}
                              if nlp is not None else {t.casefold() for t in feats["right"] if WORD_RE.match(t)})

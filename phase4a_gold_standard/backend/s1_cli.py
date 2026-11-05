@@ -19,6 +19,7 @@ def main(argv=None) -> int:
     meta=sub.add_parser("load-meta",help="dataset and human version per item (shown after submission)"); meta.add_argument("input",type=Path)
     exp=sub.add_parser("export"); exp.add_argument("--output",type=Path,required=True)
     back=sub.add_parser("backup"); back.add_argument("--output",type=Path,required=True)
+    arc=sub.add_parser("archive",help="retire a reviewer's round (kept under archive-<label>-<reviewer>)"); arc.add_argument("--reviewer",required=True); arc.add_argument("--label",required=True)
     sub.add_parser("progress"); sub.add_parser("init")
     args=parser.parse_args(argv); service=S1Service(S1Settings(args.database) if args.database else None)
     if args.command=="load":
@@ -33,6 +34,7 @@ def main(argv=None) -> int:
     elif args.command=="export":
         args.output.parent.mkdir(parents=True,exist_ok=True); args.output.write_text("".join(json.dumps(x,ensure_ascii=False,sort_keys=True)+"\n" for x in service.database.export_rows()),encoding="utf-8"); print(args.output)
     elif args.command=="backup": print(json.dumps(service.database.backup(args.output),sort_keys=True))
+    elif args.command=="archive": print(json.dumps(service.database.archive(args.reviewer,args.label),sort_keys=True))
     elif args.command=="progress": print(json.dumps(service.database.progress(),sort_keys=True))
     else: print(service.database.path)
     return 0

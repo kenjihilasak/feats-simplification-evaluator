@@ -14,7 +14,7 @@ from .s1_database import S1Database
 
 FORBIDDEN_PUBLIC_FIELDS = {"level", "levels", "operation", "operations", "generator", "pair_id", "canonical_pair_id"}
 AXES = {"MEANING", "FLUENCY", "MOD", "OMIT", "SYN", "EXPL", "ILLOC", "COMP", "SYNT"}
-LANGUAGES = {"en", "es", "fr", "it"}
+LANGUAGES = {"ca", "en", "es", "fr", "it"}
 
 
 @dataclass(frozen=True)

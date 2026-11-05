@@ -21,7 +21,7 @@ def test_s1_language_access_and_audit(tmp_path):
     with pytest.raises(PermissionDeniedError): service.next(user("reviewer-de",("de",)))
     task=service.next(user()); assert task["case_id"]=="S001" and task["annotation"]["version"]==0
     draft=service.save("S001",user(),{"choice":"X"},0,False); assert draft["version"]==1
-    final=service.save("S001",user(),{"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"","uncertain":False},1,True); assert final["state"]=="submitted"
+    final=service.save("S001",user(),{"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False},1,True); assert final["state"]=="submitted"
     with service.database.connect() as db: assert db.execute("select count(*) from revisions").fetchone()[0]==2
 def test_public_payload_rejects_hidden_key(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3"))
@@ -34,7 +34,7 @@ def test_ingest_scores_pair_and_control(tmp_path):
     key=[{"case_id":"S001","axis":"SYN","format":"pair","levels":{"X":1.0,"Y":0.0},"operations":{"X":"clean","Y":"restore"}}]
     controls=[{"case_id":"C001","control_kind":"identical","expected":"Same"}]
     (tmp_path/"key.json").write_text(json.dumps(key)); (tmp_path/"controls.json").write_text(json.dumps(controls))
-    rows=[{"case_id":"S001","axis":"SYN","format":"pair","state":"submitted","human_final":{"choice":"X","side_effect":"none","note":""},"llm_suggestion":{"choice":"Y","side_effect":"none"},"changed":True},{"case_id":"C001","state":"submitted","human_final":{"choice":"Same","side_effect":"none"}}]
+    rows=[{"case_id":"S001","axis":"SYN","format":"pair","state":"submitted","human_final":{"choice":"X","side_effect":"none","note":"rationale","ideal_simplification":"ideal"},"llm_suggestion":{"choice":"Y","side_effect":"none"},"changed":True},{"case_id":"C001","state":"submitted","human_final":{"choice":"Same","side_effect":"none"}}]
     export=tmp_path/"export.jsonl"; export.write_text("".join(json.dumps(x)+"\n" for x in rows))
     result,adj=analyze(export,tmp_path/"key.json",tmp_path/"controls.json"); assert result["validity_by_axis_format"]["SYN/pair"]["rate"]==1; assert result["control_accuracy"]["rate"]==1; assert result["llm_change_rate_by_axis"]["SYN"]["rate"]==1; assert not adj
 def test_spanish_items_need_a_spanish_reviewer(tmp_path):
@@ -45,7 +45,7 @@ def test_spanish_items_need_a_spanish_reviewer(tmp_path):
 def test_ingest_keeps_only_its_language_round(tmp_path):
     key=[{"case_id":"FR-S001","axis":"SYN","format":"pair","levels":{"X":1.0,"Y":0.0},"operations":{"X":"clean","Y":"syn"}}]
     (tmp_path/"key.json").write_text(json.dumps(key)); (tmp_path/"controls.json").write_text("[]")
-    answer={"choice":"X","side_effect":"none","note":""}
+    answer={"choice":"X","side_effect":"none","note":"rationale","ideal_simplification":"ideal"}
     rows=[{"case_id":"FR-S001","state":"submitted","human_final":answer},{"case_id":"S001","state":"submitted","human_final":answer},{"case_id":"ES-S001","state":"submitted","human_final":answer}]
     export=tmp_path/"export.jsonl"; export.write_text("".join(json.dumps(x)+"\n" for x in rows))
     result,_=analyze(export,tmp_path/"key.json",tmp_path/"controls.json","fr"); assert result["submitted_noncontrol"]==1
@@ -53,7 +53,7 @@ def test_human_version_shown_after_submit_and_answer_locked(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
     service.database.import_meta([{"case_id":"S001","dataset":"MultiSim · ASSET","human_versions":["X"]}])
     before=service.next(user()); assert before["dataset"]=="MultiSim · ASSET" and before["reveal"] is None
-    final={"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"","uncertain":False}
+    final={"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False}
     service.save("S001",user(),final,0,True)
     after=service.task("S001",user()); assert after["reveal"]=={"human_versions":["X"]}
     with pytest.raises(ValidationError,match="locked"): service.save("S001",user(),final|{"choice":"Y"},1,True)
@@ -65,7 +65,7 @@ def test_prioritize_moves_items_first_and_keeps_the_rest(tmp_path):
     with pytest.raises(ValueError): service.database.prioritize("reviewer-en",["S999"])
 def test_multiple_side_effects_need_versions_and_other_text(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
-    base={"choice":"X","selected_original_words":selected(),"note":"","uncertain":False}
+    base={"choice":"X","selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False}
     with pytest.raises(ValidationError,match="version"): service.save("S001",user(),base|{"side_effects":["meaning","other"],"side_effect_versions":[],"side_effect_other":"tone"},0,True)
     with pytest.raises(ValidationError,match="describe"): service.save("S001",user(),base|{"side_effects":["other"],"side_effect_versions":["Y"],"side_effect_other":" "},0,True)
     with pytest.raises(ValidationError): service.save("S001",user(),base|{"side_effects":["none","meaning"],"side_effect_versions":["Y"]},0,True)
@@ -74,7 +74,7 @@ def test_multiple_side_effects_need_versions_and_other_text(tmp_path):
 
 def test_selected_original_words_are_required_and_match_original(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
-    base={"choice":"X","side_effect":"none","note":"","uncertain":False}
+    base={"choice":"X","side_effect":"none","note":"rationale","ideal_simplification":"ideal","uncertain":False}
     with pytest.raises(ValidationError,match="select at least one"):
         service.save("S001",user(),base,0,True)
     with pytest.raises(ValidationError,match="does not match"):
@@ -86,7 +86,7 @@ def test_selected_original_words_are_required_and_match_original(tmp_path):
 
 def test_pair_accepts_equally_bad_as_a_distinct_choice(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
-    answer={"choice":"SameBad","side_effect":"none","selected_original_words":selected(),"note":"","uncertain":False}
+    answer={"choice":"SameBad","side_effect":"none","selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False}
     saved=service.save("S001",user(),answer,0,True)
     assert saved["answer"]["choice"]=="SameBad"
 

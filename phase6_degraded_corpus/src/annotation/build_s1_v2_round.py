@@ -42,8 +42,8 @@ def versions(axis: str, rows: list[dict]) -> list[tuple[float, str, str]]:
     return [(1.0, "clean", rows[0]["human_simplification"])] + chosen
 
 
-def build(examples: Path, run: Path, lang: str) -> tuple[list[dict], list[dict], dict]:
-    originals = {r["canonical_pair_id"]: r["canonical_original_id"] for r in read_jsonl(run / "final/phase6_corpus.jsonl")}
+def build(examples: Path, runs: list[Path], lang: str) -> tuple[list[dict], list[dict], dict]:
+    originals = {r["canonical_pair_id"]: r["canonical_original_id"] for run in runs for r in read_jsonl(run / "final/phase6_corpus.jsonl")}
     built = []
     for case_id, rows in cases(examples).items():
         axis = AXIS_CODES[rows[0]["feats_axis"]]
@@ -73,10 +73,13 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--language", required=True)
     p.add_argument("--examples", type=Path, required=True)
+    p.add_argument("--run", action="append", default=[], help="run name(s) whose corpus holds the pairs (default s1_<lang>_v2)")
+    p.add_argument("--round", default="v2", help="output: runs/annotation_<lang>_<round>")
     args = p.parse_args()
     root = Path("phase6_degraded_corpus/runs")
-    run, out = root / f"s1_{args.language}_v2", root / f"annotation_{args.language}_v2"
-    public, key, summary = build(args.examples, run, args.language)
+    runs = [root / r for r in args.run] or [root / f"s1_{args.language}_v2"]
+    run, out = runs[0], root / f"annotation_{args.language}_{args.round}"
+    public, key, summary = build(args.examples, runs, args.language)
     ctrl, ctrl_key = controls(run, key, args.language, max(6, round(len(public) * 0.1)))
     out.mkdir(parents=True, exist_ok=True)
     write_jsonl(out / "s1_items.jsonl", public)
