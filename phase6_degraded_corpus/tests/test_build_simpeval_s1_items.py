@@ -56,20 +56,21 @@ def strategies_for(sel, per_original):
     return out
 
 
-def test_axis_majority_tie_and_fallback():
+def test_axis_comes_from_the_human_version():
     sel = m.select_versions(csv_rows(6))
     strat = strategies_for(sel, {
-        "0": [["OMIT"], ["OMIT", "COMP"], ["SYN"]],          # majority OMIT
-        "1": [["MOD"], ["MOD", "SYN"], ["SYN"]],              # tie 2-2, human has MOD
-        "2": [["COMP", "SYNT"], ["COMP"], ["SYNT"]],          # no axis -> fallback
-        "3": [["EXPL"], [], []],                              # only one version -> fallback
-        "4": [[], ["SYN"], ["SYN"]],                          # human not needed when no tie
+        "0": [["OMIT"], ["SYN"], ["SYN"]],                    # human OMIT wins over the machines' majority SYN
+        "1": [["MOD", "SYN"], ["SYN"], ["SYN"]],              # same votes: MOD, which the machines do not share
+        "2": [["COMP", "SYNT"], ["COMP"], ["SYNT"]],          # no axis in the human version -> fallback
+        "3": [[], ["EXPL"], ["EXPL"]],                        # machines only -> fallback (ILLOC host)
+        "4": [["SYN"], [], []],
         "5": [[], [], []],
     })
+    strat[sel["4"][0]["pair_id"]]["SYN"] = list(m.MODELS)  # four votes
     axes = m.choose_axes(sel, strat, hosts_act=lambda text: "sentence 3" in text)
     assert axes["0"][0] == "OMIT"
-    assert axes["1"][0] == "MOD" and "human" in axes["1"][1]
-    assert axes["4"][0] == "SYN"
+    assert axes["1"][0] == "MOD" and "0/2" in axes["1"][1]
+    assert axes["4"][0] == "SYN" and axes["4"][1].startswith("human version: 4/4")
     assert axes["3"][0] == "ILLOC"
     assert sorted([axes["2"][0], axes["5"][0]]) == ["FLUENCY", "MEANING"]
 

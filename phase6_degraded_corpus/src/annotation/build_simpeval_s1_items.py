@@ -9,9 +9,10 @@ simplification (higher mean of rating_1..3 between Human 1 and Human 2; tie -> H
 
 `build` reads the four models' predictions after the GPU job and writes `items.jsonl`, `key.json`, `report.json`:
 - a strategy is confirmed for a pair when >= 2 of the 4 models predict it (labels are non-exclusive);
-- the item axis is the FEATS axis (SYN, MOD, EXPL, OMIT; COMP and SYNT have none) confirmed in most of the three
-  versions, provided it is confirmed in at least two; ties go to the axis confirmed in the human version, then to
-  the axis with fewer items so far (originals in id order), then to the order OMIT, SYN, MOD, EXPL;
+- the human version (the best rated) is the reference, the two system outputs are judged against it: the item axis
+  is a FEATS axis (SYN, MOD, EXPL, OMIT; COMP and SYNT have none) confirmed in the human version, the one most models
+  predict; ties go to the axis the system versions share least, then to the axis with fewer items so far
+  (originals in id order), then to the order OMIT, SYN, MOD, EXPL;
 - otherwise ILLOC when the human simplification hosts a direct act (`illoc_host`, lang en), else MEANING and
   FLUENCY alternately, in the order of a stable hash of the original id.
 Public items show only neutral labels X/Y/Z; systems, ratings and the source dataset live only in the key.
@@ -43,7 +44,6 @@ MODELS = ("gemma3_12b_pairwise_qlora", "qwen2p5_7b_pairwise_qlora", "xlmr_large_
 STRATEGY_AXIS = {"SYN": "SYN", "MOD": "MOD", "EXPL": "EXPL", "OMIT": "OMIT"}  # COMP, SYNT: no axis
 AXIS_ORDER = ("OMIT", "SYN", "MOD", "EXPL")
 MIN_MODELS = 2
-MIN_VERSIONS = 2
 
 
 def slug(system: str) -> str:
@@ -125,32 +125,28 @@ def hash_order(oid: str) -> str:
 
 def choose_axes(selected: dict[str, list[dict]], strategies: dict[str, dict[str, list[str]]],
                 hosts_act: Callable[[str], bool]) -> dict[str, tuple[str, str]]:
-    """original_id -> (axis, reason)."""
+    """original_id -> (axis, reason). The human version (the best rated) is the reference: the axis is a strategy
+    confirmed in it, so the item asks how well each version did what the sentence needed."""
     out: dict[str, tuple[str, str]] = {}
     assigned: Counter = Counter()
     fallback = []
     for oid, versions in selected.items():
-        axes_per_version = [{STRATEGY_AXIS[c] for c in strategies.get(v["pair_id"], {}) if c in STRATEGY_AXIS} for v in versions]
-        counts = Counter(a for s in axes_per_version for a in s)
-        best = max(counts.values(), default=0)
-        if best >= MIN_VERSIONS:
-            tied = [a for a in AXIS_ORDER if counts[a] == best]
-            reason = f"confirmed in {best}/3 versions"
-            if len(tied) > 1:
-                in_human = [a for a in tied if a in axes_per_version[0]]
-                if in_human and len(in_human) < len(tied):
-                    tied, reason = in_human, reason + "; tie broken by the human version"
-                if len(tied) > 1:
-                    low = min(assigned[a] for a in tied)
-                    tied, reason = [a for a in tied if assigned[a] == low], reason + "; tie broken by balance/order"
-            out[oid] = (tied[0], reason)
-            assigned[tied[0]] += 1
+        human = strategies.get(versions[0]["pair_id"], {})
+        votes = {STRATEGY_AXIS[c]: len(ms) for c, ms in human.items() if c in STRATEGY_AXIS}
+        if votes:
+            others = [{STRATEGY_AXIS[c] for c in strategies.get(v["pair_id"], {}) if c in STRATEGY_AXIS} for v in versions[1:]]
+            shared = {a: sum(a in s for s in others) for a in votes}
+            # most models first; then the strategy the machine versions share least (it separates them from the
+            # reference); then the axis with fewer items so far; then the order OMIT, SYN, MOD, EXPL
+            axis = min(votes, key=lambda a: (-votes[a], shared[a], assigned[a], AXIS_ORDER.index(a)))
+            out[oid] = (axis, f"human version: {votes[axis]}/4 models; in {shared[axis]}/2 machine versions")
+            assigned[axis] += 1
         elif hosts_act(versions[0]["text"]):
-            out[oid] = ("ILLOC", "no strategy axis in >= 2 versions; human version hosts a direct act")
+            out[oid] = ("ILLOC", "no strategy axis in the human version; it hosts a direct act")
         else:
             fallback.append(oid)
     for i, oid in enumerate(sorted(fallback, key=hash_order)):
-        out[oid] = (("MEANING", "FLUENCY")[i % 2], "no strategy axis in >= 2 versions and no direct act; "
+        out[oid] = (("MEANING", "FLUENCY")[i % 2], "no strategy axis in the human version and no direct act; "
                     "MEANING/FLUENCY alternate by stable hash of original_id")
     return out
 
