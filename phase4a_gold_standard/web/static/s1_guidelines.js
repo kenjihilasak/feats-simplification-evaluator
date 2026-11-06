@@ -1,6 +1,6 @@
 // Degradation Validation guidelines: one source for the in-page panel and the guidelines page.
-// The seven FEATS axes (v2, 30 Oct 2026). COMP and SYNT are no longer axes; their guide shows only on their old items.
-const AXES = ["MEANING", "FLUENCY", "OMIT", "SYN", "EXPL", "MOD", "ILLOC"];
+// The seven FEATS axes (v2, 30 Oct 2026), plus Compression and Syntactic change, judged on real system outputs (6 Nov 2026).
+const AXES = ["MEANING", "FLUENCY", "OMIT", "SYN", "EXPL", "MOD", "ILLOC", "COMP", "SYNT"];
 
 export const GUIDE = {
   en: {
@@ -9,7 +9,7 @@ export const GUIDE = {
     contents: "Contents", backToTask: "Back to the task", originalLabel: "Original",
     intro: [
       "Judge only the strategy shown on the item. X, Y and Z are neutral labels in random order; one of the versions is the human simplification.",
-      "The texts come from existing simplification corpora; only the degraded versions are generated automatically.",
+      "Most items compare a human simplification from an existing corpus with versions we degraded automatically. Some items compare simplifications of the same sentence written by people and by automatic systems; none of them is guaranteed to be better. In every case, judge only the strategy shown.",
       "The optional AI suggestion is help, not an answer key.",
     ],
     how: [
@@ -43,12 +43,13 @@ export const GUIDE = {
       ILLOC: { name: "Illocution", rule: "The purpose of the original (informing, instructing, asking) is kept and expressed directly, so the reader knows at once what is stated, asked or required.", worse: "The same purpose is expressed indirectly: an instruction became impersonal, a question became indirect, or the reader is no longer addressed.",
         examples: [["Use soap and warm (running, if available) water.", "Soap and warm (running, if available) water should be used.", "The instruction became impersonal.", "One must use soap and warm running water if possible and wash all the skin and nails thoroughly."]],
         tip: "A reworded version that keeps the purpose direct is as good: choose Same. Turning a plain statement into an instruction does not make it better or worse here, and a change in certainty belongs to Meaning preservation." },
-      COMP: { name: "Compression — compact constructions", rule: "The simplified text should say the same thing with shorter, simpler grammatical constructions.", worse: "A longer or more complex construction is back, with the same meaning.",
-        examples: [["Fewer people travelled by plane after COVID.", "Air travel saw a dramatic reduction in passenger numbers after COVID.", ""]],
-        tip: "A change of meaning is not a COMP problem: report it under ‘Any other problem in the versions?’." },
-      SYNT: { name: "Syntactic change — easy sentence structure", rule: "The simplified text should use a sentence structure that is easy to follow.", worse: "A harder structure is back (for example a nominalisation), with the same meaning.",
-        examples: [["The project was delayed because the money arrived late.", "The late arrival of the money caused a delay of the project.", ""]],
-        tip: "A change of meaning is not a SYNT problem: report it under ‘Any other problem in the versions?’." },
+      COMP: { name: "Compression", rule: "Several words, propositions or structural elements of the original are condensed into a shorter, simpler form, and their central contribution is still represented.", worse: "The content is expressed with longer or more complex constructions than needed (for example, the wording of the original is kept), with the same meaning.",
+        examples: [["One difference was the “filioque clause” in the Nicene Creed.", "One point of theological difference is embodied in the dispute regarding the inclusion of the “Filioque” in the Nicene Creed.", "The worse version keeps the long construction of the original; the better one says the same in a short, simple form.", "One point of theological difference is embodied in the dispute regarding the inclusion of the “Filioque” in the Nicene Creed."]],
+        tip: "If the content disappears instead of being condensed, that is Omission or a change of meaning, not Compression: report a lost fact under ‘Any other problem in the versions?’." },
+      SYNT: { name: "Syntactic change", rule: "The grammatical form of the original is restructured (word class, voice, phrase, clause or sentence boundaries) into a structure that is easier to follow.", worse: "The sentence structure is harder to follow (for example, a nominalisation, a passive or an embedded clause), with the same meaning.",
+        examples: [["In 2010, 7,041 people lived there.", "As of the 2010 census, its population was 7,041.", "The worse version keeps the noun phrase “its population”; the better one uses a simple clause with a verb.", "As of the 2010 census, its population was 7,041."],
+                   ["There is one minute between rounds when competitors can change their gear.", "Between rounds there is a one minute pause, during which competitors change their gear.", "The worse version embeds the second idea in a “during which” clause.", "Between rounds there is a one minute pause, during which competitors change their gear."]],
+        tip: "Judge the structure, not the words: a simpler word is Synonymy. A change of meaning is not a Syntactic change problem: report it under ‘Any other problem in the versions?’." },
     },
   },
   es: {
