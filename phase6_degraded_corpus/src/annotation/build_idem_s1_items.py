@@ -114,7 +114,7 @@ def call(system_name: str, system: str, user: str) -> str:
         key = (SECRETS / "gemini_api_key").read_text().strip()
         out = _post(f"https://generativelanguage.googleapis.com/v1beta/models/{SYSTEMS['gemini']}:generateContent?key={key}",
                     {"systemInstruction": {"parts": [{"text": system}]}, "contents": [{"role": "user", "parts": [{"text": user}]}],
-                     "generationConfig": {"temperature": TEMPERATURE, "maxOutputTokens": 1024}}, {})
+                     "generationConfig": {"temperature": TEMPERATURE, "maxOutputTokens": 8192}}, {})
         return "".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"]).strip()
     key = (SECRETS / "openai_api_key").read_text().strip()
     out = _post("https://api.openai.com/v1/responses",
