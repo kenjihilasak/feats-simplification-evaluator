@@ -8,11 +8,12 @@ four Phase 3a strategy classifiers (experiment `simpeval2022_s1_v1`). Versions p
 simplification (higher mean of rating_1..3 between Human 1 and Human 2; tie -> Human 1), GPT-3-few-shot and Muss.
 
 `build` reads the four models' predictions after the GPU job and writes `items.jsonl`, `key.json`, `report.json`:
-- a strategy is confirmed for a pair when >= 2 of the 4 models predict it (labels are non-exclusive);
+- a strategy is confirmed for a pair when >= 2 of the 4 models predict it and Gemma is one of them (labels are
+  non-exclusive);
 - the human version (the best rated) is the reference, the two system outputs are judged against it: the item axis
-  is a FEATS axis (SYN, MOD, EXPL, OMIT; COMP and SYNT have none) confirmed in the human version, the one most models
-  predict; ties go to the axis the system versions share least, then to the axis with fewer items so far
-  (originals in id order), then to the order OMIT, SYN, MOD, EXPL;
+  is one of the strategies confirmed in the human version (OMIT, SYN, MOD, EXPL, COMP, SYNT): the one whose axis has
+  fewer items so far (originals in id order), so the axes stay balanced; ties go to the one most models predict,
+  then to the one the system versions share least, then to the order OMIT, SYN, MOD, EXPL, COMP, SYNT;
 - otherwise ILLOC when the human simplification hosts a direct act (`illoc_host`, lang en), else MEANING and
   FLUENCY alternately, in the order of a stable hash of the original id.
 Public items show only neutral labels X/Y/Z; systems, ratings and the source dataset live only in the key.
@@ -41,8 +42,9 @@ PHASE3A_RUN = Path("phase3a_strategy_detection/runs/2026-11-05_simpeval2022_s1_v
 HUMANS = ("Human 1 Writing", "Human 2 Writing")
 MACHINES = ("GPT-3-few-shot", "Muss")
 MODELS = ("gemma3_12b_pairwise_qlora", "qwen2p5_7b_pairwise_qlora", "xlmr_large_focal", "multilingual_e5_large_bce")
-STRATEGY_AXIS = {"SYN": "SYN", "MOD": "MOD", "EXPL": "EXPL", "OMIT": "OMIT"}  # COMP, SYNT: no axis
-AXIS_ORDER = ("OMIT", "SYN", "MOD", "EXPL")
+STRATEGY_AXIS = {"SYN": "SYN", "MOD": "MOD", "EXPL": "EXPL", "OMIT": "OMIT", "COMP": "COMP", "SYNT": "SYNT"}
+AXIS_ORDER = ("OMIT", "SYN", "MOD", "EXPL", "COMP", "SYNT")
+ANCHOR = "gemma3_12b_pairwise_qlora"  # the most reliable classifier: every confirmed strategy needs it
 MIN_MODELS = 2
 
 
@@ -116,7 +118,7 @@ def confirmed(pred_paths: dict[str, Path], min_models: int = MIN_MODELS) -> dict
     sizes = {m: len(s) for m, s in seen.items()}
     if len(set(sizes.values())) > 1:
         raise ValueError(f"models cover different pair counts: {sizes}")
-    return {p: {c: sorted(ms) for c, ms in sorted(by.items()) if len(ms) >= min_models} for p, by in votes.items()}
+    return {p: {c: sorted(ms) for c, ms in sorted(by.items()) if len(ms) >= min_models and ANCHOR in ms} for p, by in votes.items()}
 
 
 def hash_order(oid: str) -> str:
@@ -136,9 +138,9 @@ def choose_axes(selected: dict[str, list[dict]], strategies: dict[str, dict[str,
         if votes:
             others = [{STRATEGY_AXIS[c] for c in strategies.get(v["pair_id"], {}) if c in STRATEGY_AXIS} for v in versions[1:]]
             shared = {a: sum(a in s for s in others) for a in votes}
-            # most models first; then the strategy the machine versions share least (it separates them from the
-            # reference); then the axis with fewer items so far; then the order OMIT, SYN, MOD, EXPL
-            axis = min(votes, key=lambda a: (-votes[a], shared[a], assigned[a], AXIS_ORDER.index(a)))
+            # balance first: the confirmed axis with fewer items so far; then most models; then the axis the machine
+            # versions share least (it separates them from the reference); then the order OMIT, SYN, MOD, EXPL, COMP, SYNT
+            axis = min(votes, key=lambda a: (assigned[a], -votes[a], shared[a], AXIS_ORDER.index(a)))
             out[oid] = (axis, f"human version: {votes[axis]}/4 models; in {shared[axis]}/2 machine versions")
             assigned[axis] += 1
         elif hosts_act(versions[0]["text"]):

@@ -61,7 +61,7 @@ def test_axis_comes_from_the_human_version():
     strat = strategies_for(sel, {
         "0": [["OMIT"], ["SYN"], ["SYN"]],                    # human OMIT wins over the machines' majority SYN
         "1": [["MOD", "SYN"], ["SYN"], ["SYN"]],              # same votes: MOD, which the machines do not share
-        "2": [["COMP", "SYNT"], ["COMP"], ["SYNT"]],          # no axis in the human version -> fallback
+        "2": [["COMP", "SYNT"], ["COMP"], ["SYNT"]],          # COMP and SYNT are axes too
         "3": [[], ["EXPL"], ["EXPL"]],                        # machines only -> fallback (ILLOC host)
         "4": [["SYN"], [], []],
         "5": [[], [], []],
@@ -72,7 +72,8 @@ def test_axis_comes_from_the_human_version():
     assert axes["1"][0] == "MOD" and "0/2" in axes["1"][1]
     assert axes["4"][0] == "SYN" and axes["4"][1].startswith("human version: 4/4")
     assert axes["3"][0] == "ILLOC"
-    assert sorted([axes["2"][0], axes["5"][0]]) == ["FLUENCY", "MEANING"]
+    assert axes["2"][0] in ("COMP", "SYNT")
+    assert axes["5"][0] == "MEANING"  # no strategy in the human version and no direct act
 
 
 def test_items_shuffled_and_blind():
@@ -100,3 +101,22 @@ def test_public_items_have_no_key_fields():
     for p in public:
         assert "simpeval" not in json.dumps(p).casefold()
         assert not any(k in p for k in ("systems", "source", "original_id", "mean_human_rating", "pair_ids"))
+
+
+def test_consensus_needs_gemma(tmp_path):
+    paths = {}
+    for model in m.MODELS:
+        p = tmp_path / f"{model}.jsonl"
+        codes = ["SYN"] if model != m.ANCHOR else ["MOD"]  # three models without Gemma agree on SYN
+        p.write_text(json.dumps({"canonical_pair_id": "a", "predicted_codes": codes}) + "\n")
+        paths[model] = p
+    assert m.confirmed(paths) == {"a": {}}
+
+
+def test_axes_balance_among_the_human_strategies():
+    sel = m.select_versions(csv_rows(4))
+    strat = strategies_for(sel, {oid: [["MOD", "COMP"], [], []] for oid in sel})
+    for oid in sel:
+        strat[sel[oid][0]["pair_id"]]["MOD"] = list(m.MODELS)  # MOD has more votes everywhere
+    axes = [a for a, _ in m.choose_axes(sel, strat, hosts_act=lambda text: False).values()]
+    assert sorted(axes) == ["COMP", "COMP", "MOD", "MOD"]  # balance first, still a strategy the human version used
