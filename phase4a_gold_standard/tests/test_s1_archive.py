@@ -45,3 +45,24 @@ class ArchiveTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MixTests(unittest.TestCase):
+    def test_new_items_are_spread_among_pending_ones(self):
+        with tempfile.TemporaryDirectory() as d:
+            db = S1Database(Path(d) / "s1.sqlite3")
+            db.initialise()
+            db.import_items([{**item(f"A{i:02d}"), "_queue_rank": i} for i in range(10)], "r")
+            with db.connect() as c:
+                c.execute("INSERT INTO annotations(case_id,reviewer_username,state,answer_json,version,created_at,updated_at) "
+                          "VALUES('A03','r','submitted','{}',1,'t','t')")
+            db.import_items([{**item(f"N{i}"), "_queue_rank": 10 + i} for i in range(3)], "r")
+            result = db.mix("r", ["N0", "N1", "N2"], keep_first=2, seed=1)
+            self.assertEqual(result, {"reviewer": "r", "mixed": 3, "kept_in_front": 3, "total": 13})
+            with db.connect() as c:
+                order = [r[0] for r in c.execute("SELECT case_id FROM items WHERE reviewer_username='r' ORDER BY queue_rank")]
+            self.assertEqual(order[:3], ["A03", "A00", "A01"])            # answered first, then the kept ones
+            old = [x for x in order if x.startswith("A")]
+            self.assertEqual(old[3:], ["A02", "A04", "A05", "A06", "A07", "A08", "A09"])  # relative order kept
+            self.assertNotIn(order[-1][0], "N")                           # not all appended at the end
+            self.assertEqual(sorted(x for x in order if x.startswith("N")), ["N0", "N1", "N2"])

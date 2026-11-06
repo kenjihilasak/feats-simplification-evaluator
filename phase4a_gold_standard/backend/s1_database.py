@@ -163,6 +163,46 @@ class S1Database:
             connection.close()
         return {"archived_items": len(ids), "submitted_answers": submitted, "archived_as": target}
 
+    def mix(self, username: str, case_ids: list[str], keep_first: int, seed: int) -> dict[str, Any]:
+        """Spread these (newly appended) items evenly among the reviewer's pending items. Items with an answer (draft or
+        submitted) and the first `keep_first` pending items stay at the front, in their order; the other pending items
+        keep their relative order."""
+        import random
+
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            queue = [r["case_id"] for r in db.execute(
+                "SELECT case_id FROM items WHERE reviewer_username=? ORDER BY queue_rank", (username,))]
+            new = set(case_ids)
+            if missing := new - set(queue):
+                raise ValueError(f"not in {username}'s queue: {sorted(missing)[:5]}")
+            answered = {r["case_id"] for r in db.execute(
+                "SELECT a.case_id FROM annotations a JOIN items i ON i.case_id=a.case_id WHERE i.reviewer_username=?", (username,))}
+            if answered & new:
+                raise ValueError("some items to mix already have an answer")
+            front = [c for c in queue if c in answered]
+            pending = [c for c in queue if c not in answered and c not in new]
+            front += pending[:keep_first]
+            rest = pending[keep_first:]
+            added = [c for c in queue if c in new]
+            random.Random(seed).shuffle(added)
+            # new item k goes after about (k + 1) * len(rest) / (len(added) + 1) of the remaining pending items
+            slots: dict[int, list[str]] = {}
+            for k, c in enumerate(added):
+                slots.setdefault(round((k + 1) * len(rest) / (len(added) + 1)), []).append(c)
+            mixed = []
+            for i in range(len(rest) + 1):
+                mixed += slots.get(i, [])
+                if i < len(rest):
+                    mixed.append(rest[i])
+            order = front + mixed
+            assert sorted(order) == sorted(queue)
+            offset = len(queue) + 1
+            db.execute("UPDATE items SET queue_rank=queue_rank+? WHERE reviewer_username=?", (offset * 2, username))
+            for rank, case_id in enumerate(order):
+                db.execute("UPDATE items SET queue_rank=? WHERE case_id=?", (rank, case_id))
+        return {"reviewer": username, "mixed": len(added), "kept_in_front": len(front), "total": len(order)}
+
     def prioritize(self, username: str, case_ids: list[str]) -> dict[str, Any]:
         """Move these items to the front of the reviewer's queue, in this order; the rest keep their order."""
         with self.connect() as db:

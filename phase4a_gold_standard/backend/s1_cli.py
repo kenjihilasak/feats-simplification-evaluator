@@ -20,6 +20,7 @@ def main(argv=None) -> int:
     exp=sub.add_parser("export"); exp.add_argument("--output",type=Path,required=True)
     back=sub.add_parser("backup"); back.add_argument("--output",type=Path,required=True)
     arc=sub.add_parser("archive",help="retire a reviewer's round (kept under archive-<label>-<reviewer>)"); arc.add_argument("--reviewer",required=True); arc.add_argument("--label",required=True)
+    mix=sub.add_parser("mix",help="spread these appended items among the pending ones"); mix.add_argument("--reviewer",required=True); mix.add_argument("--keep-first",type=int,default=0); mix.add_argument("--seed",type=int,default=20261106); mix.add_argument("case_ids",nargs="+")
     sub.add_parser("progress"); sub.add_parser("init")
     args=parser.parse_args(argv); service=S1Service(S1Settings(args.database) if args.database else None)
     if args.command=="load":
@@ -34,6 +35,7 @@ def main(argv=None) -> int:
     elif args.command=="export":
         args.output.parent.mkdir(parents=True,exist_ok=True); args.output.write_text("".join(json.dumps(x,ensure_ascii=False,sort_keys=True)+"\n" for x in service.database.export_rows()),encoding="utf-8"); print(args.output)
     elif args.command=="backup": print(json.dumps(service.database.backup(args.output),sort_keys=True))
+    elif args.command=="mix": print(json.dumps(service.database.mix(args.reviewer,args.case_ids,args.keep_first,args.seed),sort_keys=True))
     elif args.command=="archive": print(json.dumps(service.database.archive(args.reviewer,args.label),sort_keys=True))
     elif args.command=="progress": print(json.dumps(service.database.progress(),sort_keys=True))
     else: print(service.database.path)
