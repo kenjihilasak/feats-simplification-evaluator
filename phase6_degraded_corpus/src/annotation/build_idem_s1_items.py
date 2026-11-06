@@ -17,6 +17,10 @@ Outputs are cached in `generations.jsonl`; reruns call the APIs only for missing
 COMP and SYNT included); among them the axis with fewer items so far, so the axes stay balanced; ties go to the order
 OMIT, SYN, MOD, EXPL, COMP, SYNT. Pairs with no annotated strategy go to ILLOC when the human version hosts a direct
 act, else to MEANING and FLUENCY alternately. Versions are shuffled as X/Y/Z; systems live only in the key.
+
+All three iDEM splits are used: they are the strategy classifier's splits, and these items evaluate the FEATS
+scorers, not the classifier. The key records each item's `idem_split`. The originals (items and few-shot pairs) are
+reserved for evaluation and removed from the Phase 6 training corpora by reserve_idem_originals.py.
 """
 from __future__ import annotations
 

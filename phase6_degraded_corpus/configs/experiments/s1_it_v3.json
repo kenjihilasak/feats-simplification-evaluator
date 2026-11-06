@@ -20,7 +20,9 @@
     60
   ],
   "near_duplicate_jaccard": 0.8,
-  "exclude_files": [],
+  "exclude_files": [
+    "phase6_degraded_corpus/runs/idem_s1_v1/reserved_original_membership.jsonl"
+  ],
   "nli_model": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
   "nli_revision": "b5113eb38ab63efdd7f280f8c144ea8b13f978ce",
   "nli_entailment_threshold": 0.5,
@@ -48,7 +50,7 @@
     "MOD": 60,
     "ILLOC": 60
   },
-  "notes": "v3 (5 Nov 2026): rule axes need the strategy confirmed by >= 2 of the 4 Phase 3a classifiers (src/selection/build_strategy_consensus.py); v2 rules plus Wikipedia-Vikidia restricted to pairs that pass the English alignment bar (overlap >= 0.4, length ratio 0.5-1.6, as WikiAutoEN; OMIT/SYN/EXPL rule sites need the strict tier, overlap >= 0.6 and length ratio 0.8-1.4, because the rules restore aligned words) and originals of 6-60 tokens, to enlarge the it pools. Italian uses every corpus except Wikipedia-Vikidia. v2 (28 Oct 2026): ILLOC v4 (a direct act made indirect), MOD v4 (mild = fronting, strong = fronting + reorder), no rule site in quoted spans, SYN skips capitalised names.",
+  "notes": "v3 (5 Nov 2026): rule axes need the strategy confirmed by >= 2 of the 4 Phase 3a classifiers (src/selection/build_strategy_consensus.py); v2 rules plus Wikipedia-Vikidia restricted to pairs that pass the English alignment bar (overlap >= 0.4, length ratio 0.5-1.6, as WikiAutoEN; OMIT/SYN/EXPL rule sites need the strict tier, overlap >= 0.6 and length ratio 0.8-1.4, because the rules restore aligned words) and originals of 6-60 tokens, to enlarge the it pools. Italian uses every corpus except Wikipedia-Vikidia. v2 (28 Oct 2026): ILLOC v4 (a direct act made indirect), MOD v4 (mild = fronting, strong = fronting + reorder), no rule site in quoted spans, SYN skips capitalised names. iDEM originals used in the S1 system-output items (and their few-shot pairs) are reserved for evaluation (exclude_files, 6 Nov 2026).",
   "graded_share": {
     "OMIT": 1.0,
     "SYN": 0.5,
