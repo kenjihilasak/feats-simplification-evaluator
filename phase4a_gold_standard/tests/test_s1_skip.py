@@ -50,3 +50,23 @@ class RequiredFieldTests(unittest.TestCase):
     def test_drafts_and_skips_need_neither(self):
         S1Service._validate_answer(self.task, {"choice": "X"}, submit=False)
         S1Service._validate_answer(self.task, {"skipped": True, "note": ""}, submit=True)
+
+
+class ProblemVersionTests(unittest.TestCase):
+    task = {"original": "Il gioco non valeva la candela.", "format": "pair", "versions": {"X": "a", "Y": "b"}}
+    words = [{"index": 0, "start": 0, "end": 2, "text": "Il"}]
+
+    def answer(self, **extra):
+        return {"choice": "X", "selected_original_words": self.words, "note": "r", "ideal_simplification": "i", **extra}
+
+    def test_each_problem_names_its_own_versions(self):
+        S1Service._validate_answer(self.task, self.answer(side_effects=["meaning", "fluency"], side_effect_versions=["X", "Y"],
+                                                          side_effect_versions_by_type={"meaning": ["X"], "fluency": ["Y"]}), submit=True)
+
+    def test_a_problem_without_versions_is_refused(self):
+        with self.assertRaises(ValidationError):
+            S1Service._validate_answer(self.task, self.answer(side_effects=["meaning", "fluency"], side_effect_versions=["X"],
+                                                              side_effect_versions_by_type={"meaning": ["X"], "fluency": []}), submit=True)
+
+    def test_older_answers_without_the_mapping_still_pass(self):
+        S1Service._validate_answer(self.task, self.answer(side_effects=["meaning"], side_effect_versions=["X"]), submit=True)

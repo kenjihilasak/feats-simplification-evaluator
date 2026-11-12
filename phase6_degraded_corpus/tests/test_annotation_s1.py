@@ -55,7 +55,7 @@ def test_human_version_shown_after_submit_and_answer_locked(tmp_path):
     before=service.next(user()); assert before["dataset"]=="MultiSim · ASSET" and before["reveal"] is None
     final={"choice":"X","side_effect":"none","side_effect_version":None,"selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False}
     service.save("S001",user(),final,0,True)
-    after=service.task("S001",user()); assert after["reveal"]=={"human_versions":["X"]}
+    after=service.task("S001",user()); assert after["reveal"]=={"locked":True}  # the human version is never shown
     with pytest.raises(ValidationError,match="locked"): service.save("S001",user(),final|{"choice":"Y"},1,True)
 def test_prioritize_moves_items_first_and_keeps_the_rest(tmp_path):
     service=S1Service(S1Settings(tmp_path/"s1.sqlite3"))
@@ -92,3 +92,16 @@ def test_pair_accepts_equally_bad_as_a_distinct_choice(tmp_path):
 
     with service.database.connect() as db:
         assert json.loads(db.execute("SELECT answer_json FROM annotations").fetchone()[0])["choice"]=="SameBad"
+
+
+def test_problems_keep_their_versions_and_the_human_version_stays_hidden(tmp_path):
+    service=S1Service(S1Settings(tmp_path/"s1.sqlite3")); service.import_items([item()],"reviewer-en")
+    service.database.import_meta([{"case_id":"S001","dataset":"MultiSim · ASSET","human_versions":["X"]}])
+    task=service.next(user()); assert task["reveal"] is None
+    answer={"choice":"X","side_effects":["meaning","fluency"],"side_effect_versions":["X","Y"],
+            "side_effect_versions_by_type":{"meaning":["X"],"fluency":["Y"]},"side_effect":"multiple",
+            "selected_original_words":selected(),"note":"rationale","ideal_simplification":"ideal","uncertain":False}
+    service.save("S001",user(),answer,0,True)
+    after=service.task("S001",user())
+    assert after["reveal"]=={"locked":True} and "human_versions" not in json.dumps(after)
+    assert after["annotation"]["answer"]["side_effect_versions_by_type"]=={"meaning":["X"],"fluency":["Y"]}

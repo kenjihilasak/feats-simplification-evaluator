@@ -75,7 +75,7 @@ class S1Database:
                 );
                 CREATE INDEX IF NOT EXISTS idx_s1_queue
                     ON items(reviewer_username, queue_rank);
-                -- Shown to annotators: the dataset always, the human version only after submission.
+                -- The dataset is shown to annotators; the human version never is (kept for the analysis).
                 CREATE TABLE IF NOT EXISTS item_meta (
                     case_id TEXT PRIMARY KEY REFERENCES items(case_id),
                     dataset TEXT NOT NULL,
@@ -242,8 +242,9 @@ class S1Database:
         submitted = row["state"] == "submitted"
         if row["dataset"] is not None:
             payload["dataset"] = row["dataset"]
-            # The human version is revealed only once the answer is submitted, and the answer is then locked.
-            payload["reveal"] = {"human_versions": json.loads(row["human_versions_json"])} if submitted else None
+            # A submitted answer is locked. Which version is the human one is never shown (it would teach reviewers
+            # to recognise it); it stays in item_meta for the analysis.
+            payload["reveal"] = {"locked": True} if submitted else None
         return payload | {
             "queue_rank": row["queue_rank"],
             "llm_suggestion": suggestion,
@@ -297,7 +298,7 @@ class S1Database:
             old = db.execute("SELECT * FROM annotations WHERE case_id=?", (case_id,)).fetchone()
             revealed = db.execute("SELECT 1 FROM item_meta WHERE case_id=?", (case_id,)).fetchone()
             if old and old["state"] == "submitted" and revealed:
-                raise ValueError("this answer is locked: the human version was shown after submission")
+                raise ValueError("this answer is submitted and locked")
             old_version = int(old["version"]) if old else 0
             if old_version != expected_version:
                 raise ValueError(f"stale S1 version: expected {expected_version}, current {old_version}")

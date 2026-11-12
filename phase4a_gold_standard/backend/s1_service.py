@@ -157,6 +157,16 @@ class S1Service:
                     raise ValidationError("select which version has the problem")
                 if "other" in effects and not str(answer.get("side_effect_other", "")).strip():
                     raise ValidationError("describe the other problem")
+                # Since 12 Nov 2026 each problem names its own versions; older answers have only the joint list.
+                by_type = answer.get("side_effect_versions_by_type")
+                if by_type is not None:
+                    if not isinstance(by_type, dict) or set(by_type) != set(effects):
+                        raise ValidationError("select the versions for each problem")
+                    for problem, chosen in by_type.items():
+                        if not isinstance(chosen, list) or not chosen or not set(chosen) <= set(task["versions"]):
+                            raise ValidationError(f"select which version has the {problem} problem")
+                    if set(versions) != {v for chosen in by_type.values() for v in chosen}:
+                        raise ValidationError("the versions of the problems do not match")
             if len(str(answer.get("side_effect_other", ""))) > 500:
                 raise ValidationError("the description of the other problem is too long")
             return
