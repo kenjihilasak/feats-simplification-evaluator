@@ -1,6 +1,11 @@
 # Phase 7 — FEATS axis models
 
-One model per FEATS axis, trained on the Phase 6 corpora and evaluated on held-out human judgments. Design: [`internal_docs/FEATS_AXIS_MODELS_PLAN.md`](../internal_docs/FEATS_AXIS_MODELS_PLAN.md).
+FEATS axis scorers, trained on the Phase 6 synthetic corpora and evaluated on held-out human judgments (S1, SimpEval, iDEM).
+
+- **Current design (`pipeline_v1`)**: several backbones (E5, Octen-8B, ezjev-4b-s3, Gemma-3-12B, Llama-8B), full fine-tuning for E5 and QLoRA for >= 4B, regression head with the axis in the prompt (A) or one head per axis (B). Input data: `phase6_degraded_corpus/runs/training_corpus_v1/`.
+- **Earlier experiments (below)**: one model per axis (DeBERTa / XLM-R).
+
+Layout: `src/` code, `configs/{models,axes,experiments}/`, `jobs/` SLURM scripts, `docs/plans/` and `docs/reports/` per experiment, `runs/<experiment>/` outputs (gitignored). Design: [`internal_docs/FINETUNING_PIPELINE.md`](../internal_docs/FINETUNING_PIPELINE.md).
 
 - [Phase 7a — axis-model validation](docs/plans/axis_models_validation_v1_plan.md) ([result](docs/reports/axis_validation_v1.md): MEANING Q1 fails)
 - [MEANING recipe v2 — graded meaning loss](docs/plans/meaning_recipe_v2_plan.md) ([result](docs/reports/meaning_v2.md): beats NLI on Simplicity-DA, system r 0.97; Q1 inconclusive on Human-Likert)
