@@ -36,12 +36,12 @@
 
    | | Meaning | Fluency | Omission | Synonymy | Explanation | Modulation | Illocution | Compression | Syntactic |
    |---|---|---|---|---|---|---|---|---|---|
-   | en | ✓ | ✓ | ✓ | ✓ | – | ✓ | – | ✓ | ✓ |
+   | en | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✓ |
    | es / it / ru | ✓ | ✓ | – | – | – | ✓ | ✓ | n/a | n/a |
    | ar | ✓ | ✓ | – | ✓ | – | – | ✓ | n/a | n/a |
    | zh | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |
 
-   – = method ran but produced nothing; n/a = no method for that language yet. Omission, Synonymy and Explanation undo edits aligned with the original, which free LLM rewrites rarely allow.
+   – = method ran but produced nothing; n/a = no method for that language yet. Each language uses the same methods as our pipeline: English uses the training-corpus methods (tolerant alignment for Omission, Synonymy and Explanation, which yields 8, 30 and 1 groups here); Spanish, Italian, Russian and Arabic use the Phase 6 multilingual methods, whose Omission, Synonymy and Explanation rules need a word-by-word alignment with the original that free LLM rewrites rarely allow. English Illocution produced nothing because none of the English rewrites contains a question or instruction to make indirect.
 
 ## Examples (Gemini)
 
