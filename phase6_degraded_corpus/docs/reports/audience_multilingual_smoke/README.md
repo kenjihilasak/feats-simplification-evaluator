@@ -6,7 +6,7 @@
 
 - [60 originals](originals.csv): 10 each in English, Spanish, Italian, Russian, Arabic and Chinese (sources listed in the CSV; evaluation and training originals excluded).
 - Three prompts, identical except for the audience sentence: [B1 adults](../../../prompts/simplify_etr_v2_b1.txt), [children aged 8–13](../../../prompts/simplify_etr_v2_children.txt), [adults with intellectual disability](../../../prompts/simplify_etr_v2_intellectual_disability.txt).
-- Two generators at temperature 0: Gemini (gemini-3.5-flash-lite) and GPT (gpt-5.4-mini) → [360 simplifications](simplifications.csv).
+- Two generators at temperature 0: Gemini (gemini-3.5-flash-lite) and GPT (gpt-5.4-mini).
 - **Side-by-side view per language** (original, then each audience × generator): [English](by_language/en.md) · [Spanish](by_language/es.md) · [Italian](by_language/it.md) · [Russian](by_language/ru.md) · [Arabic](by_language/ar.md) · [Chinese](by_language/zh.md).
 - Degradations with our existing per-language methods → [degradations](degradations.csv).
 
