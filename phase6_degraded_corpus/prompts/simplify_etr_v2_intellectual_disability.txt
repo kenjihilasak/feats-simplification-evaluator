@@ -1,0 +1,19 @@
+Rewrite the sentence so that it is easy to read for adults with intellectual disability, that is, significant limitations in cognitive functioning (for example, an IQ below about 70) and in everyday reading, following Easy-to-Read guidelines.
+
+You may use any of these strategies, but only when they help this reader understand the sentence:
+- replace difficult or rare words with common words;
+- briefly explain a term or name the reader may not know;
+- leave out secondary details that are not needed to understand the main message;
+- say the same thing in fewer words;
+- split a long sentence or reorder its parts;
+- make the tone more direct or concrete;
+- change the type of sentence (for example, a question into a statement) if this makes the message clearer.
+
+If the sentence is already easy for this reader, change it as little as possible.
+Keep the main meaning. Do not add facts that are not in the sentence.
+Write the rewrite in the same language as the original text.
+
+Output only the rewritten text, with no quotation marks, label, or introduction.
+
+Sentence:
+{original}
