@@ -58,5 +58,5 @@ Small convenience sample (10 per language); uneven domains (Arabic: one novel; C
 
 ## Next step
 
-- For any audience-specific data, use Gemini (or another generator that adapts to the audience) and a B1 prompt that does not name English ("B1 level in the language of the text").
-- Test whether giving the scorer the target audience as input (e.g. "Audience: children aged 8–13") lets it score the same simplification differently for different readers. Start with a small set checked by human reviewers before generating audience-specific data at scale.
+- Check whether the audience-specific rewrites really suit their audience: human reviewers judge the Gemini rewrites we already have (10 sentences per language, each rewritten for B1 adults, children and adults with intellectual disability) in English, Spanish, Italian, Russian and Arabic.
+- If reviewers prefer the matched version, add the audience to the scorer's input (e.g. "Audience: children aged 8–13") and generate audience-specific training data at scale with Gemini and a B1 prompt that does not name English ("B1 level in the language of the text").
