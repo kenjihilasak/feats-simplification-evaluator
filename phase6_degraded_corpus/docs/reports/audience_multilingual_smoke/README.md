@@ -19,7 +19,18 @@
    | Gemini | 0.88 | 0.88 | 0.71 | 3 / 60 |
    | GPT | 1.04 | 1.02 | 0.99 | 16 / 60 |
 
-2. **The strategy mix barely changes across audiences** (E2R strategy classifier, en/es/it/ar): the differences are length and wording, not different strategies.
+2. **Strategies change little, except Gemini's rewrites for intellectual disability**, which omit more and rewrite syntax less. Share of rewrites with each confirmed strategy (English, Spanish, Italian, Arabic; 40 rewrites per cell; confirmed when ≥2 of the 4 E2R classifiers agree, including Gemma, as in the pipeline):
+
+   | Generator · audience | Omission | Compression | Synonymy | Explanation | Modulation | Syntactic change |
+   |---|---:|---:|---:|---:|---:|---:|
+   | Gemini · B1 | 42% | 78% | 92% | 5% | 60% | 22% |
+   | Gemini · children | 42% | 62% | 92% | 2% | 50% | 18% |
+   | Gemini · intellectual disability | 55% | 75% | 70% | 5% | 58% | 12% |
+   | GPT · B1 | 36% | 62% | 90% | 0% | 59% | 15% |
+   | GPT · children | 28% | 68% | 95% | 5% | 52% | 18% |
+   | GPT · intellectual disability | 35% | 78% | 90% | 0% | 55% | 18% |
+
+   Neither generator explains terms (Explanation ≤ 5%), even for the intellectual-disability audience. Illocution is not covered by the classifiers.
 3. **Language is kept in 358/360 outputs.** The 2 failures are GPT rewrites (Italian, Chinese) returned in English.
 4. **Degradations transfer only partly** (✓ = at least one checked group produced):
 
