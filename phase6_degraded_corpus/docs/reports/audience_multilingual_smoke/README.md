@@ -60,4 +60,3 @@ Small convenience sample (10 per language); uneven domains (Arabic: one novel; C
 
 - Use a language-neutral B1 wording and Gemini (or another audience-sensitive generator) for any audience-conditioned data.
 - Pilot audience in the scorer input on a small, human-reviewed set before scaling.
-- Add language-specific degradation rules (Omission, Synonymy, Explanation, Compression, Syntactic change) and a Chinese configuration.
