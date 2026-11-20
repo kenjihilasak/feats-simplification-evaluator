@@ -7,6 +7,7 @@
 - [60 originals](originals.csv): 10 each in English, Spanish, Italian, Russian, Arabic and Chinese (sources listed in the CSV; evaluation and training originals excluded).
 - Three prompts, identical except for the audience sentence: [B1 adults](../../../prompts/simplify_etr_v2_b1.txt), [children aged 8–13](../../../prompts/simplify_etr_v2_children.txt), [adults with intellectual disability](../../../prompts/simplify_etr_v2_intellectual_disability.txt).
 - Two generators at temperature 0: Gemini (gemini-3.5-flash-lite) and GPT (gpt-5.4-mini) → [360 simplifications](simplifications.csv).
+- **Side-by-side view per language** (original, then each audience × generator): [English](by_language/en.md) · [Spanish](by_language/es.md) · [Italian](by_language/it.md) · [Russian](by_language/ru.md) · [Arabic](by_language/ar.md) · [Chinese](by_language/zh.md).
 - Degradations with our existing per-language methods → [degradations](degradations.csv).
 
 ## Findings
@@ -38,7 +39,7 @@
 | That changed, however, in January 1981; the NWA territory based in San Francisco folded, which was the last remaining promotion outside the Mid-Atlantic territory that recognized its own United States Champion, leaving the Mid-Atlantic version as the only remaining United States Championship. | In January 1981, things changed. The wrestling group in San Francisco closed. Because of this, the Mid-Atlantic championship became the only United States championship left. | In January 1981, wrestling in San Francisco shut down. This left only one United States Championship in the whole country. | In January 1981, the wrestling group in San Francisco closed. After that, there was only one United States Championship left. |
 | Inició entonces estudios de pintura en los talleres de Antonio Cabral Bejarano, y más tarde en el de su tío paterno Joaquín Domínguez Bécquer, que le pronosticó «Tú no serás nunca un buen pintor, sino un mal literato», aunque le estimuló a los estudios y le pagó los de latín. | Entonces empezó a estudiar pintura. Primero fue con Antonio Cabral Bejarano. Después fue con su tío Joaquín Domínguez Bécquer. Su tío le dijo que nunca sería un buen pintor, sino un mal escritor. Pero le animó a estudiar y le pagó las clases de latín. | Entonces empezó a estudiar pintura con Antonio Cabral Bejarano y con su tío Joaquín Domínguez Bécquer. Su tío le dijo que nunca sería un buen pintor, sino un mal escritor, pero le animó a estudiar y le pagó las clases de latín. | Empezó a estudiar pintura con dos familiares. Su tío le dijo que sería mal pintor y buen escritor. Y le pagó los estudios de latín. |
 
-More in [simplifications.csv](simplifications.csv).
+All 60 originals, side by side: [English](by_language/en.md) · [Spanish](by_language/es.md) · [Italian](by_language/it.md) · [Russian](by_language/ru.md) · [Arabic](by_language/ar.md) · [Chinese](by_language/zh.md).
 
 ## Limitations
 
