@@ -58,5 +58,5 @@ Small convenience sample (10 per language); uneven domains (Arabic: one novel; C
 
 ## Next step
 
-- Check whether the audience-specific rewrites really suit their audience: we review the Gemini rewrites ourselves we already have (10 sentences per language, each rewritten for B1 adults, children and adults with intellectual disability) in English, Spanish, Italian, Russian and Arabic.
+- Check whether the audience-specific rewrites really suit their audience: we review ourselves the Gemini rewrites we already have (10 sentences per language, each rewritten for B1 adults, children and adults with intellectual disability) in English, Spanish, Italian, Russian and Arabic.
 - If the matched version is preferred, add the audience to the scorer's input (e.g. "Audience: children aged 8–13") and generate audience-specific training data at scale with Gemini and a B1 prompt that does not name English ("B1 level in the language of the text").
