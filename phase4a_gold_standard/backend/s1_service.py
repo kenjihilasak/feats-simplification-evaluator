@@ -149,8 +149,15 @@ class S1Service:
         if not str(answer.get("ideal_simplification", "")).strip():
             raise ValidationError("write your ideal Easy-to-Read version of the original")
         selected = answer.get("selected_original_words")
-        if not isinstance(selected, list) or not selected:
-            raise ValidationError("select at least one affected word in the original sentence")
+        no_words = answer.get("no_affected_words", False)
+        if not isinstance(no_words, bool):
+            raise ValidationError("no_affected_words must be true or false")
+        # Since 21 Nov 2026 a reviewer may state that no word of the original is affected instead of selecting words.
+        if no_words and selected:
+            raise ValidationError("select words or tick 'No word in the original is affected', not both")
+        if not no_words and (not isinstance(selected, list) or not selected):
+            raise ValidationError("select at least one affected word in the original sentence, or tick 'No word in the original is affected'")
+        selected = selected or []
         if len(selected) > 500:
             raise ValidationError("too many selected original words")
         original = str(task["original"])
