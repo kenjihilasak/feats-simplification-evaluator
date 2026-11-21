@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import re
 import os
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -24,6 +24,33 @@ class S1Settings:
     @classmethod
     def from_env(cls) -> "S1Settings":
         return cls(Path(os.environ.get("S1_DATABASE", "phase4a_gold_standard/runtime/s1_validation_v1.sqlite3")))
+
+
+def _is_word_character(character: str) -> bool:
+    return unicodedata.category(character)[0] in "LMN"
+
+
+def original_words(text: str) -> list[tuple[int, int, str]]:
+    """Words exactly as s1.js renders them for selection: /[\\p{L}\\p{M}\\p{N}]+(?:['’\\-][\\p{L}\\p{M}\\p{N}]+)*/u.
+
+    Combining marks count as word characters, so a decomposed accent ("Jose" + U+0301) stays inside its word.
+    Python's \\w excludes them, which made the server reject words the page offered (21 Nov 2026).
+    """
+    words: list[tuple[int, int, str]] = []
+    position, length = 0, len(text)
+    while position < length:
+        if not _is_word_character(text[position]):
+            position += 1
+            continue
+        start = position
+        while position < length and _is_word_character(text[position]):
+            position += 1
+        while position + 1 < length and text[position] in "'’-" and _is_word_character(text[position + 1]):
+            position += 1
+            while position < length and _is_word_character(text[position]):
+                position += 1
+        words.append((start, position, text[start:position]))
+    return words
 
 
 def _forbidden(value: Any, path: str = "") -> list[str]:
@@ -127,7 +154,7 @@ class S1Service:
         if len(selected) > 500:
             raise ValidationError("too many selected original words")
         original = str(task["original"])
-        words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[^\W_]+(?:['’\-][^\W_]+)*", original, re.UNICODE)]
+        words = original_words(original)
         seen: set[int] = set()
         for word in selected:
             if not isinstance(word, dict) or set(word) != {"index", "start", "end", "text"}:

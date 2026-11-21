@@ -319,6 +319,33 @@ class S1Database:
             )
         return {"answer": dict(answer), "state": new_state, "version": new_version}
 
+    def reopen(self, case_id: str) -> dict[str, Any]:
+        """Return a submitted item to its reviewer as a draft (admin repair; the revision history keeps the submission).
+
+        A skipped item gets back the last draft written before the skip, so the reviewer's work is not lost.
+        """
+        now = _now()
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            old = db.execute("SELECT * FROM annotations WHERE case_id=?", (case_id,)).fetchone()
+            if not old or old["state"] != "submitted":
+                raise ValueError(f"{case_id} is not submitted")
+            answer = json.loads(old["answer_json"] or "{}")
+            if answer.get("skipped") is True:
+                draft = db.execute(
+                    """SELECT new_answer_json FROM revisions WHERE case_id=? AND new_state='draft'
+                       AND json_extract(new_answer_json,'$.skipped') IS NOT 1 ORDER BY revision_id DESC LIMIT 1""",
+                    (case_id,),
+                ).fetchone()
+                answer = json.loads(draft["new_answer_json"]) if draft else {}
+            encoded, version = _json(answer), int(old["version"]) + 1
+            db.execute("UPDATE annotations SET state='draft',answer_json=?,version=?,updated_at=? WHERE case_id=?", (encoded, version, now, case_id))
+            db.execute(
+                "INSERT INTO revisions(case_id,reviewer_username,old_answer_json,new_answer_json,old_state,new_state,old_version,new_version,changed_at) VALUES(?,?,?,?,?,?,?,?,?)",
+                (case_id, old["reviewer_username"], old["answer_json"], encoded, "submitted", "draft", old["version"], version, now),
+            )
+        return {"case_id": case_id, "reviewer": old["reviewer_username"], "state": "draft", "version": version, "restored_answer": answer}
+
     def progress(self, username: str | None = None) -> dict[str, Any]:
         where, args = ("WHERE i.reviewer_username=?", (username,)) if username else ("", ())
         with self.connect() as db:
