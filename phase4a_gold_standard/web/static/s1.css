@@ -54,3 +54,4 @@
 .progress-row .position{margin-left:.6rem;font-weight:500;color:#5b6270}
 
 .side-option{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}.side-option .side-versions{margin-top:0;padding-left:.4rem;border-left:2px solid #c8d6cc}.side-which{color:#4b5d51;font-size:.92em}
+.note .hint{display:block;margin:.1rem 0 .3rem;color:#5b6773;font-size:.82rem;font-weight:400}

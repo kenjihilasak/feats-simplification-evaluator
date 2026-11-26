@@ -16,7 +16,7 @@ export const GUIDE = {
       "Two versions: choose the better one for the strategy, or <b>Same</b> if they are equally good (or equally bad).",
       "Three versions: give <b>1 to the best</b>, <b>2 to the middle</b> and <b>3 to the worst</b>. Equal numbers mean a tie.",
       "In the original, select the word or words affected by the strategy. If no word is affected (no version applies the strategy, or the problem is only in words the original does not have), tick <b>No word in the original is affected</b>. Use <b>Select all words</b> only when the whole sentence is affected.",
-      "Explain the rationale used to select the best version, and write your own ideal Easy-to-Read version of the original. Both are required; other comments are optional.",
+      "Explain the rationale used to select the best version, and give your ideal Easy-to-Read version of the original: copy a version if it is already a good Easy-to-Read text overall, otherwise write your own. Both are required; other comments are optional.",
       "Report separately, and say which version: a meaning issue, a grammar issue, or a version where the strategy is not well applied but the simplification is good.",
       "If the original sentence is wrong or does not make sense, use <b>Skip</b>. If the original is fine but a simplification is not, judge it as worse. If you are unsure, tick the box to flag the item for a second reviewer and explain in Other comments.",
     ],
